@@ -3,648 +3,746 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lezione 3.99 - Progetto Finale: Landing Page</title>
-    <link rel="stylesheet" href="/style.css">
+    <meta name="description" content="SpaceFlights - Voli spaziali economici per tutti">
+    <title>SpaceFlights - Il Tuo Viaggio nello Spazio</title>
+    
+    <!-- Bootstrap CSS: framework CSS per layout responsive e componenti pre-costruiti -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Bootstrap Icons: libreria di icone vettoriali -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <!-- Stili personalizzati: estendono e personalizzano Bootstrap -->
+    <link rel="stylesheet" href="lezione-3-99.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Lezione 3.99 - Progetto Finale</h1>
-            <p>Landing Page Professionale con Bootstrap</p>
-        </div>
 
-        <h2>1. Obiettivo del Progetto</h2>
-        
-        <div class="teoria">
-            <p>Creeremo una landing page completa e professionale che integra tutti i concetti appresi nelle lezioni precedenti:</p>
-            <ul>
-                <li><strong>Grid System:</strong> Layout responsive con container, row, column</li>
-                <li><strong>Navbar:</strong> Navigazione fissa con logo, menu e CTA</li>
-                <li><strong>Hero Section:</strong> Sezione di impatto con testo e immagine</li>
-                <li><strong>Features:</strong> Cards in grid per mostrare caratteristiche</li>
-                <li><strong>Pricing:</strong> Tabelle prezzi con cards</li>
-                <li><strong>Testimonials:</strong> Carousel con recensioni clienti</li>
-                <li><strong>FAQ:</strong> Accordion con domande frequenti</li>
-                <li><strong>Contact Form:</strong> Form con validazione</li>
-                <li><strong>Footer:</strong> Footer multi-colonna</li>
-                <li><strong>Customizzazione:</strong> Tema personalizzato con variabili CSS</li>
-            </ul>
-        </div>
+    <!-- ====================================================================
+         STRUTTURA PAGINA: Landing Page per SpaceFlights
+         
+         La pagina è organizzata in sezioni semantiche:
+         1. Navbar fissa con menu di navigazione
+         2. Hero Section con call-to-action principale
+         3. Features Section con grid di caratteristiche
+         4. Pricing Section con card dei piani
+         5. Testimonials Section con carousel di recensioni
+         6. FAQ Section con accordion
+         7. Contact Form con validazione
+         8. Footer con link e informazioni
+         
+         Ogni sezione usa componenti Bootstrap personalizzati
+         ==================================================================== -->
 
-        <h2>2. Struttura del Progetto</h2>
-        
-        <div class="codice">
-<pre>landing-page/
-├── index.html          # Pagina principale
-├── css/
-│   └── custom.css      # Stili personalizzati
-├── js/
-│   └── main.js         # JavaScript custom
-└── images/             # Immagini (logo, hero, etc.)</pre>
-        </div>
-
-        <h2>3. HTML Completo</h2>
-
-        <h3>3.1 Head e Setup</h3>
-        
-        <div class="codice">
-<pre>&lt;!DOCTYPE html&gt;
-&lt;html lang="it"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;meta name="description" content="SaaS Platform - Soluzione innovativa per il tuo business"&gt;
-    &lt;title&gt;SaaSPlatform - Innovazione per il tuo Business&lt;/title&gt;
-    
-    &lt;!-- Bootstrap CSS --&gt;
-    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-          rel="stylesheet" 
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
-          crossorigin="anonymous"&gt;
-    
-    &lt;!-- Bootstrap Icons --&gt;
-    &lt;link rel="stylesheet" 
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"&gt;
-    
-    &lt;!-- Custom CSS --&gt;
-    &lt;link rel="stylesheet" href="css/custom.css"&gt;
-&lt;/head&gt;
-&lt;body&gt;</pre>
-        </div>
-
-        <h3>3.2 Navbar</h3>
-        
-        <div class="codice">
-<pre>&lt;!-- NAVBAR --&gt;
-&lt;nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm"&gt;
-    &lt;div class="container"&gt;
-        &lt;!-- Brand --&gt;
-        &lt;a class="navbar-brand fw-bold" href="#"&gt;
-            &lt;i class="bi bi-rocket-takeoff text-primary"&gt;&lt;/i&gt;
-            SaaSPlatform
-        &lt;/a&gt;
-        
-        &lt;!-- Toggler --&gt;
-        &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                data-bs-target="#navbarNav"&gt;
-            &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
-        &lt;/button&gt;
-        
-        &lt;!-- Nav Items --&gt;
-        &lt;div class="collapse navbar-collapse" id="navbarNav"&gt;
-            &lt;ul class="navbar-nav mx-auto"&gt;
-                &lt;li class="nav-item"&gt;
-                    &lt;a class="nav-link" href="#features"&gt;Caratteristiche&lt;/a&gt;
-                &lt;/li&gt;
-                &lt;li class="nav-item"&gt;
-                    &lt;a class="nav-link" href="#pricing"&gt;Prezzi&lt;/a&gt;
-                &lt;/li&gt;
-                &lt;li class="nav-item"&gt;
-                    &lt;a class="nav-link" href="#testimonials"&gt;Recensioni&lt;/a&gt;
-                &lt;/li&gt;
-                &lt;li class="nav-item"&gt;
-                    &lt;a class="nav-link" href="#faq"&gt;FAQ&lt;/a&gt;
-                &lt;/li&gt;
-                &lt;li class="nav-item"&gt;
-                    &lt;a class="nav-link" href="#contact"&gt;Contatti&lt;/a&gt;
-                &lt;/li&gt;
-            &lt;/ul&gt;
-            &lt;div&gt;
-                &lt;a href="#contact" class="btn btn-primary"&gt;Inizia Gratis&lt;/a&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/nav&gt;</pre>
-        </div>
-
-        <h3>3.3 Hero Section</h3>
-        
-        <div class="codice">
-<pre>&lt;!-- HERO SECTION --&gt;
-&lt;section class="hero-section"&gt;
-    &lt;div class="container"&gt;
-        &lt;div class="row align-items-center min-vh-100"&gt;
-            &lt;div class="col-lg-6"&gt;
-                &lt;div class="badge bg-primary-subtle text-primary mb-3"&gt;
-                    🚀 Nuovo: AI-Powered Features
-                &lt;/div&gt;
-                &lt;h1 class="display-3 fw-bold mb-4"&gt;
-                    Trasforma il tuo Business con 
-                    &lt;span class="text-gradient"&gt;SaaSPlatform&lt;/span&gt;
-                &lt;/h1&gt;
-                &lt;p class="lead text-muted mb-4"&gt;
-                    La soluzione all-in-one per gestire, analizzare e far crescere 
-                    il tuo business. Inizia oggi stesso con 14 giorni di prova gratuita.
-                &lt;/p&gt;
-                &lt;div class="d-flex gap-3 flex-wrap"&gt;
-                    &lt;a href="#contact" class="btn btn-primary btn-lg"&gt;
-                        Inizia Gratis
-                    &lt;/a&gt;
-                    &lt;button class="btn btn-outline-secondary btn-lg" 
-                            data-bs-toggle="modal" data-bs-target="#demoModal"&gt;
-                        &lt;i class="bi bi-play-circle"&gt;&lt;/i&gt; Guarda Demo
-                    &lt;/button&gt;
-                &lt;/div&gt;
-                &lt;div class="mt-4"&gt;
-                    &lt;small class="text-muted"&gt;
-                        Scelto da oltre 10,000+ aziende
-                    &lt;/small&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class="col-lg-6"&gt;
-                &lt;img src="https://via.placeholder.com/600x500/6366f1/ffffff?text=Hero+Image" 
-                     class="img-fluid rounded-4 shadow-lg" alt="Hero"&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/section&gt;</pre>
-        </div>
-
-        <h3>3.4 Features Section</h3>
-        
-        <div class="codice">
-<pre>&lt;!-- FEATURES SECTION --&gt;
-&lt;section id="features" class="py-5 bg-light"&gt;
-    &lt;div class="container"&gt;
-        &lt;div class="text-center mb-5"&gt;
-            &lt;h2 class="display-5 fw-bold"&gt;Caratteristiche Potenti&lt;/h2&gt;
-            &lt;p class="lead text-muted"&gt;
-                Tutto ciò di cui hai bisogno in un'unica piattaforma
-            &lt;/p&gt;
-        &lt;/div&gt;
-        
-        &lt;div class="row g-4"&gt;
-            &lt;!-- Feature 1 --&gt;
-            &lt;div class="col-md-6 col-lg-4"&gt;
-                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;div class="feature-icon bg-primary bg-gradient text-white 
-                                    rounded-3 p-3 d-inline-block mb-3"&gt;
-                            &lt;i class="bi bi-lightning-charge fs-3"&gt;&lt;/i&gt;
-                        &lt;/div&gt;
-                        &lt;h4 class="fw-bold"&gt;Velocità Incredibile&lt;/h4&gt;
-                        &lt;p class="text-muted"&gt;
-                            Performance ottimizzate per garantire il massimo della velocità 
-                            in ogni operazione.
-                        &lt;/p&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+    <!-- ====================================================================
+         SEZIONE 1: NAVBAR
+         Navbar fissa con effetto glassmorphism e menu responsive
+         - fixed-top: mantiene la navbar in cima allo scroll
+         - navbar-expand-lg: menu hamburger su schermi piccoli
+         - collapse: contenuto collassabile su mobile
+         ==================================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-rocket-takeoff text-primary"></i>
+                SpaceFlights
+            </a>
             
-            &lt;!-- Feature 2 --&gt;
-            &lt;div class="col-md-6 col-lg-4"&gt;
-                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;div class="feature-icon bg-success bg-gradient text-white 
-                                    rounded-3 p-3 d-inline-block mb-3"&gt;
-                            &lt;i class="bi bi-shield-check fs-3"&gt;&lt;/i&gt;
-                        &lt;/div&gt;
-                        &lt;h4 class="fw-bold"&gt;Sicurezza Totale&lt;/h4&gt;
-                        &lt;p class="text-muted"&gt;
-                            Crittografia end-to-end e conformità GDPR per proteggere 
-                            i tuoi dati.
-                        &lt;/p&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             
-            &lt;!-- Feature 3 --&gt;
-            &lt;div class="col-md-6 col-lg-4"&gt;
-                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;div class="feature-icon bg-info bg-gradient text-white 
-                                    rounded-3 p-3 d-inline-block mb-3"&gt;
-                            &lt;i class="bi bi-graph-up fs-3"&gt;&lt;/i&gt;
-                        &lt;/div&gt;
-                        &lt;h4 class="fw-bold"&gt;Analytics Avanzate&lt;/h4&gt;
-                        &lt;p class="text-muted"&gt;
-                            Dashboard complete con metriche in tempo reale per 
-                            decisioni data-driven.
-                        &lt;/p&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            
-            &lt;!-- Feature 4 --&gt;
-            &lt;div class="col-md-6 col-lg-4"&gt;
-                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;div class="feature-icon bg-warning bg-gradient text-white 
-                                    rounded-3 p-3 d-inline-block mb-3"&gt;
-                            &lt;i class="bi bi-people fs-3"&gt;&lt;/i&gt;
-                        &lt;/div&gt;
-                        &lt;h4 class="fw-bold"&gt;Collaborazione Team&lt;/h4&gt;
-                        &lt;p class="text-muted"&gt;
-                            Lavora insieme al tuo team con strumenti di collaborazione 
-                            integrati.
-                        &lt;/p&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            
-            &lt;!-- Feature 5 --&gt;
-            &lt;div class="col-md-6 col-lg-4"&gt;
-                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;div class="feature-icon bg-danger bg-gradient text-white 
-                                    rounded-3 p-3 d-inline-block mb-3"&gt;
-                            &lt;i class="bi bi-gear fs-3"&gt;&lt;/i&gt;
-                        &lt;/div&gt;
-                        &lt;h4 class="fw-bold"&gt;Altamente Personalizzabile&lt;/h4&gt;
-                        &lt;p class="text-muted"&gt;
-                            Configura ogni aspetto della piattaforma secondo le tue 
-                            esigenze.
-                        &lt;/p&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            
-            &lt;!-- Feature 6 --&gt;
-            &lt;div class="col-md-6 col-lg-4"&gt;
-                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;div class="feature-icon bg-secondary bg-gradient text-white 
-                                    rounded-3 p-3 d-inline-block mb-3"&gt;
-                            &lt;i class="bi bi-phone fs-3"&gt;&lt;/i&gt;
-                        &lt;/div&gt;
-                        &lt;h4 class="fw-bold"&gt;Mobile Ready&lt;/h4&gt;
-                        &lt;p class="text-muted"&gt;
-                            Accedi da qualsiasi dispositivo con app native per iOS 
-                            e Android.
-                        &lt;/p&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/section&gt;</pre>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Destinazioni</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pricing">Tariffe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimonianze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#faq">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Prenota</a>
+                    </li>
+                </ul>
+                <div>
+                    <a href="#contact" class="btn btn-primary">Prenota Ora</a>
+                </div>
+            </div>
         </div>
+    </nav>
 
-        <h3>3.5 Pricing Section</h3>
-        
-        <div class="codice">
-<pre>&lt;!-- PRICING SECTION --&gt;
-&lt;section id="pricing" class="py-5"&gt;
-    &lt;div class="container"&gt;
-        &lt;div class="text-center mb-5"&gt;
-            &lt;h2 class="display-5 fw-bold"&gt;Piani e Prezzi&lt;/h2&gt;
-            &lt;p class="lead text-muted"&gt;
-                Scegli il piano perfetto per le tue esigenze
-            &lt;/p&gt;
-        &lt;/div&gt;
-        
-        &lt;div class="row g-4"&gt;
-            &lt;!-- Piano Starter --&gt;
-            &lt;div class="col-lg-4"&gt;
-                &lt;div class="card h-100 border-0 shadow"&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;h5 class="text-muted text-uppercase"&gt;Starter&lt;/h5&gt;
-                        &lt;div class="my-4"&gt;
-                            &lt;span class="display-4 fw-bold"&gt;€29&lt;/span&gt;
-                            &lt;span class="text-muted"&gt;/mese&lt;/span&gt;
-                        &lt;/div&gt;
-                        &lt;ul class="list-unstyled"&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Fino a 5 utenti
-                            &lt;/li&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                10 GB storage
-                            &lt;/li&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Supporto email
-                            &lt;/li&gt;
-                            &lt;li class="mb-3 text-muted"&gt;
-                                &lt;i class="bi bi-x-circle-fill"&gt;&lt;/i&gt;
-                                Analytics avanzate
-                            &lt;/li&gt;
-                        &lt;/ul&gt;
-                        &lt;div class="d-grid"&gt;
-                            &lt;a href="#contact" class="btn btn-outline-primary"&gt;
-                                Inizia Ora
-                            &lt;/a&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            
-            &lt;!-- Piano Professional (Highlighted) --&gt;
-            &lt;div class="col-lg-4"&gt;
-                &lt;div class="card h-100 border-primary shadow-lg" style="transform: scale(1.05);"&gt;
-                    &lt;div class="card-header bg-primary text-white text-center"&gt;
-                        &lt;strong&gt;PIÙ POPOLARE&lt;/strong&gt;
-                    &lt;/div&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;h5 class="text-primary text-uppercase"&gt;Professional&lt;/h5&gt;
-                        &lt;div class="my-4"&gt;
-                            &lt;span class="display-4 fw-bold"&gt;€79&lt;/span&gt;
-                            &lt;span class="text-muted"&gt;/mese&lt;/span&gt;
-                        &lt;/div&gt;
-                        &lt;ul class="list-unstyled"&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Utenti illimitati
-                            &lt;/li&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                100 GB storage
-                            &lt;/li&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Supporto prioritario
-                            &lt;/li&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Analytics avanzate
-                            &lt;/li&gt;
-                        &lt;/ul&gt;
-                        &lt;div class="d-grid"&gt;
-                            &lt;a href="#contact" class="btn btn-primary"&gt;
-                                Inizia Ora
-                            &lt;/a&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            
-            &lt;!-- Piano Enterprise --&gt;
-            &lt;div class="col-lg-4"&gt;
-                &lt;div class="card h-100 border-0 shadow"&gt;
-                    &lt;div class="card-body p-4"&gt;
-                        &lt;h5 class="text-muted text-uppercase"&gt;Enterprise&lt;/h5&gt;
-                        &lt;div class="my-4"&gt;
-                            &lt;span class="display-4 fw-bold"&gt;Custom&lt;/span&gt;
-                        &lt;/div&gt;
-                        &lt;ul class="list-unstyled"&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Tutto di Professional
-                            &lt;/li&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Storage illimitato
-                            &lt;/li&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Supporto dedicato 24/7
-                            &lt;/li&gt;
-                            &lt;li class="mb-3"&gt;
-                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
-                                Personalizzazione completa
-                            &lt;/li&gt;
-                        &lt;/ul&gt;
-                        &lt;div class="d-grid"&gt;
-                            &lt;a href="#contact" class="btn btn-outline-primary"&gt;
-                                Contattaci
-                            &lt;/a&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/section&gt;</pre>
+    <!-- ====================================================================
+         SEZIONE 2: HERO SECTION
+         Sezione principale a schermo intero con gradiente di sfondo
+         - Full viewport height per impatto visivo massimo
+         - Row con align-items-center per centratura verticale
+         - Colonna 6/12 per testo e 6/12 per immagine su desktop
+         - Badge con novità, headline, descrizione e CTA buttons
+         - Immagine placeholder per mockup/screenshot
+         ==================================================================== -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center" style="min-height: calc(100vh - 76px);">
+                <div class="col-lg-6">
+                    <div class="badge bg-white bg-opacity-25 text-white mb-3">
+                        🌟 Novità: Voli verso la Luna disponibili
+                    </div>
+                    <h1 class="display-3 fw-bold mb-4">
+                        Il Tuo Viaggio nello Spazio Inizia Qui
+                    </h1>
+                    <p class="lead mb-4 opacity-75">
+                        Voli spaziali di linea economici e accessibili. Realizza il sogno di vedere la Terra dall'alto. 
+                        Prenota oggi il tuo posto a bordo.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="#contact" class="btn btn-light btn-lg">
+                            Prenota Ora
+                        </a>
+                        <button class="btn btn-outline-light btn-lg" data-bs-toggle="modal" data-bs-target="#demoModal">
+                            <i class="bi bi-play-circle"></i> Guarda Video
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <small class="opacity-75">Oltre 5,000 viaggiatori hanno già volato con noi</small>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <img src="astronave.png" 
+                         class="img-fluid" alt="Navicella Spaziale" style="max-height: 500px; object-fit: contain;">
+                </div>
+            </div>
         </div>
+    </section>
 
-        <h3>3.6 Testimonials (Carousel)</h3>
-        
-        <div class="codice">
-<pre>&lt;!-- TESTIMONIALS SECTION --&gt;
-&lt;section id="testimonials" class="py-5 bg-light"&gt;
-    &lt;div class="container"&gt;
-        &lt;div class="text-center mb-5"&gt;
-            &lt;h2 class="display-5 fw-bold"&gt;Cosa Dicono i Nostri Clienti&lt;/h2&gt;
-            &lt;p class="lead text-muted"&gt;
-                Oltre 10,000 aziende si affidano a noi
-            &lt;/p&gt;
-        &lt;/div&gt;
-        
-        &lt;div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel"&gt;
-            &lt;div class="carousel-inner"&gt;
-                &lt;!-- Testimonial 1 --&gt;
-                &lt;div class="carousel-item active"&gt;
-                    &lt;div class="row justify-content-center"&gt;
-                        &lt;div class="col-lg-8"&gt;
-                            &lt;div class="card border-0 shadow-lg"&gt;
-                                &lt;div class="card-body p-5 text-center"&gt;
-                                    &lt;div class="mb-4"&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                    &lt;/div&gt;
-                                    &lt;p class="lead mb-4"&gt;
-                                        "SaaSPlatform ha rivoluzionato il modo in cui gestiamo 
-                                        il nostro business. L'interfaccia è intuitiva e le 
-                                        funzionalità sono potentissime."
-                                    &lt;/p&gt;
-                                    &lt;h5 class="fw-bold"&gt;Marco Rossi&lt;/h5&gt;
-                                    &lt;p class="text-muted"&gt;CEO, TechStart Italia&lt;/p&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+    <!-- ====================================================================
+         SEZIONE 3: FEATURES
+         Grid di caratteristiche del prodotto con icone e card
+         - Row con g-4: gutter da 1.5rem tra le colonne
+         - col-md-6 col-lg-4: 2 colonne su tablet, 3 su desktop
+         - Card con h-100: altezza uguale per tutte le card
+         - hover-lift: effetto sollevamento al hover (vedi CSS)
+         - Icone Bootstrap con background colorato
+         ==================================================================== -->
+    <section id="features" class="py-5 bg-light">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Destinazioni Spaziali</h2>
+                <p class="lead text-muted">Esplora le meraviglie dell'universo con i nostri voli di linea</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white rounded-3 mb-3">
+                                <i class="bi bi-rocket-takeoff fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold">Orbita Terrestre</h4>
+                            <p class="text-muted">Volo suborbitale di 2 ore per ammirare la Terra dallo spazio. Esperienza indimenticabile a 100 km di altitudine.</p>
+                        </div>
+                    </div>
+                </div>
                 
-                &lt;!-- Testimonial 2 --&gt;
-                &lt;div class="carousel-item"&gt;
-                    &lt;div class="row justify-content-center"&gt;
-                        &lt;div class="col-lg-8"&gt;
-                            &lt;div class="card border-0 shadow-lg"&gt;
-                                &lt;div class="card-body p-5 text-center"&gt;
-                                    &lt;div class="mb-4"&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                    &lt;/div&gt;
-                                    &lt;p class="lead mb-4"&gt;
-                                        "Il miglior investimento per la nostra azienda. ROI 
-                                        positivo già dal primo mese. Supporto eccezionale!"
-                                    &lt;/p&gt;
-                                    &lt;h5 class="fw-bold"&gt;Laura Bianchi&lt;/h5&gt;
-                                    &lt;p class="text-muted"&gt;Marketing Director, Digital Agency&lt;/p&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-success bg-gradient text-white rounded-3 mb-3">
+                                <i class="bi bi-shield-check fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold">Massima Sicurezza</h4>
+                            <p class="text-muted">Tecnologia aerospaziale certificata e equipaggio esperto. 20 anni di esperienza senza incidenti.</p>
+                        </div>
+                    </div>
+                </div>
                 
-                &lt;!-- Testimonial 3 --&gt;
-                &lt;div class="carousel-item"&gt;
-                    &lt;div class="row justify-content-center"&gt;
-                        &lt;div class="col-lg-8"&gt;
-                            &lt;div class="card border-0 shadow-lg"&gt;
-                                &lt;div class="card-body p-5 text-center"&gt;
-                                    &lt;div class="mb-4"&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
-                                    &lt;/div&gt;
-                                    &lt;p class="lead mb-4"&gt;
-                                        "Semplicemente fantastico. Abbiamo aumentato la produttività 
-                                        del 300%. Non potremmo farne a meno."
-                                    &lt;/p&gt;
-                                    &lt;h5 class="fw-bold"&gt;Giuseppe Verdi&lt;/h5&gt;
-                                    &lt;p class="text-muted"&gt;CTO, Innovation Labs&lt;/p&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            
-            &lt;!-- Carousel Controls --&gt;
-            &lt;button class="carousel-control-prev" type="button" 
-                    data-bs-target="#testimonialCarousel" data-bs-slide="prev"&gt;
-                &lt;span class="carousel-control-prev-icon bg-dark rounded-circle p-3"&gt;&lt;/span&gt;
-            &lt;/button&gt;
-            &lt;button class="carousel-control-next" type="button" 
-                    data-bs-target="#testimonialCarousel" data-bs-slide="next"&gt;
-                &lt;span class="carousel-control-next-icon bg-dark rounded-circle p-3"&gt;&lt;/span&gt;
-            &lt;/button&gt;
-            
-            &lt;!-- Indicators --&gt;
-            &lt;div class="carousel-indicators"&gt;
-                &lt;button type="button" data-bs-target="#testimonialCarousel" 
-                        data-bs-slide-to="0" class="active bg-dark"&gt;&lt;/button&gt;
-                &lt;button type="button" data-bs-target="#testimonialCarousel" 
-                        data-bs-slide-to="1" class="bg-dark"&gt;&lt;/button&gt;
-                &lt;button type="button" data-bs-target="#testimonialCarousel" 
-                        data-bs-slide-to="2" class="bg-dark"&gt;&lt;/button&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/section&gt;</pre>
-        </div>
-
-        <h3>3.7 FAQ (Accordion)</h3>
-        
-        <div class="codice">
-<pre>&lt;!-- FAQ SECTION --&gt;
-&lt;section id="faq" class="py-5"&gt;
-    &lt;div class="container"&gt;
-        &lt;div class="row"&gt;
-            &lt;div class="col-lg-8 mx-auto"&gt;
-                &lt;div class="text-center mb-5"&gt;
-                    &lt;h2 class="display-5 fw-bold"&gt;Domande Frequenti&lt;/h2&gt;
-                    &lt;p class="lead text-muted"&gt;
-                        Tutto ciò che devi sapere
-                    &lt;/p&gt;
-                &lt;/div&gt;
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-info bg-gradient text-white rounded-3 mb-3">
+                                <i class="bi bi-moon-stars fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold">Destinazione Luna</h4>
+                            <p class="text-muted">Volo di 3 giorni con orbita lunare e vista panoramica del satellite naturale della Terra.</p>
+                        </div>
+                    </div>
+                </div>
                 
-                &lt;div class="accordion" id="faqAccordion"&gt;
-                    &lt;!-- FAQ 1 --&gt;
-                    &lt;div class="accordion-item"&gt;
-                        &lt;h2 class="accordion-header"&gt;
-                            &lt;button class="accordion-button" type="button" 
-                                    data-bs-toggle="collapse" data-bs-target="#faq1"&gt;
-                                Come funziona il periodo di prova gratuito?
-                            &lt;/button&gt;
-                        &lt;/h2&gt;
-                        &lt;div id="faq1" class="accordion-collapse collapse show" 
-                             data-bs-parent="#faqAccordion"&gt;
-                            &lt;div class="accordion-body"&gt;
-                                Il periodo di prova gratuito di 14 giorni ti permette 
-                                di accedere a tutte le funzionalità del piano Professional. 
-                                Non è richiesta la carta di credito e puoi cancellare 
-                                in qualsiasi momento.
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                    
-                    &lt;!-- FAQ 2 --&gt;
-                    &lt;div class="accordion-item"&gt;
-                        &lt;h2 class="accordion-header"&gt;
-                            &lt;button class="accordion-button collapsed" type="button" 
-                                    data-bs-toggle="collapse" data-bs-target="#faq2"&gt;
-                                Posso cambiare piano in qualsiasi momento?
-                            &lt;/button&gt;
-                        &lt;/h2&gt;
-                        &lt;div id="faq2" class="accordion-collapse collapse" 
-                             data-bs-parent="#faqAccordion"&gt;
-                            &lt;div class="accordion-body"&gt;
-                                Assolutamente sì! Puoi fare upgrade o downgrade del tuo 
-                                piano in qualsiasi momento. Le modifiche saranno applicate 
-                                immediatamente e ti addebiteremo solo la differenza proporzionale.
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                    
-                    &lt;!-- FAQ 3 --&gt;
-                    &lt;div class="accordion-item"&gt;
-                        &lt;h2 class="accordion-header"&gt;
-                            &lt;button class="accordion-button collapsed" type="button" 
-                                    data-bs-toggle="collapse" data-bs-target="#faq3"&gt;
-                                I miei dati sono al sicuro?
-                            &lt;/button&gt;
-                        &lt;/h2&gt;
-                        &lt;div id="faq3" class="accordion-collapse collapse" 
-                             data-bs-parent="#faqAccordion"&gt;
-                            &lt;div class="accordion-body"&gt;
-                                La sicurezza è la nostra priorità numero uno. Utilizziamo 
-                                crittografia end-to-end, backup giornalieri e siamo 
-                                completamente conformi GDPR. I tuoi dati sono al sicuro con noi.
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                    
-                    &lt;!-- FAQ 4 --&gt;
-                    &lt;div class="accordion-item"&gt;
-                        &lt;h2 class="accordion-header"&gt;
-                            &lt;button class="accordion-button collapsed" type="button" 
-                                    data-bs-toggle="collapse" data-bs-target="#faq4"&gt;
-                                Che tipo di supporto offrite?
-                            &lt;/button&gt;
-                        &lt;/h2&gt;
-                        &lt;div id="faq4" class="accordion-collapse collapse" 
-                             data-bs-parent="#faqAccordion"&gt;
-                            &lt;div class="accordion-body"&gt;
-                                Offriamo supporto email per tutti i piani. I clienti 
-                                Professional hanno accesso al supporto prioritario, mentre 
-                                i clienti Enterprise hanno supporto dedicato 24/7 con un 
-                                account manager personale.
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                    
-                    &lt;!-- FAQ 5 --&gt;
-                    &lt;div class="accordion-item"&gt;
-                        &lt;h2 class="accordion-header"&gt;
-                            &lt;button class="accordion-button collapsed" type="button" 
-                                    data-bs-toggle="collapse" data-bs-target="#faq5"&gt;
-                                Posso integrare altre applicazioni?
-                            &lt;/button&gt;
-                        &lt;/h2&gt;
-                        &lt;div id="faq5" class="accordion-collapse collapse" 
-                             data-bs-parent="#faqAccordion"&gt;
-                            &lt;div class="accordion-body"&gt;
-                                Sì! Offriamo integrazioni native con oltre 100 applicazioni 
-                                popolari (Slack, Google Workspace, Microsoft 365, etc.) e 
-                                API complete per integrazioni custom.
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/section&gt;</pre>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-warning bg-gradient text-white rounded-3 mb-3">
+                                <i class="bi bi-star fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold">Stazione Spaziale</h4>
+                            <p class="text-muted">Volo di 7 giorni con soggiorno sulla Stazione Spaziale Internazionale. Vivi come un astronauta.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-danger bg-gradient text-white rounded-3 mb-3">
+                                <i class="bi bi-binoculars fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold">Esplorazione Marte</h4>
+                            <p class="text-muted">Missione di 6 mesi con orbita marziana. Per i veri esploratori dello spazio.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-secondary bg-gradient text-white rounded-3 mb-3">
+                                <i class="bi bi-camera fs-3"></i>
+                            </div>
+                            <h4 class="fw-bold">Foto e Video</h4>
+                            <p class="text-muted">Fotografie professionali e video 4K del tuo viaggio. Ricordi per tutta la vita.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <p style="margin-top: 20px;"><em>Continua nella prossima pagina con Contact Form, Footer e JavaScript...</em></p>
+    <!-- ====================================================================
+         SEZIONE 4: PRICING
+         Tabella prezzi con 3 card (Starter, Professional, Enterprise)
+         - align-items-center: allinea le card verticalmente
+         - Card centrale con transform scale(1.05) per evidenziarla
+         - Lista con icone bi-check-circle-fill per feature incluse
+         - Lista con icone bi-x-circle-fill per feature non incluse
+         - Bottoni CTA differenziati per piano
+         ==================================================================== -->
+    <section id="pricing" class="py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Tariffe Voli</h2>
+                <p class="lead text-muted">Scegli la destinazione dei tuoi sogni</p>
+            </div>
+            
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow">
+                        <div class="card-body p-4">
+                            <h5 class="text-muted text-uppercase">Orbita Terrestre</h5>
+                            <div class="my-4">
+                                <span class="display-4 fw-bold">€99.000</span>
+                                <span class="text-muted">/persona</span>
+                            </div>
+                            <ul class="list-unstyled">
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Volo suborbitale 2 ore</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Addestramento 3 giorni</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Foto e video inclusi</li>
+                                <li class="mb-3 text-muted"><i class="bi bi-x-circle-fill"></i> Passeggiata spaziale</li>
+                            </ul>
+                            <div class="d-grid">
+                                <a href="#contact" class="btn btn-outline-primary">Prenota</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card h-100 border-primary shadow-lg" style="transform: scale(1.05);">
+                        <div class="card-header bg-primary text-white text-center py-3">
+                            <strong>PIÙ POPOLARE</strong>
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="text-primary text-uppercase">Orbita Lunare</h5>
+                            <div class="my-4">
+                                <span class="display-4 fw-bold">€450.000</span>
+                                <span class="text-muted">/persona</span>
+                            </div>
+                            <ul class="list-unstyled">
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Volo di 3 giorni</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Orbita lunare completa</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Addestramento avanzato</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Suite privata</li>
+                            </ul>
+                            <div class="d-grid">
+                                <a href="#contact" class="btn btn-primary">Prenota</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow">
+                        <div class="card-body p-4">
+                            <h5 class="text-muted text-uppercase">Stazione Spaziale</h5>
+                            <div class="my-4">
+                                <span class="display-4 fw-bold">€2.5M</span>
+                            </div>
+                            <ul class="list-unstyled">
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Soggiorno di 7 giorni</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Passeggiata spaziale</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Esperimenti scientifici</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Supporto crew dedicato</li>
+                            </ul>
+                            <div class="d-grid">
+                                <a href="#contact" class="btn btn-outline-primary">Contattaci</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <div class="nav">
-            <a href="lezione-3-8.html" class="btn-prev">Indietro</a>
-            <a href="/" class="btn-home">Home</a>
-            <a href="/link-utili.html" class="btn-link-utili">Link utili</a>
+    <!-- ====================================================================
+         SEZIONE 5: TESTIMONIALS
+         Carousel di recensioni clienti con Bootstrap Carousel
+         - Carousel con data-bs-ride="carousel": autoplay automatico
+         - carousel-item per ogni testimonial
+         - Stelle di rating con icone bi-star-fill
+         - Controlli prev/next per navigazione manuale
+         - Indicatori (pallini) in basso per vedere slide attiva
+         ==================================================================== -->
+    <section id="testimonials" class="py-5 bg-light">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Esperienze dei Viaggiatori</h2>
+                <p class="lead text-muted">Oltre 5,000 persone hanno realizzato il sogno dello spazio</p>
+            </div>
+            
+            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="card border-0 shadow-lg">
+                                    <div class="card-body p-5 text-center">
+                                        <div class="mb-4">
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        </div>
+                                        <p class="lead mb-4">"Un'esperienza che ti cambia la vita. Vedere la Terra dallo spazio è indescrivibile. L'equipaggio è stato fantastico!"</p>
+                                        <h5 class="fw-bold">Marco Rossi</h5>
+                                        <p class="text-muted">Imprenditore, Milano</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="card border-0 shadow-lg">
+                                    <div class="card-body p-5 text-center">
+                                        <div class="mb-4">
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        </div>
+                                        <p class="lead mb-4">"Il sogno della mia vita realizzato! Il volo lunare è stato perfetto. Consiglio a tutti di vivere questa esperienza unica."</p>
+                                        <h5 class="fw-bold">Laura Bianchi</h5>
+                                        <p class="text-muted">Astrofisica, Roma</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="card border-0 shadow-lg">
+                                    <div class="card-body p-5 text-center">
+                                        <div class="mb-4">
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        </div>
+                                        <p class="lead mb-4">"La settimana sulla Stazione Spaziale è stata incredibile. Sicurezza massima e professionalità assoluta. Worth every penny!"</p>
+                                        <h5 class="fw-bold">Giuseppe Verdi</h5>
+                                        <p class="text-muted">Pilota, Torino</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+                
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         SEZIONE 6: FAQ
+         Domande frequenti con Bootstrap Accordion
+         - Accordion con data-bs-parent: solo un item aperto alla volta
+         - accordion-button collapsed: pulsante per aprire/chiudere
+         - accordion-collapse collapse: contenuto collassabile
+         - Prima domanda con classe "show" per renderla aperta di default
+         ==================================================================== -->
+    <section id="faq" class="py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="text-center mb-5">
+                        <h2 class="display-5 fw-bold">Domande Frequenti</h2>
+                        <p class="lead text-muted">Tutto ciò che devi sapere</p>
+                    </div>
+                    
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Che requisiti fisici sono necessari?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    È richiesta una buona salute generale. Prima del volo, tutti i passeggeri devono superare una visita medica e un addestramento di base. L'età minima è 18 anni, l'età massima è 70 anni.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Quanto dura l'addestramento?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    L'addestramento varia in base alla destinazione: 3 giorni per l'orbita terrestre, 2 settimane per la Luna, e 6 mesi per Marte. Include preparazione fisica, procedure di sicurezza e simulazioni di volo.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    È sicuro viaggiare nello spazio?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Sì, la sicurezza è la nostra priorità assoluta. Utilizziamo tecnologia aerospaziale certificata, navicelle testate migliaia di volte e equipaggio altamente qualificato. Abbiamo 20 anni di esperienza senza incidenti.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    Cosa posso portare a bordo?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Ogni passeggero può portare un bagaglio a mano di massimo 5kg. Forniamo tuta spaziale, fotocamera GoPro 4K, e kit di sopravvivenza. È vietato portare liquidi, armi o materiale infiammabile.
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                    Come prenoto un volo?
+                                </button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Compila il form di prenotazione, scegli la destinazione e riceverai conferma entro 24 ore. È richiesto un deposito del 30%. Il saldo va pagato 60 giorni prima della partenza. Accettiamo bonifico e carte di credito.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         SEZIONE 7: CONTACT FORM
+         Form di contatto con validazione lato client
+         - needs-validation: classe Bootstrap per validazione custom
+         - novalidate: disabilita validazione HTML5 nativa
+         - Campo required: validazione obbligatoria
+         - invalid-feedback: messaggio di errore visualizzato se non valido
+         - Alert success nascosto, mostrato via JS dopo submit
+         ==================================================================== -->
+    <section id="contact" class="py-5 bg-light">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <div class="text-center mb-5">
+                        <h2 class="display-5 fw-bold">Prenota il Tuo Volo</h2>
+                        <p class="lead text-muted">Compila il form e ti ricontatteremo entro 24 ore.</p>
+                    </div>
+                    
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-body p-5">
+                            <form id="contactForm" class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nome Completo *</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                    <div class="invalid-feedback">Inserisci il tuo nome</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                    <div class="invalid-feedback">Inserisci un'email valida</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="company" class="form-label">Telefono</label>
+                                    <input type="tel" class="form-control" id="company">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="plan" class="form-label">Destinazione</label>
+                                    <select class="form-select" id="plan">
+                                        <option value="orbit">Orbita Terrestre - €99.000</option>
+                                        <option value="moon" selected>Orbita Lunare - €450.000</option>
+                                        <option value="iss">Stazione Spaziale - €2.5M</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Messaggio</label>
+                                    <textarea class="form-control" id="message" rows="4"></textarea>
+                                </div>
+                                
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        Accetto i <a href="#">termini e condizioni</a> *
+                                    </label>
+                                    <div class="invalid-feedback">Devi accettare i termini</div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        Richiedi Prenotazione
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <div class="alert alert-success mt-3" id="successAlert" style="display:none;">
+                                <strong>Grazie!</strong> Ti contatteremo presto.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         SEZIONE 8: FOOTER
+         Footer con informazioni azienda, link e social
+         - Sfondo scuro (#1f2937) con testo bianco
+         - Grid layout a 5 colonne su desktop
+         - Responsive: colonne si impilano su mobile
+         - Link con text-white-50: bianco semi-trasparente per gerarchia
+         - Icone social media con link
+         - Copyright e credits in riga separata
+         ==================================================================== -->
+    <footer class="text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-rocket-takeoff"></i> SpaceFlights
+                    </h5>
+                    <p class="text-white-50">Il tuo sogno di viaggiare nello spazio diventa realtà. Voli economici per tutti.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white"><i class="bi bi-twitter fs-5"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-instagram fs-5"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Voli</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#features" class="text-white-50 text-decoration-none">Destinazioni</a></li>
+                        <li class="mb-2"><a href="#pricing" class="text-white-50 text-decoration-none">Tariffe</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Calendario</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Flotta</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Azienda</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Chi Siamo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Carriere</a></li>
+                        <li class="mb-2"><a href="#contact" class="text-white-50 text-decoration-none">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Supporto</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Help Center</a></li>
+                        <li class="mb-2"><a href="#faq" class="text-white-50 text-decoration-none">FAQ</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Documentazione</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">API</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Legale</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Privacy</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Termini</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Cookie Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4 bg-white opacity-25">
+            
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="text-white-50 mb-0">&copy; 2025 SpaceFlights. Tutti i diritti riservati.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="text-white-50 mb-0">Made with <i class="bi bi-heart-fill text-danger"></i> and Bootstrap</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====================================================================
+         COMPONENTI ACCESSORI
+         ==================================================================== -->
+    
+    <!-- Bottone Scroll to Top: appare scrollando, torna su al click -->
+    <button class="btn btn-primary rounded-circle scroll-to-top" id="scrollTop">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- Modal Demo Video: modale con iframe YouTube -->
+    <div class="modal fade" id="demoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Demo Video</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Bootstrap JS: bundle completo con Popper.js per componenti interattivi -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <!-- ====================================================================
+         JAVASCRIPT CUSTOM
+         Funzionalità interattive della pagina
+         ==================================================================== -->
+    <script>
+        // ========================================
+        // VALIDAZIONE FORM
+        // Usa l'API di validazione HTML5 di Bootstrap
+        // Previene submit se ci sono errori
+        // Mostra alert di successo dopo submit valido
+        // ========================================
+        (function () {
+            'use strict'
+            const form = document.getElementById('contactForm')
+            form.addEventListener('submit', function (event) {
+                event.preventDefault()   // Previene submit reale
+                event.stopPropagation()
+                
+                if (form.checkValidity()) {
+                    // Form valido: mostra alert successo
+                    document.getElementById('successAlert').style.display = 'block'
+                    form.reset()  // Resetta campi
+                    form.classList.remove('was-validated')
+                    setTimeout(() => {
+                        document.getElementById('successAlert').style.display = 'none'
+                    }, 5000)  // Nasconde alert dopo 5 secondi
+                } else {
+                    // Form non valido: mostra errori
+                    form.classList.add('was-validated')
+                }
+            }, false)
+        })()
+        
+        // ========================================
+        // SMOOTH SCROLLING
+        // Scroll animato per link anchor interni (#features, #pricing, etc)
+        // ========================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault()
+                const target = document.querySelector(this.getAttribute('href'))
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+            })
+        })
+        
+        // ========================================
+        // BOTTONE SCROLL TO TOP
+        // Mostra bottone dopo 300px di scroll
+        // Torna in cima con scroll animato
+        // ========================================
+        const scrollTopBtn = document.getElementById('scrollTop')
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.style.display = 'block'
+            } else {
+                scrollTopBtn.style.display = 'none'
+            }
+        })
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+        })
+        
+        // ========================================
+        // INIZIALIZZAZIONE TOOLTIPS BOOTSTRAP
+        // Attiva tutti gli elementi con data-bs-toggle="tooltip"
+        // ========================================
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 </body>
 </html>

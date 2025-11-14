@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio: Bootstrap Utilities</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body class="p-4">
+    <div class="container">
+        <h1 class="mb-4">Bootstrap Utilities - Esempi Pratici</h1>
+
+        <!-- Spacing Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">1. Spacing Utilities (Margin e Padding)</h2>
+            <div class="border p-3 bg-light">
+                <div class="bg-primary text-white p-3 mb-2">padding: p-3</div>
+                <div class="bg-primary text-white p-4 mb-2">padding: p-4</div>
+                <div class="bg-primary text-white pt-3 pb-3 ps-5 pe-5 mb-2">padding personalizzato: pt-3 pb-3 ps-5 pe-5</div>
+                
+                <div class="bg-success text-white p-2 mt-4 mb-2">margin-top: mt-4</div>
+                <div class="bg-success text-white p-2 mb-5">margin-bottom: mb-5</div>
+                <div class="bg-success text-white p-2 mx-auto" style="width: 200px;">margin x-axis auto: mx-auto</div>
+            </div>
+        </section>
+
+        <!-- Text Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">2. Text Utilities</h2>
+            <div class="border p-3 bg-light">
+                <p class="text-start">Testo allineato a sinistra (text-start)</p>
+                <p class="text-center">Testo centrato (text-center)</p>
+                <p class="text-end">Testo allineato a destra (text-end)</p>
+                
+                <p class="text-lowercase">TESTO LOWERCASE (text-lowercase)</p>
+                <p class="text-uppercase">testo uppercase (text-uppercase)</p>
+                <p class="text-capitalize">testo capitalize (text-capitalize)</p>
+                
+                <p class="fw-bold">Testo grassetto (fw-bold)</p>
+                <p class="fw-normal">Testo normale (fw-normal)</p>
+                <p class="fw-light">Testo leggero (fw-light)</p>
+                <p class="fst-italic">Testo corsivo (fst-italic)</p>
+                
+                <p class="text-decoration-underline">Testo sottolineato (text-decoration-underline)</p>
+                <p class="text-decoration-line-through">Testo barrato (text-decoration-line-through)</p>
+                <p><a href="#" class="text-decoration-none">Link senza decorazione (text-decoration-none)</a></p>
+            </div>
+        </section>
+
+        <!-- Color Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">3. Color Utilities</h2>
+            <div class="border p-3 bg-light">
+                <h5>Colori di testo:</h5>
+                <p class="text-primary">Testo primario (text-primary)</p>
+                <p class="text-secondary">Testo secondario (text-secondary)</p>
+                <p class="text-success">Testo successo (text-success)</p>
+                <p class="text-danger">Testo pericolo (text-danger)</p>
+                <p class="text-warning">Testo attenzione (text-warning)</p>
+                <p class="text-info">Testo info (text-info)</p>
+                <p class="text-light bg-dark p-2">Testo chiaro (text-light)</p>
+                <p class="text-dark">Testo scuro (text-dark)</p>
+                <p class="text-muted">Testo attenuato (text-muted)</p>
+                
+                <h5 class="mt-4">Colori di sfondo:</h5>
+                <div class="bg-primary text-white p-2 mb-2">Sfondo primario (bg-primary)</div>
+                <div class="bg-secondary text-white p-2 mb-2">Sfondo secondario (bg-secondary)</div>
+                <div class="bg-success text-white p-2 mb-2">Sfondo successo (bg-success)</div>
+                <div class="bg-danger text-white p-2 mb-2">Sfondo pericolo (bg-danger)</div>
+                <div class="bg-warning text-dark p-2 mb-2">Sfondo attenzione (bg-warning)</div>
+                <div class="bg-info text-dark p-2 mb-2">Sfondo info (bg-info)</div>
+                <div class="bg-light text-dark p-2 mb-2">Sfondo chiaro (bg-light)</div>
+                <div class="bg-dark text-white p-2 mb-2">Sfondo scuro (bg-dark)</div>
+                
+                <h5 class="mt-4">Opacità sfondo:</h5>
+                <div class="bg-primary bg-opacity-75 text-white p-2 mb-2">75% opacità (bg-opacity-75)</div>
+                <div class="bg-primary bg-opacity-50 text-white p-2 mb-2">50% opacità (bg-opacity-50)</div>
+                <div class="bg-primary bg-opacity-25 text-white p-2 mb-2">25% opacità (bg-opacity-25)</div>
+                <div class="bg-primary bg-opacity-10 text-dark p-2 mb-2">10% opacità (bg-opacity-10)</div>
+            </div>
+        </section>
+
+        <!-- Border Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">4. Border Utilities</h2>
+            <div class="border p-3 bg-light">
+                <div class="border p-3 mb-3">Bordo completo (border)</div>
+                <div class="border-top p-3 mb-3">Bordo superiore (border-top)</div>
+                <div class="border-end p-3 mb-3">Bordo destro (border-end)</div>
+                <div class="border-bottom p-3 mb-3">Bordo inferiore (border-bottom)</div>
+                <div class="border-start p-3 mb-3">Bordo sinistro (border-start)</div>
+                
+                <h5 class="mt-4">Colori bordo:</h5>
+                <div class="border border-primary p-3 mb-2">Bordo primario (border-primary)</div>
+                <div class="border border-success p-3 mb-2">Bordo successo (border-success)</div>
+                <div class="border border-danger p-3 mb-2">Bordo pericolo (border-danger)</div>
+                
+                <h5 class="mt-4">Spessore bordo:</h5>
+                <div class="border border-1 p-3 mb-2">Bordo sottile (border-1)</div>
+                <div class="border border-2 p-3 mb-2">Bordo medio (border-2)</div>
+                <div class="border border-3 p-3 mb-2">Bordo spesso (border-3)</div>
+                <div class="border border-4 p-3 mb-2">Bordo molto spesso (border-4)</div>
+                <div class="border border-5 p-3 mb-2">Bordo massimo (border-5)</div>
+                
+                <h5 class="mt-4">Arrotondamento angoli:</h5>
+                <div class="border p-3 mb-2 rounded">Arrotondato (rounded)</div>
+                <div class="border p-3 mb-2 rounded-1">Arrotondato piccolo (rounded-1)</div>
+                <div class="border p-3 mb-2 rounded-2">Arrotondato medio (rounded-2)</div>
+                <div class="border p-3 mb-2 rounded-3">Arrotondato grande (rounded-3)</div>
+                <div class="border p-3 mb-2 rounded-circle" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">Cerchio (rounded-circle)</div>
+                <div class="border p-3 mb-2 rounded-pill">Pillola (rounded-pill)</div>
+            </div>
+        </section>
+
+        <!-- Display Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">5. Display Utilities</h2>
+            <div class="border p-3 bg-light">
+                <div class="d-block bg-primary text-white p-2 mb-2">Display block (d-block)</div>
+                <span class="d-inline-block bg-success text-white p-2 me-2">Inline block 1</span>
+                <span class="d-inline-block bg-success text-white p-2">Inline block 2</span>
+                
+                <div class="mt-3">
+                    <div class="d-none">Elemento nascosto (d-none)</div>
+                    <div class="d-block bg-warning p-2">Elemento visibile (d-block)</div>
+                </div>
+                
+                <h5 class="mt-4">Responsive display:</h5>
+                <div class="d-none d-md-block bg-info text-white p-2 mb-2">
+                    Visibile solo su schermi medio+ (d-none d-md-block)
+                </div>
+                <div class="d-block d-lg-none bg-info text-white p-2 mb-2">
+                    Nascosto su schermi large+ (d-block d-lg-none)
+                </div>
+            </div>
+        </section>
+
+        <!-- Flexbox Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">6. Flexbox Utilities</h2>
+            <div class="border p-3 bg-light">
+                <h5>Direzione flex:</h5>
+                <div class="d-flex flex-row border mb-3 p-2">
+                    <div class="bg-primary text-white p-2 me-2">1</div>
+                    <div class="bg-primary text-white p-2 me-2">2</div>
+                    <div class="bg-primary text-white p-2">3</div>
+                </div>
+                
+                <div class="d-flex flex-column border mb-3 p-2" style="height: 150px;">
+                    <div class="bg-success text-white p-2 mb-2">1</div>
+                    <div class="bg-success text-white p-2 mb-2">2</div>
+                    <div class="bg-success text-white p-2">3</div>
+                </div>
+                
+                <h5 class="mt-4">Allineamento justify-content:</h5>
+                <div class="d-flex justify-content-start border mb-2 p-2">
+                    <div class="bg-primary text-white p-2">justify-content-start</div>
+                </div>
+                <div class="d-flex justify-content-center border mb-2 p-2">
+                    <div class="bg-primary text-white p-2">justify-content-center</div>
+                </div>
+                <div class="d-flex justify-content-end border mb-2 p-2">
+                    <div class="bg-primary text-white p-2">justify-content-end</div>
+                </div>
+                <div class="d-flex justify-content-between border mb-2 p-2">
+                    <div class="bg-primary text-white p-2">Item 1</div>
+                    <div class="bg-primary text-white p-2">Item 2</div>
+                    <div class="bg-primary text-white p-2">Item 3</div>
+                </div>
+                <div class="d-flex justify-content-around border mb-2 p-2">
+                    <div class="bg-primary text-white p-2">Item 1</div>
+                    <div class="bg-primary text-white p-2">Item 2</div>
+                    <div class="bg-primary text-white p-2">Item 3</div>
+                </div>
+                
+                <h5 class="mt-4">Allineamento align-items:</h5>
+                <div class="d-flex align-items-start border mb-2 p-2" style="height: 100px;">
+                    <div class="bg-success text-white p-2">align-items-start</div>
+                </div>
+                <div class="d-flex align-items-center border mb-2 p-2" style="height: 100px;">
+                    <div class="bg-success text-white p-2">align-items-center</div>
+                </div>
+                <div class="d-flex align-items-end border mb-2 p-2" style="height: 100px;">
+                    <div class="bg-success text-white p-2">align-items-end</div>
+                </div>
+                
+                <h5 class="mt-4">Gap:</h5>
+                <div class="d-flex gap-2 border p-2 mb-2">
+                    <div class="bg-info text-white p-2">Gap 2</div>
+                    <div class="bg-info text-white p-2">Gap 2</div>
+                    <div class="bg-info text-white p-2">Gap 2</div>
+                </div>
+                <div class="d-flex gap-4 border p-2 mb-2">
+                    <div class="bg-info text-white p-2">Gap 4</div>
+                    <div class="bg-info text-white p-2">Gap 4</div>
+                    <div class="bg-info text-white p-2">Gap 4</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sizing Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">7. Sizing Utilities</h2>
+            <div class="border p-3 bg-light">
+                <h5>Larghezza (width):</h5>
+                <div class="w-25 bg-primary text-white p-2 mb-2">w-25 (25%)</div>
+                <div class="w-50 bg-primary text-white p-2 mb-2">w-50 (50%)</div>
+                <div class="w-75 bg-primary text-white p-2 mb-2">w-75 (75%)</div>
+                <div class="w-100 bg-primary text-white p-2 mb-2">w-100 (100%)</div>
+                
+                <h5 class="mt-4">Altezza (height):</h5>
+                <div style="height: 200px; position: relative;" class="border mb-3">
+                    <div class="h-25 bg-success text-white p-2 mb-2" style="position: absolute; width: 20%;">h-25</div>
+                    <div class="h-50 bg-success text-white p-2 mb-2" style="position: absolute; left: 25%; width: 20%;">h-50</div>
+                    <div class="h-75 bg-success text-white p-2 mb-2" style="position: absolute; left: 50%; width: 20%;">h-75</div>
+                    <div class="h-100 bg-success text-white p-2" style="position: absolute; left: 75%; width: 20%;">h-100</div>
+                </div>
+                
+                <h5 class="mt-4">Max larghezza e altezza:</h5>
+                <div class="mw-100 bg-warning p-2 mb-2" style="width: 1000px;">mw-100 (max-width: 100%)</div>
+                <div class="mh-100 bg-warning p-2" style="height: 500px;">mh-100 (max-height: 100%)</div>
+            </div>
+        </section>
+
+        <!-- Shadow Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">8. Shadow Utilities</h2>
+            <div class="border p-3 bg-light">
+                <div class="shadow-none p-3 mb-3 bg-white">Nessuna ombra (shadow-none)</div>
+                <div class="shadow-sm p-3 mb-3 bg-white">Ombra piccola (shadow-sm)</div>
+                <div class="shadow p-3 mb-3 bg-white">Ombra normale (shadow)</div>
+                <div class="shadow-lg p-3 mb-3 bg-white">Ombra grande (shadow-lg)</div>
+            </div>
+        </section>
+
+        <!-- Position Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">9. Position Utilities</h2>
+            <div class="border p-3 bg-light">
+                <div class="position-relative bg-primary text-white p-4 mb-3" style="height: 200px;">
+                    <span>position-relative (padre)</span>
+                    <div class="position-absolute top-0 start-0 bg-warning text-dark p-2">
+                        top-0 start-0
+                    </div>
+                    <div class="position-absolute top-0 end-0 bg-warning text-dark p-2">
+                        top-0 end-0
+                    </div>
+                    <div class="position-absolute bottom-0 start-0 bg-warning text-dark p-2">
+                        bottom-0 start-0
+                    </div>
+                    <div class="position-absolute bottom-0 end-0 bg-warning text-dark p-2">
+                        bottom-0 end-0
+                    </div>
+                </div>
+                
+                <div class="position-relative bg-success text-white p-4" style="height: 150px;">
+                    <div class="position-absolute top-50 start-50 translate-middle bg-warning text-dark p-2">
+                        Centrato (top-50 start-50 translate-middle)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overflow Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">10. Overflow Utilities</h2>
+            <div class="border p-3 bg-light">
+                <div class="overflow-auto border mb-3 p-2" style="max-height: 100px;">
+                    <p>overflow-auto: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                </div>
+                
+                <div class="overflow-hidden border mb-3 p-2" style="max-height: 100px;">
+                    <p>overflow-hidden: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+                
+                <div class="overflow-scroll border p-2" style="max-height: 100px;">
+                    <p>overflow-scroll: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visibility Utilities -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">11. Visibility Utilities</h2>
+            <div class="border p-3 bg-light">
+                <div class="visible bg-primary text-white p-2 mb-2">Elemento visibile (visible)</div>
+                <div class="invisible bg-primary text-white p-2 mb-2">Elemento invisibile ma occupa spazio (invisible)</div>
+                <div class="visible bg-primary text-white p-2">Elemento visibile</div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

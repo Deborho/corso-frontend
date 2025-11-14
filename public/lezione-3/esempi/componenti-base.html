@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio: Componenti Base Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body class="p-4">
+    <div class="container">
+        <h1 class="mb-4">Componenti Base Bootstrap</h1>
+
+        <!-- Buttons -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">1. Buttons</h2>
+            
+            <h5>Stili base:</h5>
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-secondary">Secondary</button>
+                <button type="button" class="btn btn-success">Success</button>
+                <button type="button" class="btn btn-danger">Danger</button>
+                <button type="button" class="btn btn-warning">Warning</button>
+                <button type="button" class="btn btn-info">Info</button>
+                <button type="button" class="btn btn-light">Light</button>
+                <button type="button" class="btn btn-dark">Dark</button>
+                <button type="button" class="btn btn-link">Link</button>
+            </div>
+
+            <h5>Outline buttons:</h5>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-primary">Primary</button>
+                <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                <button type="button" class="btn btn-outline-success">Success</button>
+                <button type="button" class="btn btn-outline-danger">Danger</button>
+            </div>
+
+            <h5>Dimensioni:</h5>
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary btn-lg">Large button</button>
+                <button type="button" class="btn btn-primary">Normal button</button>
+                <button type="button" class="btn btn-primary btn-sm">Small button</button>
+            </div>
+
+            <h5>Stati:</h5>
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary">Normal</button>
+                <button type="button" class="btn btn-primary active">Active</button>
+                <button type="button" class="btn btn-primary" disabled>Disabled</button>
+            </div>
+
+            <h5>Con icone:</h5>
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary">
+                    <i class="bi bi-download"></i> Download
+                </button>
+                <button type="button" class="btn btn-success">
+                    <i class="bi bi-check-circle"></i> Conferma
+                </button>
+                <button type="button" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Elimina
+                </button>
+            </div>
+
+            <h5>Button group:</h5>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary">Sinistra</button>
+                <button type="button" class="btn btn-primary">Centro</button>
+                <button type="button" class="btn btn-primary">Destra</button>
+            </div>
+        </section>
+
+        <!-- Badges -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">2. Badges</h2>
+            
+            <h5>Badge base:</h5>
+            <div class="mb-3">
+                <span class="badge bg-primary">Primary</span>
+                <span class="badge bg-secondary">Secondary</span>
+                <span class="badge bg-success">Success</span>
+                <span class="badge bg-danger">Danger</span>
+                <span class="badge bg-warning text-dark">Warning</span>
+                <span class="badge bg-info text-dark">Info</span>
+                <span class="badge bg-light text-dark">Light</span>
+                <span class="badge bg-dark">Dark</span>
+            </div>
+
+            <h5>Badge arrotondati (pill):</h5>
+            <div class="mb-3">
+                <span class="badge rounded-pill bg-primary">Primary</span>
+                <span class="badge rounded-pill bg-secondary">Secondary</span>
+                <span class="badge rounded-pill bg-success">Success</span>
+                <span class="badge rounded-pill bg-danger">Danger</span>
+            </div>
+
+            <h5>Badge in elementi:</h5>
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary">
+                    Notifiche <span class="badge bg-danger">4</span>
+                </button>
+                <button type="button" class="btn btn-secondary">
+                    Messaggi <span class="badge bg-warning text-dark">12</span>
+                </button>
+            </div>
+
+            <h5>Badge in heading:</h5>
+            <h3>Titolo esempio <span class="badge bg-secondary">Nuovo</span></h3>
+            <h4>Prodotto <span class="badge bg-success">In offerta</span></h4>
+        </section>
+
+        <!-- Alerts -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">3. Alerts</h2>
+            
+            <div class="alert alert-primary" role="alert">
+                Un semplice alert primario—guardalo!
+            </div>
+            <div class="alert alert-secondary" role="alert">
+                Un semplice alert secondario—guardalo!
+            </div>
+            <div class="alert alert-success" role="alert">
+                <strong>Successo!</strong> La tua operazione è stata completata con successo.
+            </div>
+            <div class="alert alert-danger" role="alert">
+                <strong>Errore!</strong> Si è verificato un problema. Riprova più tardi.
+            </div>
+            <div class="alert alert-warning" role="alert">
+                <strong>Attenzione!</strong> Questa azione potrebbe avere conseguenze importanti.
+            </div>
+            <div class="alert alert-info" role="alert">
+                <strong>Informazione:</strong> Ecco alcune informazioni utili per te.
+            </div>
+
+            <h5 class="mt-4">Alert con link:</h5>
+            <div class="alert alert-primary" role="alert">
+                Un alert con <a href="#" class="alert-link">un link enfatizzato</a>. Clicca se vuoi.
+            </div>
+
+            <h5 class="mt-4">Alert con contenuto aggiuntivo:</h5>
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Ben fatto!</h4>
+                <p>Complimenti, hai letto questo importante messaggio di alert. Questo testo di esempio verrà eseguito un po' più a lungo in modo da poter vedere come funziona la spaziatura all'interno di un alert.</p>
+                <hr>
+                <p class="mb-0">Quando necessario, assicurati di utilizzare utilità di margine per mantenere le cose ordinate e pulite.</p>
+            </div>
+
+            <h5 class="mt-4">Alert dismissible:</h5>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Attenzione!</strong> Questo alert può essere chiuso cliccando sulla X.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <h5 class="mt-4">Alert con icone:</h5>
+            <div class="alert alert-primary d-flex align-items-center" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                <div>Un alert con icona Bootstrap Icons.</div>
+            </div>
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <div>Operazione completata con successo!</div>
+            </div>
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div>Si è verificato un errore critico.</div>
+            </div>
+        </section>
+
+        <!-- Cards -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">4. Cards</h2>
+            
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Immagine card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card con immagine</h5>
+                            <p class="card-text">Questa è una semplice card con immagine in alto, titolo, testo e un bottone.</p>
+                            <a href="#" class="btn btn-primary">Vai</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Card con header
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Titolo speciale</h5>
+                            <p class="card-text">Con testo di supporto sotto come introduzione naturale a contenuti aggiuntivi.</p>
+                            <a href="#" class="btn btn-primary">Vai da qualche parte</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            2 giorni fa
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Card colorata</h5>
+                            <p class="card-text">Una card con sfondo colorato e testo bianco.</p>
+                            <a href="#" class="btn btn-light">Info</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="mt-4">Card orizzontale:</h5>
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="https://via.placeholder.com/300x200" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Card orizzontale</h5>
+                            <p class="card-text">Questa è una card più ampia con testo di supporto sotto come introduzione naturale a contenuti aggiuntivi. Questo contenuto è un po' più lungo.</p>
+                            <p class="card-text"><small class="text-muted">Ultimo aggiornamento 3 minuti fa</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="mt-4">Card con lista:</h5>
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    Caratteristiche
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Feature 1</li>
+                    <li class="list-group-item">Feature 2</li>
+                    <li class="list-group-item">Feature 3</li>
+                </ul>
+            </div>
+
+            <h5 class="mt-4">Card colorate:</h5>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Primary</h5>
+                            <p class="card-text">Card con sfondo primario.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success">
+                        <div class="card-body">
+                            <h5 class="card-title">Success</h5>
+                            <p class="card-text">Card con sfondo success.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-danger">
+                        <div class="card-body">
+                            <h5 class="card-title">Danger</h5>
+                            <p class="card-text">Card con sfondo danger.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-dark">
+                        <div class="card-body">
+                            <h5 class="card-title">Dark</h5>
+                            <p class="card-text">Card con sfondo dark.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="mt-4">Card con bordo:</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card border-primary">
+                        <div class="card-body text-primary">
+                            <h5 class="card-title">Bordo primario</h5>
+                            <p class="card-text">Card con solo bordo colorato.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-success">
+                        <div class="card-body text-success">
+                            <h5 class="card-title">Bordo successo</h5>
+                            <p class="card-text">Card con solo bordo colorato.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-danger">
+                        <div class="card-body text-danger">
+                            <h5 class="card-title">Bordo pericolo</h5>
+                            <p class="card-text">Card con solo bordo colorato.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- List Groups -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">5. List Groups</h2>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Lista base:</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">Un elemento</li>
+                        <li class="list-group-item">Un secondo elemento</li>
+                        <li class="list-group-item">Un terzo elemento</li>
+                        <li class="list-group-item">Un quarto elemento</li>
+                        <li class="list-group-item">E un quinto</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4">
+                    <h5>Lista attiva/disabilitata:</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item active">Elemento attivo</li>
+                        <li class="list-group-item">Elemento normale</li>
+                        <li class="list-group-item disabled">Elemento disabilitato</li>
+                        <li class="list-group-item">Elemento normale</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4">
+                    <h5>Lista con badge:</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Inbox
+                            <span class="badge bg-primary rounded-pill">14</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Inviati
+                            <span class="badge bg-success rounded-pill">2</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Bozze
+                            <span class="badge bg-warning text-dark rounded-pill">5</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h5 class="mt-4">Lista linkabile:</h5>
+            <div class="list-group" style="max-width: 400px;">
+                <a href="#" class="list-group-item list-group-item-action active">
+                    Link attivo
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">Link normale</a>
+                <a href="#" class="list-group-item list-group-item-action">Un altro link</a>
+                <a href="#" class="list-group-item list-group-item-action disabled">Link disabilitato</a>
+            </div>
+
+            <h5 class="mt-4">Lista colorata:</h5>
+            <ul class="list-group" style="max-width: 400px;">
+                <li class="list-group-item list-group-item-primary">Lista primaria</li>
+                <li class="list-group-item list-group-item-secondary">Lista secondaria</li>
+                <li class="list-group-item list-group-item-success">Lista successo</li>
+                <li class="list-group-item list-group-item-danger">Lista pericolo</li>
+                <li class="list-group-item list-group-item-warning">Lista attenzione</li>
+                <li class="list-group-item list-group-item-info">Lista info</li>
+                <li class="list-group-item list-group-item-light">Lista chiara</li>
+                <li class="list-group-item list-group-item-dark">Lista scura</li>
+            </ul>
+
+            <h5 class="mt-4">Lista con contenuto custom:</h5>
+            <div class="list-group" style="max-width: 600px;">
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Titolo elemento lista</h5>
+                        <small>3 giorni fa</small>
+                    </div>
+                    <p class="mb-1">Contenuto dell'elemento della lista con paragrafo e descrizione.</p>
+                    <small>E anche del testo più piccolo.</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Secondo elemento</h5>
+                        <small class="text-muted">5 giorni fa</small>
+                    </div>
+                    <p class="mb-1">Altro contenuto con descrizione più lunga.</p>
+                    <small class="text-muted">Informazioni aggiuntive qui.</small>
+                </a>
+            </div>
+
+            <h5 class="mt-4">Lista con checkbox:</h5>
+            <ul class="list-group" style="max-width: 400px;">
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" checked>
+                    Task completato
+                </li>
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="">
+                    Task da fare
+                </li>
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="">
+                    Altro task
+                </li>
+            </ul>
+        </section>
+
+        <!-- Progress -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">6. Progress Bars</h2>
+            
+            <h5>Progress bar base:</h5>
+            <div class="progress mb-3">
+                <div class="progress-bar" style="width: 25%">25%</div>
+            </div>
+            <div class="progress mb-3">
+                <div class="progress-bar" style="width: 50%">50%</div>
+            </div>
+            <div class="progress mb-3">
+                <div class="progress-bar" style="width: 75%">75%</div>
+            </div>
+            <div class="progress mb-3">
+                <div class="progress-bar" style="width: 100%">100%</div>
+            </div>
+
+            <h5 class="mt-4">Progress bar colorate:</h5>
+            <div class="progress mb-2">
+                <div class="progress-bar bg-success" style="width: 25%"></div>
+            </div>
+            <div class="progress mb-2">
+                <div class="progress-bar bg-info" style="width: 50%"></div>
+            </div>
+            <div class="progress mb-2">
+                <div class="progress-bar bg-warning" style="width: 75%"></div>
+            </div>
+            <div class="progress mb-3">
+                <div class="progress-bar bg-danger" style="width: 100%"></div>
+            </div>
+
+            <h5 class="mt-4">Progress bar striate:</h5>
+            <div class="progress mb-2">
+                <div class="progress-bar progress-bar-striped" style="width: 50%"></div>
+            </div>
+            <div class="progress mb-3">
+                <div class="progress-bar progress-bar-striped bg-success" style="width: 75%"></div>
+            </div>
+
+            <h5 class="mt-4">Progress bar animate:</h5>
+            <div class="progress mb-3">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
+            </div>
+
+            <h5 class="mt-4">Progress bar multiple:</h5>
+            <div class="progress">
+                <div class="progress-bar" style="width: 15%"></div>
+                <div class="progress-bar bg-success" style="width: 30%"></div>
+                <div class="progress-bar bg-info" style="width: 20%"></div>
+            </div>
+        </section>
+
+        <!-- Spinners -->
+        <section class="mb-5">
+            <h2 class="h4 mb-3">7. Spinners</h2>
+            
+            <h5>Spinner border:</h5>
+            <div class="mb-3">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <h5>Spinner colorati:</h5>
+            <div class="mb-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-border text-danger" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-border text-warning" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-border text-info" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <h5>Spinner grow:</h5>
+            <div class="mb-3">
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-danger" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <h5>Spinner dimensioni:</h5>
+            <div class="mb-3">
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <h5>Spinner in button:</h5>
+            <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+                Loading...
+            </button>
+            <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-grow spinner-grow-sm" role="status"></span>
+                Loading...
+            </button>
+        </section>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
