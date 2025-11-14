@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 1.3 - CSS Base</title>
+    <link rel="stylesheet" href="lezione-1.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 1.3 - CSS Base</h1>
+            <p>Cascading Style Sheets: Fondamenti dello styling web</p>
+        </div>
+
+        <h2>1. Introduzione a CSS</h2>
+        
+        <div class="teoria">
+            <p>CSS (Cascading Style Sheets) è il linguaggio utilizzato per definire la presentazione visuale di documenti HTML. Mentre HTML definisce la struttura e il contenuto, CSS controlla l'aspetto, il layout e la formattazione degli elementi.</p>
+            
+            <p>CSS opera secondo il principio della cascata: le regole più specifiche hanno precedenza su quelle più generiche, e le regole definite successivamente possono sovrascrivere quelle precedenti.</p>
+        </div>
+
+        <h2>2. Metodi di Inserimento CSS</h2>
+
+        <h3>2.1 CSS Inline</h3>
+        
+        <p>Lo stile viene applicato direttamente nell'elemento HTML tramite l'attributo <code>style</code>:</p>
+
+        <div class="codice">
+<pre>&lt;p style="color: blue; font-size: 16px;"&gt;Testo con stile inline&lt;/p&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p style="color: blue; font-size: 16px;">Testo con stile inline</p>
+        </div>
+
+        <p>Questo metodo ha la massima specificità ma è sconsigliato per la manutenzione del codice.</p>
+
+        <h3>2.2 CSS Interno</h3>
+        
+        <p>Lo stile viene definito all'interno del tag <code>&lt;style&gt;</code> nella sezione <code>&lt;head&gt;</code>:</p>
+
+        <div class="codice">
+<pre>&lt;head&gt;
+    &lt;style&gt;
+        p {
+            color: blue;
+            font-size: 16px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;</pre>
+        </div>
+
+        <h3>2.3 CSS Esterno (Usato principalmente)</h3>
+        
+        <p>Lo stile viene definito in un file separato con estensione <code>.css</code> e collegato al documento HTML:</p>
+
+        <div class="codice">
+<pre>&lt;head&gt;
+    &lt;link rel="stylesheet" href="stile.css"&gt;
+&lt;/head&gt;</pre>
+        </div>
+
+        <p>Questo è il metodo preferito perché permette di riutilizzare gli stili su più pagine e mantiene una separazione tra contenuto e presentazione.</p>
+
+        <h2>3. Sintassi CSS</h2>
+
+        <div class="teoria">
+            <p>Una regola CSS è composta da un selettore e da un blocco di dichiarazioni:</p>
+        </div>
+
+        <div class="codice">
+<pre>selettore {
+    proprietà: valore;
+    proprietà: valore;
+}
+
+/* Esempio */
+p {
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+}</pre>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/sintassi-css.html" width="100%" height="350" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Sintassi CSS</p>
+        </div>
+
+        <h2>4. Selettori CSS</h2>
+
+        <h3>4.1 Selettori di Base</h3>
+
+        <table>
+            <tr>
+                <th>Selettore</th>
+                <th>Sintassi</th>
+                <th>Descrizione</th>
+            </tr>
+            <tr>
+                <td>Elemento</td>
+                <td><code>p { }</code></td>
+                <td>Seleziona tutti gli elementi di quel tipo</td>
+            </tr>
+            <tr>
+                <td>Classe</td>
+                <td><code>.nome { }</code></td>
+                <td>Seleziona elementi con class="nome"</td>
+            </tr>
+            <tr>
+                <td>ID</td>
+                <td><code>#nome { }</code></td>
+                <td>Seleziona l'elemento con id="nome"</td>
+            </tr>
+            <tr>
+                <td>Universale</td>
+                <td><code>* { }</code></td>
+                <td>Seleziona tutti gli elementi</td>
+            </tr>
+            <tr>
+                <td>Multiplo</td>
+                <td><code>h1, h2, h3 { }</code></td>
+                <td>Seleziona più elementi</td>
+            </tr>
+        </table>
+
+        <h3>4.2 Esempi di Selettori</h3>
+
+        <div class="codice">
+<pre>/* Selettore di elemento */
+h1 {
+    color: #2c3e50;
+}
+
+/* Selettore di classe */
+.evidenziato {
+    background-color: yellow;
+}
+
+/* Selettore di ID */
+#intestazione {
+    font-size: 24px;
+}
+
+/* Selettori multipli */
+h1, h2, h3 {
+    font-family: Arial, sans-serif;
+}
+
+/* Selettore discendente */
+article p {
+    text-indent: 20px;
+}
+
+/* Selettore figlio diretto */
+nav > ul {
+    list-style: none;
+}</pre>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/selettori-css.html" width="100%" height="400" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Selettori CSS</p>
+        </div>
+
+        <h2>5. Proprietà CSS Fondamentali</h2>
+
+        <h3>5.1 Colori e Sfondi</h3>
+
+        <div class="codice">
+<pre>/* Colore del testo */
+color: red;
+color: #ff0000;
+color: rgb(255, 0, 0);
+color: rgba(255, 0, 0, 0.5);
+
+/* Colore di sfondo */
+background-color: #f0f0f0;
+
+/* Immagine di sfondo */
+background-image: url('esempio.jpg');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;</pre>
+        </div>
+
+        <h3>5.2 Tipografia</h3>
+
+        <div class="codice">
+<pre>/* Famiglia di font */
+font-family: Arial, Helvetica, sans-serif;
+
+/* Dimensione */
+font-size: 16px;
+font-size: 1.2em;
+font-size: 1rem;
+
+/* Peso */
+font-weight: normal;
+font-weight: bold;
+font-weight: 700;
+
+/* Stile */
+font-style: italic;
+
+/* Decorazione */
+text-decoration: underline;
+text-decoration: none;
+
+/* Trasformazione */
+text-transform: uppercase;
+text-transform: lowercase;
+text-transform: capitalize;
+
+/* Allineamento */
+text-align: left;
+text-align: center;
+text-align: right;
+text-align: justify;
+
+/* Altezza della riga */
+line-height: 1.6;</pre>
+        </div>
+
+        <h3>5.3 Box Model</h3>
+
+        <div class="teoria">
+            <p>Il Box Model è il concetto fondamentale per comprendere il layout in CSS. Ogni elemento è rappresentato come una scatola rettangolare composta da:</p>
+            <ul style="margin-left: 40px; margin-top: 10px;">
+                <li>Contenuto (content)</li>
+                <li>Padding (spaziatura interna)</li>
+                <li>Border (bordo)</li>
+                <li>Margin (margine esterno)</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+<pre>/* Margini */
+margin: 20px;                    /* tutti i lati */
+margin: 10px 20px;               /* verticale | orizzontale */
+margin: 10px 20px 15px 25px;    /* top | right | bottom | left */
+margin-top: 10px;
+margin-right: 20px;
+margin-bottom: 15px;
+margin-left: 25px;
+
+/* Padding */
+padding: 20px;
+padding: 10px 20px;
+padding: 10px 20px 15px 25px;
+
+/* Bordi */
+border: 1px solid #ccc;
+border-width: 2px;
+border-style: solid;
+border-color: #333;
+border-radius: 5px;               /* angoli arrotondati */
+
+/* Larghezza e altezza */
+width: 300px;
+height: 200px;
+max-width: 100%;
+min-height: 400px;</pre>
+        </div>
+
+        <h3>5.4 Display e Visibilità</h3>
+
+        <div class="codice">
+<pre>/* Tipo di visualizzazione */
+display: block;           /* elemento a blocco */
+display: inline;          /* elemento in linea */
+display: inline-block;    /* ibrido */
+display: none;            /* nasconde l'elemento */
+
+/* Visibilità */
+visibility: hidden;       /* nasconde ma mantiene lo spazio */
+visibility: visible;
+
+/* Opacità */
+opacity: 0.5;            /* da 0 (trasparente) a 1 (opaco) */</pre>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/proprieta-css.html" width="100%" height="400" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Proprietà CSS Fondamentali</p>
+        </div>
+
+        <h2>6. Posizionamento</h2>
+
+        <div class="codice">
+<pre>/* Tipo di posizionamento */
+position: static;         /* normale (default) */
+position: relative;       /* relativo alla posizione normale */
+position: absolute;       /* relativo al genitore posizionato */
+position: fixed;          /* relativo alla finestra del browser */
+position: sticky;         /* ibrido tra relative e fixed */
+
+/* Coordinate */
+top: 10px;
+right: 20px;
+bottom: 10px;
+left: 20px;
+
+/* Z-index (profondità) */
+z-index: 10;</pre>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/posizionamento.html" width="100%" height="500" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Posizionamento CSS</p>
+        </div>
+
+        <h2>7. Flexbox Base</h2>
+
+        <div class="teoria">
+            <p>Flexbox è un sistema di layout moderno che permette di creare layout flessibili e responsive con facilità.</p>
+        </div>
+
+        <div class="codice">
+<pre>/* Contenitore flex */
+.container {
+    display: flex;
+    flex-direction: row;        /* row | column */
+    justify-content: center;    /* allineamento orizzontale */
+    align-items: center;        /* allineamento verticale */
+    gap: 20px;                  /* spazio tra elementi */
+}
+
+/* Elementi flex */
+.item {
+    flex: 1;                    /* cresce proporzionalmente */
+    flex-shrink: 0;             /* non si riduce */
+    flex-basis: 200px;          /* larghezza di base */
+}</pre>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/flexbox.html" width="100%" height="600" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Flexbox Base</p>
+        </div>
+
+        <h2>8. CSS Grid Layout</h2>
+
+        <div class="teoria">
+            <p>CSS Grid è un sistema di layout bidimensionale potente che permette di creare layout complessi con righe e colonne. A differenza di Flexbox che è principalmente monodimensionale, Grid gestisce sia righe che colonne contemporaneamente.</p>
+        </div>
+
+        <h3>8.1 Proprietà del Container Grid</h3>
+
+        <div class="codice">
+<pre>/* Container Grid */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;     /* definisce 3 colonne */
+    grid-template-rows: auto 1fr auto;       /* definisce 3 righe */
+    gap: 20px;                               /* spazio tra celle */
+    grid-template-areas:                     /* definisce aree nominate */
+        "header header header"
+        "sidebar main aside"
+        "footer footer footer";
+}
+
+/* Layout responsive con auto-fit */
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}</pre>
+        </div>
+
+        <h3>8.2 Proprietà degli Elementi Grid</h3>
+
+        <div class="codice">
+<pre>/* Posizionamento elementi */
+.item {
+    grid-column: 1 / 3;          /* occupa dalla colonna 1 alla 3 */
+    grid-row: 1 / 2;             /* occupa dalla riga 1 alla 2 */
+}
+
+/* Usando span */
+.wide-item {
+    grid-column: span 2;         /* si estende su 2 colonne */
+}
+
+.tall-item {
+    grid-row: span 3;            /* si estende su 3 righe */
+}
+
+/* Usando aree nominate */
+.header {
+    grid-area: header;
+}</pre>
+        </div>
+
+        <h3>8.3 Principali Differenze tra Grid e Flexbox</h3>
+
+        <div class="teoria">
+            <ul>
+                <li><strong>Flexbox:</strong> Layout monodimensionale (righe O colonne), ideale per componenti e piccole sezioni</li>
+                <li><strong>Grid:</strong> Layout bidimensionale (righe E colonne), ideale per layout completi di pagina</li>
+                <li><strong>Flexbox:</strong> Gli elementi si adattano al contenuto</li>
+                <li><strong>Grid:</strong> Si definisce una griglia rigida che gli elementi riempiono</li>
+            </ul>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/grid.html" width="100%" height="900" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: CSS Grid Layout</p>
+        </div>
+
+        <h2>9. Pseudo-classi e Pseudo-elementi</h2>
+
+        <div class="codice">
+<pre>/* Pseudo-classi */
+a:hover {
+    color: blue;                /* al passaggio del mouse */
+}
+
+a:active {
+    color: red;                 /* durante il click */
+}
+
+input:focus {
+    border-color: blue;         /* quando è selezionato */
+}
+
+li:first-child {
+    font-weight: bold;          /* primo figlio */
+}
+
+li:last-child {
+    border-bottom: none;        /* ultimo figlio */
+}
+
+li:nth-child(odd) {
+    background-color: #f9f9f9;  /* figli dispari */
+}
+
+/* Pseudo-elementi */
+p::first-line {
+    font-weight: bold;          /* prima riga */
+}
+
+p::first-letter {
+    font-size: 2em;             /* prima lettera */
+}
+
+.elemento::before {
+    content: "→";               /* contenuto prima */
+}
+
+.elemento::after {
+    content: "←";               /* contenuto dopo */
+}</pre>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/pseudo-classi.html" width="100%" height="500" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Pseudo-classi e Pseudo-elementi</p>
+        </div>
+
+        <h2>10. Variabili CSS (Custom Properties)</h2>
+
+        <div class="teoria">
+            <p>Le variabili CSS, chiamate anche custom properties, permettono di memorizzare valori riutilizzabili definiti una sola volta e utilizzati in tutto il foglio di stile. Questo migliora la manutenibilità del codice e facilita la creazione di temi.</p>
+        </div>
+
+        <h3>10.1 Definizione delle Variabili</h3>
+
+        <div class="codice">
+<pre>/* Definizione globale in :root */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --spacing-medium: 20px;
+    --border-radius: 8px;
+    --font-main: Arial, sans-serif;
+}
+
+/* Definizione locale in un elemento specifico */
+.card {
+    --card-padding: 30px;
+    padding: var(--card-padding);
+}</pre>
+        </div>
+
+        <h3>10.2 Utilizzo delle Variabili</h3>
+
+        <div class="codice">
+<pre>/* Utilizzo con var() */
+.button {
+    background-color: var(--primary-color);
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    font-family: var(--font-main);
+}
+
+/* Valore di fallback */
+.element {
+    color: var(--text-color, black);  /* usa black se --text-color non è definita */
+}</pre>
+        </div>
+
+        <h3>10.3 Vantaggi delle Variabili CSS</h3>
+
+        <div class="teoria">
+            <ul>
+                <li><strong>Manutenibilità:</strong> Cambia un valore in un unico punto</li>
+                <li><strong>Coerenza:</strong> Garantisce uniformità in tutto il progetto</li>
+                <li><strong>Temi dinamici:</strong> Permette di cambiare temi facilmente ridefinendo le variabili</li>
+                <li><strong>DRY (Don't Repeat Yourself):</strong> Evita la ripetizione di valori hardcoded</li>
+                <li><strong>Leggibilità:</strong> Nomi significativi invece di valori numerici o esadecimali</li>
+            </ul>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/variabili-css.html" width="100%" height="900" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Variabili CSS</p>
+        </div>
+
+        <h2>11. Media Query - Layout Responsive e Stampa</h2>
+
+        <div class="teoria">
+            <p>Le media query permettono di applicare stili CSS in base alle caratteristiche del dispositivo o del media di output. Sono fondamentali per creare layout responsive che si adattano a schermi di diverse dimensioni e per ottimizzare il contenuto per la stampa.</p>
+        </div>
+
+        <h3>11.1 Sintassi Base</h3>
+
+        <div class="codice">
+<pre>/* Media query per schermi */
+@media screen and (max-width: 768px) {
+    /* Stili applicati quando la larghezza è <= 768px */
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+/* Media query per stampa */
+@media print {
+    /* Stili applicati solo quando si stampa */
+    nav, footer {
+        display: none;
+    }
+}</pre>
+        </div>
+
+        <h3>11.2 Breakpoint Comuni per Layout Responsive</h3>
+
+        <div class="codice">
+<pre>/* Mobile First Approach */
+/* Mobile: stili base (0-767px) */
+.container {
+    width: 100%;
+    padding: 10px;
+}
+
+/* Tablet: 768px e superiori */
+@media screen and (min-width: 768px) {
+    .container {
+        width: 750px;
+        padding: 20px;
+    }
+}
+
+/* Desktop: 1024px e superiori */
+@media screen and (min-width: 1024px) {
+    .container {
+        width: 1000px;
+    }
+}
+
+/* Large Desktop: 1400px e superiori */
+@media screen and (min-width: 1400px) {
+    .container {
+        width: 1200px;
+    }
+}</pre>
+        </div>
+
+        <h3>11.3 Media Query per la Stampa</h3>
+
+        <div class="codice">
+<pre>@media print {
+    /* Nascondi elementi non necessari */
+    nav, .sidebar, .no-print, button {
+        display: none !important;
+    }
+    
+    /* Ottimizza per la stampa */
+    body {
+        font-size: 12pt;
+        color: black;
+        background: white;
+    }
+    
+    /* Mostra URL dei link */
+    a::after {
+        content: " (" attr(href) ")";
+    }
+    
+    /* Evita interruzioni di pagina indesiderate */
+    h1, h2, h3 {
+        page-break-after: avoid;
+    }
+    
+    img {
+        max-width: 100%;
+        page-break-inside: avoid;
+    }
+    
+    /* Controlla interruzioni di pagina */
+    .page-break {
+        page-break-before: always;
+    }
+}</pre>
+        </div>
+
+        <h3>11.4 Altre Media Query Utili</h3>
+
+        <div class="codice">
+<pre>/* Orientamento del dispositivo */
+@media screen and (orientation: landscape) {
+    /* Modalità orizzontale */
+}
+
+@media screen and (orientation: portrait) {
+    /* Modalità verticale */
+}
+
+/* Densità di pixel (Retina displays) */
+@media screen and (-webkit-min-device-pixel-ratio: 2),
+       screen and (min-resolution: 192dpi) {
+    /* Stili per schermi ad alta risoluzione */
+}
+
+/* Preferenze utente */
+@media (prefers-color-scheme: dark) {
+    /* Tema scuro automatico */
+    body {
+        background-color: #1a1a1a;
+        color: #f0f0f0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* Riduci animazioni per utenti sensibili */
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}</pre>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/media-query.html" width="100%" height="1000" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Media Query - Responsive e Stampa</p>
+        </div>
+
+        <h2>12. Esempio Completo: Pagina Stilizzata</h2>
+
+        <p>Di seguito un esempio completo che combina HTML e CSS per creare una pagina web professionale:</p>
+
+        <h3>12.1 File HTML (index.html)</h3>
+
+        <div class="codice">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="it"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Portfolio Professionale&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header class="header"&gt;
+        &lt;div class="container"&gt;
+            &lt;h1 class="logo"&gt;Mario Rossi&lt;/h1&gt;
+            &lt;nav class="nav"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#about"&gt;Chi Sono&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#services"&gt;Servizi&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#contact"&gt;Contatti&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;section class="hero" id="home"&gt;
+        &lt;div class="container"&gt;
+            &lt;h2 class="hero-title"&gt;Web Developer &amp; Designer&lt;/h2&gt;
+            &lt;p class="hero-text"&gt;Creo esperienze digitali moderne e funzionali&lt;/p&gt;
+            &lt;a href="#contact" class="btn"&gt;Contattami&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class="about" id="about"&gt;
+        &lt;div class="container"&gt;
+            &lt;h2&gt;Chi Sono&lt;/h2&gt;
+            &lt;p&gt;Sviluppatore web con esperienza nella creazione di siti e applicazioni moderne utilizzando le tecnologie più recenti.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class="services" id="services"&gt;
+        &lt;div class="container"&gt;
+            &lt;h2&gt;Servizi&lt;/h2&gt;
+            &lt;div class="services-grid"&gt;
+                &lt;div class="service-card"&gt;
+                    &lt;h3&gt;Web Design&lt;/h3&gt;
+                    &lt;p&gt;Design responsive e moderno per il tuo sito web.&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="service-card"&gt;
+                    &lt;h3&gt;Sviluppo Front-End&lt;/h3&gt;
+                    &lt;p&gt;Interfacce utente interattive con HTML, CSS e JavaScript.&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="service-card"&gt;
+                    &lt;h3&gt;Consulenza&lt;/h3&gt;
+                    &lt;p&gt;Supporto tecnico e strategico per progetti digitali.&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;footer class="footer"&gt;
+        &lt;div class="container"&gt;
+            &lt;p&gt;&amp;copy; 2025 Mario Rossi.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <h3>12.2 File CSS (style.css)</h3>
+
+        <div class="codice">
+<pre>/* Reset e impostazioni globali */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav a:hover {
+    color: #3498db;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 150px 0 100px;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.hero-title {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero-text {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: white;
+    color: #667eea;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: transform 0.3s;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+}
+
+/* About Section */
+.about {
+    padding: 80px 0;
+    background-color: #f8f9fa;
+}
+
+.about h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+.about p {
+    text-align: center;
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Services Section */
+.services {
+    padding: 80px 0;
+}
+
+.services h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 50px;
+}
+
+.services-grid {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.service-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    flex: 1;
+    max-width: 350px;
+    transition: transform 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.service-card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #667eea;
+}
+
+/* Footer */
+.footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .nav ul {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .hero-title {
+        font-size: 32px;
+    }
+    
+    .services-grid {
+        flex-direction: column;
+    }
+}</pre>
+        </div>
+
+        <div class="esempio">
+            <iframe src="esempi_1-3/esempio-completo.html" width="100%" height="600" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Pagina Stilizzata Completa</p>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-1-2.html">Indietro</a>
+            <a href="lezione-1-4.html">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>
