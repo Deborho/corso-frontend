@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 3.4 - Componenti Base</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 3.4 - Componenti Base</h1>
+            <p>Buttons, Badges, Alerts, Cards e List Groups</p>
+        </div>
+
+        <h2>1. Buttons</h2>
+        
+        <div class="teoria">
+            <p>Bootstrap fornisce un sistema completo di stili per i pulsanti, con varianti colorate, dimensioni e stati diversi. I button possono essere applicati ai tag <code>&lt;button&gt;</code>, <code>&lt;a&gt;</code> e <code>&lt;input&gt;</code>.</p>
+        </div>
+
+        <h3>1.1 Button Base</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Buttons con colori semantici --&gt;
+&lt;button type="button" class="btn btn-primary"&gt;Primary&lt;/button&gt;
+&lt;button type="button" class="btn btn-secondary"&gt;Secondary&lt;/button&gt;
+&lt;button type="button" class="btn btn-success"&gt;Success&lt;/button&gt;
+&lt;button type="button" class="btn btn-danger"&gt;Danger&lt;/button&gt;
+&lt;button type="button" class="btn btn-warning"&gt;Warning&lt;/button&gt;
+&lt;button type="button" class="btn btn-info"&gt;Info&lt;/button&gt;
+&lt;button type="button" class="btn btn-light"&gt;Light&lt;/button&gt;
+&lt;button type="button" class="btn btn-dark"&gt;Dark&lt;/button&gt;
+&lt;button type="button" class="btn btn-link"&gt;Link&lt;/button&gt;</pre>
+        </div>
+
+        <h3>1.2 Outline Buttons</h3>
+        
+        <p>Pulsanti con solo il bordo colorato:</p>
+
+        <div class="codice">
+<pre>&lt;button type="button" class="btn btn-outline-primary"&gt;Primary&lt;/button&gt;
+&lt;button type="button" class="btn btn-outline-secondary"&gt;Secondary&lt;/button&gt;
+&lt;button type="button" class="btn btn-outline-success"&gt;Success&lt;/button&gt;
+&lt;button type="button" class="btn btn-outline-danger"&gt;Danger&lt;/button&gt;
+&lt;button type="button" class="btn btn-outline-warning"&gt;Warning&lt;/button&gt;
+&lt;button type="button" class="btn btn-outline-info"&gt;Info&lt;/button&gt;
+&lt;button type="button" class="btn btn-outline-light"&gt;Light&lt;/button&gt;
+&lt;button type="button" class="btn btn-outline-dark"&gt;Dark&lt;/button&gt;</pre>
+        </div>
+
+        <h3>1.3 Button Sizes</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Large buttons --&gt;
+&lt;button type="button" class="btn btn-primary btn-lg"&gt;Large button&lt;/button&gt;
+&lt;button type="button" class="btn btn-secondary btn-lg"&gt;Large button&lt;/button&gt;
+
+&lt;!-- Normal buttons (default) --&gt;
+&lt;button type="button" class="btn btn-primary"&gt;Normal button&lt;/button&gt;
+&lt;button type="button" class="btn btn-secondary"&gt;Normal button&lt;/button&gt;
+
+&lt;!-- Small buttons --&gt;
+&lt;button type="button" class="btn btn-primary btn-sm"&gt;Small button&lt;/button&gt;
+&lt;button type="button" class="btn btn-secondary btn-sm"&gt;Small button&lt;/button&gt;</pre>
+        </div>
+
+        <h3>1.4 Button States</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Active state --&gt;
+&lt;button type="button" class="btn btn-primary active"&gt;Active button&lt;/button&gt;
+
+&lt;!-- Disabled state --&gt;
+&lt;button type="button" class="btn btn-primary" disabled&gt;Disabled button&lt;/button&gt;
+
+&lt;!-- Link disabilitato --&gt;
+&lt;a href="#" class="btn btn-primary disabled" role="button" aria-disabled="true"&gt;
+    Disabled link
+&lt;/a&gt;</pre>
+        </div>
+
+        <h3>1.5 Block Buttons</h3>
+        
+        <p>Pulsanti a larghezza piena (Bootstrap 5 usa display utilities):</p>
+
+        <div class="codice">
+<pre>&lt;div class="d-grid gap-2"&gt;
+    &lt;button class="btn btn-primary" type="button"&gt;Button block&lt;/button&gt;
+    &lt;button class="btn btn-secondary" type="button"&gt;Button block&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- Block buttons responsive --&gt;
+&lt;div class="d-grid gap-2 d-md-block"&gt;
+    &lt;button class="btn btn-primary" type="button"&gt;Button&lt;/button&gt;
+    &lt;button class="btn btn-secondary" type="button"&gt;Button&lt;/button&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>1.6 Button Groups</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Basic button group --&gt;
+&lt;div class="btn-group" role="group"&gt;
+    &lt;button type="button" class="btn btn-primary"&gt;Left&lt;/button&gt;
+    &lt;button type="button" class="btn btn-primary"&gt;Middle&lt;/button&gt;
+    &lt;button type="button" class="btn btn-primary"&gt;Right&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- Button toolbar --&gt;
+&lt;div class="btn-toolbar" role="toolbar"&gt;
+    &lt;div class="btn-group me-2" role="group"&gt;
+        &lt;button type="button" class="btn btn-primary"&gt;1&lt;/button&gt;
+        &lt;button type="button" class="btn btn-primary"&gt;2&lt;/button&gt;
+        &lt;button type="button" class="btn btn-primary"&gt;3&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="btn-group me-2" role="group"&gt;
+        &lt;button type="button" class="btn btn-secondary"&gt;4&lt;/button&gt;
+        &lt;button type="button" class="btn btn-secondary"&gt;5&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Vertical button group --&gt;
+&lt;div class="btn-group-vertical" role="group"&gt;
+    &lt;button type="button" class="btn btn-primary"&gt;Button 1&lt;/button&gt;
+    &lt;button type="button" class="btn btn-primary"&gt;Button 2&lt;/button&gt;
+    &lt;button type="button" class="btn btn-primary"&gt;Button 3&lt;/button&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>2. Badges</h2>
+        
+        <div class="teoria">
+            <p>I badge sono piccole etichette per evidenziare nuove informazioni, conteggi o status. Possono essere usati come contatori, notifiche o tag.</p>
+        </div>
+
+        <h3>2.1 Basic Badges</h3>
+        
+        <div class="codice">
+<pre>&lt;h1&gt;Example heading &lt;span class="badge bg-primary"&gt;New&lt;/span&gt;&lt;/h1&gt;
+&lt;h2&gt;Example heading &lt;span class="badge bg-secondary"&gt;New&lt;/span&gt;&lt;/h2&gt;
+&lt;h3&gt;Example heading &lt;span class="badge bg-success"&gt;New&lt;/span&gt;&lt;/h3&gt;
+&lt;h4&gt;Example heading &lt;span class="badge bg-danger"&gt;New&lt;/span&gt;&lt;/h4&gt;
+&lt;h5&gt;Example heading &lt;span class="badge bg-warning text-dark"&gt;New&lt;/span&gt;&lt;/h5&gt;
+&lt;h6&gt;Example heading &lt;span class="badge bg-info"&gt;New&lt;/span&gt;&lt;/h6&gt;</pre>
+        </div>
+
+        <h3>2.2 Badge Colors</h3>
+        
+        <div class="codice">
+<pre>&lt;span class="badge bg-primary"&gt;Primary&lt;/span&gt;
+&lt;span class="badge bg-secondary"&gt;Secondary&lt;/span&gt;
+&lt;span class="badge bg-success"&gt;Success&lt;/span&gt;
+&lt;span class="badge bg-danger"&gt;Danger&lt;/span&gt;
+&lt;span class="badge bg-warning text-dark"&gt;Warning&lt;/span&gt;
+&lt;span class="badge bg-info"&gt;Info&lt;/span&gt;
+&lt;span class="badge bg-light text-dark"&gt;Light&lt;/span&gt;
+&lt;span class="badge bg-dark"&gt;Dark&lt;/span&gt;</pre>
+        </div>
+
+        <h3>2.3 Pill Badges</h3>
+        
+        <p>Badge con bordi più arrotondati:</p>
+
+        <div class="codice">
+<pre>&lt;span class="badge rounded-pill bg-primary"&gt;Primary&lt;/span&gt;
+&lt;span class="badge rounded-pill bg-secondary"&gt;Secondary&lt;/span&gt;
+&lt;span class="badge rounded-pill bg-success"&gt;Success&lt;/span&gt;
+&lt;span class="badge rounded-pill bg-danger"&gt;Danger&lt;/span&gt;</pre>
+        </div>
+
+        <h3>2.4 Badges in Buttons</h3>
+        
+        <div class="codice">
+<pre>&lt;button type="button" class="btn btn-primary"&gt;
+    Notifications &lt;span class="badge bg-secondary"&gt;4&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;button type="button" class="btn btn-primary"&gt;
+    Messages &lt;span class="badge bg-danger"&gt;12&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;!-- Badge posizionato in alto a destra --&gt;
+&lt;button type="button" class="btn btn-primary position-relative"&gt;
+    Inbox
+    &lt;span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"&gt;
+        99+
+        &lt;span class="visually-hidden"&gt;unread messages&lt;/span&gt;
+    &lt;/span&gt;
+&lt;/button&gt;</pre>
+        </div>
+
+        <h2>3. Alerts</h2>
+        
+        <div class="teoria">
+            <p>Gli alert sono messaggi contestuali per feedback e notifiche. Disponibili in tutti i colori semantici di Bootstrap.</p>
+        </div>
+
+        <h3>3.1 Basic Alerts</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="alert alert-primary" role="alert"&gt;
+    This is a primary alert—check it out!
+&lt;/div&gt;
+&lt;div class="alert alert-secondary" role="alert"&gt;
+    This is a secondary alert—check it out!
+&lt;/div&gt;
+&lt;div class="alert alert-success" role="alert"&gt;
+    This is a success alert—check it out!
+&lt;/div&gt;
+&lt;div class="alert alert-danger" role="alert"&gt;
+    This is a danger alert—check it out!
+&lt;/div&gt;
+&lt;div class="alert alert-warning" role="alert"&gt;
+    This is a warning alert—check it out!
+&lt;/div&gt;
+&lt;div class="alert alert-info" role="alert"&gt;
+    This is an info alert—check it out!
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>3.2 Alerts con Link</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="alert alert-primary" role="alert"&gt;
+    A simple primary alert with &lt;a href="#" class="alert-link"&gt;an example link&lt;/a&gt;. 
+    Give it a click if you like.
+&lt;/div&gt;
+&lt;div class="alert alert-success" role="alert"&gt;
+    A simple success alert with &lt;a href="#" class="alert-link"&gt;an example link&lt;/a&gt;. 
+    Give it a click if you like.
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>3.3 Alerts con Contenuto Aggiuntivo</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="alert alert-success" role="alert"&gt;
+    &lt;h4 class="alert-heading"&gt;Well done!&lt;/h4&gt;
+    &lt;p&gt;
+        Aww yeah, you successfully read this important alert message. 
+        This example text is going to run a bit longer so that you can see 
+        how spacing within an alert works with this kind of content.
+    &lt;/p&gt;
+    &lt;hr&gt;
+    &lt;p class="mb-0"&gt;
+        Whenever you need to, be sure to use margin utilities to keep 
+        things nice and tidy.
+    &lt;/p&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>3.4 Dismissible Alerts</h3>
+        
+        <p>Alert che possono essere chiusi dall'utente:</p>
+
+        <div class="codice">
+<pre>&lt;div class="alert alert-warning alert-dismissible fade show" role="alert"&gt;
+    &lt;strong&gt;Holy guacamole!&lt;/strong&gt; You should check in on some of those fields below.
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"&gt;&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="alert alert-danger alert-dismissible fade show" role="alert"&gt;
+    &lt;strong&gt;Error!&lt;/strong&gt; Something went wrong.
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"&gt;&lt;/button&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>3.5 Alerts con Icone</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="alert alert-success d-flex align-items-center" role="alert"&gt;
+    &lt;svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img"&gt;
+        &lt;!-- SVG icon qui --&gt;
+    &lt;/svg&gt;
+    &lt;div&gt;
+        An example success alert with an icon
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>4. Cards</h2>
+        
+        <div class="teoria">
+            <p>Le card sono contenitori flessibili ed estensibili per raggruppare contenuti. Includono opzioni per header, footer, colori, immagini e molto altro.</p>
+        </div>
+
+        <h3>4.1 Basic Card</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="card" style="width: 18rem;"&gt;
+    &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Card title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;
+            Some quick example text to build on the card title and 
+            make up the bulk of the card's content.
+        &lt;/p&gt;
+        &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>4.2 Card con Immagine</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="card" style="width: 18rem;"&gt;
+    &lt;img src="..." class="card-img-top" alt="..."&gt;
+    &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Card title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;
+            Some quick example text to build on the card title.
+        &lt;/p&gt;
+        &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Immagine in basso --&gt;
+&lt;div class="card" style="width: 18rem;"&gt;
+    &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Card title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
+        &lt;a href="#" class="btn btn-primary"&gt;Button&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;img src="..." class="card-img-bottom" alt="..."&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>4.3 Card con Header e Footer</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="card"&gt;
+    &lt;div class="card-header"&gt;
+        Featured
+    &lt;/div&gt;
+    &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Special title treatment&lt;/h5&gt;
+        &lt;p class="card-text"&gt;With supporting text below.&lt;/p&gt;
+        &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="card-footer text-muted"&gt;
+        2 days ago
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>4.4 Card con Colori</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Card con background colorato --&gt;
+&lt;div class="card text-white bg-primary mb-3" style="max-width: 18rem;"&gt;
+    &lt;div class="card-header"&gt;Header&lt;/div&gt;
+    &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Primary card title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card text-white bg-success mb-3" style="max-width: 18rem;"&gt;
+    &lt;div class="card-header"&gt;Header&lt;/div&gt;
+    &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Success card title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card text-white bg-danger mb-3" style="max-width: 18rem;"&gt;
+    &lt;div class="card-header"&gt;Header&lt;/div&gt;
+    &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Danger card title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>4.5 Card con Bordo Colorato</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="card border-primary mb-3" style="max-width: 18rem;"&gt;
+    &lt;div class="card-header"&gt;Header&lt;/div&gt;
+    &lt;div class="card-body text-primary"&gt;
+        &lt;h5 class="card-title"&gt;Primary card title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card border-success mb-3" style="max-width: 18rem;"&gt;
+    &lt;div class="card-header"&gt;Header&lt;/div&gt;
+    &lt;div class="card-body text-success"&gt;
+        &lt;h5 class="card-title"&gt;Success card title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>4.6 Card Groups e Grid</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Card group (attaccate) --&gt;
+&lt;div class="card-group"&gt;
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            &lt;h5 class="card-title"&gt;Card 1&lt;/h5&gt;
+            &lt;p class="card-text"&gt;Content&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            &lt;h5 class="card-title"&gt;Card 2&lt;/h5&gt;
+            &lt;p class="card-text"&gt;Content&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            &lt;h5 class="card-title"&gt;Card 3&lt;/h5&gt;
+            &lt;p class="card-text"&gt;Content&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Card nel grid system --&gt;
+&lt;div class="row row-cols-1 row-cols-md-3 g-4"&gt;
+    &lt;div class="col"&gt;
+        &lt;div class="card h-100"&gt;
+            &lt;img src="..." class="card-img-top" alt="..."&gt;
+            &lt;div class="card-body"&gt;
+                &lt;h5 class="card-title"&gt;Card 1&lt;/h5&gt;
+                &lt;p class="card-text"&gt;Content here.&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col"&gt;
+        &lt;div class="card h-100"&gt;
+            &lt;img src="..." class="card-img-top" alt="..."&gt;
+            &lt;div class="card-body"&gt;
+                &lt;h5 class="card-title"&gt;Card 2&lt;/h5&gt;
+                &lt;p class="card-text"&gt;Content here.&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col"&gt;
+        &lt;div class="card h-100"&gt;
+            &lt;img src="..." class="card-img-top" alt="..."&gt;
+            &lt;div class="card-body"&gt;
+                &lt;h5 class="card-title"&gt;Card 3&lt;/h5&gt;
+                &lt;p class="card-text"&gt;Content here.&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>4.7 Card Orizzontale</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="card mb-3" style="max-width: 540px;"&gt;
+    &lt;div class="row g-0"&gt;
+        &lt;div class="col-md-4"&gt;
+            &lt;img src="..." class="img-fluid rounded-start" alt="..."&gt;
+        &lt;/div&gt;
+        &lt;div class="col-md-8"&gt;
+            &lt;div class="card-body"&gt;
+                &lt;h5 class="card-title"&gt;Card title&lt;/h5&gt;
+                &lt;p class="card-text"&gt;
+                    This is a wider card with supporting text.
+                &lt;/p&gt;
+                &lt;p class="card-text"&gt;
+                    &lt;small class="text-muted"&gt;Last updated 3 mins ago&lt;/small&gt;
+                &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>5. List Groups</h2>
+        
+        <div class="teoria">
+            <p>I list group sono componenti flessibili per visualizzare liste di contenuti. Possono essere modificati per supportare quasi ogni contenuto.</p>
+        </div>
+
+        <h3>5.1 Basic List Group</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="list-group"&gt;
+    &lt;li class="list-group-item"&gt;An item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A second item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A third item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A fourth item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;And a fifth one&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>5.2 Active Items</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="list-group"&gt;
+    &lt;li class="list-group-item active"&gt;An active item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A second item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A third item&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>5.3 Disabled Items</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="list-group"&gt;
+    &lt;li class="list-group-item disabled"&gt;A disabled item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A second item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A third item&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>5.4 List Group con Link</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="list-group"&gt;
+    &lt;a href="#" class="list-group-item list-group-item-action active"&gt;
+        The current link item
+    &lt;/a&gt;
+    &lt;a href="#" class="list-group-item list-group-item-action"&gt;
+        A second link item
+    &lt;/a&gt;
+    &lt;a href="#" class="list-group-item list-group-item-action"&gt;
+        A third link item
+    &lt;/a&gt;
+    &lt;a href="#" class="list-group-item list-group-item-action disabled"&gt;
+        A disabled link item
+    &lt;/a&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>5.5 List Group con Colori</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="list-group"&gt;
+    &lt;li class="list-group-item"&gt;Default item&lt;/li&gt;
+    &lt;li class="list-group-item list-group-item-primary"&gt;Primary item&lt;/li&gt;
+    &lt;li class="list-group-item list-group-item-secondary"&gt;Secondary item&lt;/li&gt;
+    &lt;li class="list-group-item list-group-item-success"&gt;Success item&lt;/li&gt;
+    &lt;li class="list-group-item list-group-item-danger"&gt;Danger item&lt;/li&gt;
+    &lt;li class="list-group-item list-group-item-warning"&gt;Warning item&lt;/li&gt;
+    &lt;li class="list-group-item list-group-item-info"&gt;Info item&lt;/li&gt;
+    &lt;li class="list-group-item list-group-item-light"&gt;Light item&lt;/li&gt;
+    &lt;li class="list-group-item list-group-item-dark"&gt;Dark item&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>5.6 List Group con Badge</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="list-group"&gt;
+    &lt;li class="list-group-item d-flex justify-content-between align-items-center"&gt;
+        Inbox
+        &lt;span class="badge bg-primary rounded-pill"&gt;14&lt;/span&gt;
+    &lt;/li&gt;
+    &lt;li class="list-group-item d-flex justify-content-between align-items-center"&gt;
+        Updates
+        &lt;span class="badge bg-primary rounded-pill"&gt;2&lt;/span&gt;
+    &lt;/li&gt;
+    &lt;li class="list-group-item d-flex justify-content-between align-items-center"&gt;
+        Spam
+        &lt;span class="badge bg-primary rounded-pill"&gt;1&lt;/span&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>5.7 List Group con Contenuto Custom</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="list-group"&gt;
+    &lt;a href="#" class="list-group-item list-group-item-action active"&gt;
+        &lt;div class="d-flex w-100 justify-content-between"&gt;
+            &lt;h5 class="mb-1"&gt;List group item heading&lt;/h5&gt;
+            &lt;small&gt;3 days ago&lt;/small&gt;
+        &lt;/div&gt;
+        &lt;p class="mb-1"&gt;Some placeholder content in a paragraph.&lt;/p&gt;
+        &lt;small&gt;And some small print.&lt;/small&gt;
+    &lt;/a&gt;
+    &lt;a href="#" class="list-group-item list-group-item-action"&gt;
+        &lt;div class="d-flex w-100 justify-content-between"&gt;
+            &lt;h5 class="mb-1"&gt;List group item heading&lt;/h5&gt;
+            &lt;small class="text-muted"&gt;3 days ago&lt;/small&gt;
+        &lt;/div&gt;
+        &lt;p class="mb-1"&gt;Some placeholder content in a paragraph.&lt;/p&gt;
+        &lt;small class="text-muted"&gt;And some muted small print.&lt;/small&gt;
+    &lt;/a&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>5.8 Flush List Group</h3>
+        
+        <p>Rimuove i bordi e gli angoli arrotondati per renderlo edge-to-edge:</p>
+
+        <div class="codice">
+<pre>&lt;ul class="list-group list-group-flush"&gt;
+    &lt;li class="list-group-item"&gt;An item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A second item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A third item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A fourth item&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>5.9 Numbered List Group</h3>
+        
+        <div class="codice">
+<pre>&lt;ol class="list-group list-group-numbered"&gt;
+    &lt;li class="list-group-item"&gt;A list item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A list item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A list item&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!-- Con contenuto custom --&gt;
+&lt;ol class="list-group list-group-numbered"&gt;
+    &lt;li class="list-group-item d-flex justify-content-between align-items-start"&gt;
+        &lt;div class="ms-2 me-auto"&gt;
+            &lt;div class="fw-bold"&gt;Subheading&lt;/div&gt;
+            Content for list item
+        &lt;/div&gt;
+        &lt;span class="badge bg-primary rounded-pill"&gt;14&lt;/span&gt;
+    &lt;/li&gt;
+    &lt;li class="list-group-item d-flex justify-content-between align-items-start"&gt;
+        &lt;div class="ms-2 me-auto"&gt;
+            &lt;div class="fw-bold"&gt;Subheading&lt;/div&gt;
+            Content for list item
+        &lt;/div&gt;
+        &lt;span class="badge bg-primary rounded-pill"&gt;14&lt;/span&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;</pre>
+        </div>
+
+        <h3>5.10 Horizontal List Group</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="list-group list-group-horizontal"&gt;
+    &lt;li class="list-group-item"&gt;An item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A second item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A third item&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Horizontal responsive --&gt;
+&lt;ul class="list-group list-group-horizontal-md"&gt;
+    &lt;li class="list-group-item"&gt;An item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A second item&lt;/li&gt;
+    &lt;li class="list-group-item"&gt;A third item&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h2>6. Esempio Interattivo</h2>
+
+        <div class="esempio">
+            <iframe src="esempi/componenti-base.html" width="100%" height="900" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Tutti i componenti base di Bootstrap</p>
+        </div>
+
+        <h2>7. Best Practices</h2>
+        
+        <div class="teoria">
+            <p><strong>✓ Consigli:</strong></p>
+            <ul>
+                <li>Usa colori semantici coerenti (primary per azioni principali, danger per eliminazioni)</li>
+                <li>Aggiungi sempre <code>role="alert"</code> agli alert per accessibilità</li>
+                <li>Usa <code>.btn-close</code> per chiudere alert e modal</li>
+                <li>Per card in grid, usa <code>.h-100</code> per altezza uniforme</li>
+                <li>Usa badge per contatori e notifiche, non per testo lungo</li>
+                <li>Combina list group con altri componenti (card, modal)</li>
+            </ul>
+            
+            <p><strong>✗ Evita:</strong></p>
+            <ul>
+                <li>Non abusare dei colori (troppi colori confondono)</li>
+                <li>Non usare troppi button in uno spazio ristretto</li>
+                <li>Non dimenticare attributi accessibilità (aria-label, role)</li>
+                <li>Non usare card senza body se serve padding</li>
+                <li>Non usare <code>.active</code> senza logica JavaScript se interattivo</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-3-3.html" class="btn-prev">Indietro</a>
+            <a href="/" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link utili</a>
+            <a href="lezione-3-5.html" class="btn-next">Avanti</a>
+        </div>
+    </div>
+</body>
+</html>

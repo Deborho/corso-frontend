@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 3.99 - Progetto Finale: Landing Page</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 3.99 - Progetto Finale</h1>
+            <p>Landing Page Professionale con Bootstrap</p>
+        </div>
+
+        <h2>1. Obiettivo del Progetto</h2>
+        
+        <div class="teoria">
+            <p>Creeremo una landing page completa e professionale che integra tutti i concetti appresi nelle lezioni precedenti:</p>
+            <ul>
+                <li><strong>Grid System:</strong> Layout responsive con container, row, column</li>
+                <li><strong>Navbar:</strong> Navigazione fissa con logo, menu e CTA</li>
+                <li><strong>Hero Section:</strong> Sezione di impatto con testo e immagine</li>
+                <li><strong>Features:</strong> Cards in grid per mostrare caratteristiche</li>
+                <li><strong>Pricing:</strong> Tabelle prezzi con cards</li>
+                <li><strong>Testimonials:</strong> Carousel con recensioni clienti</li>
+                <li><strong>FAQ:</strong> Accordion con domande frequenti</li>
+                <li><strong>Contact Form:</strong> Form con validazione</li>
+                <li><strong>Footer:</strong> Footer multi-colonna</li>
+                <li><strong>Customizzazione:</strong> Tema personalizzato con variabili CSS</li>
+            </ul>
+        </div>
+
+        <h2>2. Struttura del Progetto</h2>
+        
+        <div class="codice">
+<pre>landing-page/
+├── index.html          # Pagina principale
+├── css/
+│   └── custom.css      # Stili personalizzati
+├── js/
+│   └── main.js         # JavaScript custom
+└── images/             # Immagini (logo, hero, etc.)</pre>
+        </div>
+
+        <h2>3. HTML Completo</h2>
+
+        <h3>3.1 Head e Setup</h3>
+        
+        <div class="codice">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="it"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;meta name="description" content="SaaS Platform - Soluzione innovativa per il tuo business"&gt;
+    &lt;title&gt;SaaSPlatform - Innovazione per il tuo Business&lt;/title&gt;
+    
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+          crossorigin="anonymous"&gt;
+    
+    &lt;!-- Bootstrap Icons --&gt;
+    &lt;link rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"&gt;
+    
+    &lt;!-- Custom CSS --&gt;
+    &lt;link rel="stylesheet" href="css/custom.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;</pre>
+        </div>
+
+        <h3>3.2 Navbar</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- NAVBAR --&gt;
+&lt;nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm"&gt;
+    &lt;div class="container"&gt;
+        &lt;!-- Brand --&gt;
+        &lt;a class="navbar-brand fw-bold" href="#"&gt;
+            &lt;i class="bi bi-rocket-takeoff text-primary"&gt;&lt;/i&gt;
+            SaaSPlatform
+        &lt;/a&gt;
+        
+        &lt;!-- Toggler --&gt;
+        &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav"&gt;
+            &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        
+        &lt;!-- Nav Items --&gt;
+        &lt;div class="collapse navbar-collapse" id="navbarNav"&gt;
+            &lt;ul class="navbar-nav mx-auto"&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#features"&gt;Caratteristiche&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#pricing"&gt;Prezzi&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#testimonials"&gt;Recensioni&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#faq"&gt;FAQ&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#contact"&gt;Contatti&lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;div&gt;
+                &lt;a href="#contact" class="btn btn-primary"&gt;Inizia Gratis&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>3.3 Hero Section</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- HERO SECTION --&gt;
+&lt;section class="hero-section"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="row align-items-center min-vh-100"&gt;
+            &lt;div class="col-lg-6"&gt;
+                &lt;div class="badge bg-primary-subtle text-primary mb-3"&gt;
+                    🚀 Nuovo: AI-Powered Features
+                &lt;/div&gt;
+                &lt;h1 class="display-3 fw-bold mb-4"&gt;
+                    Trasforma il tuo Business con 
+                    &lt;span class="text-gradient"&gt;SaaSPlatform&lt;/span&gt;
+                &lt;/h1&gt;
+                &lt;p class="lead text-muted mb-4"&gt;
+                    La soluzione all-in-one per gestire, analizzare e far crescere 
+                    il tuo business. Inizia oggi stesso con 14 giorni di prova gratuita.
+                &lt;/p&gt;
+                &lt;div class="d-flex gap-3 flex-wrap"&gt;
+                    &lt;a href="#contact" class="btn btn-primary btn-lg"&gt;
+                        Inizia Gratis
+                    &lt;/a&gt;
+                    &lt;button class="btn btn-outline-secondary btn-lg" 
+                            data-bs-toggle="modal" data-bs-target="#demoModal"&gt;
+                        &lt;i class="bi bi-play-circle"&gt;&lt;/i&gt; Guarda Demo
+                    &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;div class="mt-4"&gt;
+                    &lt;small class="text-muted"&gt;
+                        Scelto da oltre 10,000+ aziende
+                    &lt;/small&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="col-lg-6"&gt;
+                &lt;img src="https://via.placeholder.com/600x500/6366f1/ffffff?text=Hero+Image" 
+                     class="img-fluid rounded-4 shadow-lg" alt="Hero"&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</pre>
+        </div>
+
+        <h3>3.4 Features Section</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- FEATURES SECTION --&gt;
+&lt;section id="features" class="py-5 bg-light"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="text-center mb-5"&gt;
+            &lt;h2 class="display-5 fw-bold"&gt;Caratteristiche Potenti&lt;/h2&gt;
+            &lt;p class="lead text-muted"&gt;
+                Tutto ciò di cui hai bisogno in un'unica piattaforma
+            &lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="row g-4"&gt;
+            &lt;!-- Feature 1 --&gt;
+            &lt;div class="col-md-6 col-lg-4"&gt;
+                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;div class="feature-icon bg-primary bg-gradient text-white 
+                                    rounded-3 p-3 d-inline-block mb-3"&gt;
+                            &lt;i class="bi bi-lightning-charge fs-3"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h4 class="fw-bold"&gt;Velocità Incredibile&lt;/h4&gt;
+                        &lt;p class="text-muted"&gt;
+                            Performance ottimizzate per garantire il massimo della velocità 
+                            in ogni operazione.
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Feature 2 --&gt;
+            &lt;div class="col-md-6 col-lg-4"&gt;
+                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;div class="feature-icon bg-success bg-gradient text-white 
+                                    rounded-3 p-3 d-inline-block mb-3"&gt;
+                            &lt;i class="bi bi-shield-check fs-3"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h4 class="fw-bold"&gt;Sicurezza Totale&lt;/h4&gt;
+                        &lt;p class="text-muted"&gt;
+                            Crittografia end-to-end e conformità GDPR per proteggere 
+                            i tuoi dati.
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Feature 3 --&gt;
+            &lt;div class="col-md-6 col-lg-4"&gt;
+                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;div class="feature-icon bg-info bg-gradient text-white 
+                                    rounded-3 p-3 d-inline-block mb-3"&gt;
+                            &lt;i class="bi bi-graph-up fs-3"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h4 class="fw-bold"&gt;Analytics Avanzate&lt;/h4&gt;
+                        &lt;p class="text-muted"&gt;
+                            Dashboard complete con metriche in tempo reale per 
+                            decisioni data-driven.
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Feature 4 --&gt;
+            &lt;div class="col-md-6 col-lg-4"&gt;
+                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;div class="feature-icon bg-warning bg-gradient text-white 
+                                    rounded-3 p-3 d-inline-block mb-3"&gt;
+                            &lt;i class="bi bi-people fs-3"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h4 class="fw-bold"&gt;Collaborazione Team&lt;/h4&gt;
+                        &lt;p class="text-muted"&gt;
+                            Lavora insieme al tuo team con strumenti di collaborazione 
+                            integrati.
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Feature 5 --&gt;
+            &lt;div class="col-md-6 col-lg-4"&gt;
+                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;div class="feature-icon bg-danger bg-gradient text-white 
+                                    rounded-3 p-3 d-inline-block mb-3"&gt;
+                            &lt;i class="bi bi-gear fs-3"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h4 class="fw-bold"&gt;Altamente Personalizzabile&lt;/h4&gt;
+                        &lt;p class="text-muted"&gt;
+                            Configura ogni aspetto della piattaforma secondo le tue 
+                            esigenze.
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Feature 6 --&gt;
+            &lt;div class="col-md-6 col-lg-4"&gt;
+                &lt;div class="card h-100 border-0 shadow-sm hover-lift"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;div class="feature-icon bg-secondary bg-gradient text-white 
+                                    rounded-3 p-3 d-inline-block mb-3"&gt;
+                            &lt;i class="bi bi-phone fs-3"&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;h4 class="fw-bold"&gt;Mobile Ready&lt;/h4&gt;
+                        &lt;p class="text-muted"&gt;
+                            Accedi da qualsiasi dispositivo con app native per iOS 
+                            e Android.
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</pre>
+        </div>
+
+        <h3>3.5 Pricing Section</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- PRICING SECTION --&gt;
+&lt;section id="pricing" class="py-5"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="text-center mb-5"&gt;
+            &lt;h2 class="display-5 fw-bold"&gt;Piani e Prezzi&lt;/h2&gt;
+            &lt;p class="lead text-muted"&gt;
+                Scegli il piano perfetto per le tue esigenze
+            &lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="row g-4"&gt;
+            &lt;!-- Piano Starter --&gt;
+            &lt;div class="col-lg-4"&gt;
+                &lt;div class="card h-100 border-0 shadow"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;h5 class="text-muted text-uppercase"&gt;Starter&lt;/h5&gt;
+                        &lt;div class="my-4"&gt;
+                            &lt;span class="display-4 fw-bold"&gt;€29&lt;/span&gt;
+                            &lt;span class="text-muted"&gt;/mese&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;ul class="list-unstyled"&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Fino a 5 utenti
+                            &lt;/li&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                10 GB storage
+                            &lt;/li&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Supporto email
+                            &lt;/li&gt;
+                            &lt;li class="mb-3 text-muted"&gt;
+                                &lt;i class="bi bi-x-circle-fill"&gt;&lt;/i&gt;
+                                Analytics avanzate
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                        &lt;div class="d-grid"&gt;
+                            &lt;a href="#contact" class="btn btn-outline-primary"&gt;
+                                Inizia Ora
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Piano Professional (Highlighted) --&gt;
+            &lt;div class="col-lg-4"&gt;
+                &lt;div class="card h-100 border-primary shadow-lg" style="transform: scale(1.05);"&gt;
+                    &lt;div class="card-header bg-primary text-white text-center"&gt;
+                        &lt;strong&gt;PIÙ POPOLARE&lt;/strong&gt;
+                    &lt;/div&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;h5 class="text-primary text-uppercase"&gt;Professional&lt;/h5&gt;
+                        &lt;div class="my-4"&gt;
+                            &lt;span class="display-4 fw-bold"&gt;€79&lt;/span&gt;
+                            &lt;span class="text-muted"&gt;/mese&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;ul class="list-unstyled"&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Utenti illimitati
+                            &lt;/li&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                100 GB storage
+                            &lt;/li&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Supporto prioritario
+                            &lt;/li&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Analytics avanzate
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                        &lt;div class="d-grid"&gt;
+                            &lt;a href="#contact" class="btn btn-primary"&gt;
+                                Inizia Ora
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Piano Enterprise --&gt;
+            &lt;div class="col-lg-4"&gt;
+                &lt;div class="card h-100 border-0 shadow"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;h5 class="text-muted text-uppercase"&gt;Enterprise&lt;/h5&gt;
+                        &lt;div class="my-4"&gt;
+                            &lt;span class="display-4 fw-bold"&gt;Custom&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;ul class="list-unstyled"&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Tutto di Professional
+                            &lt;/li&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Storage illimitato
+                            &lt;/li&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Supporto dedicato 24/7
+                            &lt;/li&gt;
+                            &lt;li class="mb-3"&gt;
+                                &lt;i class="bi bi-check-circle-fill text-success"&gt;&lt;/i&gt;
+                                Personalizzazione completa
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                        &lt;div class="d-grid"&gt;
+                            &lt;a href="#contact" class="btn btn-outline-primary"&gt;
+                                Contattaci
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</pre>
+        </div>
+
+        <h3>3.6 Testimonials (Carousel)</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- TESTIMONIALS SECTION --&gt;
+&lt;section id="testimonials" class="py-5 bg-light"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="text-center mb-5"&gt;
+            &lt;h2 class="display-5 fw-bold"&gt;Cosa Dicono i Nostri Clienti&lt;/h2&gt;
+            &lt;p class="lead text-muted"&gt;
+                Oltre 10,000 aziende si affidano a noi
+            &lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel"&gt;
+            &lt;div class="carousel-inner"&gt;
+                &lt;!-- Testimonial 1 --&gt;
+                &lt;div class="carousel-item active"&gt;
+                    &lt;div class="row justify-content-center"&gt;
+                        &lt;div class="col-lg-8"&gt;
+                            &lt;div class="card border-0 shadow-lg"&gt;
+                                &lt;div class="card-body p-5 text-center"&gt;
+                                    &lt;div class="mb-4"&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                    &lt;/div&gt;
+                                    &lt;p class="lead mb-4"&gt;
+                                        "SaaSPlatform ha rivoluzionato il modo in cui gestiamo 
+                                        il nostro business. L'interfaccia è intuitiva e le 
+                                        funzionalità sono potentissime."
+                                    &lt;/p&gt;
+                                    &lt;h5 class="fw-bold"&gt;Marco Rossi&lt;/h5&gt;
+                                    &lt;p class="text-muted"&gt;CEO, TechStart Italia&lt;/p&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                
+                &lt;!-- Testimonial 2 --&gt;
+                &lt;div class="carousel-item"&gt;
+                    &lt;div class="row justify-content-center"&gt;
+                        &lt;div class="col-lg-8"&gt;
+                            &lt;div class="card border-0 shadow-lg"&gt;
+                                &lt;div class="card-body p-5 text-center"&gt;
+                                    &lt;div class="mb-4"&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                    &lt;/div&gt;
+                                    &lt;p class="lead mb-4"&gt;
+                                        "Il miglior investimento per la nostra azienda. ROI 
+                                        positivo già dal primo mese. Supporto eccezionale!"
+                                    &lt;/p&gt;
+                                    &lt;h5 class="fw-bold"&gt;Laura Bianchi&lt;/h5&gt;
+                                    &lt;p class="text-muted"&gt;Marketing Director, Digital Agency&lt;/p&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                
+                &lt;!-- Testimonial 3 --&gt;
+                &lt;div class="carousel-item"&gt;
+                    &lt;div class="row justify-content-center"&gt;
+                        &lt;div class="col-lg-8"&gt;
+                            &lt;div class="card border-0 shadow-lg"&gt;
+                                &lt;div class="card-body p-5 text-center"&gt;
+                                    &lt;div class="mb-4"&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                        &lt;i class="bi bi-star-fill text-warning"&gt;&lt;/i&gt;
+                                    &lt;/div&gt;
+                                    &lt;p class="lead mb-4"&gt;
+                                        "Semplicemente fantastico. Abbiamo aumentato la produttività 
+                                        del 300%. Non potremmo farne a meno."
+                                    &lt;/p&gt;
+                                    &lt;h5 class="fw-bold"&gt;Giuseppe Verdi&lt;/h5&gt;
+                                    &lt;p class="text-muted"&gt;CTO, Innovation Labs&lt;/p&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- Carousel Controls --&gt;
+            &lt;button class="carousel-control-prev" type="button" 
+                    data-bs-target="#testimonialCarousel" data-bs-slide="prev"&gt;
+                &lt;span class="carousel-control-prev-icon bg-dark rounded-circle p-3"&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;button class="carousel-control-next" type="button" 
+                    data-bs-target="#testimonialCarousel" data-bs-slide="next"&gt;
+                &lt;span class="carousel-control-next-icon bg-dark rounded-circle p-3"&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            
+            &lt;!-- Indicators --&gt;
+            &lt;div class="carousel-indicators"&gt;
+                &lt;button type="button" data-bs-target="#testimonialCarousel" 
+                        data-bs-slide-to="0" class="active bg-dark"&gt;&lt;/button&gt;
+                &lt;button type="button" data-bs-target="#testimonialCarousel" 
+                        data-bs-slide-to="1" class="bg-dark"&gt;&lt;/button&gt;
+                &lt;button type="button" data-bs-target="#testimonialCarousel" 
+                        data-bs-slide-to="2" class="bg-dark"&gt;&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</pre>
+        </div>
+
+        <h3>3.7 FAQ (Accordion)</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- FAQ SECTION --&gt;
+&lt;section id="faq" class="py-5"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="row"&gt;
+            &lt;div class="col-lg-8 mx-auto"&gt;
+                &lt;div class="text-center mb-5"&gt;
+                    &lt;h2 class="display-5 fw-bold"&gt;Domande Frequenti&lt;/h2&gt;
+                    &lt;p class="lead text-muted"&gt;
+                        Tutto ciò che devi sapere
+                    &lt;/p&gt;
+                &lt;/div&gt;
+                
+                &lt;div class="accordion" id="faqAccordion"&gt;
+                    &lt;!-- FAQ 1 --&gt;
+                    &lt;div class="accordion-item"&gt;
+                        &lt;h2 class="accordion-header"&gt;
+                            &lt;button class="accordion-button" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq1"&gt;
+                                Come funziona il periodo di prova gratuito?
+                            &lt;/button&gt;
+                        &lt;/h2&gt;
+                        &lt;div id="faq1" class="accordion-collapse collapse show" 
+                             data-bs-parent="#faqAccordion"&gt;
+                            &lt;div class="accordion-body"&gt;
+                                Il periodo di prova gratuito di 14 giorni ti permette 
+                                di accedere a tutte le funzionalità del piano Professional. 
+                                Non è richiesta la carta di credito e puoi cancellare 
+                                in qualsiasi momento.
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;!-- FAQ 2 --&gt;
+                    &lt;div class="accordion-item"&gt;
+                        &lt;h2 class="accordion-header"&gt;
+                            &lt;button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq2"&gt;
+                                Posso cambiare piano in qualsiasi momento?
+                            &lt;/button&gt;
+                        &lt;/h2&gt;
+                        &lt;div id="faq2" class="accordion-collapse collapse" 
+                             data-bs-parent="#faqAccordion"&gt;
+                            &lt;div class="accordion-body"&gt;
+                                Assolutamente sì! Puoi fare upgrade o downgrade del tuo 
+                                piano in qualsiasi momento. Le modifiche saranno applicate 
+                                immediatamente e ti addebiteremo solo la differenza proporzionale.
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;!-- FAQ 3 --&gt;
+                    &lt;div class="accordion-item"&gt;
+                        &lt;h2 class="accordion-header"&gt;
+                            &lt;button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq3"&gt;
+                                I miei dati sono al sicuro?
+                            &lt;/button&gt;
+                        &lt;/h2&gt;
+                        &lt;div id="faq3" class="accordion-collapse collapse" 
+                             data-bs-parent="#faqAccordion"&gt;
+                            &lt;div class="accordion-body"&gt;
+                                La sicurezza è la nostra priorità numero uno. Utilizziamo 
+                                crittografia end-to-end, backup giornalieri e siamo 
+                                completamente conformi GDPR. I tuoi dati sono al sicuro con noi.
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;!-- FAQ 4 --&gt;
+                    &lt;div class="accordion-item"&gt;
+                        &lt;h2 class="accordion-header"&gt;
+                            &lt;button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq4"&gt;
+                                Che tipo di supporto offrite?
+                            &lt;/button&gt;
+                        &lt;/h2&gt;
+                        &lt;div id="faq4" class="accordion-collapse collapse" 
+                             data-bs-parent="#faqAccordion"&gt;
+                            &lt;div class="accordion-body"&gt;
+                                Offriamo supporto email per tutti i piani. I clienti 
+                                Professional hanno accesso al supporto prioritario, mentre 
+                                i clienti Enterprise hanno supporto dedicato 24/7 con un 
+                                account manager personale.
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;!-- FAQ 5 --&gt;
+                    &lt;div class="accordion-item"&gt;
+                        &lt;h2 class="accordion-header"&gt;
+                            &lt;button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq5"&gt;
+                                Posso integrare altre applicazioni?
+                            &lt;/button&gt;
+                        &lt;/h2&gt;
+                        &lt;div id="faq5" class="accordion-collapse collapse" 
+                             data-bs-parent="#faqAccordion"&gt;
+                            &lt;div class="accordion-body"&gt;
+                                Sì! Offriamo integrazioni native con oltre 100 applicazioni 
+                                popolari (Slack, Google Workspace, Microsoft 365, etc.) e 
+                                API complete per integrazioni custom.
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</pre>
+        </div>
+
+        <p style="margin-top: 20px;"><em>Continua nella prossima pagina con Contact Form, Footer e JavaScript...</em></p>
+
+        <div class="nav">
+            <a href="lezione-3-8.html" class="btn-prev">Indietro</a>
+            <a href="/" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link utili</a>
+        </div>
+    </div>
+</body>
+</html>

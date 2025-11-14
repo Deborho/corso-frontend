@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 3.7 - Componenti Avanzati</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 3.7 - Componenti Avanzati</h1>
+            <p>Modal, Carousel, Accordion, Tooltips e Componenti JavaScript</p>
+        </div>
+
+        <h2>1. Modal</h2>
+        
+        <div class="teoria">
+            <p>I modal sono finestre di dialogo che si sovrappongono al contenuto principale. Richiedono l'interazione dell'utente prima di tornare al contenuto principale.</p>
+        </div>
+
+        <h3>1.1 Modal Base</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Button trigger modal --&gt;
+&lt;button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+        data-bs-target="#exampleModal"&gt;
+    Launch demo modal
+&lt;/button&gt;
+
+&lt;!-- Modal --&gt;
+&lt;div class="modal fade" id="exampleModal" tabindex="-1"&gt;
+    &lt;div class="modal-dialog"&gt;
+        &lt;div class="modal-content"&gt;
+            &lt;div class="modal-header"&gt;
+                &lt;h5 class="modal-title"&gt;Modal title&lt;/h5&gt;
+                &lt;button type="button" class="btn-close" data-bs-dismiss="modal"&gt;&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="modal-body"&gt;
+                &lt;p&gt;Modal body text goes here.&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="modal-footer"&gt;
+                &lt;button type="button" class="btn btn-secondary" data-bs-dismiss="modal"&gt;
+                    Close
+                &lt;/button&gt;
+                &lt;button type="button" class="btn btn-primary"&gt;Save changes&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>1.2 Modal Sizes</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Small modal --&gt;
+&lt;div class="modal-dialog modal-sm"&gt;
+    ...
+&lt;/div&gt;
+
+&lt;!-- Default modal --&gt;
+&lt;div class="modal-dialog"&gt;
+    ...
+&lt;/div&gt;
+
+&lt;!-- Large modal --&gt;
+&lt;div class="modal-dialog modal-lg"&gt;
+    ...
+&lt;/div&gt;
+
+&lt;!-- Extra large modal --&gt;
+&lt;div class="modal-dialog modal-xl"&gt;
+    ...
+&lt;/div&gt;
+
+&lt;!-- Fullscreen modal --&gt;
+&lt;div class="modal-dialog modal-fullscreen"&gt;
+    ...
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>1.3 Modal Scrollable</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="modal-dialog modal-dialog-scrollable"&gt;
+    &lt;div class="modal-content"&gt;
+        &lt;div class="modal-header"&gt;
+            &lt;h5 class="modal-title"&gt;Modal title&lt;/h5&gt;
+            &lt;button type="button" class="btn-close" data-bs-dismiss="modal"&gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class="modal-body"&gt;
+            &lt;p&gt;Long content...&lt;/p&gt;
+            &lt;!-- Contenuto lungo che causerà scroll --&gt;
+        &lt;/div&gt;
+        &lt;div class="modal-footer"&gt;
+            &lt;button type="button" class="btn btn-secondary" data-bs-dismiss="modal"&gt;
+                Close
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>1.4 Modal Centered</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="modal-dialog modal-dialog-centered"&gt;
+    &lt;div class="modal-content"&gt;
+        ...
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>1.5 Modal con JavaScript</h3>
+        
+        <div class="codice">
+<pre>&lt;script&gt;
+// Mostra modal
+var myModal = new bootstrap.Modal(document.getElementById('myModal'))
+myModal.show()
+
+// Nascondi modal
+myModal.hide()
+
+// Toggle modal
+myModal.toggle()
+
+// Eventi
+var modalElement = document.getElementById('myModal')
+modalElement.addEventListener('show.bs.modal', function (event) {
+    console.log('Modal sta per essere mostrato')
+})
+modalElement.addEventListener('shown.bs.modal', function (event) {
+    console.log('Modal è stato mostrato')
+})
+modalElement.addEventListener('hide.bs.modal', function (event) {
+    console.log('Modal sta per essere nascosto')
+})
+modalElement.addEventListener('hidden.bs.modal', function (event) {
+    console.log('Modal è stato nascosto')
+})
+&lt;/script&gt;</pre>
+        </div>
+
+        <h2>2. Carousel</h2>
+        
+        <div class="teoria">
+            <p>Il carousel è un componente per creare slideshow di contenuti ciclici. Ideale per gallerie di immagini o contenuti in evidenza.</p>
+        </div>
+
+        <h3>2.1 Carousel Base</h3>
+        
+        <div class="codice">
+<pre>&lt;div id="carouselExample" class="carousel slide" data-bs-ride="carousel"&gt;
+    &lt;div class="carousel-inner"&gt;
+        &lt;div class="carousel-item active"&gt;
+            &lt;img src="image1.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+        &lt;div class="carousel-item"&gt;
+            &lt;img src="image2.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+        &lt;div class="carousel-item"&gt;
+            &lt;img src="image3.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>2.2 Carousel con Controlli</h3>
+        
+        <div class="codice">
+<pre>&lt;div id="carouselControls" class="carousel slide" data-bs-ride="carousel"&gt;
+    &lt;div class="carousel-inner"&gt;
+        &lt;div class="carousel-item active"&gt;
+            &lt;img src="image1.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+        &lt;div class="carousel-item"&gt;
+            &lt;img src="image2.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+        &lt;div class="carousel-item"&gt;
+            &lt;img src="image3.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- Controlli precedente/successivo --&gt;
+    &lt;button class="carousel-control-prev" type="button" 
+            data-bs-target="#carouselControls" data-bs-slide="prev"&gt;
+        &lt;span class="carousel-control-prev-icon"&gt;&lt;/span&gt;
+        &lt;span class="visually-hidden"&gt;Previous&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button class="carousel-control-next" type="button" 
+            data-bs-target="#carouselControls" data-bs-slide="next"&gt;
+        &lt;span class="carousel-control-next-icon"&gt;&lt;/span&gt;
+        &lt;span class="visually-hidden"&gt;Next&lt;/span&gt;
+    &lt;/button&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>2.3 Carousel con Indicatori</h3>
+        
+        <div class="codice">
+<pre>&lt;div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel"&gt;
+    &lt;!-- Indicatori --&gt;
+    &lt;div class="carousel-indicators"&gt;
+        &lt;button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" 
+                class="active"&gt;&lt;/button&gt;
+        &lt;button type="button" data-bs-target="#carouselIndicators" 
+                data-bs-slide-to="1"&gt;&lt;/button&gt;
+        &lt;button type="button" data-bs-target="#carouselIndicators" 
+                data-bs-slide-to="2"&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="carousel-inner"&gt;
+        &lt;div class="carousel-item active"&gt;
+            &lt;img src="image1.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+        &lt;div class="carousel-item"&gt;
+            &lt;img src="image2.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+        &lt;div class="carousel-item"&gt;
+            &lt;img src="image3.jpg" class="d-block w-100" alt="..."&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;button class="carousel-control-prev" type="button" 
+            data-bs-target="#carouselIndicators" data-bs-slide="prev"&gt;
+        &lt;span class="carousel-control-prev-icon"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button class="carousel-control-next" type="button" 
+            data-bs-target="#carouselIndicators" data-bs-slide="next"&gt;
+        &lt;span class="carousel-control-next-icon"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>2.4 Carousel con Captions</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="carousel-item active"&gt;
+    &lt;img src="image1.jpg" class="d-block w-100" alt="..."&gt;
+    &lt;div class="carousel-caption d-none d-md-block"&gt;
+        &lt;h5&gt;First slide label&lt;/h5&gt;
+        &lt;p&gt;Some representative placeholder content for the first slide.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>2.5 Carousel Fade</h3>
+        
+        <div class="codice">
+<pre>&lt;div id="carouselFade" class="carousel slide carousel-fade" data-bs-ride="carousel"&gt;
+    &lt;!-- Usa carousel-fade per transizione fade invece di slide --&gt;
+    ...
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>2.6 Carousel Options</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Con data attributes --&gt;
+&lt;div class="carousel slide" data-bs-ride="carousel" 
+     data-bs-interval="3000" data-bs-pause="hover"&gt;
+    ...
+&lt;/div&gt;
+
+&lt;!-- Con JavaScript --&gt;
+&lt;script&gt;
+var myCarousel = new bootstrap.Carousel(document.getElementById('myCarousel'), {
+    interval: 3000,  // Tempo tra gli slide (ms)
+    pause: 'hover',  // Pausa on hover
+    wrap: true,      // Continua ciclicamente
+    keyboard: true   // Controlla con tastiera
+})
+&lt;/script&gt;</pre>
+        </div>
+
+        <h2>3. Accordion</h2>
+        
+        <div class="teoria">
+            <p>L'accordion permette di mostrare/nascondere contenuto in sezioni collapsabili. Utile per FAQ, menu di navigazione o contenuti organizzati.</p>
+        </div>
+
+        <h3>3.1 Accordion Base</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="accordion" id="accordionExample"&gt;
+    &lt;div class="accordion-item"&gt;
+        &lt;h2 class="accordion-header"&gt;
+            &lt;button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#collapseOne"&gt;
+                Accordion Item #1
+            &lt;/button&gt;
+        &lt;/h2&gt;
+        &lt;div id="collapseOne" class="accordion-collapse collapse show" 
+             data-bs-parent="#accordionExample"&gt;
+            &lt;div class="accordion-body"&gt;
+                Content for accordion item #1
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="accordion-item"&gt;
+        &lt;h2 class="accordion-header"&gt;
+            &lt;button class="accordion-button collapsed" type="button" 
+                    data-bs-toggle="collapse" data-bs-target="#collapseTwo"&gt;
+                Accordion Item #2
+            &lt;/button&gt;
+        &lt;/h2&gt;
+        &lt;div id="collapseTwo" class="accordion-collapse collapse" 
+             data-bs-parent="#accordionExample"&gt;
+            &lt;div class="accordion-body"&gt;
+                Content for accordion item #2
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="accordion-item"&gt;
+        &lt;h2 class="accordion-header"&gt;
+            &lt;button class="accordion-button collapsed" type="button" 
+                    data-bs-toggle="collapse" data-bs-target="#collapseThree"&gt;
+                Accordion Item #3
+            &lt;/button&gt;
+        &lt;/h2&gt;
+        &lt;div id="collapseThree" class="accordion-collapse collapse" 
+             data-bs-parent="#accordionExample"&gt;
+            &lt;div class="accordion-body"&gt;
+                Content for accordion item #3
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>3.2 Accordion Flush</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="accordion accordion-flush" id="accordionFlushExample"&gt;
+    &lt;!-- Rimuove bordi e arrotondamenti per integrarlo meglio --&gt;
+    &lt;div class="accordion-item"&gt;
+        ...
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>3.3 Accordion Always Open</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Ometti data-bs-parent per permettere più item aperti --&gt;
+&lt;div class="accordion" id="accordionPanelsStayOpenExample"&gt;
+    &lt;div class="accordion-item"&gt;
+        &lt;h2 class="accordion-header"&gt;
+            &lt;button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#panelsStayOpen-collapseOne"&gt;
+                Accordion Item #1
+            &lt;/button&gt;
+        &lt;/h2&gt;
+        &lt;div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"&gt;
+            &lt;div class="accordion-body"&gt;
+                Content #1
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- Nota: nessun data-bs-parent --&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>4. Collapse</h2>
+        
+        <div class="teoria">
+            <p>Il componente collapse permette di mostrare/nascondere contenuto. È la base per accordion e può essere usato indipendentemente.</p>
+        </div>
+
+        <h3>4.1 Collapse Base</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Trigger con button --&gt;
+&lt;button class="btn btn-primary" type="button" data-bs-toggle="collapse" 
+        data-bs-target="#collapseExample"&gt;
+    Toggle content
+&lt;/button&gt;
+
+&lt;!-- Trigger con link --&gt;
+&lt;a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample"&gt;
+    Toggle content
+&lt;/a&gt;
+
+&lt;!-- Content --&gt;
+&lt;div class="collapse" id="collapseExample"&gt;
+    &lt;div class="card card-body"&gt;
+        Some placeholder content for the collapse component.
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>4.2 Multiple Targets</h3>
+        
+        <div class="codice">
+<pre>&lt;button class="btn btn-primary" type="button" data-bs-toggle="collapse" 
+        data-bs-target=".multi-collapse"&gt;
+    Toggle both elements
+&lt;/button&gt;
+
+&lt;div class="collapse multi-collapse" id="multiCollapseExample1"&gt;
+    &lt;div class="card card-body"&gt;
+        Content 1
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="collapse multi-collapse" id="multiCollapseExample2"&gt;
+    &lt;div class="card card-body"&gt;
+        Content 2
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>4.3 Horizontal Collapse</h3>
+        
+        <div class="codice">
+<pre>&lt;button class="btn btn-primary" type="button" data-bs-toggle="collapse" 
+        data-bs-target="#collapseWidthExample"&gt;
+    Toggle width collapse
+&lt;/button&gt;
+
+&lt;div style="min-height: 120px;"&gt;
+    &lt;div class="collapse collapse-horizontal" id="collapseWidthExample"&gt;
+        &lt;div class="card card-body" style="width: 300px;"&gt;
+            This is some placeholder content for a horizontal collapse.
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>5. Tooltips</h2>
+        
+        <div class="teoria">
+            <p>I tooltips sono piccoli popup che appaiono al passaggio del mouse. Devono essere inizializzati con JavaScript.</p>
+        </div>
+
+        <h3>5.1 Tooltip Base</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- HTML --&gt;
+&lt;button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" 
+        data-bs-placement="top" title="Tooltip on top"&gt;
+    Tooltip on top
+&lt;/button&gt;
+
+&lt;!-- Inizializzazione JavaScript (richiesto) --&gt;
+&lt;script&gt;
+var tooltipTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+)
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+&lt;/script&gt;</pre>
+        </div>
+
+        <h3>5.2 Tooltip Placement</h3>
+        
+        <div class="codice">
+<pre>&lt;button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" 
+        data-bs-placement="top" title="Tooltip on top"&gt;
+    Tooltip on top
+&lt;/button&gt;
+
+&lt;button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" 
+        data-bs-placement="right" title="Tooltip on right"&gt;
+    Tooltip on right
+&lt;/button&gt;
+
+&lt;button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" 
+        data-bs-placement="bottom" title="Tooltip on bottom"&gt;
+    Tooltip on bottom
+&lt;/button&gt;
+
+&lt;button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" 
+        data-bs-placement="left" title="Tooltip on left"&gt;
+    Tooltip on left
+&lt;/button&gt;</pre>
+        </div>
+
+        <h3>5.3 Tooltip con HTML</h3>
+        
+        <div class="codice">
+<pre>&lt;button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" 
+        data-bs-html="true" 
+        title="&lt;em&gt;Tooltip&lt;/em&gt; &lt;u&gt;with&lt;/u&gt; &lt;b&gt;HTML&lt;/b&gt;"&gt;
+    Tooltip with HTML
+&lt;/button&gt;</pre>
+        </div>
+
+        <h2>6. Popovers</h2>
+        
+        <div class="teoria">
+            <p>I popover sono simili ai tooltip ma più grandi e con più contenuto. Possono contenere titolo e body. Richiedono inizializzazione JavaScript.</p>
+        </div>
+
+        <h3>6.1 Popover Base</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- HTML --&gt;
+&lt;button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" 
+        title="Popover title" data-bs-content="And here's some amazing content."&gt;
+    Click to toggle popover
+&lt;/button&gt;
+
+&lt;!-- Inizializzazione JavaScript (richiesto) --&gt;
+&lt;script&gt;
+var popoverTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="popover"]')
+)
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl)
+})
+&lt;/script&gt;</pre>
+        </div>
+
+        <h3>6.2 Popover Directions</h3>
+        
+        <div class="codice">
+<pre>&lt;button type="button" class="btn btn-secondary" data-bs-container="body" 
+        data-bs-toggle="popover" data-bs-placement="top" 
+        data-bs-content="Top popover"&gt;
+    Popover on top
+&lt;/button&gt;
+
+&lt;button type="button" class="btn btn-secondary" data-bs-container="body" 
+        data-bs-toggle="popover" data-bs-placement="right" 
+        data-bs-content="Right popover"&gt;
+    Popover on right
+&lt;/button&gt;
+
+&lt;button type="button" class="btn btn-secondary" data-bs-container="body" 
+        data-bs-toggle="popover" data-bs-placement="bottom" 
+        data-bs-content="Bottom popover"&gt;
+    Popover on bottom
+&lt;/button&gt;
+
+&lt;button type="button" class="btn btn-secondary" data-bs-container="body" 
+        data-bs-toggle="popover" data-bs-placement="left" 
+        data-bs-content="Left popover"&gt;
+    Popover on left
+&lt;/button&gt;</pre>
+        </div>
+
+        <h3>6.3 Dismissible Popover</h3>
+        
+        <div class="codice">
+<pre>&lt;button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" 
+        data-bs-trigger="focus" title="Dismissible popover" 
+        data-bs-content="Click outside to dismiss"&gt;
+    Dismissible popover
+&lt;/button&gt;</pre>
+        </div>
+
+        <h2>7. Offcanvas</h2>
+        
+        <div class="teoria">
+            <p>Offcanvas crea sidebar nascoste che possono scorrere da qualsiasi lato dello schermo. Perfette per menu mobili o pannelli laterali.</p>
+        </div>
+
+        <h3>7.1 Offcanvas Base</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Trigger button --&gt;
+&lt;button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" 
+        data-bs-target="#offcanvasExample"&gt;
+    Toggle offcanvas
+&lt;/button&gt;
+
+&lt;!-- Offcanvas --&gt;
+&lt;div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"&gt;
+    &lt;div class="offcanvas-header"&gt;
+        &lt;h5 class="offcanvas-title"&gt;Offcanvas&lt;/h5&gt;
+        &lt;button type="button" class="btn-close" data-bs-dismiss="offcanvas"&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="offcanvas-body"&gt;
+        &lt;div&gt;
+            Some text as placeholder.
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>7.2 Offcanvas Placement</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Left (start) --&gt;
+&lt;div class="offcanvas offcanvas-start" id="offcanvasLeft"&gt;...&lt;/div&gt;
+
+&lt;!-- Right (end) --&gt;
+&lt;div class="offcanvas offcanvas-end" id="offcanvasRight"&gt;...&lt;/div&gt;
+
+&lt;!-- Top --&gt;
+&lt;div class="offcanvas offcanvas-top" id="offcanvasTop"&gt;...&lt;/div&gt;
+
+&lt;!-- Bottom --&gt;
+&lt;div class="offcanvas offcanvas-bottom" id="offcanvasBottom"&gt;...&lt;/div&gt;</pre>
+        </div>
+
+        <h3>7.3 Offcanvas con Backdrop</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Default: backdrop + scrolling bloccato --&gt;
+&lt;button data-bs-toggle="offcanvas" data-bs-target="#offcanvas1"&gt;
+    Default offcanvas
+&lt;/button&gt;
+
+&lt;!-- Con scrolling body abilitato --&gt;
+&lt;button data-bs-toggle="offcanvas" data-bs-target="#offcanvas2" 
+        data-bs-scroll="true"&gt;
+    Enable body scrolling
+&lt;/button&gt;
+
+&lt;!-- Senza backdrop --&gt;
+&lt;button data-bs-toggle="offcanvas" data-bs-target="#offcanvas3" 
+        data-bs-backdrop="false"&gt;
+    No backdrop
+&lt;/button&gt;</pre>
+        </div>
+
+        <h2>8. Toast</h2>
+        
+        <div class="teoria">
+            <p>I toast sono notifiche leggere e non invasive che appaiono temporaneamente. Perfetti per feedback dell'utente.</p>
+        </div>
+
+        <h3>8.1 Toast Base</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="toast" role="alert"&gt;
+    &lt;div class="toast-header"&gt;
+        &lt;strong class="me-auto"&gt;Bootstrap&lt;/strong&gt;
+        &lt;small&gt;11 mins ago&lt;/small&gt;
+        &lt;button type="button" class="btn-close" data-bs-dismiss="toast"&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="toast-body"&gt;
+        Hello, world! This is a toast message.
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Attivazione JavaScript --&gt;
+&lt;script&gt;
+var toastEl = document.getElementById('myToast')
+var toast = new bootstrap.Toast(toastEl)
+toast.show()
+&lt;/script&gt;</pre>
+        </div>
+
+        <h3>8.2 Toast Placement</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Container per posizionamento --&gt;
+&lt;div class="toast-container position-fixed top-0 end-0 p-3"&gt;
+    &lt;div class="toast" role="alert"&gt;
+        &lt;div class="toast-body"&gt;
+            Toast in alto a destra
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Altre posizioni --&gt;
+&lt;!-- top-0 start-0 = alto sinistra --&gt;
+&lt;!-- top-0 end-0 = alto destra --&gt;
+&lt;!-- bottom-0 start-0 = basso sinistra --&gt;
+&lt;!-- bottom-0 end-0 = basso destra --&gt;</pre>
+        </div>
+
+        <h3>8.3 Toast con Color</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="toast align-items-center text-bg-primary border-0" role="alert"&gt;
+    &lt;div class="d-flex"&gt;
+        &lt;div class="toast-body"&gt;
+            Primary toast
+        &lt;/div&gt;
+        &lt;button type="button" class="btn-close btn-close-white me-2 m-auto" 
+                data-bs-dismiss="toast"&gt;&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Varianti: text-bg-success, text-bg-danger, text-bg-warning, etc. --&gt;</pre>
+        </div>
+
+        <h2>9. Esempio Completo</h2>
+
+        <div class="esempio">
+            <iframe src="esempi/componenti-avanzati.html" width="100%" height="800" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Componenti Avanzati Bootstrap</p>
+        </div>
+
+        <h2>10. Best Practices</h2>
+        
+        <div class="teoria">
+            <p><strong>✓ Consigli:</strong></p>
+            <ul>
+                <li>Inizializza tooltip e popover con JavaScript prima di usarli</li>
+                <li>Usa modal per azioni importanti che richiedono attenzione</li>
+                <li>Usa offcanvas per menu di navigazione su mobile</li>
+                <li>Usa toast per notifiche non invasive</li>
+                <li>Accordion perfetto per FAQ e contenuti organizzati</li>
+                <li>Carousel ideale per gallerie ma usa con moderazione</li>
+                <li>Fornisci sempre modi alternativi per chiudere modal/offcanvas (ESC, click outside)</li>
+            </ul>
+            
+            <p><strong>✗ Evita:</strong></p>
+            <ul>
+                <li>Non abusare di modal - possono essere invasivi</li>
+                <li>Non usare carousel auto-play per contenuti critici</li>
+                <li>Non dimenticare accessibilità (aria-label, role, etc.)</li>
+                <li>Non bloccare l'utente con modal senza via d'uscita</li>
+                <li>Non usare troppi tooltip - possono confondere</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-3-6.html" class="btn-prev">Indietro</a>
+            <a href="/" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link utili</a>
+            <a href="lezione-3-8.html" class="btn-next">Avanti</a>
+        </div>
+    </div>
+</body>
+</html>

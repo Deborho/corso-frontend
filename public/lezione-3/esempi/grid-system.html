@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio Grid System Bootstrap</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+          crossorigin="anonymous">
+    
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .demo-box {
+            background-color: #0d6efd;
+            color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .demo-box-secondary {
+            background-color: #6c757d;
+        }
+        
+        .demo-box-success {
+            background-color: #198754;
+        }
+        
+        .demo-box-danger {
+            background-color: #dc3545;
+        }
+        
+        .demo-box-warning {
+            background-color: #ffc107;
+            color: #000;
+        }
+        
+        .demo-box-info {
+            background-color: #0dcaf0;
+            color: #000;
+        }
+        
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #212529;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0d6efd;
+        }
+        
+        .section h3 {
+            color: #495057;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+        
+        .code-display {
+            background-color: #f8f9fa;
+            border-left: 4px solid #0d6efd;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .breakpoint-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #212529;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .breakpoint-size {
+            font-size: 1.2rem;
+            color: #0dcaf0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center mb-4">Bootstrap 5 Grid System - Esempi Interattivi</h1>
+        <p class="text-center text-muted mb-5">Ridimensiona la finestra del browser per vedere come cambiano i layout</p>
+    </div>
+    
+    <!-- Sezione 1: Colonne Uguali -->
+    <div class="container section">
+        <h2>1. Colonne Uguali</h2>
+        <p>Usando solo <code>.col</code> senza numero, le colonne hanno automaticamente la stessa larghezza</p>
+        
+        <div class="code-display">&lt;div class="col"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row">
+            <div class="col">
+                <div class="demo-box">Colonna 1</div>
+            </div>
+            <div class="col">
+                <div class="demo-box demo-box-secondary">Colonna 2</div>
+            </div>
+            <div class="col">
+                <div class="demo-box demo-box-success">Colonna 3</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sezione 2: Colonne con Larghezza Specifica -->
+    <div class="container section">
+        <h2>2. Colonne con Larghezza Specifica</h2>
+        <p>Specifica quante delle 12 colonne deve occupare ogni elemento</p>
+        
+        <div class="code-display">&lt;div class="col-8"&gt;8/12&lt;/div&gt; &lt;div class="col-4"&gt;4/12&lt;/div&gt;</div>
+        
+        <div class="row mb-3">
+            <div class="col-8">
+                <div class="demo-box">col-8 (66.67%)</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-secondary">col-4 (33.33%)</div>
+            </div>
+        </div>
+        
+        <div class="code-display">&lt;div class="col-6"&gt;...&lt;/div&gt; &lt;div class="col-6"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row mb-3">
+            <div class="col-6">
+                <div class="demo-box demo-box-success">col-6 (50%)</div>
+            </div>
+            <div class="col-6">
+                <div class="demo-box demo-box-danger">col-6 (50%)</div>
+            </div>
+        </div>
+        
+        <div class="code-display">&lt;div class="col-3"&gt;...&lt;/div&gt; × 4</div>
+        
+        <div class="row">
+            <div class="col-3">
+                <div class="demo-box demo-box-warning">col-3</div>
+            </div>
+            <div class="col-3">
+                <div class="demo-box demo-box-info">col-3</div>
+            </div>
+            <div class="col-3">
+                <div class="demo-box demo-box-warning">col-3</div>
+            </div>
+            <div class="col-3">
+                <div class="demo-box demo-box-info">col-3</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sezione 3: Layout Responsive -->
+    <div class="container section">
+        <h2>3. Layout Responsive con Breakpoints</h2>
+        <p>Le colonne si adattano automaticamente in base alle dimensioni dello schermo</p>
+        
+        <h3>Esempio 1: Mobile → Tablet → Desktop</h3>
+        <div class="code-display">&lt;div class="col-12 col-md-6 col-lg-3"&gt;...&lt;/div&gt;</div>
+        <p class="text-muted small">Mobile: 100% | Tablet: 50% | Desktop: 25%</p>
+        
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="demo-box">Box 1</div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="demo-box demo-box-secondary">Box 2</div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="demo-box demo-box-success">Box 3</div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="demo-box demo-box-danger">Box 4</div>
+            </div>
+        </div>
+        
+        <h3>Esempio 2: Layout Principale + Sidebar</h3>
+        <div class="code-display">&lt;div class="col-12 col-lg-8"&gt;Main&lt;/div&gt; &lt;div class="col-12 col-lg-4"&gt;Sidebar&lt;/div&gt;</div>
+        <p class="text-muted small">Mobile: Stacked (100% + 100%) | Desktop: Side by side (66% + 33%)</p>
+        
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="demo-box" style="min-height: 150px;">
+                    <div>
+                        <strong>Contenuto Principale</strong><br>
+                        <small>col-12 col-lg-8</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="demo-box demo-box-secondary" style="min-height: 150px;">
+                    <div>
+                        <strong>Sidebar</strong><br>
+                        <small>col-12 col-lg-4</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sezione 4: Offset -->
+    <div class="container section">
+        <h2>4. Offset (Spostamento Colonne)</h2>
+        <p>Sposta le colonne verso destra usando margine sinistro</p>
+        
+        <h3>Centrare una colonna</h3>
+        <div class="code-display">&lt;div class="col-6 offset-3"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row mb-3">
+            <div class="col-6 offset-3">
+                <div class="demo-box">Centrata (offset-3 + col-6 + 3 vuote)</div>
+            </div>
+        </div>
+        
+        <h3>Offset progressivi</h3>
+        <div class="code-display">&lt;div class="col-4 offset-2"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row">
+            <div class="col-4 offset-2">
+                <div class="demo-box demo-box-success">offset-2</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-danger">no offset</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sezione 5: Gutters -->
+    <div class="container section">
+        <h2>5. Gutters (Spaziatura tra Colonne)</h2>
+        
+        <h3>g-0 (Nessun gutter)</h3>
+        <div class="code-display">&lt;div class="row g-0"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row g-0 mb-4">
+            <div class="col-4">
+                <div class="demo-box">No spacing</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-secondary">No spacing</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-success">No spacing</div>
+            </div>
+        </div>
+        
+        <h3>g-3 (Gutter medio - default)</h3>
+        <div class="code-display">&lt;div class="row g-3"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row g-3 mb-4">
+            <div class="col-4">
+                <div class="demo-box">Medium spacing</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-secondary">Medium spacing</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-success">Medium spacing</div>
+            </div>
+        </div>
+        
+        <h3>g-5 (Gutter grande)</h3>
+        <div class="code-display">&lt;div class="row g-5"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row g-5">
+            <div class="col-4">
+                <div class="demo-box demo-box-warning">Large spacing</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-info">Large spacing</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-danger">Large spacing</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sezione 6: Nesting -->
+    <div class="container section">
+        <h2>6. Nesting (Griglie Annidate)</h2>
+        <p>Puoi creare sotto-griglie inserendo una row dentro una colonna</p>
+        
+        <div class="code-display">
+            &lt;div class="col-9"&gt;<br>
+            &nbsp;&nbsp;&lt;div class="row"&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="col-6"&gt;...&lt;/div&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="col-6"&gt;...&lt;/div&gt;<br>
+            &nbsp;&nbsp;&lt;/div&gt;<br>
+            &lt;/div&gt;
+        </div>
+        
+        <div class="row">
+            <div class="col-9">
+                <div class="demo-box" style="padding: 20px;">
+                    <strong>Colonna Parent (col-9)</strong>
+                    <div class="row g-2 mt-2">
+                        <div class="col-6">
+                            <div style="background: white; color: #0d6efd; padding: 10px; border-radius: 4px;">
+                                Child 1 (50%)
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div style="background: white; color: #0d6efd; padding: 10px; border-radius: 4px;">
+                                Child 2 (50%)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="demo-box demo-box-secondary">
+                    Sidebar<br>(col-3)
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sezione 7: Order -->
+    <div class="container section">
+        <h2>7. Order (Ordine Visuale)</h2>
+        <p>Cambia l'ordine visuale delle colonne senza modificare l'HTML</p>
+        
+        <h3>Order Responsive (utile per mobile)</h3>
+        <div class="code-display">&lt;div class="order-2 order-lg-1"&gt;Main&lt;/div&gt; &lt;div class="order-1 order-lg-2"&gt;Sidebar&lt;/div&gt;</div>
+        <p class="text-muted small">Mobile: Sidebar prima | Desktop: Main prima</p>
+        
+        <div class="row">
+            <div class="col-12 col-lg-8 order-2 order-lg-1">
+                <div class="demo-box" style="min-height: 100px;">
+                    <div>
+                        <strong>Contenuto Principale</strong><br>
+                        <small>order-2 order-lg-1</small><br>
+                        <small class="text-white-50">Su mobile appare DOPO la sidebar</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 order-1 order-lg-2">
+                <div class="demo-box demo-box-warning" style="min-height: 100px;">
+                    <div>
+                        <strong>Sidebar</strong><br>
+                        <small>order-1 order-lg-2</small><br>
+                        <small>Su mobile appare PRIMA del main</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sezione 8: Allineamento -->
+    <div class="container section">
+        <h2>8. Allineamento Verticale e Orizzontale</h2>
+        
+        <h3>Allineamento Verticale</h3>
+        <div class="code-display">&lt;div class="row align-items-center" style="height: 200px"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row align-items-center mb-4" style="height: 150px; background: #f8f9fa; border-radius: 4px;">
+            <div class="col-4">
+                <div class="demo-box">align-items-center</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-secondary">Centrate verticalmente</div>
+            </div>
+            <div class="col-4">
+                <div class="demo-box demo-box-success">Nella row</div>
+            </div>
+        </div>
+        
+        <h3>Allineamento Orizzontale</h3>
+        <div class="code-display">&lt;div class="row justify-content-center"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row justify-content-center mb-3">
+            <div class="col-3">
+                <div class="demo-box demo-box-info">justify-content-center</div>
+            </div>
+            <div class="col-3">
+                <div class="demo-box demo-box-warning">Centrate</div>
+            </div>
+        </div>
+        
+        <div class="code-display">&lt;div class="row justify-content-between"&gt;...&lt;/div&gt;</div>
+        
+        <div class="row justify-content-between">
+            <div class="col-3">
+                <div class="demo-box demo-box-danger">Sinistra</div>
+            </div>
+            <div class="col-3">
+                <div class="demo-box">Destra</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Container Types Demo -->
+    <div class="section" style="margin: 0 15px 30px 15px;">
+        <h2>9. Tipi di Container</h2>
+        
+        <h3>.container (larghezza fissa responsive)</h3>
+        <div class="container">
+            <div class="demo-box">
+                Questo è dentro un .container<br>
+                <small>Ha una larghezza massima che cambia ai breakpoints</small>
+            </div>
+        </div>
+        
+        <h3 class="mt-4">.container-fluid (sempre 100%)</h3>
+    </div>
+    
+    <div class="container-fluid section">
+        <div class="demo-box demo-box-secondary">
+            Questo è dentro un .container-fluid<br>
+            <small>Occupa sempre il 100% della larghezza</small>
+        </div>
+    </div>
+    
+    <!-- Breakpoint Indicator -->
+    <div class="breakpoint-indicator">
+        <div>Breakpoint Corrente:</div>
+        <div class="breakpoint-size" id="breakpoint-display">-</div>
+        <div style="font-size: 0.9rem; margin-top: 5px;" id="width-display">-</div>
+    </div>
+    
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <script>
+        // Funzione per aggiornare l'indicatore del breakpoint
+        function updateBreakpoint() {
+            const width = window.innerWidth;
+            let breakpoint, color;
+            
+            if (width < 576) {
+                breakpoint = 'xs (Extra Small)';
+                color = '#dc3545';
+            } else if (width < 768) {
+                breakpoint = 'sm (Small)';
+                color = '#fd7e14';
+            } else if (width < 992) {
+                breakpoint = 'md (Medium)';
+                color = '#ffc107';
+            } else if (width < 1200) {
+                breakpoint = 'lg (Large)';
+                color = '#198754';
+            } else if (width < 1400) {
+                breakpoint = 'xl (Extra Large)';
+                color = '#0dcaf0';
+            } else {
+                breakpoint = 'xxl (XX Large)';
+                color = '#6f42c1';
+            }
+            
+            document.getElementById('breakpoint-display').textContent = breakpoint;
+            document.getElementById('breakpoint-display').style.color = color;
+            document.getElementById('width-display').textContent = width + 'px';
+        }
+        
+        // Aggiorna al caricamento
+        updateBreakpoint();
+        
+        // Aggiorna al resize
+        window.addEventListener('resize', updateBreakpoint);
+        
+        // Log dei breakpoints
+        console.log('Bootstrap Grid System Loaded');
+        console.log('Resize the window to see breakpoint changes');
+    </script>
+</body>
+</html>

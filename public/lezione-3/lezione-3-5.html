@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 3.5 - Componenti Navigazione</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 3.5 - Componenti Navigazione</h1>
+            <p>Navbar, Navs, Tabs, Breadcrumb e Pagination</p>
+        </div>
+
+        <h2>1. Navbar</h2>
+        
+        <div class="teoria">
+            <p>La navbar di Bootstrap è un componente responsive per creare header di navigazione. Include supporto per branding, navigazione, form e altro ancora. Si adatta automaticamente ai diversi dispositivi con un menu hamburger su mobile.</p>
+        </div>
+
+        <h3>1.1 Navbar Base</h3>
+        
+        <div class="codice">
+<pre>&lt;nav class="navbar navbar-expand-lg navbar-light bg-light"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Navbar&lt;/a&gt;
+        &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav"&gt;
+            &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;div class="collapse navbar-collapse" id="navbarNav"&gt;
+            &lt;ul class="navbar-nav"&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link active" href="#"&gt;Home&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#"&gt;Features&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#"&gt;Pricing&lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>1.2 Navbar con Brand e Logo</h3>
+        
+        <div class="codice">
+<pre>&lt;nav class="navbar navbar-light bg-light"&gt;
+    &lt;div class="container"&gt;
+        &lt;!-- Brand con testo --&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Navbar&lt;/a&gt;
+        
+        &lt;!-- Brand con immagine --&gt;
+        &lt;a class="navbar-brand" href="#"&gt;
+            &lt;img src="/logo.svg" alt="Logo" width="30" height="24"&gt;
+        &lt;/a&gt;
+        
+        &lt;!-- Brand con immagine e testo --&gt;
+        &lt;a class="navbar-brand" href="#"&gt;
+            &lt;img src="/logo.svg" alt="" width="30" height="24" 
+                 class="d-inline-block align-text-top"&gt;
+            Bootstrap
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>1.3 Navbar Color Schemes</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Light navbar --&gt;
+&lt;nav class="navbar navbar-light bg-light"&gt;
+    &lt;!-- content --&gt;
+&lt;/nav&gt;
+
+&lt;!-- Dark navbar --&gt;
+&lt;nav class="navbar navbar-dark bg-dark"&gt;
+    &lt;!-- content --&gt;
+&lt;/nav&gt;
+
+&lt;!-- Primary navbar --&gt;
+&lt;nav class="navbar navbar-dark bg-primary"&gt;
+    &lt;!-- content --&gt;
+&lt;/nav&gt;
+
+&lt;!-- Custom color --&gt;
+&lt;nav class="navbar navbar-light" style="background-color: #e3f2fd;"&gt;
+    &lt;!-- content --&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>1.4 Navbar Completa con Dropdown</h3>
+        
+        <div class="codice">
+<pre>&lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Navbar&lt;/a&gt;
+        
+        &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNavDropdown"&gt;
+            &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        
+        &lt;div class="collapse navbar-collapse" id="navbarNavDropdown"&gt;
+            &lt;ul class="navbar-nav"&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link active" href="#"&gt;Home&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#"&gt;Features&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item"&gt;
+                    &lt;a class="nav-link" href="#"&gt;Pricing&lt;/a&gt;
+                &lt;/li&gt;
+                &lt;li class="nav-item dropdown"&gt;
+                    &lt;a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" 
+                       role="button" data-bs-toggle="dropdown"&gt;
+                        Dropdown
+                    &lt;/a&gt;
+                    &lt;ul class="dropdown-menu"&gt;
+                        &lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;hr class="dropdown-divider"&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;Something else&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>1.5 Navbar con Form</h3>
+        
+        <div class="codice">
+<pre>&lt;nav class="navbar navbar-light bg-light"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Navbar&lt;/a&gt;
+        &lt;form class="d-flex" role="search"&gt;
+            &lt;input class="form-control me-2" type="search" placeholder="Search"&gt;
+            &lt;button class="btn btn-outline-success" type="submit"&gt;Search&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>1.6 Navbar con Contenuto Allineato</h3>
+        
+        <div class="codice">
+<pre>&lt;nav class="navbar navbar-expand-lg navbar-light bg-light"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Navbar&lt;/a&gt;
+        
+        &lt;!-- Links a sinistra --&gt;
+        &lt;ul class="navbar-nav me-auto mb-2 mb-lg-0"&gt;
+            &lt;li class="nav-item"&gt;
+                &lt;a class="nav-link" href="#"&gt;Home&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li class="nav-item"&gt;
+                &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+        
+        &lt;!-- Form a destra --&gt;
+        &lt;form class="d-flex"&gt;
+            &lt;input class="form-control me-2" type="search"&gt;
+            &lt;button class="btn btn-outline-success" type="submit"&gt;Search&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>1.7 Navbar Fixed</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Fixed to top --&gt;
+&lt;nav class="navbar navbar-light bg-light fixed-top"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Fixed top&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;!-- Fixed to bottom --&gt;
+&lt;nav class="navbar navbar-light bg-light fixed-bottom"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Fixed bottom&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;!-- Sticky top --&gt;
+&lt;nav class="navbar navbar-light bg-light sticky-top"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Sticky top&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Nota:</strong> Quando usi <code>.fixed-top</code> o <code>.fixed-bottom</code>, ricorda di aggiungere padding al body per evitare che il contenuto venga coperto dalla navbar.</p>
+        </div>
+
+        <h3>1.8 Offcanvas Navbar</h3>
+        
+        <p>Per mobile, usa offcanvas invece del collapse standard:</p>
+
+        <div class="codice">
+<pre>&lt;nav class="navbar navbar-light bg-light"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="#"&gt;Offcanvas navbar&lt;/a&gt;
+        &lt;button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasNavbar"&gt;
+            &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"&gt;
+            &lt;div class="offcanvas-header"&gt;
+                &lt;h5 class="offcanvas-title"&gt;Menu&lt;/h5&gt;
+                &lt;button type="button" class="btn-close" data-bs-dismiss="offcanvas"&gt;&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="offcanvas-body"&gt;
+                &lt;ul class="navbar-nav"&gt;
+                    &lt;li class="nav-item"&gt;
+                        &lt;a class="nav-link active" href="#"&gt;Home&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class="nav-item"&gt;
+                        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h2>2. Navs e Tabs</h2>
+        
+        <div class="teoria">
+            <p>I componenti Nav sono usati per creare navigazione orizzontale o verticale. Possono essere trasformati in tabs o pills.</p>
+        </div>
+
+        <h3>2.1 Nav Base</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="nav"&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link active" href="#"&gt;Active&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link disabled"&gt;Disabled&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>2.2 Nav Tabs</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="nav nav-tabs"&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link active" href="#"&gt;Active&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link disabled"&gt;Disabled&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>2.3 Nav Pills</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="nav nav-pills"&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link active" href="#"&gt;Active&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link disabled"&gt;Disabled&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>2.4 Nav Fill e Justify</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Nav Fill (larghezza proporzionale) --&gt;
+&lt;ul class="nav nav-pills nav-fill"&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link active" href="#"&gt;Active&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Much longer nav link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Nav Justified (larghezza uguale) --&gt;
+&lt;ul class="nav nav-pills nav-justified"&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link active" href="#"&gt;Active&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Much longer nav link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>2.5 Nav Verticale</h3>
+        
+        <div class="codice">
+<pre>&lt;ul class="nav flex-column"&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link active" href="#"&gt;Active&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Link&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <h3>2.6 Tabs con Contenuto (JavaScript)</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Nav tabs --&gt;
+&lt;ul class="nav nav-tabs" id="myTab" role="tablist"&gt;
+    &lt;li class="nav-item" role="presentation"&gt;
+        &lt;button class="nav-link active" id="home-tab" data-bs-toggle="tab" 
+                data-bs-target="#home" type="button"&gt;Home&lt;/button&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item" role="presentation"&gt;
+        &lt;button class="nav-link" id="profile-tab" data-bs-toggle="tab" 
+                data-bs-target="#profile" type="button"&gt;Profile&lt;/button&gt;
+    &lt;/li&gt;
+    &lt;li class="nav-item" role="presentation"&gt;
+        &lt;button class="nav-link" id="contact-tab" data-bs-toggle="tab" 
+                data-bs-target="#contact" type="button"&gt;Contact&lt;/button&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Tab panes --&gt;
+&lt;div class="tab-content" id="myTabContent"&gt;
+    &lt;div class="tab-pane fade show active" id="home" role="tabpanel"&gt;
+        &lt;p&gt;Home content...&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-pane fade" id="profile" role="tabpanel"&gt;
+        &lt;p&gt;Profile content...&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-pane fade" id="contact" role="tabpanel"&gt;
+        &lt;p&gt;Contact content...&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>3. Breadcrumb</h2>
+        
+        <div class="teoria">
+            <p>Il breadcrumb è un indicatore della posizione corrente all'interno della gerarchia di navigazione del sito. Utile per aiutare gli utenti a capire dove si trovano.</p>
+        </div>
+
+        <h3>3.1 Breadcrumb Base</h3>
+        
+        <div class="codice">
+<pre>&lt;nav aria-label="breadcrumb"&gt;
+    &lt;ol class="breadcrumb"&gt;
+        &lt;li class="breadcrumb-item"&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="breadcrumb-item active" aria-current="page"&gt;Library&lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/nav&gt;
+
+&lt;nav aria-label="breadcrumb"&gt;
+    &lt;ol class="breadcrumb"&gt;
+        &lt;li class="breadcrumb-item"&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="breadcrumb-item"&gt;&lt;a href="#"&gt;Library&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="breadcrumb-item active" aria-current="page"&gt;Data&lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>3.2 Breadcrumb con Separatore Custom</h3>
+        
+        <div class="codice">
+<pre>&lt;style&gt;
+    .breadcrumb-custom {
+        --bs-breadcrumb-divider: '&gt;';
+    }
+    
+    .breadcrumb-arrow {
+        --bs-breadcrumb-divider: '→';
+    }
+&lt;/style&gt;
+
+&lt;nav aria-label="breadcrumb"&gt;
+    &lt;ol class="breadcrumb breadcrumb-custom"&gt;
+        &lt;li class="breadcrumb-item"&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="breadcrumb-item active"&gt;Library&lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h2>4. Pagination</h2>
+        
+        <div class="teoria">
+            <p>La pagination permette di navigare tra pagine di contenuto. Bootstrap fornisce stili per creare controlli di paginazione accessibili e responsive.</p>
+        </div>
+
+        <h3>4.1 Pagination Base</h3>
+        
+        <div class="codice">
+<pre>&lt;nav aria-label="Page navigation"&gt;
+    &lt;ul class="pagination"&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;Previous&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;Next&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>4.2 Pagination con Icone</h3>
+        
+        <div class="codice">
+<pre>&lt;nav aria-label="Page navigation"&gt;
+    &lt;ul class="pagination"&gt;
+        &lt;li class="page-item"&gt;
+            &lt;a class="page-link" href="#" aria-label="Previous"&gt;
+                &lt;span aria-hidden="true"&gt;&amp;laquo;&lt;/span&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;
+            &lt;a class="page-link" href="#" aria-label="Next"&gt;
+                &lt;span aria-hidden="true"&gt;&amp;raquo;&lt;/span&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>4.3 Pagination Active e Disabled</h3>
+        
+        <div class="codice">
+<pre>&lt;nav aria-label="Page navigation"&gt;
+    &lt;ul class="pagination"&gt;
+        &lt;li class="page-item disabled"&gt;
+            &lt;a class="page-link"&gt;Previous&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item active" aria-current="page"&gt;
+            &lt;a class="page-link" href="#"&gt;2&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;
+            &lt;a class="page-link" href="#"&gt;Next&lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>4.4 Pagination Sizes</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Large pagination --&gt;
+&lt;nav aria-label="..."&gt;
+    &lt;ul class="pagination pagination-lg"&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+
+&lt;!-- Default pagination --&gt;
+&lt;nav aria-label="..."&gt;
+    &lt;ul class="pagination"&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+
+&lt;!-- Small pagination --&gt;
+&lt;nav aria-label="..."&gt;
+    &lt;ul class="pagination pagination-sm"&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h3>4.5 Pagination Alignment</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Center aligned --&gt;
+&lt;nav aria-label="Page navigation"&gt;
+    &lt;ul class="pagination justify-content-center"&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+
+&lt;!-- Right aligned --&gt;
+&lt;nav aria-label="Page navigation"&gt;
+    &lt;ul class="pagination justify-content-end"&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;</pre>
+        </div>
+
+        <h2>5. Esempio Interattivo</h2>
+
+        <div class="esempio">
+            <iframe src="esempi/componenti-navigazione.html" width="100%" height="900" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Componenti di navigazione Bootstrap</p>
+        </div>
+
+        <h2>6. Best Practices</h2>
+        
+        <div class="teoria">
+            <p><strong>✓ Consigli:</strong></p>
+            <ul>
+                <li>Usa sempre <code>navbar-expand-{breakpoint}</code> per controllo responsive</li>
+                <li>Includi sempre <code>aria-label</code> e attributi accessibilità</li>
+                <li>Usa <code>.active</code> per indicare la pagina corrente</li>
+                <li>Per fixed navbar, aggiungi padding al body</li>
+                <li>Usa breadcrumb per siti con gerarchia profonda</li>
+                <li>Pagination sempre con <code>&lt;nav&gt;</code> e <code>aria-label</code></li>
+            </ul>
+            
+            <p><strong>✗ Evita:</strong></p>
+            <ul>
+                <li>Non usare troppe voci nella navbar (max 7-8)</li>
+                <li>Non dimenticare il toggler button per mobile</li>
+                <li>Non usare dropdown troppo complessi</li>
+                <li>Non omettere gli attributi accessibilità</li>
+                <li>Non usare pagination per poche pagine (usa scroll)</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-3-4.html" class="btn-prev">Indietro</a>
+            <a href="/" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link utili</a>
+            <a href="lezione-3-6.html" class="btn-next">Avanti</a>
+        </div>
+    </div>
+</body>
+</html>

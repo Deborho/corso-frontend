@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 3.1 - Introduzione e Setup Bootstrap</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 3.1 - Introduzione e Setup Bootstrap</h1>
+            <p>Cos'è Bootstrap e come integrarlo nel tuo progetto</p>
+        </div>
+
+        <h2>1. Cos'è Bootstrap?</h2>
+        
+        <div class="teoria">
+            <p><strong>Bootstrap</strong> è il framework front-end open source più popolare al mondo per lo sviluppo di siti web responsive e mobile-first. Creato originariamente da Twitter nel 2011, Bootstrap fornisce una collezione di strumenti CSS e JavaScript che semplificano la creazione di interfacce web moderne.</p>
+            
+            <p><strong>Caratteristiche principali:</strong></p>
+            <ul>
+                <li><strong>Grid System Responsive:</strong> Sistema a 12 colonne flessibile per creare layout che si adattano automaticamente a diverse dimensioni di schermo</li>
+                <li><strong>Componenti Pre-costruiti:</strong> Oltre 30 componenti UI pronti all'uso (navbar, modal, carousel, ecc.)</li>
+                <li><strong>Utility Classes:</strong> Centinaia di classi CSS per spacing, colori, tipografia e layout</li>
+                <li><strong>Mobile-First:</strong> Progettato per dispositivi mobili e poi adattato a schermi più grandi</li>
+                <li><strong>Cross-Browser:</strong> Compatibile con tutti i browser moderni</li>
+                <li><strong>Personalizzabile:</strong> Facilmente modificabile tramite variabili CSS o SASS</li>
+            </ul>
+        </div>
+
+        <h2>2. Perché Usare Bootstrap?</h2>
+        
+        <table>
+            <tr>
+                <th>Vantaggi</th>
+                <th>Considerazioni</th>
+            </tr>
+            <tr>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Sviluppo rapido e prototipazione veloce</li>
+                        <li>Codice consistente e manutenibile</li>
+                        <li>Design responsive integrato</li>
+                        <li>Ampia documentazione e community</li>
+                        <li>Compatibilità cross-browser testata</li>
+                        <li>Riduce il CSS custom necessario</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Dimensione del file (può essere ottimizzata)</li>
+                        <li>Aspetto generico se non personalizzato</li>
+                        <li>Curva di apprendimento iniziale</li>
+                        <li>Possibile overhead per progetti semplici</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <h2>3. Bootstrap 5: Novità Principali</h2>
+        
+        <div class="teoria">
+            <p>Bootstrap 5 (rilasciato nel 2021) introduce miglioramenti significativi rispetto alla versione 4:</p>
+            <ul>
+                <li><strong>Niente jQuery:</strong> Completamente riscritto in JavaScript vanilla, più leggero e performante</li>
+                <li><strong>CSS Custom Properties:</strong> Utilizza variabili CSS native per personalizzazione più semplice</li>
+                <li><strong>RTL Support:</strong> Supporto nativo per lingue right-to-left</li>
+                <li><strong>Nuovi Componenti:</strong> Offcanvas, floating labels, enhanced grid</li>
+                <li><strong>Internet Explorer Dropped:</strong> Non supporta più IE11, file più leggeri</li>
+                <li><strong>Utilities API:</strong> Sistema più potente per creare utility custom</li>
+            </ul>
+        </div>
+
+        <h2>4. Metodi di Installazione</h2>
+
+        <h3>4.1 Metodo 1: CDN (Content Delivery Network) - Consigliato per Iniziare</h3>
+        
+        <div class="teoria">
+            <p>Il metodo più semplice e veloce per iniziare. Include i file Bootstrap direttamente da un server esterno.</p>
+            
+            <p><strong>Vantaggi:</strong></p>
+            <ul>
+                <li>Nessuna installazione richiesta</li>
+                <li>Setup immediato</li>
+                <li>File serviti da server ottimizzati e veloci</li>
+                <li>Caching del browser (se già usato su altri siti)</li>
+            </ul>
+            
+            <p><strong>Svantaggi:</strong></p>
+            <ul>
+                <li>Richiede connessione internet</li>
+                <li>Dipendenza da server esterni</li>
+                <li>Non personalizzabile direttamente</li>
+            </ul>
+        </div>
+
+        <p>Aggiungi questi link nella sezione <code>&lt;head&gt;</code> del tuo HTML:</p>
+
+        <div class="codice">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="it"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Il mio primo progetto Bootstrap&lt;/title&gt;
+    
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+          crossorigin="anonymous"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    &lt;h1&gt;Hello, Bootstrap!&lt;/h1&gt;
+    
+    &lt;!-- Bootstrap JavaScript Bundle (include Popper) --&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Nota importante:</strong> Il JavaScript di Bootstrap va inserito prima della chiusura del tag <code>&lt;/body&gt;</code> per garantire che tutti gli elementi HTML siano caricati prima dell'esecuzione degli script.</p>
+            
+            <p><strong>Integrità (integrity) e CORS:</strong> Gli attributi <code>integrity</code> e <code>crossorigin</code> sono misure di sicurezza che garantiscono che il file scaricato non sia stato modificato.</p>
+        </div>
+
+        <h3>4.2 Metodo 2: Download Locale</h3>
+        
+        <p>Scarica Bootstrap e includilo direttamente nel tuo progetto.</p>
+
+        <p><strong>Step 1:</strong> Vai su <a href="https://getbootstrap.com/" target="_blank">getbootstrap.com</a> e scarica la versione Compiled CSS and JS.</p>
+        
+        <p><strong>Step 2:</strong> Estrai lo ZIP e copia le cartelle <code>css</code> e <code>js</code> nella tua directory di progetto:</p>
+
+        <div class="codice">
+<pre>mio-progetto/
+├── index.html
+├── css/
+│   └── bootstrap.min.css
+└── js/
+    └── bootstrap.bundle.min.js</pre>
+        </div>
+
+        <p><strong>Step 3:</strong> Collega i file nel tuo HTML:</p>
+
+        <div class="codice">
+<pre>&lt;head&gt;
+    &lt;link rel="stylesheet" href="css/bootstrap.min.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Contenuto --&gt;
+    
+    &lt;script src="js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;</pre>
+        </div>
+
+        <h3>4.3 Metodo 3: npm (Per Progetti Avanzati)</h3>
+        
+        <div class="teoria">
+            <p>Per progetti professionali che utilizzano build tools come Webpack o Vite.</p>
+            
+            <p><strong>Prerequisiti:</strong> Node.js e npm installati sul sistema.</p>
+        </div>
+
+        <p><strong>Step 1:</strong> Inizializza un progetto npm (se non già fatto):</p>
+
+        <div class="codice">
+<pre>npm init -y</pre>
+        </div>
+
+        <p><strong>Step 2:</strong> Installa Bootstrap:</p>
+
+        <div class="codice">
+<pre>npm install bootstrap@5.3.2</pre>
+        </div>
+
+        <p><strong>Step 3:</strong> Importa Bootstrap nel tuo JavaScript:</p>
+
+        <div class="codice">
+<pre>// Import CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Import JS (opzionale, solo se serve)
+import * as bootstrap from 'bootstrap';</pre>
+        </div>
+
+        <p>O importa solo i componenti necessari per ridurre le dimensioni:</p>
+
+        <div class="codice">
+<pre>// Import solo il CSS del grid
+import 'bootstrap/dist/css/bootstrap-grid.min.css';
+
+// Import solo Modal e Dropdown
+import Modal from 'bootstrap/js/dist/modal';
+import Dropdown from 'bootstrap/js/dist/dropdown';</pre>
+        </div>
+
+        <h2>5. Struttura dei File Bootstrap</h2>
+        
+        <div class="teoria">
+            <p>Quando scarichi Bootstrap, trovi questa struttura:</p>
+        </div>
+
+        <div class="codice">
+<pre>bootstrap/
+├── css/
+│   ├── bootstrap.css              # Versione completa, non minificata
+│   ├── bootstrap.min.css          # Versione minificata (usa questa)
+│   ├── bootstrap.rtl.css          # Per lingue right-to-left
+│   ├── bootstrap-grid.css         # Solo il grid system
+│   ├── bootstrap-utilities.css    # Solo le utilities
+│   └── bootstrap.css.map          # Source map per debugging
+├── js/
+│   ├── bootstrap.bundle.js        # JS + Popper (usa questo)
+│   ├── bootstrap.bundle.min.js   # Versione minificata
+│   ├── bootstrap.js               # Solo Bootstrap (senza Popper)
+│   └── bootstrap.min.js          # Versione minificata senza Popper
+└── scss/                          # File sorgente SASS (per personalizzazione)</pre>
+        </div>
+
+        <table>
+            <tr>
+                <th>File</th>
+                <th>Quando Usarlo</th>
+            </tr>
+            <tr>
+                <td><code>bootstrap.min.css</code></td>
+                <td>Produzione - Versione completa minificata (178 KB)</td>
+            </tr>
+            <tr>
+                <td><code>bootstrap-grid.min.css</code></td>
+                <td>Se serve solo il grid system (62 KB)</td>
+            </tr>
+            <tr>
+                <td><code>bootstrap-utilities.min.css</code></td>
+                <td>Se servono solo le utility classes (75 KB)</td>
+            </tr>
+            <tr>
+                <td><code>bootstrap.bundle.min.js</code></td>
+                <td>Include anche Popper.js per tooltip e popover (78 KB)</td>
+            </tr>
+            <tr>
+                <td><code>bootstrap.min.js</code></td>
+                <td>Solo Bootstrap JS, senza Popper (58 KB)</td>
+            </tr>
+        </table>
+
+        <h2>6. Prima Pagina con Bootstrap</h2>
+        
+        <p>Creiamo una pagina Bootstrap completa e funzionante:</p>
+
+        <div class="codice">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="it"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Prima Pagina Bootstrap&lt;/title&gt;
+    
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    &lt;!-- Navbar --&gt;
+    &lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark"&gt;
+        &lt;div class="container"&gt;
+            &lt;a class="navbar-brand" href="#"&gt;Il Mio Sito&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    
+    &lt;!-- Contenuto Principale --&gt;
+    &lt;div class="container my-5"&gt;
+        &lt;div class="row"&gt;
+            &lt;div class="col-md-8"&gt;
+                &lt;h1 class="display-4"&gt;Benvenuto in Bootstrap 5&lt;/h1&gt;
+                &lt;p class="lead"&gt;
+                    Questo è un esempio di pagina creata con Bootstrap. 
+                    Il grid system rende il layout responsive automaticamente.
+                &lt;/p&gt;
+                &lt;hr class="my-4"&gt;
+                &lt;p&gt;Bootstrap fornisce componenti pronti all'uso:&lt;/p&gt;
+                &lt;button class="btn btn-primary btn-lg"&gt;Button Primary&lt;/button&gt;
+                &lt;button class="btn btn-success btn-lg"&gt;Button Success&lt;/button&gt;
+            &lt;/div&gt;
+            
+            &lt;div class="col-md-4"&gt;
+                &lt;div class="card"&gt;
+                    &lt;div class="card-body"&gt;
+                        &lt;h5 class="card-title"&gt;Card Esempio&lt;/h5&gt;
+                        &lt;p class="card-text"&gt;
+                            I componenti come questa card si adattano 
+                            automaticamente allo spazio disponibile.
+                        &lt;/p&gt;
+                        &lt;a href="#" class="btn btn-primary"&gt;Scopri di più&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- Footer --&gt;
+    &lt;footer class="bg-dark text-white text-center py-3 mt-5"&gt;
+        &lt;div class="container"&gt;
+            &lt;p class="mb-0"&gt;&amp;copy; 2024 Il Mio Sito - Powered by Bootstrap 5&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+    
+    &lt;!-- Bootstrap JavaScript --&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"&gt;
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <h3>Analisi del Codice</h3>
+        
+        <table>
+            <tr>
+                <th>Classe Bootstrap</th>
+                <th>Funzione</th>
+            </tr>
+            <tr>
+                <td><code>container</code></td>
+                <td>Contenitore responsive con margini automatici</td>
+            </tr>
+            <tr>
+                <td><code>navbar navbar-dark bg-dark</code></td>
+                <td>Barra di navigazione con sfondo scuro e testo chiaro</td>
+            </tr>
+            <tr>
+                <td><code>row</code></td>
+                <td>Riga del grid system (contiene colonne)</td>
+            </tr>
+            <tr>
+                <td><code>col-md-8</code></td>
+                <td>Colonna che occupa 8/12 dello spazio su schermi medi e grandi</td>
+            </tr>
+            <tr>
+                <td><code>col-md-4</code></td>
+                <td>Colonna che occupa 4/12 dello spazio su schermi medi e grandi</td>
+            </tr>
+            <tr>
+                <td><code>my-5</code></td>
+                <td>Margin verticale (top e bottom) di livello 5</td>
+            </tr>
+            <tr>
+                <td><code>display-4</code></td>
+                <td>Titolo grande in stile display</td>
+            </tr>
+            <tr>
+                <td><code>lead</code></td>
+                <td>Paragrafo evidenziato con testo più grande</td>
+            </tr>
+            <tr>
+                <td><code>btn btn-primary</code></td>
+                <td>Button con stile primary (blu)</td>
+            </tr>
+            <tr>
+                <td><code>card</code></td>
+                <td>Contenitore flessibile per contenuti</td>
+            </tr>
+        </table>
+
+        <h2>7. Meta Tag Viewport</h2>
+        
+        <div class="teoria">
+            <p>Questo meta tag è <strong>ESSENZIALE</strong> per il design responsive di Bootstrap:</p>
+        </div>
+
+        <div class="codice">
+<pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+        </div>
+
+        <p>Senza questo tag, il sito non sarà responsive su dispositivi mobili. Spiega al browser di:</p>
+        <ul>
+            <li><code>width=device-width</code>: Usa la larghezza effettiva del dispositivo</li>
+            <li><code>initial-scale=1.0</code>: Non fare zoom iniziale</li>
+        </ul>
+
+        <h2>8. Verifica dell'Installazione</h2>
+        
+        <p>Per verificare che Bootstrap sia correttamente installato:</p>
+
+        <p><strong>1. Verifica CSS:</strong> Apri la pagina e ispeziona un elemento con le Developer Tools. Dovresti vedere le classi Bootstrap applicate.</p>
+        
+        <p><strong>2. Verifica JavaScript:</strong> Apri la Console del browser e digita:</p>
+
+        <div class="codice">
+<pre>typeof bootstrap !== 'undefined'</pre>
+        </div>
+
+        <p>Se restituisce <code>true</code>, Bootstrap JS è caricato correttamente.</p>
+
+        <p><strong>3. Test Responsive:</strong> Ridimensiona la finestra del browser. I contenuti dovrebbero adattarsi automaticamente.</p>
+
+        <h2>9. Esempio Interattivo Completo</h2>
+
+        <div class="esempio">
+            <iframe src="esempi/setup-bootstrap.html" width="100%" height="600" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Prima pagina Bootstrap completa - Ridimensiona per vedere il comportamento responsive</p>
+        </div>
+
+        <h2>10. Best Practices e Consigli</h2>
+        
+        <div class="teoria">
+            <p><strong>✓ Cosa Fare:</strong></p>
+            <ul>
+                <li>Usa sempre il meta viewport tag</li>
+                <li>Carica il CSS nell'<code>&lt;head&gt;</code></li>
+                <li>Carica il JS prima della chiusura <code>&lt;/body&gt;</code></li>
+                <li>Usa <code>bootstrap.bundle.min.js</code> (include Popper)</li>
+                <li>Mantieni Bootstrap aggiornato per sicurezza e bugfix</li>
+                <li>Consulta la documentazione ufficiale per dettagli</li>
+            </ul>
+            
+            <p><strong>✗ Cosa Evitare:</strong></p>
+            <ul>
+                <li>Non modificare direttamente i file Bootstrap</li>
+                <li>Non mischiare versioni diverse di Bootstrap</li>
+                <li>Non caricare jQuery se usi Bootstrap 5 (non serve più)</li>
+                <li>Non usare !important per override (usa specificità CSS)</li>
+                <li>Non includere l'intero Bootstrap se serve solo il grid</li>
+            </ul>
+        </div>
+
+        <h2>11. Prossimi Passi</h2>
+        
+        <p>Ora che hai configurato Bootstrap correttamente, nella prossima lezione approfondiremo:</p>
+        <ul>
+            <li>Grid System in dettaglio</li>
+            <li>Breakpoints responsive</li>
+            <li>Container e layout</li>
+            <li>Creazione di layout complessi</li>
+        </ul>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link utili</a>
+            <a href="lezione-3-2.html" class="btn-next">Avanti</a>
+        </div>
+    </div>
+</body>
+</html>

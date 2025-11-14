@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 3.3 - Typography e Utilities</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 3.3 - Typography e Utilities</h1>
+            <p>Classi utility Bootstrap per tipografia, spacing, colori e layout</p>
+        </div>
+
+        <h2>1. Typography (Tipografia)</h2>
+        
+        <div class="teoria">
+            <p>Bootstrap fornisce un sistema tipografico completo con classi per headings, display text, paragrafi e formattazione del testo. Tutte le classi sono responsive e seguono best practices di tipografia web.</p>
+        </div>
+
+        <h3>1.1 Headings (Intestazioni)</h3>
+        
+        <p>Bootstrap stila automaticamente i tag HTML <code>&lt;h1&gt;</code> fino a <code>&lt;h6&gt;</code>. Puoi anche usare le classi <code>.h1</code> fino a <code>.h6</code> per applicare lo stile senza usare il tag semantico:</p>
+
+        <div class="codice">
+<pre>&lt;!-- Tag HTML semantici --&gt;
+&lt;h1&gt;Heading 1&lt;/h1&gt;
+&lt;h2&gt;Heading 2&lt;/h2&gt;
+&lt;h3&gt;Heading 3&lt;/h3&gt;
+&lt;h4&gt;Heading 4&lt;/h4&gt;
+&lt;h5&gt;Heading 5&lt;/h5&gt;
+&lt;h6&gt;Heading 6&lt;/h6&gt;
+
+&lt;!-- Classi per stile senza semantica --&gt;
+&lt;p class="h1"&gt;Stile h1 su un paragrafo&lt;/p&gt;
+&lt;div class="h3"&gt;Stile h3 su un div&lt;/div&gt;</pre>
+        </div>
+
+        <h3>1.2 Display Headings</h3>
+        
+        <p>Per titoli ancora più grandi e impattanti:</p>
+
+        <div class="codice">
+<pre>&lt;h1 class="display-1"&gt;Display 1&lt;/h1&gt;
+&lt;h1 class="display-2"&gt;Display 2&lt;/h1&gt;
+&lt;h1 class="display-3"&gt;Display 3&lt;/h1&gt;
+&lt;h1 class="display-4"&gt;Display 4&lt;/h1&gt;
+&lt;h1 class="display-5"&gt;Display 5&lt;/h1&gt;
+&lt;h1 class="display-6"&gt;Display 6&lt;/h1&gt;</pre>
+        </div>
+
+        <table>
+            <tr>
+                <th>Classe</th>
+                <th>Dimensione (rem)</th>
+                <th>Uso</th>
+            </tr>
+            <tr>
+                <td><code>.display-1</code></td>
+                <td>5rem (80px)</td>
+                <td>Hero sections, titoli principali</td>
+            </tr>
+            <tr>
+                <td><code>.display-2</code></td>
+                <td>4.5rem (72px)</td>
+                <td>Titoli molto grandi</td>
+            </tr>
+            <tr>
+                <td><code>.display-3</code></td>
+                <td>4rem (64px)</td>
+                <td>Titoli grandi</td>
+            </tr>
+            <tr>
+                <td><code>.display-4</code></td>
+                <td>3.5rem (56px)</td>
+                <td>Sottotitoli importanti</td>
+            </tr>
+        </table>
+
+        <h3>1.3 Lead Paragraph</h3>
+        
+        <p>Per far risaltare un paragrafo:</p>
+
+        <div class="codice">
+<pre>&lt;p class="lead"&gt;
+    Questo è un paragrafo lead, più grande e con maggior peso 
+    visuale rispetto ai paragrafi normali.
+&lt;/p&gt;</pre>
+        </div>
+
+        <h3>1.4 Inline Text Elements</h3>
+        
+        <div class="codice">
+<pre>&lt;p&gt;&lt;mark&gt;Testo evidenziato&lt;/mark&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;Testo cancellato&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;Testo barrato&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;&lt;ins&gt;Testo inserito (sottolineato)&lt;/ins&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Testo sottolineato&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;Testo piccolo&lt;/small&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Testo in grassetto&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Testo in corsivo&lt;/em&gt;&lt;/p&gt;</pre>
+        </div>
+
+        <h2>2. Text Utilities</h2>
+
+        <h3>2.1 Text Alignment</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Allineamento base --&gt;
+&lt;p class="text-start"&gt;Allineato a sinistra&lt;/p&gt;
+&lt;p class="text-center"&gt;Allineato al centro&lt;/p&gt;
+&lt;p class="text-end"&gt;Allineato a destra&lt;/p&gt;
+
+&lt;!-- Allineamento responsive --&gt;
+&lt;p class="text-start text-md-center text-lg-end"&gt;
+    Mobile: sinistra | Tablet: centro | Desktop: destra
+&lt;/p&gt;</pre>
+        </div>
+
+        <h3>2.2 Text Transform</h3>
+        
+        <div class="codice">
+<pre>&lt;p class="text-lowercase"&gt;TESTO IN MINUSCOLO&lt;/p&gt;
+&lt;p class="text-uppercase"&gt;testo in maiuscolo&lt;/p&gt;
+&lt;p class="text-capitalize"&gt;ogni parola inizia maiuscola&lt;/p&gt;</pre>
+        </div>
+
+        <h3>2.3 Font Weight e Italics</h3>
+        
+        <div class="codice">
+<pre>&lt;p class="fw-bold"&gt;Testo in grassetto&lt;/p&gt;
+&lt;p class="fw-bolder"&gt;Testo più grassetto (relativo al parent)&lt;/p&gt;
+&lt;p class="fw-semibold"&gt;Testo semi-grassetto&lt;/p&gt;
+&lt;p class="fw-medium"&gt;Testo medio&lt;/p&gt;
+&lt;p class="fw-normal"&gt;Testo peso normale&lt;/p&gt;
+&lt;p class="fw-light"&gt;Testo leggero&lt;/p&gt;
+&lt;p class="fw-lighter"&gt;Testo più leggero&lt;/p&gt;
+
+&lt;p class="fst-italic"&gt;Testo in corsivo&lt;/p&gt;
+&lt;p class="fst-normal"&gt;Testo normale (rimuove corsivo)&lt;/p&gt;</pre>
+        </div>
+
+        <h3>2.4 Font Size</h3>
+        
+        <div class="codice">
+<pre>&lt;p class="fs-1"&gt;Font size 1 (più grande)&lt;/p&gt;
+&lt;p class="fs-2"&gt;Font size 2&lt;/p&gt;
+&lt;p class="fs-3"&gt;Font size 3&lt;/p&gt;
+&lt;p class="fs-4"&gt;Font size 4&lt;/p&gt;
+&lt;p class="fs-5"&gt;Font size 5&lt;/p&gt;
+&lt;p class="fs-6"&gt;Font size 6 (più piccolo)&lt;/p&gt;</pre>
+        </div>
+
+        <h3>2.5 Line Height</h3>
+        
+        <div class="codice">
+<pre>&lt;p class="lh-1"&gt;Line height 1 (compatto)&lt;/p&gt;
+&lt;p class="lh-sm"&gt;Line height small&lt;/p&gt;
+&lt;p class="lh-base"&gt;Line height base (default)&lt;/p&gt;
+&lt;p class="lh-lg"&gt;Line height large&lt;/p&gt;</pre>
+        </div>
+
+        <h3>2.6 Text Decoration</h3>
+        
+        <div class="codice">
+<pre>&lt;p class="text-decoration-underline"&gt;Testo sottolineato&lt;/p&gt;
+&lt;p class="text-decoration-line-through"&gt;Testo barrato&lt;/p&gt;
+&lt;a href="#" class="text-decoration-none"&gt;Link senza sottolineatura&lt;/a&gt;</pre>
+        </div>
+
+        <h3>2.7 Text Wrapping e Overflow</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Impedisce il wrap del testo --&gt;
+&lt;div class="text-nowrap" style="width: 200px;"&gt;
+    Questo testo non andrà mai a capo anche se lo spazio è insufficiente
+&lt;/div&gt;
+
+&lt;!-- Tronca il testo con ellipsis --&gt;
+&lt;div class="text-truncate" style="width: 200px;"&gt;
+    Questo testo verrà troncato con tre puntini se troppo lungo
+&lt;/div&gt;
+
+&lt;!-- Break delle parole lunghe --&gt;
+&lt;p class="text-break"&gt;
+    Questoèuntestoincuilepatrolelunghisssssssssssssssssssimevengonospezzate
+&lt;/p&gt;</pre>
+        </div>
+
+        <h2>3. Color Utilities</h2>
+
+        <h3>3.1 Text Colors</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Colori semantici --&gt;
+&lt;p class="text-primary"&gt;Testo primary (blu)&lt;/p&gt;
+&lt;p class="text-secondary"&gt;Testo secondary (grigio)&lt;/p&gt;
+&lt;p class="text-success"&gt;Testo success (verde)&lt;/p&gt;
+&lt;p class="text-danger"&gt;Testo danger (rosso)&lt;/p&gt;
+&lt;p class="text-warning"&gt;Testo warning (giallo)&lt;/p&gt;
+&lt;p class="text-info"&gt;Testo info (azzurro)&lt;/p&gt;
+&lt;p class="text-light bg-dark"&gt;Testo light (chiaro)&lt;/p&gt;
+&lt;p class="text-dark"&gt;Testo dark (scuro)&lt;/p&gt;
+
+&lt;!-- Colori neutri --&gt;
+&lt;p class="text-body"&gt;Testo body (colore di default)&lt;/p&gt;
+&lt;p class="text-muted"&gt;Testo muted (grigio attenuato)&lt;/p&gt;
+&lt;p class="text-black"&gt;Testo black&lt;/p&gt;
+&lt;p class="text-white bg-dark"&gt;Testo white&lt;/p&gt;
+
+&lt;!-- Opacity (trasparenza) --&gt;
+&lt;p class="text-primary text-opacity-75"&gt;Primary 75% opacity&lt;/p&gt;
+&lt;p class="text-primary text-opacity-50"&gt;Primary 50% opacity&lt;/p&gt;
+&lt;p class="text-primary text-opacity-25"&gt;Primary 25% opacity&lt;/p&gt;</pre>
+        </div>
+
+        <h3>3.2 Background Colors</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="bg-primary text-white p-3"&gt;Background primary&lt;/div&gt;
+&lt;div class="bg-secondary text-white p-3"&gt;Background secondary&lt;/div&gt;
+&lt;div class="bg-success text-white p-3"&gt;Background success&lt;/div&gt;
+&lt;div class="bg-danger text-white p-3"&gt;Background danger&lt;/div&gt;
+&lt;div class="bg-warning p-3"&gt;Background warning&lt;/div&gt;
+&lt;div class="bg-info p-3"&gt;Background info&lt;/div&gt;
+&lt;div class="bg-light p-3"&gt;Background light&lt;/div&gt;
+&lt;div class="bg-dark text-white p-3"&gt;Background dark&lt;/div&gt;
+&lt;div class="bg-white p-3 border"&gt;Background white&lt;/div&gt;
+&lt;div class="bg-transparent p-3 border"&gt;Background transparent&lt;/div&gt;
+
+&lt;!-- Background con opacity --&gt;
+&lt;div class="bg-primary bg-opacity-75 text-white p-3"&gt;75% opacity&lt;/div&gt;
+&lt;div class="bg-primary bg-opacity-50 text-white p-3"&gt;50% opacity&lt;/div&gt;
+&lt;div class="bg-primary bg-opacity-25 text-white p-3"&gt;25% opacity&lt;/div&gt;
+&lt;div class="bg-primary bg-opacity-10 p-3"&gt;10% opacity&lt;/div&gt;</pre>
+        </div>
+
+        <h3>3.3 Gradient Backgrounds</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="bg-primary bg-gradient text-white p-3"&gt;
+    Background con gradiente
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>4. Spacing Utilities</h2>
+        
+        <div class="teoria">
+            <p>Bootstrap usa un sistema di spacing basato su una scala da 0 a 5 (più auto). Ogni livello corrisponde a un multiplo di 0.25rem (4px di default).</p>
+            
+            <p><strong>Formato:</strong> <code>{property}{sides}-{size}</code> o <code>{property}{sides}-{breakpoint}-{size}</code></p>
+        </div>
+
+        <h3>4.1 Properties</h3>
+        
+        <table>
+            <tr>
+                <th>Property</th>
+                <th>Significato</th>
+            </tr>
+            <tr>
+                <td><code>m</code></td>
+                <td>margin</td>
+            </tr>
+            <tr>
+                <td><code>p</code></td>
+                <td>padding</td>
+            </tr>
+        </table>
+
+        <h3>4.2 Sides</h3>
+        
+        <table>
+            <tr>
+                <th>Side</th>
+                <th>Significato</th>
+            </tr>
+            <tr>
+                <td><code>t</code></td>
+                <td>top</td>
+            </tr>
+            <tr>
+                <td><code>b</code></td>
+                <td>bottom</td>
+            </tr>
+            <tr>
+                <td><code>s</code></td>
+                <td>start (left in LTR, right in RTL)</td>
+            </tr>
+            <tr>
+                <td><code>e</code></td>
+                <td>end (right in LTR, left in RTL)</td>
+            </tr>
+            <tr>
+                <td><code>x</code></td>
+                <td>left e right</td>
+            </tr>
+            <tr>
+                <td><code>y</code></td>
+                <td>top e bottom</td>
+            </tr>
+            <tr>
+                <td>(nessuno)</td>
+                <td>tutti e 4 i lati</td>
+            </tr>
+        </table>
+
+        <h3>4.3 Sizes</h3>
+        
+        <table>
+            <tr>
+                <th>Size</th>
+                <th>Valore</th>
+                <th>Pixel (default)</th>
+            </tr>
+            <tr>
+                <td><code>0</code></td>
+                <td>0</td>
+                <td>0px</td>
+            </tr>
+            <tr>
+                <td><code>1</code></td>
+                <td>0.25rem</td>
+                <td>4px</td>
+            </tr>
+            <tr>
+                <td><code>2</code></td>
+                <td>0.5rem</td>
+                <td>8px</td>
+            </tr>
+            <tr>
+                <td><code>3</code></td>
+                <td>1rem</td>
+                <td>16px</td>
+            </tr>
+            <tr>
+                <td><code>4</code></td>
+                <td>1.5rem</td>
+                <td>24px</td>
+            </tr>
+            <tr>
+                <td><code>5</code></td>
+                <td>3rem</td>
+                <td>48px</td>
+            </tr>
+            <tr>
+                <td><code>auto</code></td>
+                <td>auto</td>
+                <td>auto</td>
+            </tr>
+        </table>
+
+        <h3>4.4 Esempi Spacing</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Margin --&gt;
+&lt;div class="m-3"&gt;Margin su tutti i lati (16px)&lt;/div&gt;
+&lt;div class="mt-4"&gt;Margin top (24px)&lt;/div&gt;
+&lt;div class="mb-2"&gt;Margin bottom (8px)&lt;/div&gt;
+&lt;div class="ms-5"&gt;Margin start/left (48px)&lt;/div&gt;
+&lt;div class="me-1"&gt;Margin end/right (4px)&lt;/div&gt;
+&lt;div class="mx-3"&gt;Margin left e right (16px)&lt;/div&gt;
+&lt;div class="my-4"&gt;Margin top e bottom (24px)&lt;/div&gt;
+&lt;div class="mx-auto"&gt;Margin auto left e right (centra)&lt;/div&gt;
+
+&lt;!-- Padding --&gt;
+&lt;div class="p-3"&gt;Padding su tutti i lati (16px)&lt;/div&gt;
+&lt;div class="pt-4"&gt;Padding top (24px)&lt;/div&gt;
+&lt;div class="pb-2"&gt;Padding bottom (8px)&lt;/div&gt;
+&lt;div class="ps-5"&gt;Padding start/left (48px)&lt;/div&gt;
+&lt;div class="pe-1"&gt;Padding end/right (4px)&lt;/div&gt;
+&lt;div class="px-3"&gt;Padding left e right (16px)&lt;/div&gt;
+&lt;div class="py-4"&gt;Padding top e bottom (24px)&lt;/div&gt;
+
+&lt;!-- Margin negativo (solo margin) --&gt;
+&lt;div class="mt-n3"&gt;Margin top negativo (-16px)&lt;/div&gt;
+
+&lt;!-- Spacing responsive --&gt;
+&lt;div class="m-2 m-md-4 m-lg-5"&gt;
+    Mobile: 8px | Tablet: 24px | Desktop: 48px
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>5. Display Utilities</h2>
+        
+        <div class="codice">
+<pre>&lt;!-- Display base --&gt;
+&lt;div class="d-none"&gt;Nascosto (display: none)&lt;/div&gt;
+&lt;div class="d-inline"&gt;Display inline&lt;/div&gt;
+&lt;div class="d-inline-block"&gt;Display inline-block&lt;/div&gt;
+&lt;div class="d-block"&gt;Display block&lt;/div&gt;
+&lt;div class="d-grid"&gt;Display grid&lt;/div&gt;
+&lt;div class="d-table"&gt;Display table&lt;/div&gt;
+&lt;div class="d-table-cell"&gt;Display table-cell&lt;/div&gt;
+&lt;div class="d-flex"&gt;Display flex&lt;/div&gt;
+&lt;div class="d-inline-flex"&gt;Display inline-flex&lt;/div&gt;
+
+&lt;!-- Display responsive --&gt;
+&lt;div class="d-none d-md-block"&gt;
+    Nascosto su mobile, visibile da tablet in su
+&lt;/div&gt;
+
+&lt;div class="d-block d-lg-none"&gt;
+    Visibile fino a desktop, nascosto su schermi grandi
+&lt;/div&gt;
+
+&lt;!-- Nascondere solo per stampa --&gt;
+&lt;div class="d-print-none"&gt;Non stampato&lt;/div&gt;
+&lt;div class="d-none d-print-block"&gt;Visibile solo in stampa&lt;/div&gt;</pre>
+        </div>
+
+        <h2>6. Flexbox Utilities</h2>
+
+        <h3>6.1 Flex Direction</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="d-flex flex-row"&gt;Flex orizzontale (default)&lt;/div&gt;
+&lt;div class="d-flex flex-row-reverse"&gt;Flex orizzontale invertito&lt;/div&gt;
+&lt;div class="d-flex flex-column"&gt;Flex verticale&lt;/div&gt;
+&lt;div class="d-flex flex-column-reverse"&gt;Flex verticale invertito&lt;/div&gt;</pre>
+        </div>
+
+        <h3>6.2 Justify Content</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="d-flex justify-content-start"&gt;Allinea a sinistra&lt;/div&gt;
+&lt;div class="d-flex justify-content-end"&gt;Allinea a destra&lt;/div&gt;
+&lt;div class="d-flex justify-content-center"&gt;Allinea al centro&lt;/div&gt;
+&lt;div class="d-flex justify-content-between"&gt;Spazio tra elementi&lt;/div&gt;
+&lt;div class="d-flex justify-content-around"&gt;Spazio attorno elementi&lt;/div&gt;
+&lt;div class="d-flex justify-content-evenly"&gt;Spazio uniforme&lt;/div&gt;</pre>
+        </div>
+
+        <h3>6.3 Align Items</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="d-flex align-items-start"&gt;Allinea in alto&lt;/div&gt;
+&lt;div class="d-flex align-items-end"&gt;Allinea in basso&lt;/div&gt;
+&lt;div class="d-flex align-items-center"&gt;Allinea al centro&lt;/div&gt;
+&lt;div class="d-flex align-items-baseline"&gt;Allinea alla baseline&lt;/div&gt;
+&lt;div class="d-flex align-items-stretch"&gt;Stretch (default)&lt;/div&gt;</pre>
+        </div>
+
+        <h3>6.4 Align Self</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="d-flex"&gt;
+    &lt;div class="align-self-start"&gt;Allineato in alto&lt;/div&gt;
+    &lt;div class="align-self-center"&gt;Allineato al centro&lt;/div&gt;
+    &lt;div class="align-self-end"&gt;Allineato in basso&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>6.5 Flex Grow e Shrink</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="d-flex"&gt;
+    &lt;div class="flex-grow-1"&gt;Questo si espande&lt;/div&gt;
+    &lt;div&gt;Dimensione fissa&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="d-flex"&gt;
+    &lt;div class="flex-shrink-1"&gt;Questo si riduce&lt;/div&gt;
+    &lt;div class="flex-shrink-0"&gt;Questo NON si riduce&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>6.6 Flex Wrap</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="d-flex flex-wrap"&gt;Gli elementi vanno a capo&lt;/div&gt;
+&lt;div class="d-flex flex-nowrap"&gt;Gli elementi NON vanno a capo (default)&lt;/div&gt;
+&lt;div class="d-flex flex-wrap-reverse"&gt;A capo invertito&lt;/div&gt;</pre>
+        </div>
+
+        <h3>6.7 Gap</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Gap tra elementi flex --&gt;
+&lt;div class="d-flex gap-0"&gt;Nessun gap&lt;/div&gt;
+&lt;div class="d-flex gap-1"&gt;Gap piccolo (4px)&lt;/div&gt;
+&lt;div class="d-flex gap-2"&gt;Gap medio (8px)&lt;/div&gt;
+&lt;div class="d-flex gap-3"&gt;Gap normale (16px)&lt;/div&gt;
+&lt;div class="d-flex gap-4"&gt;Gap grande (24px)&lt;/div&gt;
+&lt;div class="d-flex gap-5"&gt;Gap molto grande (48px)&lt;/div&gt;</pre>
+        </div>
+
+        <h2>7. Sizing Utilities</h2>
+        
+        <div class="codice">
+<pre>&lt;!-- Width --&gt;
+&lt;div class="w-25"&gt;Width 25%&lt;/div&gt;
+&lt;div class="w-50"&gt;Width 50%&lt;/div&gt;
+&lt;div class="w-75"&gt;Width 75%&lt;/div&gt;
+&lt;div class="w-100"&gt;Width 100%&lt;/div&gt;
+&lt;div class="w-auto"&gt;Width auto&lt;/div&gt;
+
+&lt;!-- Max Width --&gt;
+&lt;div class="mw-100"&gt;Max width 100%&lt;/div&gt;
+
+&lt;!-- Height --&gt;
+&lt;div class="h-25"&gt;Height 25%&lt;/div&gt;
+&lt;div class="h-50"&gt;Height 50%&lt;/div&gt;
+&lt;div class="h-75"&gt;Height 75%&lt;/div&gt;
+&lt;div class="h-100"&gt;Height 100%&lt;/div&gt;
+&lt;div class="h-auto"&gt;Height auto&lt;/div&gt;
+
+&lt;!-- Max Height --&gt;
+&lt;div class="mh-100"&gt;Max height 100%&lt;/div&gt;
+
+&lt;!-- Viewport units --&gt;
+&lt;div class="vw-100"&gt;Width 100vw (viewport width)&lt;/div&gt;
+&lt;div class="vh-100"&gt;Height 100vh (viewport height)&lt;/div&gt;
+&lt;div class="min-vw-100"&gt;Min width 100vw&lt;/div&gt;
+&lt;div class="min-vh-100"&gt;Min height 100vh&lt;/div&gt;</pre>
+        </div>
+
+        <h2>8. Position Utilities</h2>
+        
+        <div class="codice">
+<pre>&lt;div class="position-static"&gt;Static (default)&lt;/div&gt;
+&lt;div class="position-relative"&gt;Relative&lt;/div&gt;
+&lt;div class="position-absolute"&gt;Absolute&lt;/div&gt;
+&lt;div class="position-fixed"&gt;Fixed&lt;/div&gt;
+&lt;div class="position-sticky"&gt;Sticky&lt;/div&gt;
+
+&lt;!-- Position helper classes --&gt;
+&lt;div class="position-relative"&gt;
+    &lt;div class="position-absolute top-0 start-0"&gt;Top-left&lt;/div&gt;
+    &lt;div class="position-absolute top-0 end-0"&gt;Top-right&lt;/div&gt;
+    &lt;div class="position-absolute bottom-0 start-0"&gt;Bottom-left&lt;/div&gt;
+    &lt;div class="position-absolute bottom-0 end-0"&gt;Bottom-right&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Center con translate --&gt;
+&lt;div class="position-relative"&gt;
+    &lt;div class="position-absolute top-50 start-50 translate-middle"&gt;
+        Perfettamente centrato
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>9. Border Utilities</h2>
+        
+        <div class="codice">
+<pre>&lt;!-- Aggiungere bordi --&gt;
+&lt;div class="border"&gt;Bordo su tutti i lati&lt;/div&gt;
+&lt;div class="border-top"&gt;Bordo solo sopra&lt;/div&gt;
+&lt;div class="border-end"&gt;Bordo solo a destra&lt;/div&gt;
+&lt;div class="border-bottom"&gt;Bordo solo sotto&lt;/div&gt;
+&lt;div class="border-start"&gt;Bordo solo a sinistra&lt;/div&gt;
+
+&lt;!-- Rimuovere bordi --&gt;
+&lt;div class="border border-0"&gt;Nessun bordo&lt;/div&gt;
+&lt;div class="border border-top-0"&gt;Senza bordo sopra&lt;/div&gt;
+
+&lt;!-- Colori bordo --&gt;
+&lt;div class="border border-primary"&gt;Bordo primary&lt;/div&gt;
+&lt;div class="border border-success"&gt;Bordo success&lt;/div&gt;
+&lt;div class="border border-danger"&gt;Bordo danger&lt;/div&gt;
+
+&lt;!-- Spessore bordo --&gt;
+&lt;div class="border border-1"&gt;Bordo 1px&lt;/div&gt;
+&lt;div class="border border-2"&gt;Bordo 2px&lt;/div&gt;
+&lt;div class="border border-3"&gt;Bordo 3px&lt;/div&gt;
+&lt;div class="border border-4"&gt;Bordo 4px&lt;/div&gt;
+&lt;div class="border border-5"&gt;Bordo 5px&lt;/div&gt;
+
+&lt;!-- Border radius --&gt;
+&lt;div class="rounded"&gt;Angoli arrotondati&lt;/div&gt;
+&lt;div class="rounded-top"&gt;Arrotondato sopra&lt;/div&gt;
+&lt;div class="rounded-end"&gt;Arrotondato a destra&lt;/div&gt;
+&lt;div class="rounded-bottom"&gt;Arrotondato sotto&lt;/div&gt;
+&lt;div class="rounded-start"&gt;Arrotondato a sinistra&lt;/div&gt;
+&lt;div class="rounded-circle"&gt;Cerchio perfetto&lt;/div&gt;
+&lt;div class="rounded-pill"&gt;Forma pillola&lt;/div&gt;
+&lt;div class="rounded-0"&gt;Nessun arrotondamento&lt;/div&gt;
+
+&lt;!-- Dimensioni arrotondamento --&gt;
+&lt;div class="rounded-1"&gt;Rounded small&lt;/div&gt;
+&lt;div class="rounded-2"&gt;Rounded medium&lt;/div&gt;
+&lt;div class="rounded-3"&gt;Rounded large&lt;/div&gt;</pre>
+        </div>
+
+        <h2>10. Shadow Utilities</h2>
+        
+        <div class="codice">
+<pre>&lt;div class="shadow-none"&gt;Nessuna ombra&lt;/div&gt;
+&lt;div class="shadow-sm"&gt;Ombra piccola&lt;/div&gt;
+&lt;div class="shadow"&gt;Ombra normale&lt;/div&gt;
+&lt;div class="shadow-lg"&gt;Ombra grande&lt;/div&gt;</pre>
+        </div>
+
+        <h2>11. Esempio Interattivo Completo</h2>
+
+        <div class="esempio">
+            <iframe src="esempi/utilities.html" width="100%" height="800" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Utilities Bootstrap - Tutti i tipi di utility class</p>
+        </div>
+
+        <h2>12. Best Practices</h2>
+        
+        <div class="teoria">
+            <p><strong>✓ Consigli:</strong></p>
+            <ul>
+                <li>Usa utilities per prototipazione rapida</li>
+                <li>Preferisci utilities a CSS custom per spacing e colori</li>
+                <li>Combina utilities per effetti complessi</li>
+                <li>Usa classi responsive quando necessario</li>
+                <li>Mantieni consistenza nei valori di spacing</li>
+            </ul>
+            
+            <p><strong>✗ Evita:</strong></p>
+            <ul>
+                <li>Non sovrascrivere utilities con !important</li>
+                <li>Non abusare delle utilities (troppe classi su un elemento)</li>
+                <li>Non mischiare utilities Bootstrap con altri framework CSS</li>
+                <li>Non usare valori di spacing custom se possibile</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-3-2.html" class="btn-prev">Indietro</a>
+            <a href="/" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link utili</a>
+            <a href="lezione-3-4.html" class="btn-next">Avanti</a>
+        </div>
+    </div>
+</body>
+</html>

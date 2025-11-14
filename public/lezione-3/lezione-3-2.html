@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 3.2 - Grid System</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 3.2 - Grid System</h1>
+            <p>Sistema a griglia responsive di Bootstrap per layout professionali</p>
+        </div>
+
+        <h2>1. Introduzione al Grid System</h2>
+        
+        <div class="teoria">
+            <p>Il <strong>Grid System</strong> è il cuore di Bootstrap. È un sistema a <strong>12 colonne</strong> basato su flexbox che permette di creare layout responsive in modo semplice e potente.</p>
+            
+            <p><strong>Principi fondamentali:</strong></p>
+            <ul>
+                <li>Il grid si basa su <strong>container</strong>, <strong>row</strong> e <strong>colonne</strong></li>
+                <li>Ogni riga (row) è suddivisa in massimo <strong>12 colonne</strong></li>
+                <li>Le colonne si adattano automaticamente ai <strong>breakpoints</strong></li>
+                <li>Utilizza <strong>flexbox</strong> per allineamento e distribuzione</li>
+                <li>Supporta <strong>nesting</strong> (griglie dentro griglie)</li>
+            </ul>
+        </div>
+
+        <h2>2. Container</h2>
+        
+        <div class="teoria">
+            <p>Il <strong>container</strong> è l'elemento che avvolge il contenuto e fornisce padding e centratura. Bootstrap offre tre tipi di container:</p>
+        </div>
+
+        <h3>2.1 Container Fisso (.container)</h3>
+        
+        <p>Larghezza massima che cambia ad ogni breakpoint:</p>
+
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;!-- Contenuto con larghezza massima responsive --&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <table>
+            <tr>
+                <th>Breakpoint</th>
+                <th>Dimensione Schermo</th>
+                <th>Max Width Container</th>
+            </tr>
+            <tr>
+                <td>Extra Small (xs)</td>
+                <td>&lt;576px</td>
+                <td>100%</td>
+            </tr>
+            <tr>
+                <td>Small (sm)</td>
+                <td>≥576px</td>
+                <td>540px</td>
+            </tr>
+            <tr>
+                <td>Medium (md)</td>
+                <td>≥768px</td>
+                <td>720px</td>
+            </tr>
+            <tr>
+                <td>Large (lg)</td>
+                <td>≥992px</td>
+                <td>960px</td>
+            </tr>
+            <tr>
+                <td>Extra Large (xl)</td>
+                <td>≥1200px</td>
+                <td>1140px</td>
+            </tr>
+            <tr>
+                <td>Extra Extra Large (xxl)</td>
+                <td>≥1400px</td>
+                <td>1320px</td>
+            </tr>
+        </table>
+
+        <h3>2.2 Container Fluido (.container-fluid)</h3>
+        
+        <p>Occupa sempre il 100% della larghezza disponibile:</p>
+
+        <div class="codice">
+<pre>&lt;div class="container-fluid"&gt;
+    &lt;!-- Contenuto sempre al 100% della larghezza --&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>2.3 Container con Breakpoint (.container-{breakpoint})</h3>
+        
+        <p>100% fino a un certo breakpoint, poi larghezza fissa:</p>
+
+        <div class="codice">
+<pre>&lt;!-- 100% fino a medium, poi larghezza fissa --&gt;
+&lt;div class="container-md"&gt;
+    &lt;!-- Contenuto --&gt;
+&lt;/div&gt;
+
+&lt;!-- Disponibili: container-sm, container-md, container-lg, container-xl, container-xxl --&gt;</pre>
+        </div>
+
+        <h2>3. Row e Colonne</h2>
+
+        <h3>3.1 Struttura Base</h3>
+        
+        <div class="teoria">
+            <p>La struttura base del grid richiede sempre:</p>
+            <ol>
+                <li>Un <code>.container</code> (o variante)</li>
+                <li>Una <code>.row</code> per creare una riga</li>
+                <li>Una o più colonne <code>.col-*</code></li>
+            </ol>
+        </div>
+
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;div class="col"&gt;
+            Colonna 1
+        &lt;/div&gt;
+        &lt;div class="col"&gt;
+            Colonna 2
+        &lt;/div&gt;
+        &lt;div class="col"&gt;
+            Colonna 3
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <p>Quando usi solo <code>.col</code> senza numero, le colonne hanno automaticamente la stessa larghezza.</p>
+
+        <h3>3.2 Colonne con Larghezza Specifica</h3>
+        
+        <p>Specifica quante delle 12 colonne deve occupare ogni elemento:</p>
+
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;!-- Occupa 8 colonne (8/12 = 66.67%) --&gt;
+        &lt;div class="col-8"&gt;
+            Colonna Principale (8/12)
+        &lt;/div&gt;
+        
+        &lt;!-- Occupa 4 colonne (4/12 = 33.33%) --&gt;
+        &lt;div class="col-4"&gt;
+            Sidebar (4/12)
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Regola fondamentale:</strong> La somma delle colonne in una row deve essere ≤ 12. Se supera 12, le colonne vanno a capo.</p>
+        </div>
+
+        <h2>4. Breakpoints Responsive</h2>
+        
+        <div class="teoria">
+            <p>Bootstrap usa un approccio <strong>mobile-first</strong>. Le classi si applicano a partire dal breakpoint specificato e a tutti quelli superiori.</p>
+        </div>
+
+        <table>
+            <tr>
+                <th>Classe</th>
+                <th>Breakpoint</th>
+                <th>Dimensione</th>
+            </tr>
+            <tr>
+                <td><code>.col-*</code></td>
+                <td>xs</td>
+                <td>&lt;576px (default, tutti i dispositivi)</td>
+            </tr>
+            <tr>
+                <td><code>.col-sm-*</code></td>
+                <td>sm</td>
+                <td>≥576px (smartphone landscape)</td>
+            </tr>
+            <tr>
+                <td><code>.col-md-*</code></td>
+                <td>md</td>
+                <td>≥768px (tablet)</td>
+            </tr>
+            <tr>
+                <td><code>.col-lg-*</code></td>
+                <td>lg</td>
+                <td>≥992px (desktop)</td>
+            </tr>
+            <tr>
+                <td><code>.col-xl-*</code></td>
+                <td>xl</td>
+                <td>≥1200px (desktop large)</td>
+            </tr>
+            <tr>
+                <td><code>.col-xxl-*</code></td>
+                <td>xxl</td>
+                <td>≥1400px (desktop extra large)</td>
+            </tr>
+        </table>
+
+        <h3>4.1 Esempio Layout Responsive</h3>
+        
+        <p>Colonne che si adattano automaticamente:</p>
+
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;!-- 
+            Mobile: 100% (col-12 implicito)
+            Tablet: 50% (6/12)
+            Desktop: 25% (3/12)
+        --&gt;
+        &lt;div class="col-12 col-md-6 col-lg-3"&gt;
+            Colonna 1
+        &lt;/div&gt;
+        &lt;div class="col-12 col-md-6 col-lg-3"&gt;
+            Colonna 2
+        &lt;/div&gt;
+        &lt;div class="col-12 col-md-6 col-lg-3"&gt;
+            Colonna 3
+        &lt;/div&gt;
+        &lt;div class="col-12 col-md-6 col-lg-3"&gt;
+            Colonna 4
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Come funziona:</strong></p>
+            <ul>
+                <li><code>col-12</code>: Su mobile (&lt;768px), ogni colonna occupa 12/12 = 100%</li>
+                <li><code>col-md-6</code>: Su tablet (≥768px), ogni colonna occupa 6/12 = 50%</li>
+                <li><code>col-lg-3</code>: Su desktop (≥992px), ogni colonna occupa 3/12 = 25%</li>
+            </ul>
+        </div>
+
+        <h3>4.2 Mix Complesso di Breakpoints</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;!-- Contenuto principale: 100% mobile, 66% tablet, 75% desktop --&gt;
+        &lt;div class="col-12 col-md-8 col-lg-9"&gt;
+            &lt;h2&gt;Contenuto Principale&lt;/h2&gt;
+            &lt;p&gt;Questo occupa più spazio su schermi grandi.&lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;!-- Sidebar: 100% mobile, 33% tablet, 25% desktop --&gt;
+        &lt;div class="col-12 col-md-4 col-lg-3"&gt;
+            &lt;h3&gt;Sidebar&lt;/h3&gt;
+            &lt;p&gt;Informazioni aggiuntive.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>5. Colonne Auto-dimensionate</h2>
+
+        <h3>5.1 Colonne Uguali (.col)</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;div class="col"&gt;Uguale&lt;/div&gt;
+        &lt;div class="col"&gt;Uguale&lt;/div&gt;
+        &lt;div class="col"&gt;Uguale&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Ogni colonna occupa 33.33% --&gt;</pre>
+        </div>
+
+        <h3>5.2 Colonne con Larghezza Auto (.col-auto)</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;div class="col"&gt;
+            Questa colonna si espande
+        &lt;/div&gt;
+        &lt;div class="col-auto"&gt;
+            Questa occupa solo lo spazio necessario
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>6. Offset (Spostamento Colonne)</h2>
+        
+        <div class="teoria">
+            <p>Gli <strong>offset</strong> permettono di spostare le colonne verso destra aggiungendo margine sinistro:</p>
+        </div>
+
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;!-- Colonna di 4, spostata di 4 --&gt;
+        &lt;div class="col-4 offset-4"&gt;
+            Centrata (4 vuote + 4 occupate + 4 vuote)
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="row"&gt;
+        &lt;!-- Colonna di 3, spostata di 3 --&gt;
+        &lt;div class="col-3 offset-3"&gt;Colonna 1&lt;/div&gt;
+        &lt;div class="col-3"&gt;Colonna 2&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <p>Gli offset sono responsive come le colonne:</p>
+
+        <div class="codice">
+<pre>&lt;!-- Offset solo su desktop --&gt;
+&lt;div class="col-6 offset-md-3"&gt;
+    Mobile: no offset
+    Desktop: offset di 3
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>7. Gutters (Spaziatura tra Colonne)</h2>
+        
+        <div class="teoria">
+            <p>I <strong>gutters</strong> sono lo spazio tra le colonne. Bootstrap usa un gutter di 24px (12px per lato) di default.</p>
+        </div>
+
+        <h3>7.1 Rimuovere Gutters</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;!-- Nessuno spazio tra colonne --&gt;
+    &lt;div class="row g-0"&gt;
+        &lt;div class="col"&gt;No gutter&lt;/div&gt;
+        &lt;div class="col"&gt;No gutter&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>7.2 Gutters Personalizzati</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Classi gutter disponibili: g-0, g-1, g-2, g-3, g-4, g-5 --&gt;
+
+&lt;!-- Gutter piccolo --&gt;
+&lt;div class="row g-2"&gt;
+    &lt;div class="col"&gt;Gutter ridotto&lt;/div&gt;
+    &lt;div class="col"&gt;Gutter ridotto&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Gutter grande --&gt;
+&lt;div class="row g-5"&gt;
+    &lt;div class="col"&gt;Gutter grande&lt;/div&gt;
+    &lt;div class="col"&gt;Gutter grande&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Gutter orizzontale e verticale separati --&gt;
+&lt;div class="row gx-3 gy-5"&gt;
+    &lt;div class="col-6"&gt;Gutter X: 3, Y: 5&lt;/div&gt;
+    &lt;div class="col-6"&gt;Gutter X: 3, Y: 5&lt;/div&gt;
+    &lt;div class="col-6"&gt;Gutter X: 3, Y: 5&lt;/div&gt;
+    &lt;div class="col-6"&gt;Gutter X: 3, Y: 5&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <table>
+            <tr>
+                <th>Classe</th>
+                <th>Funzione</th>
+            </tr>
+            <tr>
+                <td><code>.g-0</code> a <code>.g-5</code></td>
+                <td>Gutter sia orizzontale che verticale</td>
+            </tr>
+            <tr>
+                <td><code>.gx-0</code> a <code>.gx-5</code></td>
+                <td>Gutter solo orizzontale (tra colonne)</td>
+            </tr>
+            <tr>
+                <td><code>.gy-0</code> a <code>.gy-5</code></td>
+                <td>Gutter solo verticale (tra righe)</td>
+            </tr>
+        </table>
+
+        <h2>8. Nesting (Griglie Annidate)</h2>
+        
+        <p>Puoi inserire una row dentro una colonna per creare sotto-griglie:</p>
+
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;div class="col-9"&gt;
+            Colonna principale
+            
+            &lt;!-- Griglia annidata --&gt;
+            &lt;div class="row"&gt;
+                &lt;div class="col-6"&gt;
+                    Sotto-colonna 1 (50% della parent)
+                &lt;/div&gt;
+                &lt;div class="col-6"&gt;
+                    Sotto-colonna 2 (50% della parent)
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="col-3"&gt;
+            Sidebar
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Importante:</strong> La griglia annidata ha sempre 12 colonne disponibili relative alla larghezza della colonna parent.</p>
+        </div>
+
+        <h2>9. Ordine delle Colonne</h2>
+
+        <h3>9.1 Classi Order</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;!-- Appare per terzo nel HTML ma primo visualmente --&gt;
+        &lt;div class="col order-3"&gt;
+            Primo nel codice, ma ultimo visivamente
+        &lt;/div&gt;
+        &lt;div class="col order-1"&gt;
+            Secondo nel codice, primo visualmente
+        &lt;/div&gt;
+        &lt;div class="col order-2"&gt;
+            Terzo nel codice, secondo visualmente
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>9.2 Order Responsive</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;!-- Su mobile: sidebar prima, su desktop: sidebar dopo --&gt;
+        &lt;div class="col-12 col-md-8 order-2 order-md-1"&gt;
+            Contenuto principale
+        &lt;/div&gt;
+        &lt;div class="col-12 col-md-4 order-1 order-md-2"&gt;
+            Sidebar (appare prima su mobile)
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>10. Allineamento Verticale</h2>
+
+        <h3>10.1 Allineamento della Row</h3>
+        
+        <div class="codice">
+<pre>&lt;!-- Allinea tutte le colonne all'inizio --&gt;
+&lt;div class="row align-items-start"&gt;
+    &lt;div class="col"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Allinea tutte le colonne al centro --&gt;
+&lt;div class="row align-items-center"&gt;
+    &lt;div class="col"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Allinea tutte le colonne alla fine --&gt;
+&lt;div class="row align-items-end"&gt;
+    &lt;div class="col"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h3>10.2 Allineamento di Singole Colonne</h3>
+        
+        <div class="codice">
+<pre>&lt;div class="row"&gt;
+    &lt;div class="col align-self-start"&gt;
+        Allineata all'inizio
+    &lt;/div&gt;
+    &lt;div class="col align-self-center"&gt;
+        Allineata al centro
+    &lt;/div&gt;
+    &lt;div class="col align-self-end"&gt;
+        Allineata alla fine
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>11. Allineamento Orizzontale</h2>
+        
+        <div class="codice">
+<pre>&lt;!-- Colonne allineate a sinistra (default) --&gt;
+&lt;div class="row justify-content-start"&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Colonne centrate --&gt;
+&lt;div class="row justify-content-center"&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Colonne allineate a destra --&gt;
+&lt;div class="row justify-content-end"&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Spazio tra le colonne --&gt;
+&lt;div class="row justify-content-between"&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Spazio attorno alle colonne --&gt;
+&lt;div class="row justify-content-around"&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Spazio uniforme tra e attorno alle colonne --&gt;
+&lt;div class="row justify-content-evenly"&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+    &lt;div class="col-4"&gt;Colonna&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <h2>12. Esempio Completo: Layout Tipico</h2>
+        
+        <div class="codice">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="it"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Layout Responsive&lt;/title&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Header a tutta larghezza --&gt;
+    &lt;header class="bg-dark text-white py-3"&gt;
+        &lt;div class="container"&gt;
+            &lt;h1&gt;Il Mio Sito&lt;/h1&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+    
+    &lt;!-- Contenuto principale --&gt;
+    &lt;div class="container my-4"&gt;
+        &lt;div class="row g-4"&gt;
+            &lt;!-- Sidebar: sotto su mobile, a sinistra su desktop --&gt;
+            &lt;aside class="col-12 col-lg-3 order-2 order-lg-1"&gt;
+                &lt;div class="bg-light p-3"&gt;
+                    &lt;h3&gt;Sidebar&lt;/h3&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;Link 1&lt;/li&gt;
+                        &lt;li&gt;Link 2&lt;/li&gt;
+                        &lt;li&gt;Link 3&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/aside&gt;
+            
+            &lt;!-- Contenuto principale --&gt;
+            &lt;main class="col-12 col-lg-9 order-1 order-lg-2"&gt;
+                &lt;h2&gt;Contenuto Principale&lt;/h2&gt;
+                
+                &lt;!-- Griglia di card --&gt;
+                &lt;div class="row g-3"&gt;
+                    &lt;div class="col-12 col-sm-6 col-md-4"&gt;
+                        &lt;div class="card"&gt;
+                            &lt;div class="card-body"&gt;
+                                &lt;h5&gt;Card 1&lt;/h5&gt;
+                                &lt;p&gt;Contenuto&lt;/p&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="col-12 col-sm-6 col-md-4"&gt;
+                        &lt;div class="card"&gt;
+                            &lt;div class="card-body"&gt;
+                                &lt;h5&gt;Card 2&lt;/h5&gt;
+                                &lt;p&gt;Contenuto&lt;/p&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="col-12 col-sm-6 col-md-4"&gt;
+                        &lt;div class="card"&gt;
+                            &lt;div class="card-body"&gt;
+                                &lt;h5&gt;Card 3&lt;/h5&gt;
+                                &lt;p&gt;Contenuto&lt;/p&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/main&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- Footer --&gt;
+    &lt;footer class="bg-dark text-white py-3 mt-5"&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="row"&gt;
+                &lt;div class="col-md-6"&gt;
+                    &lt;p&gt;&amp;copy; 2024 Il Mio Sito&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="col-md-6 text-md-end"&gt;
+                    &lt;p&gt;Contatti | Privacy&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <h2>13. Esempio Interattivo</h2>
+
+        <div class="esempio">
+            <iframe src="esempi/grid-system.html" width="100%" height="800" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Grid System completo - Ridimensiona per vedere i breakpoints</p>
+        </div>
+
+        <h2>14. Best Practices</h2>
+        
+        <div class="teoria">
+            <p><strong>✓ Cosa Fare:</strong></p>
+            <ul>
+                <li>Usa sempre container → row → col</li>
+                <li>Progetta mobile-first (inizia da classi senza breakpoint)</li>
+                <li>Mantieni la somma delle colonne ≤ 12 per riga</li>
+                <li>Usa gutters per spaziatura invece di margin custom</li>
+                <li>Sfrutta l'offset per centrare elementi</li>
+                <li>Usa order per riorganizzare su mobile</li>
+            </ul>
+            
+            <p><strong>✗ Cosa Evitare:</strong></p>
+            <ul>
+                <li>Non usare colonne senza row</li>
+                <li>Non aggiungere padding/margin direttamente alle colonne</li>
+                <li>Non mischiare grid Bootstrap con altri sistemi grid</li>
+                <li>Non usare troppi breakpoints (mantieni semplice)</li>
+                <li>Non dimenticare il meta viewport tag</li>
+            </ul>
+        </div>
+
+        <h2>15. Riepilogo Classi Grid</h2>
+        
+        <table>
+            <tr>
+                <th>Categoria</th>
+                <th>Classi</th>
+                <th>Uso</th>
+            </tr>
+            <tr>
+                <td>Container</td>
+                <td><code>.container</code>, <code>.container-fluid</code>, <code>.container-{breakpoint}</code></td>
+                <td>Contenitore principale</td>
+            </tr>
+            <tr>
+                <td>Row</td>
+                <td><code>.row</code></td>
+                <td>Riga che contiene colonne</td>
+            </tr>
+            <tr>
+                <td>Colonne</td>
+                <td><code>.col</code>, <code>.col-{n}</code>, <code>.col-{breakpoint}-{n}</code></td>
+                <td>Colonne responsive</td>
+            </tr>
+            <tr>
+                <td>Offset</td>
+                <td><code>.offset-{n}</code>, <code>.offset-{breakpoint}-{n}</code></td>
+                <td>Spostamento colonne</td>
+            </tr>
+            <tr>
+                <td>Gutters</td>
+                <td><code>.g-{0-5}</code>, <code>.gx-{0-5}</code>, <code>.gy-{0-5}</code></td>
+                <td>Spaziatura tra colonne</td>
+            </tr>
+            <tr>
+                <td>Order</td>
+                <td><code>.order-{1-5}</code>, <code>.order-{breakpoint}-{1-5}</code></td>
+                <td>Ordine visuale colonne</td>
+            </tr>
+            <tr>
+                <td>Align Verticale</td>
+                <td><code>.align-items-{start|center|end}</code>, <code>.align-self-{start|center|end}</code></td>
+                <td>Allineamento verticale</td>
+            </tr>
+            <tr>
+                <td>Align Orizzontale</td>
+                <td><code>.justify-content-{start|center|end|between|around|evenly}</code></td>
+                <td>Allineamento orizzontale</td>
+            </tr>
+        </table>
+
+        <div class="nav">
+            <a href="lezione-3-1.html" class="btn-prev">Indietro</a>
+            <a href="/" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link utili</a>
+            <a href="lezione-3-3.html" class="btn-next">Avanti</a>
+        </div>
+    </div>
+</body>
+</html>

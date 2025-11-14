@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio Setup Bootstrap</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+          crossorigin="anonymous">
+    
+    <style>
+        /* CSS custom opzionale */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .feature-box {
+            transition: transform 0.3s;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <strong>Bootstrap 5</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contatti</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3">Benvenuto in Bootstrap 5</h1>
+            <p class="lead mb-4">
+                Il framework CSS più popolare per creare siti web responsive e mobile-first
+            </p>
+            <button class="btn btn-light btn-lg me-2">Inizia Ora</button>
+            <button class="btn btn-outline-light btn-lg">Documentazione</button>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <div class="container my-5">
+        <h2 class="text-center mb-5">Caratteristiche Principali</h2>
+        
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm feature-box">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <svg width="48" height="48" fill="currentColor" class="text-primary">
+                                <rect width="48" height="48" rx="8"/>
+                            </svg>
+                        </div>
+                        <h5 class="card-title">Grid System</h5>
+                        <p class="card-text">
+                            Sistema a 12 colonne flessibile per creare layout responsive che si adattano a qualsiasi dispositivo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm feature-box">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <svg width="48" height="48" fill="currentColor" class="text-success">
+                                <circle cx="24" cy="24" r="24"/>
+                            </svg>
+                        </div>
+                        <h5 class="card-title">Componenti</h5>
+                        <p class="card-text">
+                            Oltre 30 componenti UI pre-costruiti: navbar, modal, carousel, accordion e molto altro.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm feature-box">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <svg width="48" height="48" fill="currentColor" class="text-warning">
+                                <polygon points="24,4 44,44 4,44"/>
+                            </svg>
+                        </div>
+                        <h5 class="card-title">Utilities</h5>
+                        <p class="card-text">
+                            Centinaia di classi utility per spacing, colori, display, flexbox e molto altro.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Example Components Section -->
+    <div class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Esempi di Componenti</h2>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h4>Alert</h4>
+                    <div class="alert alert-success" role="alert">
+                        <strong>Successo!</strong> Bootstrap è stato caricato correttamente.
+                    </div>
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Attenzione!</strong> Ricorda di includere il meta viewport tag.
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <h4>Buttons</h4>
+                    <button class="btn btn-primary">Primary</button>
+                    <button class="btn btn-secondary">Secondary</button>
+                    <button class="btn btn-success">Success</button>
+                    <button class="btn btn-danger">Danger</button>
+                    <button class="btn btn-warning">Warning</button>
+                    <button class="btn btn-info">Info</button>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h4>Badges</h4>
+                    <p>
+                        <span class="badge bg-primary">Primary</span>
+                        <span class="badge bg-secondary">Secondary</span>
+                        <span class="badge bg-success">Success</span>
+                        <span class="badge bg-danger">Danger</span>
+                        <span class="badge bg-warning text-dark">Warning</span>
+                    </p>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <h4>Progress Bar</h4>
+                    <div class="progress mb-2">
+                        <div class="progress-bar" role="progressbar" style="width: 25%">25%</div>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 50%">50%</div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 75%">75%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Responsive Grid Demo -->
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Demo Grid Responsive</h2>
+        <p class="text-center mb-4 text-muted">Ridimensiona la finestra per vedere il comportamento responsive</p>
+        
+        <div class="row g-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="p-3 bg-primary text-white text-center">
+                    Col 1
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="p-3 bg-secondary text-white text-center">
+                    Col 2
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="p-3 bg-success text-white text-center">
+                    Col 3
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="p-3 bg-danger text-white text-center">
+                    Col 4
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info mt-4" role="alert">
+            <strong>Breakpoints:</strong>
+            <ul class="mb-0 mt-2">
+                <li>Mobile (&lt;576px): 1 colonna</li>
+                <li>Tablet (≥576px): 2 colonne</li>
+                <li>Desktop (≥768px): 4 colonne su 3 righe</li>
+                <li>Large (≥992px): 4 colonne</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Bootstrap 5 Setup Example</h5>
+                    <p class="mb-0">Esempio completo di pagina Bootstrap con componenti base</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; 2024 - Corso Web Development</p>
+                    <small class="text-muted">Powered by Bootstrap 5.3.2</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JavaScript Bundle (include Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Script opzionale per dimostrare che Bootstrap JS è caricato -->
+    <script>
+        // Verifica che Bootstrap sia caricato
+        if (typeof bootstrap !== 'undefined') {
+            console.log('✓ Bootstrap JavaScript caricato correttamente');
+            console.log('Versione:', bootstrap.Tooltip.VERSION);
+        } else {
+            console.error('✗ Bootstrap JavaScript NON caricato');
+        }
+        
+        // Log delle dimensioni viewport al resize
+        window.addEventListener('resize', function() {
+            const width = window.innerWidth;
+            let breakpoint;
+            
+            if (width < 576) breakpoint = 'xs (Extra Small)';
+            else if (width < 768) breakpoint = 'sm (Small)';
+            else if (width < 992) breakpoint = 'md (Medium)';
+            else if (width < 1200) breakpoint = 'lg (Large)';
+            else if (width < 1400) breakpoint = 'xl (Extra Large)';
+            else breakpoint = 'xxl (Extra Extra Large)';
+            
+            console.log('Breakpoint attuale:', breakpoint, '- Larghezza:', width + 'px');
+        });
+    </script>
+</body>
+</html>
