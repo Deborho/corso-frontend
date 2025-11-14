@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proprietà CSS Fondamentali - Esempio</title>
+    <style>
+        h1 {
+            color: darkred;
+            font-family: 'Arial Black', sans-serif;
+            text-align: center;
+        }
+        
+        .box {
+            width: 300px;
+            height: 150px;
+            background-color: lightcoral;
+            border: 3px solid red;
+            padding: 20px;
+            margin: 20px auto;
+        }
+        
+        .box p {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+        }
+        
+        .typography {
+            font-size: 18px;
+            line-height: 1.8;
+            text-align: justify;
+            color: darkslategray;
+        }
+        
+        .shapes-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: lightgray;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .shape {
+            width: 80px;
+            height: 80px;
+            background-color: blue;
+            border-radius: 50%;
+        }
+        
+        .shape:nth-child(2) {
+            background-color: green;
+            border-radius: 10px;
+        }
+        
+        .shape:nth-child(3) {
+            background-color: yellow;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+    <h1>Proprietà CSS Fondamentali</h1>
+
+    <div class="box">
+        <p>Box con varie proprietà: dimensioni, colori, bordi, padding, ombra del testo</p>
+    </div>
+
+    <p class="typography">
+        Questo paragrafo dimostra proprietà tipografiche: dimensione font, interlinea, allineamento e colore.
+    </p>
+
+    <div class="shapes-container">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+</body>
+</html>

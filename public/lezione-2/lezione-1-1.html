@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 1 - Struttura Base HTML</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 1 - Struttura Base HTML</h1>
+            <p>Fondamenti del linguaggio di markup per il web</p>
+        </div>
+
+        <h2>1. Introduzione ad HTML</h2>
+        
+        <div class="teoria">
+            <p>HTML (HyperText Markup Language) è il linguaggio di markup standard utilizzato per creare pagine web. Non è un linguaggio di programmazione, ma un linguaggio di marcatura che definisce la struttura e il contenuto di un documento web attraverso l'uso di tag ed elementi.</p>
+        </div>
+
+        <h3>1.1 Sintassi dei Tag</h3>
+        
+        <p>Gli elementi HTML sono definiti da tag racchiusi tra parentesi angolari. La maggior parte degli elementi richiede un tag di apertura e uno di chiusura:</p>
+
+        <div class="codice">
+<pre>&lt;tagname&gt;contenuto&lt;/tagname&gt;</pre>
+        </div>
+
+        <p>Alcuni elementi sono auto-chiudenti:</p>
+
+        <div class="codice">
+<pre>&lt;br&gt;
+&lt;hr&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <br>
+            <hr>
+        </div>
+
+        <h2>2. Struttura Base del Documento</h2>
+
+        <p>Ogni documento HTML5 valido deve seguire questa struttura fondamentale:</p>
+
+        <div class="codice">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="it"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Titolo della Pagina&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Contenuto visibile --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <h3>2.1 Elementi della Struttura</h3>
+
+        <table>
+            <tr>
+                <th>Elemento</th>
+                <th>Descrizione</th>
+            </tr>
+            <tr>
+                <td><code>&lt;!DOCTYPE html&gt;</code></td>
+                <td>Dichiara il tipo di documento HTML5</td>
+            </tr>
+            <tr>
+                <td><code>&lt;html&gt;</code></td>
+                <td>Elemento radice del documento</td>
+            </tr>
+            <tr>
+                <td><code>&lt;head&gt;</code></td>
+                <td>Contiene metadati e informazioni sul documento</td>
+            </tr>
+            <tr>
+                <td><code>&lt;meta charset&gt;</code></td>
+                <td>Definisce la codifica dei caratteri</td>
+            </tr>
+            <tr>
+                <td><code>&lt;meta viewport&gt;</code></td>
+                <td>Controlla il rendering su dispositivi mobili</td>
+            </tr>
+            <tr>
+                <td><code>&lt;title&gt;</code></td>
+                <td>Titolo della pagina visualizzato nel browser</td>
+            </tr>
+            <tr>
+                <td><code>&lt;body&gt;</code></td>
+                <td>Contiene tutto il contenuto visibile</td>
+            </tr>
+        </table>
+
+        <h2>3. Tag Semantici HTML5</h2>
+
+        <div class="teoria">
+            <p>HTML5 introduce elementi semantici che descrivono il loro significato in modo chiaro. L'utilizzo di questi elementi migliora l'accessibilità, la manutenibilità del codice e l'indicizzazione da parte dei motori di ricerca.</p>
+        </div>
+
+        <h3>3.1 Principali Tag Semantici</h3>
+
+        <table>
+            <tr>
+                <th>Tag</th>
+                <th>Utilizzo</th>
+            </tr>
+            <tr>
+                <td><code>&lt;header&gt;</code></td>
+                <td>Intestazione di una pagina o sezione</td>
+            </tr>
+            <tr>
+                <td><code>&lt;nav&gt;</code></td>
+                <td>Menu di navigazione</td>
+            </tr>
+            <tr>
+                <td><code>&lt;main&gt;</code></td>
+                <td>Contenuto principale del documento</td>
+            </tr>
+            <tr>
+                <td><code>&lt;section&gt;</code></td>
+                <td>Sezione tematica di contenuto</td>
+            </tr>
+            <tr>
+                <td><code>&lt;article&gt;</code></td>
+                <td>Contenuto autonomo e indipendente</td>
+            </tr>
+            <tr>
+                <td><code>&lt;aside&gt;</code></td>
+                <td>Contenuto correlato ma secondario</td>
+            </tr>
+            <tr>
+                <td><code>&lt;footer&gt;</code></td>
+                <td>Piè di pagina di una sezione o documento</td>
+            </tr>
+        </table>
+
+        <h3>3.2 Esempio di Struttura Semantica</h3>
+
+        <div class="codice">
+<pre>&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Titolo del Sito&lt;/h1&gt;
+        &lt;nav&gt;
+            &lt;!-- Menu di navigazione --&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    
+    &lt;main&gt;
+        &lt;section&gt;
+            &lt;h2&gt;Sezione 1&lt;/h2&gt;
+            &lt;p&gt;Contenuto...&lt;/p&gt;
+        &lt;/section&gt;
+        
+        &lt;section&gt;
+            &lt;h2&gt;Sezione 2&lt;/h2&gt;
+            &lt;p&gt;Contenuto...&lt;/p&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;Informazioni di contatto&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <header>
+                <h1>Titolo del Sito</h1>
+                <nav>
+                    <!-- Menu di navigazione -->
+                </nav>
+            </header>
+            
+            <main>
+                <section>
+                    <h2>Sezione 1</h2>
+                    <p>Contenuto...</p>
+                </section>
+                
+                <section>
+                    <h2>Sezione 2</h2>
+                    <p>Contenuto...</p>
+                </section>
+            </main>
+            
+            <footer>
+                <p>Informazioni di contatto</p>
+            </footer>
+        </div>
+
+        <h2>4. Tag di Testo</h2>
+
+        <h3>4.1 Titoli (Headings)</h3>
+
+        <p>HTML fornisce sei livelli di titoli, da <code>&lt;h1&gt;</code> a <code>&lt;h6&gt;</code>, dove h1 rappresenta il titolo più importante:</p>
+
+        <div class="codice">
+<pre>&lt;h1&gt;Titolo Principale&lt;/h1&gt;
+&lt;h2&gt;Sottotitolo&lt;/h2&gt;
+&lt;h3&gt;Sottosezione&lt;/h3&gt;
+&lt;h4&gt;Titolo di Livello 4&lt;/h4&gt;
+&lt;h5&gt;Titolo di Livello 5&lt;/h5&gt;
+&lt;h6&gt;Titolo di Livello 6&lt;/h6&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <h1>Titolo Principale</h1>
+            <h2>Sottotitolo</h2>
+            <h3>Sottosezione</h3>
+            <h4>Titolo di Livello 4</h4>
+            <h5>Titolo di Livello 5</h5>
+            <h6>Titolo di Livello 6</h6>
+        </div>
+
+        <h3>4.2 Paragrafi e Formattazione</h3>
+
+        <div class="codice">
+<pre>&lt;p&gt;Questo è un paragrafo di testo.&lt;/p&gt;
+
+&lt;p&gt;Testo con &lt;strong&gt;enfasi forte&lt;/strong&gt; (grassetto).&lt;/p&gt;
+
+&lt;p&gt;Testo con &lt;em&gt;enfasi&lt;/em&gt; (corsivo).&lt;/p&gt;
+
+&lt;p&gt;Prima riga&lt;br&gt;Seconda riga&lt;/p&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p>Questo è un paragrafo di testo.</p>
+            <p>Testo con <strong>enfasi forte</strong> (grassetto).</p>
+            <p>Testo con <em>enfasi</em> (corsivo).</p>
+            <p>Prima riga<br>Seconda riga</p>
+        </div>
+
+        <h2>5. Liste</h2>
+
+        <h3>5.1 Liste Non Ordinate</h3>
+
+        <div class="codice">
+<pre>&lt;ul&gt;
+    &lt;li&gt;Primo elemento&lt;/li&gt;
+    &lt;li&gt;Secondo elemento&lt;/li&gt;
+    &lt;li&gt;Terzo elemento&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <ul>
+                <li>Primo elemento</li>
+                <li>Secondo elemento</li>
+                <li>Terzo elemento</li>
+            </ul>
+        </div>
+
+        <h3>5.2 Liste Ordinate</h3>
+
+        <div class="codice">
+<pre>&lt;ol&gt;
+    &lt;li&gt;Primo passo&lt;/li&gt;
+    &lt;li&gt;Secondo passo&lt;/li&gt;
+    &lt;li&gt;Terzo passo&lt;/li&gt;
+&lt;/ol&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <ol>
+                <li>Primo passo</li>
+                <li>Secondo passo</li>
+                <li>Terzo passo</li>
+            </ol>
+        </div>
+
+        <h2>6. Link e Immagini</h2>
+
+        <h3>6.1 Collegamenti Ipertestuali</h3>
+
+        <div class="codice">
+<pre>&lt;a href="https://www.esempio.com"&gt;Testo del link&lt;/a&gt;
+
+&lt;a href="pagina.html"&gt;Link interno&lt;/a&gt;
+
+&lt;a href="mailto:info@esempio.com"&gt;Invia email&lt;/a&gt;
+
+&lt;a href="https://www.esempio.com" target="_blank"&gt;Apri in nuova scheda&lt;/a&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <a href="https://www.esempio.com">Testo del link</a>
+            <a href="pagina.html">Link interno</a>
+            <a href="mailto:info@esempio.com">Invia email</a>
+            <a href="https://www.esempio.com" target="_blank">Apri in nuova scheda</a>
+        </div>
+
+        <h3>6.2 Immagini</h3>
+
+        <div class="codice">
+<pre>&lt;img src="percorso/immagine.jpg" alt="Descrizione immagine"&gt;
+
+&lt;img src="foto.jpg" alt="Foto" width="300" height="200"&gt;</pre>
+        </div>
+
+
+        <h2>7. Multimedia</h2>
+
+        <h3>7.1 Tag Video</h3>
+
+        <p>Il tag <code>&lt;video&gt;</code> permette di incorporare video nella pagina web:</p>
+
+        <div class="codice">
+<pre>&lt;video width="320" height="240" controls&gt;
+    &lt;source src="video.mp4" type="video/mp4"&gt;
+    &lt;source src="video.webm" type="video/webm"&gt;
+    Il tuo browser non supporta il tag video.
+&lt;/video&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <video width="320" height="240" controls>
+                <source src="video.mp4" type="video/mp4">
+                <source src="video.webm" type="video/webm">
+                Il tuo browser non supporta il tag video.
+            </video>
+        </div>
+
+        <h3>7.2 Tag Iframe</h3>
+
+        <p>Il tag <code>&lt;iframe&gt;</code> permette di incorporare contenuti esterni, come mappe di Google Maps:</p>
+
+        <div class="codice">
+<pre>&lt;iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50704.98480796227!2d-122.1592399734075!3d37.412020047816746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb7495bec0189%3A0x7c17d44a466baf9b!2sMountain%20View%2C%20California%2C%20Stati%20Uniti!5e0!3m2!1sit!2sit!4v1762984690396!5m2!1sit!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"&gt;&lt;/iframe&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50704.98480796227!2d-122.1592399734075!3d37.412020047816746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb7495bec0189%3A0x7c17d44a466baf9b!2sMountain%20View%2C%20California%2C%20Stati%20Uniti!5e0!3m2!1sit!2sit!4v1762984690396!5m2!1sit!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <h3>7.3 Tag Img</h3>
+
+        <p>Il tag <code>&lt;img&gt;</code> permette di inserire immagini nella pagina web:</p>
+
+        <div class="codice">
+<pre>&lt;img src="esempio.jpg" alt="Descrizione dell'immagine" width="300" height="200"&gt;</pre>
+        </div>
+
+        <div class="anteprima">
+            <img src="esempio.jpg" alt="Descrizione dell'immagine" width="300" height="200">
+        </div>
+
+        <h2>8. Esempio Completo: Pagina Web Base</h2>
+
+        <p>Di seguito un esempio completo di pagina HTML che utilizza tutti gli elementi presentati:</p>
+
+        <div class="codice">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="it"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Corso Web Frontend&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Corso di Web Frontend&lt;/h1&gt;
+        &lt;nav&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#corso"&gt;Il Corso&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#contatti"&gt;Contatti&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    
+    &lt;main&gt;
+        &lt;section id="home"&gt;
+            &lt;h2&gt;Benvenuti&lt;/h2&gt;
+            &lt;p&gt;Questo corso introduce i &lt;strong&gt;fondamenti dello sviluppo web&lt;/strong&gt; utilizzando HTML, CSS e JavaScript.&lt;/p&gt;
+            &lt;img src="banner.jpg" alt="Banner del corso"&gt;
+        &lt;/section&gt;
+        
+        &lt;section id="corso"&gt;
+            &lt;h2&gt;Programma del Corso&lt;/h2&gt;
+            &lt;p&gt;Il corso è strutturato in diverse lezioni che coprono:&lt;/p&gt;
+            &lt;ol&gt;
+                &lt;li&gt;HTML e struttura delle pagine web&lt;/li&gt;
+                &lt;li&gt;CSS per lo styling e il layout&lt;/li&gt;
+                &lt;li&gt;JavaScript per l'interattività&lt;/li&gt;
+                &lt;li&gt;Framework moderni come React&lt;/li&gt;
+            &lt;/ol&gt;
+            
+            &lt;h3&gt;Requisiti&lt;/h3&gt;
+            &lt;ul&gt;
+                &lt;li&gt;Conoscenze informatiche di base&lt;/li&gt;
+                &lt;li&gt;Computer con accesso a internet&lt;/li&gt;
+                &lt;li&gt;Editor di testo installato&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/section&gt;
+        
+        &lt;section id="contatti"&gt;
+            &lt;h2&gt;Contatti&lt;/h2&gt;
+            &lt;p&gt;Per informazioni:&lt;/p&gt;
+            &lt;p&gt;&lt;a href="mailto:info@corsoweb.com"&gt;info@corsoweb.com&lt;/a&gt;&lt;/p&gt;
+            &lt;p&gt;Tel: +39 123 456 7890&lt;/p&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;&amp;copy; 2025 Corso Web Frontend.&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-1-0.html">Indietro</a>
+            <a href="lezione-1-2.html">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

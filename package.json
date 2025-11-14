@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build:react": "cd react-apps/lezione5-react && npm install && npm run build",
-    "deploy": "npm install && npm run build:react && pm2 restart corso-frontend",
+    "deploy": "npm install && pm2 restart corso-frontend",
     "logs": "pm2 logs corso-frontend",
     "status": "pm2 status"
   },
@@ -16,17 +15,14 @@
     "frontend",
     "html",
     "css",
-    "javascript",
-    "react"
+    "javascript"
   ],
   "author": "Il Tuo Nome",
   "license": "MIT",
   "dependencies": {
     "compression": "^1.7.4",
     "express": "^4.18.2",
-    "helmet": "^7.1.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "helmet": "^7.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
