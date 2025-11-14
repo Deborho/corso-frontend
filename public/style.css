@@ -16,6 +16,17 @@ body {
     display: none;
 }
 
+@media print {
+    .print-only {
+        display: block;
+    }
+    
+    /* Nasconde in stampa, mostra solo sullo schermo */
+    .no-print {
+        display: none !important;
+    }
+}
+
 .container {
     max-width: 1000px;
     margin: 0 auto;

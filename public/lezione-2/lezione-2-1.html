@@ -25,7 +25,7 @@
         <div class="teoria">
             <p>CSS (Cascading Style Sheets) è il linguaggio utilizzato per definire la presentazione visuale di documenti HTML. Mentre HTML definisce la struttura e il contenuto, CSS controlla l'aspetto, il layout e la formattazione degli elementi.</p>
             
-            <p>CSS opera secondo il principio della cascata: le regole più specifiche hanno precedenza su quelle più generiche, e le regole definite successivamente possono sovrascrivere quelle precedenti.</p>
+            <p>CSS opera secondo il principio "cascade" (cascata in italiano): le regole più specifiche hanno precedenza su quelle più generiche, e le regole definite successivamente possono sovrascrivere quelle precedenti.</p>
         </div>
 
         <h2>2. Metodi di Inserimento CSS</h2>
@@ -94,6 +94,7 @@ p {
         <div class="esempio">
             <iframe src="esempi/sintassi-css.html" width="100%" height="350" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Sintassi CSS</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/sintassi-css.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/sintassi-css.html</a></p>
         </div>
 
         <h2>4. Selettori CSS</h2>
@@ -170,6 +171,56 @@ nav > ul {
         <div class="esempio">
             <iframe src="esempi/selettori-css.html" width="100%" height="400" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Selettori CSS</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/selettori-css.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/selettori-css.html</a></p>
+        </div>
+
+        <h3>4.3 La Regola !important</h3>
+
+        <div class="teoria">
+            <p>La dichiarazione <code>!important</code> in CSS forza l'applicazione di uno stile, sovrascrivendo le normali regole di specificità e cascata.</p>
+            
+            <p><strong>⚠️ Usare con Cautela:</strong> <code>!important</code> dovrebbe essere utilizzato solo in casi eccezionali, poiché rende il codice più difficile da mantenere e può creare problemi di debug.</p>
+            
+            <p><strong>Casi d'uso legittimi:</strong></p>
+            <ul style="margin-left: 40px; margin-top: 10px;">
+                <li><strong>Utility class:</strong> Classi di utilità che devono sempre avere la precedenza (es. <code>.hidden { display: none !important; }</code>)</li>
+                <li><strong>Override di librerie esterne:</strong> Quando è necessario sovrascrivere stili di librerie CSS di terze parti che non possono essere modificate</li>
+                <li><strong>Media query per stampa:</strong> Per forzare stili specifici quando si stampa una pagina (es. nascondere elementi non necessari)</li>
+                <li><strong>Accessibilità:</strong> Per garantire che certi stili critici per l'accessibilità non vengano mai sovrascritti</li>
+            </ul>
+
+            <p><strong>Alternative migliori:</strong></p>
+            <ul style="margin-left: 40px; margin-top: 10px;">
+                <li>Aumentare la specificità del selettore</li>
+                <li>Riorganizzare l'ordine dei CSS nel documento</li>
+                <li>Utilizzare selettori più specifici</li>
+                <li>Ristrutturare il CSS per evitare conflitti</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+<pre>/* ❌ Da evitare - uso generico */
+p {
+    color: blue !important;  /* Non necessario */
+}
+
+/* ✅ Uso appropriato - utility class */
+.hidden {
+    display: none !important;  /* Deve sempre nascondere */
+}
+
+/* ✅ Uso appropriato - media query per stampa */
+@media print {
+    nav, .no-print {
+        display: none !important;  /* Nasconde sempre in stampa */
+    }
+}
+
+/* ✅ Alternativa migliore - aumentare la specificità */
+/* Invece di: p { color: blue !important; } */
+body main article p {
+    color: blue;  /* Più specifico, no !important */
+}</pre>
         </div>
 
         <h2>5. Proprietà CSS Fondamentali</h2>
@@ -292,6 +343,7 @@ opacity: 0.5;            /* da 0 (trasparente) a 1 (opaco) */</pre>
         <div class="esempio">
             <iframe src="esempi/proprieta-css.html" width="100%" height="400" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Proprietà CSS Fondamentali</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/proprieta-css.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/proprieta-css.html</a></p>
         </div>
 
         <h2>6. Posizionamento</h2>
@@ -317,6 +369,7 @@ z-index: 10;</pre>
         <div class="esempio">
             <iframe src="esempi/posizionamento.html" width="100%" height="500" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Posizionamento CSS</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/posizionamento.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/posizionamento.html</a></p>
         </div>
 
         <h2>7. Flexbox Base</h2>
@@ -346,6 +399,7 @@ z-index: 10;</pre>
         <div class="esempio">
             <iframe src="esempi/flexbox.html" width="100%" height="600" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Flexbox Base</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/flexbox.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/flexbox.html</a></p>
         </div>
 
         <h2>8. CSS Grid Layout</h2>
@@ -415,6 +469,7 @@ z-index: 10;</pre>
         <div class="esempio">
             <iframe src="esempi/grid.html" width="100%" height="900" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: CSS Grid Layout</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/grid.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/grid.html</a></p>
         </div>
 
         <h2>9. Pseudo-classi e Pseudo-elementi</h2>
@@ -466,6 +521,7 @@ p::first-letter {
         <div class="esempio">
             <iframe src="esempi/pseudo-classi.html" width="100%" height="500" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Pseudo-classi e Pseudo-elementi</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/pseudo-classi.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/pseudo-classi.html</a></p>
         </div>
 
         <h2>10. Variabili CSS (Custom Properties)</h2>
@@ -525,6 +581,7 @@ p::first-letter {
         <div class="esempio">
             <iframe src="esempi/variabili-css.html" width="100%" height="900" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Variabili CSS</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/variabili-css.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/variabili-css.html</a></p>
         </div>
 
         <h2>11. Media Query - Layout Responsive e Stampa</h2>
@@ -664,6 +721,7 @@ p::first-letter {
         <div class="esempio">
             <iframe src="esempi/media-query.html" width="100%" height="1000" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
             <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Media Query - Responsive e Stampa</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/media-query.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/media-query.html</a></p>
         </div>
 
         <h2>12. Esempio Completo: Pagina Stilizzata</h2>
@@ -740,190 +798,10 @@ p::first-letter {
 &lt;/html&gt;</pre>
         </div>
 
-        <h3>12.2 File CSS (style.css)</h3>
-
-        <div class="codice">
-<pre>/* Reset e impostazioni globali */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Header */
-.header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 20px 0;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-}
-
-.header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.nav ul {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-}
-
-.nav a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.nav a:hover {
-    color: #3498db;
-}
-
-/* Hero Section */
-.hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 150px 0 100px;
-    text-align: center;
-    margin-top: 60px;
-}
-
-.hero-title {
-    font-size: 48px;
-    margin-bottom: 20px;
-}
-
-.hero-text {
-    font-size: 20px;
-    margin-bottom: 30px;
-}
-
-.btn {
-    display: inline-block;
-    background-color: white;
-    color: #667eea;
-    padding: 12px 30px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: transform 0.3s;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-}
-
-/* About Section */
-.about {
-    padding: 80px 0;
-    background-color: #f8f9fa;
-}
-
-.about h2 {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 30px;
-}
-
-.about p {
-    text-align: center;
-    font-size: 18px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Services Section */
-.services {
-    padding: 80px 0;
-}
-
-.services h2 {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 50px;
-}
-
-.services-grid {
-    display: flex;
-    gap: 30px;
-    justify-content: center;
-}
-
-.service-card {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    flex: 1;
-    max-width: 350px;
-    transition: transform 0.3s;
-}
-
-.service-card:hover {
-    transform: translateY(-10px);
-}
-
-.service-card h3 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #667eea;
-}
-
-/* Footer */
-.footer {
-    background-color: #2c3e50;
-    color: white;
-    padding: 30px 0;
-    text-align: center;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .header .container {
-        flex-direction: column;
-        gap: 20px;
-    }
-    
-    .nav ul {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-    }
-    
-    .hero-title {
-        font-size: 32px;
-    }
-    
-    .services-grid {
-        flex-direction: column;
-    }
-}</pre>
-        </div>
-
         <div class="esempio">
-            <iframe src="esempi/esempio-completo.html" width="100%" height="600" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
-            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Pagina Stilizzata Completa</p>
+            <iframe src="lezione-2-99.html" width="100%" height="800" style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">Esempio: Pagina Biografia di Tim Berners-Lee</p>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="lezione-2-99.html" target="_blank" style="color: #0066cc; text-decoration: none;">lezione-2-99.html</a></p>
         </div>
 
         <h2>Conclusione</h2>

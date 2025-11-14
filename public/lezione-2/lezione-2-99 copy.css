@@ -1,0 +1,345 @@
+/* 
+    TUTORIAL CSS - Pagina Biografia Tim Berners-Lee
+    
+    STRUTTURA STILI:
+    1. Variabili CSS (custom properties)
+    2. Reset e base
+    3. Layout principale (header, nav, container, footer)
+    4. Componenti speciali (timeline, highlight-box, awards, quote)
+    5. Responsive (media query per mobile)
+*/
+
+/* ===== 1. VARIABILI CSS ===== */
+
+/* 
+   Le variabili CSS (custom properties) permettono di riutilizzare valori in tutto il foglio di stile.
+   Sintassi: --nome-variabile: valore;
+   Uso: var(--nome-variabile)
+   Vantaggio: modificare un colore in un solo punto aggiorna tutto il sito
+*/
+:root {
+    /* Colori principali */
+    --color-primary: #3498db;      /* Blu principale */
+    --color-primary-dark: #2c3e50; /* Blu scuro */
+    --color-secondary: #34495e;    /* Grigio blu */
+    
+    /* Colori di sfondo */
+    --bg-light: #ecf0f1;           /* Grigio chiaro */
+    --bg-white: #ffffff;           /* Bianco */
+    --bg-timeline: #f8f9fa;        /* Grigio molto chiaro */
+    
+    /* Colori highlight */
+    --highlight-bg: #fff3cd;       /* Giallo chiaro */
+    --highlight-border: #ffc107;   /* Giallo */
+    --highlight-text: #856404;     /* Marrone */
+    
+    /* Colori testo */
+    --text-primary: #2c3e50;       /* Testo principale */
+    --text-secondary: #34495e;     /* Testo secondario */
+    --text-muted: #555555;         /* Testo attenuato */
+    --text-white: #ffffff;         /* Testo bianco */
+    
+    /* Colori bordi */
+    --border-color: #e0e0e0;       /* Bordo grigio chiaro */
+    
+    /* Font */
+    --font-main: 'Georgia', serif;
+    
+    /* Spaziature */
+    --spacing-sm: 20px;
+    --spacing-md: 30px;
+    --spacing-lg: 50px;
+    --spacing-xl: 80px;
+    
+    /* Dimensioni */
+    --max-width: 1000px;
+    --border-radius: 8px;
+    
+    /* Transizioni */
+    --transition-speed: 0.3s;
+}
+
+/* ===== 2. RESET E BASE ===== */
+
+/* Reset universale: rimuove margini e padding di default del browser */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* include padding e border nella larghezza totale */
+}
+
+/* Stili base del body: usa variabili per colori e font */
+body {
+    font-family: var(--font-main);
+    line-height: 1.8;
+    color: var(--text-primary);
+    background: var(--bg-light);
+}
+
+/* ===== 3. LAYOUT PRINCIPALE ===== */
+
+/* HEADER: area introduttiva con sfondo gradiente usando variabili */
+.header {
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    color: var(--text-white);
+    padding: var(--spacing-xl) var(--spacing-sm);
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.header h1 {
+    font-size: 3em;
+    margin-bottom: 15px;
+    font-weight: normal;
+    letter-spacing: 2px;
+}
+
+.header .subtitle {
+    font-size: 1.3em;
+    font-style: italic;
+    opacity: 0.95;
+}
+
+.header .date {
+    margin-top: 10px;
+    font-size: 1em;
+    opacity: 0.85;
+}
+
+/* CONTAINER: usa variabili per larghezza massima e sfondo */
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    background: var(--bg-white);
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* NAVIGAZIONE: usa variabili per colori e transizioni */
+nav {
+    background: var(--color-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav li {
+    margin: 0;
+}
+
+nav a {
+    display: block;
+    color: var(--text-white);
+    text-decoration: none;
+    padding: 15px 25px;
+    transition: background var(--transition-speed);
+}
+
+nav a:hover {
+    background: var(--color-primary-dark);
+}
+
+/* CONTENUTO: usa variabile per spaziatura */
+.content {
+    padding: var(--spacing-lg);
+}
+
+section {
+    margin-bottom: 60px;
+}
+
+/* TITOLI: usa variabili per colori */
+h2 {
+    font-size: 2em;
+    color: var(--text-primary);
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--color-primary); /* linea decorativa sotto il titolo */
+}
+
+h3 {
+    font-size: 1.4em;
+    color: var(--text-secondary);
+    margin: var(--spacing-md) 0 15px 0;
+}
+
+/* PARAGRAFI */
+p {
+    margin-bottom: var(--spacing-sm);
+    text-align: justify;
+}
+
+/* ===== 4. COMPONENTI SPECIALI ===== */
+
+/* INTRO BOX: usa variabili per tutti i valori riutilizzabili */
+.intro {
+    font-size: 1.2em;
+    font-style: italic;
+    color: var(--text-muted);
+    background: var(--bg-light);
+    padding: 25px;
+    border-left: 5px solid var(--color-primary); /* barra colorata a sinistra */
+    margin-bottom: 40px;
+}
+
+/* TIMELINE: visualizzazione cronologica con variabili */
+.timeline {
+    background: var(--bg-timeline);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin: var(--spacing-md) 0;
+}
+
+.timeline-item {
+    margin-bottom: 25px;
+    padding-left: var(--spacing-md);
+    border-left: 3px solid var(--color-primary);
+    position: relative;
+}
+
+/* Pallino circolare sulla timeline usando pseudo-elemento e variabile */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 5px;
+    width: 13px;
+    height: 13px;
+    background: var(--color-primary);
+    border-radius: 50%;
+}
+
+.year {
+    font-weight: bold;
+    color: var(--color-primary);
+    font-size: 1.1em;
+}
+
+/* HIGHLIGHT BOX: usa variabili CSS per colori del box giallo */
+.highlight-box {
+    background: var(--highlight-bg);
+    border-left: 5px solid var(--highlight-border);
+    padding: var(--spacing-sm);
+    margin: var(--spacing-md) 0;
+}
+
+.highlight-box h3 {
+    margin-top: 0;
+    color: var(--highlight-text);
+}
+
+/* AWARDS GRID: griglia responsive per le card dei premi */
+.awards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* colonne automatiche */
+    gap: var(--spacing-sm);
+    margin: var(--spacing-md) 0;
+}
+
+/* AWARD CARD: usa variabili per colori, bordi e transizioni */
+.award-card {
+    background: var(--bg-white);
+    border: 2px solid var(--border-color);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    text-align: center;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.award-card:hover {
+    transform: translateY(-5px); /* solleva la card al hover */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.award-card h4 {
+    color: var(--color-primary);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+/* QUOTE BOX: box citazioni con variabili per colori */
+.quote {
+    font-size: 1.1em;
+    font-style: italic;
+    color: var(--text-muted);
+    background: var(--bg-timeline);
+    padding: 25px;
+    border-left: 5px solid var(--color-primary-dark);
+    margin: var(--spacing-md) 0;
+}
+
+/* Virgolette generate con pseudo-elementi CSS */
+.quote::before {
+    content: '"';
+    font-size: 3em;
+    color: var(--color-primary);
+    line-height: 0;
+    vertical-align: -0.4em;
+}
+
+.quote::after {
+    content: '"';
+    font-size: 3em;
+    color: var(--color-primary);
+    line-height: 0;
+    vertical-align: -0.4em;
+}
+
+/* FOOTER: usa variabili per colori */
+footer {
+    background: var(--color-primary-dark);
+    color: var(--text-white);
+    text-align: center;
+    padding: var(--spacing-md);
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+footer a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* ===== 5. RESPONSIVE DESIGN ===== */
+
+/* 
+   Media query: adatta il layout per schermi piccoli (mobile e tablet)
+   Le variabili CSS possono essere ridefinite dentro le media queries
+   per creare temi responsive
+*/
+@media (max-width: 768px) {
+    /* Ridefinisce alcune variabili per schermi piccoli */
+    :root {
+        --spacing-lg: 30px;
+        --spacing-md: 20px;
+    }
+    
+    .header h1 {
+        font-size: 2em;
+    }
+    
+    .content {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+    
+    nav a {
+        padding: 12px 15px;
+        font-size: 0.9em;
+    }
+    
+    h2 {
+        font-size: 1.6em;
+    }
+}
