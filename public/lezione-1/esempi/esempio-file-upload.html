@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio Upload File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .form-group {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        input[type="file"]:hover {
+            border-color: #2196F3;
+            background: #f5f9ff;
+        }
+        .file-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .file-preview {
+            margin-top: 15px;
+            max-width: 300px;
+        }
+        .file-preview img {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 12px 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        .file-list li {
+            padding: 8px;
+            background: #f5f5f5;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="single-file">Carica un singolo file:</label>
+            <input type="file" id="single-file" name="single-file">
+            <div class="file-info" id="single-info"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="multiple-files">Carica più file:</label>
+            <input type="file" id="multiple-files" name="multiple-files" multiple>
+            <div class="file-info" id="multiple-info"></div>
+            <ul class="file-list" id="file-list"></ul>
+        </div>
+
+        <div class="form-group">
+            <label for="image-file">Carica solo immagini (PNG/JPEG):</label>
+            <input type="file" id="image-file" name="image-file" 
+                   accept="image/png, image/jpeg">
+            <div class="file-preview" id="image-preview"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="document-file">Carica documenti (PDF/DOC):</label>
+            <input type="file" id="document-file" name="document-file" 
+                   accept=".pdf,.doc,.docx">
+            <div class="file-info" id="document-info"></div>
+        </div>
+
+        <button type="submit">Simula Upload</button>
+    </form>
+
+    <script>
+        // Singolo file
+        document.getElementById('single-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const info = document.getElementById('single-info');
+            
+            if (file) {
+                info.innerHTML = `
+                    <strong>File selezionato:</strong><br>
+                    Nome: ${file.name}<br>
+                    Dimensione: ${(file.size / 1024).toFixed(2)} KB<br>
+                    Tipo: ${file.type}
+                `;
+            }
+        });
+
+        // File multipli
+        document.getElementById('multiple-files').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const info = document.getElementById('multiple-info');
+            const list = document.getElementById('file-list');
+            
+            if (files.length > 0) {
+                info.innerHTML = `<strong>${files.length} file selezionati</strong>`;
+                list.innerHTML = '';
+                
+                Array.from(files).forEach(file => {
+                    const li = document.createElement('li');
+                    li.textContent = `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                    list.appendChild(li);
+                });
+            }
+        });
+
+        // Immagine con anteprima
+        document.getElementById('image-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('image-preview');
+            
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    preview.innerHTML = `
+                        <p><strong>Anteprima:</strong></p>
+                        <img src="${event.target.result}" alt="Anteprima">
+                    `;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Documento
+        document.getElementById('document-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const info = document.getElementById('document-info');
+            
+            if (file) {
+                info.innerHTML = `
+                    <strong>Documento selezionato:</strong><br>
+                    Nome: ${file.name}<br>
+                    Dimensione: ${(file.size / 1024).toFixed(2)} KB
+                `;
+            }
+        });
+
+        // Submit del form
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Questo è un esempio. In un caso reale, i file verrebbero inviati al server.');
+        });
+    </script>
+</body>
+</html>
