@@ -60,3 +60,6 @@ coverage/
 
 # PM2
 .pm2/
+
+# DDEV
+.ddev/

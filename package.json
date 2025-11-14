@@ -1,7 +1,7 @@
 {
   "name": "corso-frontend-server",
   "version": "1.0.0",
-  "description": "Server per corso Front-End Development - 13 ore",
+  "description": "Server per corso Front-End Development",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
