@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.3 - Nesting e Parent Selector</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.3 - Nesting e Parent Selector</h1>
+            <p>Struttura gerarchica per CSS più leggibile e mantenibile</p>
+        </div>
+
+        <h2>1. Cos'è il Nesting?</h2>
+        
+        <div class="teoria">
+            <p>Il <strong>nesting</strong> (annidamento) permette di scrivere selettori CSS in una struttura gerarchica che riflette l'HTML, rendendo il codice più leggibile e organizzato.</p>
+            
+            <p><strong>Vantaggi:</strong></p>
+            <ul>
+                <li>Riduce ripetizioni nel codice</li>
+                <li>Mantiene codice correlato vicino</li>
+                <li>Riflette la struttura HTML</li>
+                <li>Facilita refactoring</li>
+                <li>Migliora leggibilità</li>
+            </ul>
+        </div>
+
+        <h2>2. Nesting Base</h2>
+
+        <h3>2.1 CSS Tradizionale vs SCSS</h3>
+        
+        <div class="codice">
+<pre>/* CSS tradizionale - ripetitivo */
+.navigation {
+  background: #333;
+  padding: 20px;
+}
+
+.navigation ul {
+  list-style: none;
+  margin: 0;
+}
+
+.navigation ul li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.navigation ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.navigation ul li a:hover {
+  color: #3498db;
+}</pre>
+        </div>
+
+        <div class="codice">
+<pre>// SCSS con nesting - organizzato e leggibile
+.navigation {
+  background: #333;
+  padding: 20px;
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    
+    li {
+      display: inline-block;
+      margin-right: 20px;
+      
+      a {
+        color: white;
+        text-decoration: none;
+        
+        &:hover {
+          color: #3498db;
+        }
+      }
+    }
+  }
+}</pre>
+        </div>
+
+        <h3>2.2 Output CSS Compilato</h3>
+        
+        <div class="codice">
+<pre>/* CSS generato da SCSS (identico al CSS tradizionale) */
+.navigation {
+  background: #333;
+  padding: 20px;
+}
+.navigation ul {
+  list-style: none;
+  margin: 0;
+}
+.navigation ul li {
+  display: inline-block;
+  margin-right: 20px;
+}
+.navigation ul li a {
+  color: white;
+  text-decoration: none;
+}
+.navigation ul li a:hover {
+  color: #3498db;
+}</pre>
+        </div>
+
+        <h2>3. Parent Selector (&)</h2>
+        
+        <div class="teoria">
+            <p>Il <strong>parent selector</strong> <code>&</code> è un carattere speciale che si riferisce al selettore genitore. È estremamente potente e versatile.</p>
+        </div>
+
+        <h3>3.1 Pseudo-classi e Pseudo-elementi</h3>
+        
+        <div class="codice">
+<pre>.button {
+  background: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  
+  // & = .button
+  &:hover {
+    background: #2980b9;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  &::before {
+    content: "→ ";
+  }
+}
+
+// Output CSS:
+// .button { ... }
+// .button:hover { ... }
+// .button:active { ... }
+// .button:disabled { ... }
+// .button::before { ... }</pre>
+        </div>
+
+        <h3>3.2 Classi Modificatrici</h3>
+        
+        <div class="codice">
+<pre>.button {
+  background: #3498db;
+  padding: 10px 20px;
+  
+  // & = .button
+  &.large {
+    padding: 15px 30px;
+    font-size: 18px;
+  }
+  
+  &.small {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  
+  &.danger {
+    background: #e74c3c;
+  }
+  
+  &.success {
+    background: #2ecc71;
+  }
+}
+
+// Output CSS:
+// .button { ... }
+// .button.large { ... }
+// .button.small { ... }
+// .button.danger { ... }
+// .button.success { ... }
+
+</pre>
+        </div>
+
+        <h3>3.3 & come Suffisso</h3>
+        
+        <div class="codice">
+<pre>.button {
+  background: #3498db;
+  
+  // & alla fine aggiunge il selettore PRIMA
+  .sidebar & {
+    width: 100%;
+  }
+  
+  .dark-theme & {
+    background: #2c3e50;
+  }
+}
+
+// Output CSS:
+// .button { ... }
+// .sidebar .button { width: 100%; }
+// .dark-theme .button { background: #2c3e50; }</pre>
+        </div>
+
+        <h3>3.4 Concatenazione con &</h3>
+        
+        <div class="codice">
+<pre>.icon {
+  width: 20px;
+  height: 20px;
+  
+  // Concatena & con testo
+  &-small {
+    width: 16px;
+    height: 16px;
+  }
+  
+  &-large {
+    width: 32px;
+    height: 32px;
+  }
+  
+  &-primary {
+    color: #3498db;
+  }
+  
+  &-danger {
+    color: #e74c3c;
+  }
+}
+
+// Output CSS:
+// .icon { width: 20px; height: 20px; }
+// .icon-small { width: 16px; height: 16px; }
+// .icon-large { width: 32px; height: 32px; }
+// .icon-primary { color: #3498db; }
+// .icon-danger { color: #e74c3c; }</pre>
+        </div>
+
+        <h2>4. BEM con SASS</h2>
+        
+        <div class="teoria">
+            <p><strong>BEM (Block Element Modifier)</strong> è una metodologia di naming CSS. SASS lo rende più facile da scrivere con il nesting e il parent selector.</p>
+            
+            <p><strong>Struttura BEM:</strong></p>
+            <ul>
+                <li><strong>Block:</strong> <code>.card</code></li>
+                <li><strong>Element:</strong> <code>.card__header</code>, <code>.card__body</code></li>
+                <li><strong>Modifier:</strong> <code>.card--featured</code>, <code>.card__header--large</code></li>
+            </ul>
+        </div>
+
+        <div class="codice">
+<pre>// SCSS con BEM
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  // Elements (__)
+  &__header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    
+    // Element modifier
+    &--large {
+      padding: 30px;
+      font-size: 24px;
+    }
+  }
+  
+  &__body {
+    padding: 20px;
+  }
+  
+  &__footer {
+    padding: 15px 20px;
+    background: #f5f5f5;
+    border-top: 1px solid #eee;
+  }
+  
+  // Block modifiers (--)
+  &--featured {
+    border: 2px solid #3498db;
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+  }
+  
+  &--dark {
+    background: #2c3e50;
+    color: white;
+    
+    .card__header {
+      border-bottom-color: #34495e;
+    }
+    
+    .card__footer {
+      background: #34495e;
+      border-top-color: #34495e;
+    }
+  }
+}
+
+// Output CSS:
+// .card { ... }
+// .card__header { ... }
+// .card__header--large { ... }
+// .card__body { ... }
+// .card__footer { ... }
+// .card--featured { ... }
+// .card--dark { ... }
+// .card--dark .card__header { ... }
+// .card--dark .card__footer { ... }</pre>
+        </div>
+
+        <h2>5. Nesting Properties</h2>
+        
+        <div class="teoria">
+            <p>SASS permette di annidare anche le <strong>proprietà CSS</strong> che condividono lo stesso namespace (font-, border-, margin-, ecc.).</p>
+        </div>
+
+        <div class="codice">
+<pre>// Nesting properties
+.text {
+  font: {
+    family: Arial, sans-serif;
+    size: 16px;
+    weight: bold;
+    style: italic;
+  }
+  
+  border: {
+    top: 1px solid black;
+    bottom: 2px solid red;
+    radius: 4px;
+  }
+  
+  margin: {
+    top: 10px;
+    bottom: 20px;
+  }
+}
+
+// Output CSS:
+// .text {
+//   font-family: Arial, sans-serif;
+//   font-size: 16px;
+//   font-weight: bold;
+//   font-style: italic;
+//   border-top: 1px solid black;
+//   border-bottom: 2px solid red;
+//   border-radius: 4px;
+//   margin-top: 10px;
+//   margin-bottom: 20px;
+// }</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Nota:</strong> Il nesting properties è poco usato nella pratica. È più comune scrivere le proprietà normalmente.</p>
+        </div>
+
+        <h2>6. Quando Evitare il Nesting Eccessivo</h2>
+        
+        <div class="teoria">
+            <p>Per evitare confusione non annidare più di 3-4 livelli</p>
+            
+            <p><strong>Problemi del nesting eccessivo:</strong></p>
+            <ul>
+                <li>Genera selettori CSS troppo specifici</li>
+                <li>Difficile fare override</li>
+                <li>Performance peggiori</li>
+                <li>Codice difficile da leggere</li>
+                <li>File CSS compilato più grande</li>
+            </ul>
+        </div>
+
+        <h3>6.1 ❌ Cattiva Pratica</h3>
+        
+        <div class="codice">
+<pre>// ❌ TROPPO ANNIDATO - NON FARE COSÌ!
+.page {
+  .content {
+    .sidebar {
+      .widget {
+        .widget-header {
+          .widget-title {
+            span {
+              &.active {
+                color: red; // Specificità altissima!
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Output CSS (orribile!):
+// .page .content .sidebar .widget .widget-header .widget-title span.active {
+//   color: red;
+// }
+// Specificità: 0,0,8,1 - impossibile da sovrascrivere!</pre>
+        </div>
+
+        <h3>6.2 Buona Pratica</h3>
+        
+        <div class="codice">
+<pre>// MEGLIO - Massimo 3 livelli, usa classi
+.widget {
+  // ...
+}
+
+.widget-header {
+  // ...
+}
+
+.widget-title {
+  font-size: 18px;
+  
+  span {
+    &.active {
+      color: red;
+    }
+  }
+}
+
+// Output CSS (pulito!):
+// .widget-title { font-size: 18px; }
+// .widget-title span.active { color: red; }
+// Specificità: 0,0,2,1 - gestibile!</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Linee guida:</strong></p>
+            <ul>
+                <li>Usa nesting per pseudo-classi (<code>&:hover</code>)</li>
+                <li>Usa nesting per modificatori (<code>&.active</code>)</li>
+                <li>Usa nesting per BEM (<code>&__element</code>, <code>&--modifier</code>)</li>
+                <li>Mantieni massimo 3-4 livelli di profondità</li>
+                <li>❌ Evita di replicare completamente la struttura HTML</li>
+                <li>❌ Evita nesting solo per organizzazione (usa commenti invece)</li>
+            </ul>
+        </div>
+
+        <h2>8. Pattern Comuni</h2>
+
+        <h3>8.1 Stati Interattivi</h3>
+        
+        <div class="codice">
+<pre>.link {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.3s;
+  
+  &:hover {
+    color: #2980b9;
+  }
+  
+  &:active {
+    color: #1c5a85;
+  }
+  
+  &:visited {
+    color: #9b59b6;
+  }
+  
+  &:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+  }
+}</pre>
+        </div>
+
+        <h3>8.2 Media Queries Nidificate</h3>
+        
+        <div class="codice">
+<pre>.container {
+  width: 100%;
+  padding: 15px;
+  
+  // Media query nidificata
+  @media (min-width: 768px) {
+    padding: 30px;
+  }
+  
+  @media (min-width: 1200px) {
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+}
+
+// Output CSS:
+// .container { width: 100%; padding: 15px; }
+// @media (min-width: 768px) {
+//   .container { padding: 30px; }
+// }
+// @media (min-width: 1200px) {
+//   .container { max-width: 1140px; margin: 0 auto; }
+// }</pre>
+        </div>
+
+        <h3>8.3 Tema Scuro/Chiaro</h3>
+        
+        <div class="codice">
+<pre>.card {
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  
+  // Theme context
+  .dark-theme & {
+    background: #2c3e50;
+    color: white;
+    border-color: #34495e;
+  }
+  
+  .high-contrast & {
+    border: 3px solid black;
+    font-weight: bold;
+  }
+}</pre>
+        </div>
+
+        <h2>9. Esempio Pratico Completo</h2>
+        
+        <h4>Card Component con Nesting</h4>
+        <p>Visualizza un esempio pratico di componente con nesting e BEM:</p>
+        
+        <div class="esempio">
+            <iframe src="/lezione-4/esempi/nesting-demo.html" style="width: 100%; height: 700px; border: 1px solid #ddd;"></iframe>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/nesting-demo.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/nesting-demo.html</a></p>
+        </div>
+
+        <h2>Punti Chiave</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li>Nesting rende il codice più organizzato e leggibile</li>
+                <li>Parent selector <code>&</code> si riferisce al selettore genitore</li>
+                <li>Usa <code>&</code> per pseudo-classi: <code>&:hover</code></li>
+                <li>Usa <code>&</code> per modificatori: <code>&.active</code>, <code>&--modifier</code></li>
+                <li>BEM con SASS è molto efficiente con <code>&__element</code></li>
+                <li>⚠️ NON annidare più di 3-4 livelli</li>
+                <li>⚠️ Evita nesting eccessivo (alta specificità = problemi)</li>
+                <li>Puoi nidificare media queries dentro selettori</li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-4/lezione-4-2.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-4/lezione-4-4.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.7 - Control Directives</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.7 - Control Directives</h1>
+            <p>Logica condizionale e loops per generare CSS dinamicamente</p>
+        </div>
+
+        <h2>1. Cosa Sono i Control Directives?</h2>
+        
+        <div class="teoria">
+            <p>I <strong>control directives</strong> permettono di utilizzare logica di programmazione (condizioni, cicli) per generare CSS dinamicamente. Sono potentissimi per creare utility classes, temi e codice scalabile.</p>
+            
+            <p><strong>Direttive disponibili:</strong></p>
+            <ul>
+                <li><code>@if</code>, <code>@else if</code>, <code>@else</code> - Logica condizionale</li>
+                <li><code>@for</code> - Loop con contatore</li>
+                <li><code>@each</code> - Loop su liste e mappe</li>
+                <li><code>@while</code> - Loop con condizione</li>
+            </ul>
+        </div>
+
+        <h2>2. @if, @else if, @else</h2>
+        
+        <div class="teoria">
+            <p>Le direttive condizionali permettono di generare CSS diverso in base a condizioni.</p>
+        </div>
+
+        <h3>2.1 Sintassi Base</h3>
+        
+        <div class="codice">
+<pre>// @if base
+$theme: 'dark';
+
+.container {
+  @if $theme == 'dark' {
+    background: #2c3e50;
+    color: white;
+  }
+}
+
+// Output CSS:
+// .container {
+//   background: #2c3e50;
+//   color: white;
+// }</pre>
+        </div>
+
+        <h3>2.2 @if @else</h3>
+        
+        <div class="codice">
+<pre>$theme: 'light';
+
+.container {
+  @if $theme == 'dark' {
+    background: #2c3e50;
+    color: white;
+  } @else {
+    background: white;
+    color: #333;
+  }
+}
+
+// Output CSS:
+// .container {
+//   background: white;
+//   color: #333;
+// }</pre>
+        </div>
+
+        <h3>2.3 @if @else if @else</h3>
+        
+        <div class="codice">
+<pre>@mixin theme-colors($theme) {
+  @if $theme == 'dark' {
+    background: #2c3e50;
+    color: white;
+  } @else if $theme == 'blue' {
+    background: #3498db;
+    color: white;
+  } @else if $theme == 'light' {
+    background: #ecf0f1;
+    color: #2c3e50;
+  } @else {
+    background: white;
+    color: black;
+  }
+}
+
+.header-dark {
+  @include theme-colors('dark');
+}
+
+.header-blue {
+  @include theme-colors('blue');
+}
+
+.header-custom {
+  @include theme-colors('unknown'); // Usa @else
+}</pre>
+        </div>
+
+        <h3>2.4 Operatori di Confronto</h3>
+        
+        <div class="codice">
+<pre>// Operatori disponibili: ==, !=, <, >, <=, >=
+$width: 500px;
+
+.box {
+  @if $width > 400px {
+    font-size: 18px;
+  }
+  
+  @if $width >= 500px {
+    padding: 30px;
+  }
+  
+  @if $width < 600px {
+    max-width: 100%;
+  }
+}
+
+// Operatori logici: and, or, not
+$is-mobile: true;
+$has-sidebar: false;
+
+.content {
+  @if $is-mobile and not $has-sidebar {
+    width: 100%;
+  }
+  
+  @if $is-mobile or $has-sidebar {
+    padding: 15px;
+  }
+}</pre>
+        </div>
+
+        <h3>2.5 Esempio Pratico: Responsive Mixin</h3>
+        
+        <div class="codice">
+<pre>@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'mobile' {
+    @media (max-width: 576px) {
+      @content;
+    }
+  } @else if $breakpoint == 'tablet' {
+    @media (min-width: 577px) and (max-width: 992px) {
+      @content;
+    }
+  } @else if $breakpoint == 'desktop' {
+    @media (min-width: 993px) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint #{$breakpoint} non riconosciuto!";
+  }
+}
+
+.container {
+  width: 100%;
+  
+  @include respond-to('mobile') {
+    padding: 10px;
+  }
+  
+  @include respond-to('tablet') {
+    padding: 20px;
+  }
+  
+  @include respond-to('desktop') {
+    padding: 30px;
+    max-width: 1200px;
+  }
+}</pre>
+        </div>
+
+        <h2>3. @for Loop</h2>
+        
+        <div class="teoria">
+            <p><code>@for</code> esegue un blocco di codice un numero specifico di volte. Ideale per generare classi numerate.</p>
+            
+            <p><strong>Due sintassi:</strong></p>
+            <ul>
+                <li><code>@for $i from 1 through 5</code> - Include 5 (1, 2, 3, 4, 5)</li>
+                <li><code>@for $i from 1 to 5</code> - Esclude 5 (1, 2, 3, 4)</li>
+            </ul>
+        </div>
+
+        <h3>3.1 @for through (Inclusivo)</h3>
+        
+        <div class="codice">
+<pre>// Genera classi di columns
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    width: (100% / 12) * $i;
+  }
+}
+
+// Output CSS:
+// .col-1 { width: 8.3333333333%; }
+// .col-2 { width: 16.6666666667%; }
+// .col-3 { width: 25%; }
+// .col-4 { width: 33.3333333333%; }
+// ...
+// .col-12 { width: 100%; }</pre>
+        </div>
+
+        <h3>3.2 @for to (Esclusivo)</h3>
+        
+        <div class="codice">
+<pre>// Genera heading sizes (h1 più grande, h6 più piccolo)
+@for $i from 1 to 7 { // 1, 2, 3, 4, 5, 6 (esclude 7)
+  h#{$i} {
+    font-size: (2.5 - ($i * 0.3)) * 1rem;
+    margin-bottom: 0.5em;
+  }
+}
+
+// Output CSS:
+// h1 { font-size: 2.2rem; margin-bottom: 0.5em; }
+// h2 { font-size: 1.9rem; margin-bottom: 0.5em; }
+// h3 { font-size: 1.6rem; margin-bottom: 0.5em; }
+// h4 { font-size: 1.3rem; margin-bottom: 0.5em; }
+// h5 { font-size: 1rem; margin-bottom: 0.5em; }
+// h6 { font-size: 0.7rem; margin-bottom: 0.5em; }</pre>
+        </div>
+
+        <h3>3.3 Esempio: Spacing Utilities</h3>
+        
+        <div class="codice">
+<pre>// Sistema spacing 8px (0, 8, 16, 24, 32, 40)
+$spacing-base: 8px;
+
+@for $i from 0 through 5 {
+  .m-#{$i} { margin: $spacing-base * $i; }
+  .mt-#{$i} { margin-top: $spacing-base * $i; }
+  .mb-#{$i} { margin-bottom: $spacing-base * $i; }
+  .ml-#{$i} { margin-left: $spacing-base * $i; }
+  .mr-#{$i} { margin-right: $spacing-base * $i; }
+  
+  .p-#{$i} { padding: $spacing-base * $i; }
+  .pt-#{$i} { padding-top: $spacing-base * $i; }
+  .pb-#{$i} { padding-bottom: $spacing-base * $i; }
+  .pl-#{$i} { padding-left: $spacing-base * $i; }
+  .pr-#{$i} { padding-right: $spacing-base * $i; }
+}
+
+// Output CSS:
+// .m-0 { margin: 0; }
+// .m-1 { margin: 8px; }
+// .m-2 { margin: 16px; }
+// ...
+// .pt-3 { padding-top: 24px; }
+// ...</pre>
+        </div>
+
+        <h2>4. @each Loop</h2>
+        
+        <div class="teoria">
+            <p><code>@each</code> itera su liste o mappe. Perfetto per generare varianti di colore, temi, o classi basate su dati strutturati.</p>
+        </div>
+
+        <h3>4.1 @each con Lista</h3>
+        
+        <div class="codice">
+<pre>// Lista semplice
+$colors: blue, red, green, yellow;
+
+@each $color in $colors {
+  .text-#{$color} {
+    color: $color;
+  }
+  
+  .bg-#{$color} {
+    background-color: $color;
+  }
+}
+
+// Output CSS:
+// .text-blue { color: blue; }
+// .bg-blue { background-color: blue; }
+// .text-red { color: red; }
+// .bg-red { background-color: red; }
+// ...</pre>
+        </div>
+
+        <h3>4.2 @each con Mappa</h3>
+        
+        <div class="codice">
+<pre>// Mappa con chiave-valore
+$theme-colors: (
+  'primary': #3498db,
+  'secondary': #2ecc71,
+  'danger': #e74c3c,
+  'warning': #f39c12,
+  'info': #3498db,
+  'dark': #2c3e50
+);
+
+@each $name, $color in $theme-colors {
+  .btn-#{$name} {
+    background-color: $color;
+    color: white;
+    
+    &:hover {
+      background-color: darken($color, 10%);
+    }
+  }
+  
+  .alert-#{$name} {
+    background-color: rgba($color, 0.1);
+    border: 1px solid $color;
+    color: darken($color, 20%);
+  }
+}
+
+// Output CSS:
+// .btn-primary { background-color: #3498db; color: white; }
+// .btn-primary:hover { background-color: #2475a8; }
+// .alert-primary { background-color: rgba(52, 152, 219, 0.1); ... }
+// ...</pre>
+        </div>
+
+        <h3>4.3 @each con Liste Multiple</h3>
+        
+        <div class="codice">
+<pre>// Lista di liste
+$sizes: (
+  'small' 12px 4px 8px,
+  'medium' 16px 8px 16px,
+  'large' 20px 12px 24px
+);
+
+@each $name, $font-size, $padding-y, $padding-x in $sizes {
+  .button-#{$name} {
+    font-size: $font-size;
+    padding: $padding-y $padding-x;
+  }
+}
+
+// Output CSS:
+// .button-small { font-size: 12px; padding: 4px 8px; }
+// .button-medium { font-size: 16px; padding: 8px 16px; }
+// .button-large { font-size: 20px; padding: 12px 24px; }</pre>
+        </div>
+
+        <h3>4.4 Esempio: Icon Colors</h3>
+        
+        <div class="codice">
+<pre>$social-colors: (
+  'facebook': #3b5998,
+  'twitter': #1da1f2,
+  'instagram': #e4405f,
+  'linkedin': #0077b5,
+  'youtube': #ff0000,
+  'github': #333
+);
+
+@each $network, $color in $social-colors {
+  .icon-#{$network} {
+    color: $color;
+    
+    &:hover {
+      color: lighten($color, 10%);
+    }
+  }
+  
+  .btn-#{$network} {
+    background: $color;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    
+    &:hover {
+      background: darken($color, 10%);
+    }
+  }
+}</pre>
+        </div>
+
+        <h2>5. @while Loop</h2>
+        
+        <div class="teoria">
+            <p><code>@while</code> esegue un blocco finché una condizione è vera. Meno comune di @for e @each, ma utile per logica complessa.</p>
+        </div>
+
+        <div class="codice">
+<pre>// Esempio: Genera font-sizes decrescenti
+$i: 6;
+
+@while $i > 0 {
+  .text-size-#{$i} {
+    font-size: 1rem * $i * 0.25;
+  }
+  
+  $i: $i - 1;
+}
+
+// Output CSS:
+// .text-size-6 { font-size: 1.5rem; }
+// .text-size-5 { font-size: 1.25rem; }
+// .text-size-4 { font-size: 1rem; }
+// .text-size-3 { font-size: 0.75rem; }
+// .text-size-2 { font-size: 0.5rem; }
+// .text-size-1 { font-size: 0.25rem; }</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>⚠️ Attenzione:</strong> Assicurati che la condizione del @while diventi false, altrimenti creerai un loop infinito!</p>
+        </div>
+
+        <h2>6. Esempi Pratici Avanzati</h2>
+
+        <h3>6.1 Grid System Completo</h3>
+        
+        <div class="codice">
+<pre>// Genera grid system stile Bootstrap
+$grid-columns: 12;
+$grid-gutter: 30px;
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ($grid-gutter / 2);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 (-$grid-gutter / 2);
+}
+
+@for $i from 1 through $grid-columns {
+  .col-#{$i} {
+    flex: 0 0 (100% / $grid-columns * $i);
+    max-width: (100% / $grid-columns * $i);
+    padding: 0 ($grid-gutter / 2);
+  }
+}
+
+// Responsive columns
+$breakpoints: (
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px
+);
+
+@each $breakpoint, $width in $breakpoints {
+  @media (min-width: $width) {
+    @for $i from 1 through $grid-columns {
+      .col-#{$breakpoint}-#{$i} {
+        flex: 0 0 (100% / $grid-columns * $i);
+        max-width: (100% / $grid-columns * $i);
+      }
+    }
+  }
+}
+
+// Output genera:
+// .col-1, .col-2, ..., .col-12
+// .col-sm-1, .col-sm-2, ..., .col-sm-12
+// .col-md-1, .col-md-2, ..., .col-md-12
+// etc.</pre>
+        </div>
+
+        <h3>6.2 Text Alignment Utilities</h3>
+        
+        <div class="codice">
+<pre>$alignments: left, center, right, justify;
+
+@each $align in $alignments {
+  .text-#{$align} {
+    text-align: $align;
+  }
+}
+
+// Con breakpoints responsive
+$breakpoints: ('sm', 'md', 'lg', 'xl');
+$breakpoint-values: (576px, 768px, 992px, 1200px);
+
+@for $i from 1 through length($breakpoints) {
+  $bp: nth($breakpoints, $i);
+  $value: nth($breakpoint-values, $i);
+  
+  @media (min-width: $value) {
+    @each $align in $alignments {
+      .text-#{$bp}-#{$align} {
+        text-align: $align;
+      }
+    }
+  }
+}
+
+// Output genera:
+// .text-left, .text-center, .text-right, .text-justify
+// .text-sm-left, .text-sm-center, etc.
+// .text-md-left, .text-md-center, etc.</pre>
+        </div>
+
+        <h3>6.3 Opacity Utilities</h3>
+        
+        <div class="codice">
+<pre>// Genera opacity da 0 a 100 (step 10)
+@for $i from 0 through 10 {
+  .opacity-#{$i * 10} {
+    opacity: $i / 10;
+  }
+}
+
+// Output CSS:
+// .opacity-0 { opacity: 0; }
+// .opacity-10 { opacity: 0.1; }
+// .opacity-20 { opacity: 0.2; }
+// ...
+// .opacity-100 { opacity: 1; }</pre>
+        </div>
+
+        <h3>6.4 Z-index Utilities</h3>
+        
+        <div class="codice">
+<pre>$z-indexes: (
+  'dropdown': 1000,
+  'sticky': 1020,
+  'fixed': 1030,
+  'modal-backdrop': 1040,
+  'modal': 1050,
+  'popover': 1060,
+  'tooltip': 1070
+);
+
+@each $name, $value in $z-indexes {
+  .z-#{$name} {
+    z-index: $value;
+  }
+}
+
+// Output:
+// .z-dropdown { z-index: 1000; }
+// .z-modal { z-index: 1050; }
+// etc.</pre>
+        </div>
+
+        <h2>7. Performance e Best Practices</h2>
+        
+        <div class="teoria">
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Usa @each per mappe (più leggibile di @for)</li>
+                <li>Limita il numero di utility classes generate (usa solo quelle necessarie)</li>
+                <li>Preferisci @for through per ranges inclusivi</li>
+                <li>Documenta il codice generato con commenti</li>
+                <li>Organizza loops in file separati (_utilities.scss)</li>
+            </ul>
+            
+            <p><strong>⚠️ Attenzione:</strong></p>
+            <ul>
+                <li>Loops grandi generano molto CSS (valuta tree-shaking/purge)</li>
+                <li>@while può causare loop infiniti se mal configurato</li>
+                <li>Non generare centinaia di classi inutilizzate</li>
+                <li>Usa PurgeCSS o simili per rimuovere CSS non usato in produzione</li>
+            </ul>
+        </div>
+
+        <h2>8. Esempio Pratico Completo</h2>
+        
+        <h4>Generazione Utility Classes con Loops</h4>
+        <p>Visualizza un esempio completo con control directives:</p>
+        
+        <div class="esempio">
+            <iframe src="/lezione-4/esempi/control-directives-demo.html" style="width: 100%; height: 700px; border: 1px solid #ddd;"></iframe>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/control-directives-demo.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/control-directives-demo.html</a></p>
+        </div>
+
+        <h2>Punti Chiave</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><code>@if/@else</code> per logica condizionale</li>
+                <li><code>@for</code> per loops con contatore (through = inclusivo, to = esclusivo)</li>
+                <li><code>@each</code> per iterare su liste e mappe</li>
+                <li><code>@while</code> per loops con condizione (usa con cautela)</li>
+                <li>Control directives perfetti per generare utility classes</li>
+                <li>Usa interpolation <code>#{$var}</code> per nomi classe dinamici</li>
+                <li>⚠️ Limita il numero di classi generate (performance)</li>
+                <li>Documenta bene il codice generato</li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-4/lezione-4-6.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-4/lezione-4-8.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>

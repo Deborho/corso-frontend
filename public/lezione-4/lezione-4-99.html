@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progetto Finale - Dashboard Moderna con SASS</title>
+    <link rel="stylesheet" href="/lezione-4/lezione-4-99.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar__header">
+                <h2 class="sidebar__logo">Dashboard</h2>
+            </div>
+            
+            <nav class="sidebar__nav">
+                <a href="#" class="nav-item nav-item--active">
+                    <span class="nav-item__icon">📊</span>
+                    <span class="nav-item__text">Overview</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-item__icon">📈</span>
+                    <span class="nav-item__text">Analytics</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-item__icon">👥</span>
+                    <span class="nav-item__text">Users</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-item__icon">⚙️</span>
+                    <span class="nav-item__text">Settings</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-item__icon">🔔</span>
+                    <span class="nav-item__text">Notifications</span>
+                    <span class="nav-item__badge">3</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar__footer">
+                <div class="user-profile">
+                    <div class="user-profile__avatar">JD</div>
+                    <div class="user-profile__info">
+                        <div class="user-profile__name">John Doe</div>
+                        <div class="user-profile__role">Administrator</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="header__title">Dashboard Overview</h1>
+                <div class="header__actions">
+                    <button class="btn btn--secondary btn--sm">
+                        <span>🔍</span> Search
+                    </button>
+                    <button class="btn btn--primary btn--sm">
+                        <span>➕</span> New Project
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <section class="stats">
+                <div class="stat-card stat-card--primary">
+                    <div class="stat-card__icon">💰</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__label">Total Revenue</div>
+                        <div class="stat-card__value">$54,239</div>
+                        <div class="stat-card__change stat-card__change--positive">
+                            ↑ 12.5% from last month
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--success">
+                    <div class="stat-card__icon">👥</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__label">Active Users</div>
+                        <div class="stat-card__value">8,492</div>
+                        <div class="stat-card__change stat-card__change--positive">
+                            ↑ 8.2% from last month
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--warning">
+                    <div class="stat-card__icon">📦</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__label">Total Orders</div>
+                        <div class="stat-card__value">1,247</div>
+                        <div class="stat-card__change stat-card__change--negative">
+                            ↓ 3.1% from last month
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--info">
+                    <div class="stat-card__icon">⭐</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__label">Satisfaction</div>
+                        <div class="stat-card__value">98.5%</div>
+                        <div class="stat-card__change stat-card__change--positive">
+                            ↑ 2.3% from last month
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="card card--large">
+                    <div class="card__header">
+                        <h3 class="card__title">Revenue Overview</h3>
+                        <select class="card__select">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                        </select>
+                    </div>
+                    <div class="card__body">
+                        <div class="chart-placeholder">
+                            📊 Chart visualization area
+                            <div class="chart-bars">
+                                <div class="chart-bar" style="height: 60%"></div>
+                                <div class="chart-bar" style="height: 80%"></div>
+                                <div class="chart-bar" style="height: 45%"></div>
+                                <div class="chart-bar" style="height: 90%"></div>
+                                <div class="chart-bar" style="height: 70%"></div>
+                                <div class="chart-bar" style="height: 85%"></div>
+                                <div class="chart-bar" style="height: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Activity Feed</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="activity-feed">
+                            <div class="activity-item">
+                                <div class="activity-item__icon activity-item__icon--success">✓</div>
+                                <div class="activity-item__content">
+                                    <div class="activity-item__title">New order received</div>
+                                    <div class="activity-item__time">2 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-item__icon activity-item__icon--warning">⚠</div>
+                                <div class="activity-item__content">
+                                    <div class="activity-item__title">Server warning</div>
+                                    <div class="activity-item__time">15 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-item__icon activity-item__icon--info">ℹ</div>
+                                <div class="activity-item__content">
+                                    <div class="activity-item__title">User registered</div>
+                                    <div class="activity-item__time">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-item__icon activity-item__icon--success">✓</div>
+                                <div class="activity-item__content">
+                                    <div class="activity-item__title">Payment processed</div>
+                                    <div class="activity-item__time">3 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Projects -->
+            <section class="projects-section">
+                <div class="card card--full">
+                    <div class="card__header">
+                        <h3 class="card__title">Recent Projects</h3>
+                        <a href="#" class="card__link">View all →</a>
+                    </div>
+                    <div class="card__body card__body--no-padding">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Status</th>
+                                    <th>Team</th>
+                                    <th>Progress</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="project-name">
+                                            <div class="project-name__icon">🚀</div>
+                                            <span>Website Redesign</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge--success">Active</span></td>
+                                    <td>
+                                        <div class="team-avatars">
+                                            <span class="avatar avatar--sm">JD</span>
+                                            <span class="avatar avatar--sm">MS</span>
+                                            <span class="avatar avatar--sm">AB</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-bar__fill progress-bar__fill--success" style="width: 75%"></div>
+                                        </div>
+                                        <span class="progress-text">75%</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn-icon" title="Edit">✏️</button>
+                                        <button class="btn-icon" title="Delete">🗑️</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="project-name">
+                                            <div class="project-name__icon">📱</div>
+                                            <span>Mobile App</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge--warning">In Progress</span></td>
+                                    <td>
+                                        <div class="team-avatars">
+                                            <span class="avatar avatar--sm">KL</span>
+                                            <span class="avatar avatar--sm">PQ</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-bar__fill progress-bar__fill--warning" style="width: 45%"></div>
+                                        </div>
+                                        <span class="progress-text">45%</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn-icon" title="Edit">✏️</button>
+                                        <button class="btn-icon" title="Delete">🗑️</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="project-name">
+                                            <div class="project-name__icon">🎨</div>
+                                            <span>Brand Guidelines</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge--info">Review</span></td>
+                                    <td>
+                                        <div class="team-avatars">
+                                            <span class="avatar avatar--sm">CD</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-bar__fill progress-bar__fill--info" style="width: 90%"></div>
+                                        </div>
+                                        <span class="progress-text">90%</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn-icon" title="Edit">✏️</button>
+                                        <button class="btn-icon" title="Delete">🗑️</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Code Display Section -->
+    <div class="code-section">
+        <div class="container">
+            <h2 style="margin-bottom: 30px;">📝 Codice SASS del Progetto</h2>
+            
+            <div class="code-explanation">
+                <h3>Caratteristiche Implementate</h3>
+                <ul>
+                    <li><strong>Variabili organizzate:</strong> Colori, spacing, typography in mappe strutturate</li>
+                    <li><strong>Mixins responsive:</strong> Media queries, flexbox utilities, button styles</li>
+                    <li><strong>BEM Methodology:</strong> Nesting con parent selector per componenti modulari</li>
+                    <li><strong>Functions custom:</strong> Spacing system, color utilities</li>
+                    <li><strong>@each loops:</strong> Generazione automatica varianti colore</li>
+                    <li><strong>CSS custom properties:</strong> Tema dinamico con SASS + CSS variables</li>
+                    <li><strong>Architettura scalabile:</strong> Codice organizzato e mantenibile</li>
+                </ul>
+            </div>
+
+            <div class="code-display">
+                <h3>Struttura SCSS (Esempio Semplificato)</h3>
+                <pre><code>// === VARIABLES ===
+$colors: (
+  'primary': #3498db,
+  'success': #2ecc71,
+  'warning': #f39c12,
+  'danger': #e74c3c,
+  'info': #17a2b8,
+  'dark': #2c3e50,
+  'light': #ecf0f1
+);
+
+$spacing-unit: 8px;
+$border-radius: 8px;
+$transition-speed: 0.3s;
+
+// === MIXINS ===
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow $transition-speed;
+  
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'tablet' {
+    @media (max-width: 992px) { @content; }
+  } @else if $breakpoint == 'mobile' {
+    @media (max-width: 576px) { @content; }
+  }
+}
+
+// === FUNCTIONS ===
+@function spacing($multiplier) {
+  @return $spacing-unit * $multiplier;
+}
+
+@function color($name) {
+  @return map-get($colors, $name);
+}
+
+// === COMPONENTS ===
+.dashboard {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+  
+  @include respond-to('tablet') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sidebar {
+  background: color('dark');
+  color: white;
+  padding: spacing(3);
+  
+  &__header {
+    margin-bottom: spacing(4);
+  }
+  
+  &__logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: spacing(2);
+  color: rgba(white, 0.8);
+  text-decoration: none;
+  border-radius: $border-radius;
+  transition: all $transition-speed;
+  
+  &:hover {
+    background: rgba(white, 0.1);
+    color: white;
+  }
+  
+  &--active {
+    background: color('primary');
+    color: white;
+  }
+  
+  &__icon {
+    margin-right: spacing(2);
+  }
+}
+
+// === UTILITY GENERATION ===
+@each $name, $color in $colors {
+  .stat-card--#{$name} {
+    .stat-card__icon {
+      background: rgba($color, 0.1);
+      color: $color;
+    }
+  }
+  
+  .badge--#{$name} {
+    background: rgba($color, 0.1);
+    color: darken($color, 10%);
+    border: 1px solid $color;
+  }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigazione">
+        <a href="/lezione-4/lezione-4-8.html" class="btn-prev">← Lezione Precedente</a>
+        <a href="/index.html" class="btn-home">Home</a>
+        <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+        <a href="/lezione-5/index.html" class="btn-next">Prossima Lezione →</a>
+    </div>
+</body>
+</html>

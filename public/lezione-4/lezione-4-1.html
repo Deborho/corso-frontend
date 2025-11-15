@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.1 - Introduzione e Setup SASS</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.1 - Introduzione e Setup SASS</h1>
+            <p>Cos'è SASS, perché usarlo e come configurarlo</p>
+        </div>
+
+        <h2>1. Cos'è SASS/SCSS?</h2>
+        
+        <div class="teoria">
+            <p><strong>SASS (Syntactically Awesome Style Sheets)</strong> è un preprocessore CSS, ovvero un linguaggio che estende CSS aggiungendo funzionalità di programmazione come variabili, nesting, mixins, functions e molto altro.</p>
+            
+            <p>Il codice SASS viene scritto in file con estensione <code>.sass</code> o <code>.scss</code>, poi viene <strong>compilato</strong> in CSS standard che il browser può interpretare.</p>
+            
+            <p><strong>Vantaggi di SASS:</strong></p>
+            <ul>
+                <li><strong>Variabili:</strong> Memorizza valori riutilizzabili (colori, font, spacing)</li>
+                <li><strong>Nesting:</strong> Struttura gerarchica che riflette l'HTML</li>
+                <li><strong>Mixins:</strong> Blocchi di codice riutilizzabili con parametri</li>
+                <li><strong>Functions:</strong> Calcoli e trasformazioni dinamiche</li>
+                <li><strong>Partials:</strong> Divide il CSS in file modulari</li>
+                <li><strong>Ereditarietà:</strong> @extend per condividere stili tra selettori</li>
+                <li><strong>Operatori:</strong> Math operations e string manipulation</li>
+                <li><strong>Control Directives:</strong> Logica condizionale e loops</li>
+            </ul>
+        </div>
+
+        <h2>2. SASS vs SCSS: Le Due Sintassi</h2>
+        
+        <table>
+            <tr>
+                <th>SASS (Indented Syntax)</th>
+                <th>SCSS (Sassy CSS)</th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="codice">
+<pre>// File: style.sass
+$primary-color: #3498db
+
+.button
+  background: $primary-color
+  padding: 10px 20px
+  border: none
+  &:hover
+    background: darken($primary-color, 10%)</pre>
+                    </div>
+                </td>
+                <td>
+                    <div class="codice">
+<pre>// File: style.scss
+$primary-color: #3498db;
+
+.button {
+  background: $primary-color;
+  padding: 10px 20px;
+  border: none;
+  &:hover {
+    background: darken($primary-color, 10%);
+  }
+}</pre>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Basata su indentazione (come Python)</li>
+                        <li>Niente graffe <code>{}</code> o punto e virgola <code>;</code></li>
+                        <li>Più concisa ma meno flessibile</li>
+                        <li>Estensione <code>.sass</code></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Sintassi identica a CSS</li>
+                        <li>Usa graffe <code>{}</code> e punto e virgola <code>;</code></li>
+                        <li>Più familiare per chi conosce CSS</li>
+                        <li>Estensione <code>.scss</code></li>
+                        <li><strong>PIÙ USATA E RACCOMANDATA</strong></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <div class="teoria">
+            <p><strong>In questo corso useremo SCSS</strong> perché:</p>
+            <ul>
+                <li>È retrocompatibile con CSS (ogni CSS valido è SCSS valido)</li>
+                <li>È più diffusa nell'industria</li>
+                <li>È più facile convertire CSS esistente in SCSS</li>
+                <li>Supportata da tutti i tool e framework moderni</li>
+            </ul>
+        </div>
+
+        <h2>3. Perché Usare SASS?</h2>
+
+        <h3>3.1 Problema: CSS Tradizionale</h3>
+        
+        <div class="codice">
+<pre>/* CSS tradizionale - ripetitivo e difficile da mantenere */
+.header {
+  background: #3498db;
+  color: white;
+  padding: 20px;
+}
+
+.header .nav {
+  display: flex;
+}
+
+.header .nav .nav-item {
+  padding: 10px;
+}
+
+.header .nav .nav-item:hover {
+  background: #2980b9; /* devo ricordare quale colore più scuro usare */
+}
+
+.button-primary {
+  background: #3498db; /* stesso colore ripetuto! */
+  padding: 10px 20px;
+}
+
+.button-secondary {
+  background: #2ecc71; /* un altro colore da ricordare */
+  padding: 10px 20px; /* padding ripetuto! */
+}</pre>
+        </div>
+
+        <h3>3.2 Soluzione: SASS/SCSS</h3>
+        
+        <div class="codice">
+<pre>// SCSS - organizzato, riutilizzabile, mantenibile
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$padding-base: 10px 20px;
+
+@mixin button-base {
+  padding: $padding-base;
+  border: none;
+  cursor: pointer;
+}
+
+.header {
+  background: $primary-color;
+  color: white;
+  padding: 20px;
+  
+  .nav {
+    display: flex;
+    
+    .nav-item {
+      padding: 10px;
+      
+      &:hover {
+        background: darken($primary-color, 10%); // calcolo automatico!
+      }
+    }
+  }
+}
+
+.button-primary {
+  @include button-base; // riuso il codice!
+  background: $primary-color;
+}
+
+.button-secondary {
+  @include button-base;
+  background: $secondary-color;
+}</pre>
+        </div>
+
+        <h2>4. Installazione SASS</h2>
+
+        <h3>4.1 Prerequisito: Node.js e npm</h3>
+        
+        <div class="teoria">
+            <p>SASS richiede Node.js per l'installazione. Verifica se hai già Node.js installato:</p>
+            <div class="codice">
+<pre># Verifica installazione Node.js
+node --version
+# Output esempio: v18.17.0
+
+# Verifica installazione npm (incluso con Node.js)
+npm --version
+# Output esempio: 9.6.7</pre>
+            </div>
+            
+            <p>Se non hai Node.js, scaricalo da <a href="https://nodejs.org/" target="_blank">nodejs.org</a> (versione LTS consigliata).</p>
+        </div>
+
+        <h3>4.2 Installazione SASS</h3>
+        
+        <p>Ci sono due modi per installare SASS:</p>
+
+        <h4>Opzione 1: Installazione Globale (consigliata per iniziare)</h4>
+        
+        <div class="codice">
+<pre># Installa SASS globalmente
+npm install -g sass
+
+# Verifica installazione
+sass --version
+# Output esempio: 1.69.5 compiled with dart2js 3.2.0</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Vantaggi installazione globale:</strong></p>
+            <ul>
+                <li>Comando <code>sass</code> disponibile ovunque</li>
+                <li>Ideale per progetti personali e learning</li>
+                <li>Setup veloce</li>
+            </ul>
+        </div>
+
+        <h4>Opzione 2: Installazione Locale (progetto specifico)</h4>
+        
+        <div class="codice">
+<pre># Naviga nella cartella del progetto
+cd /path/to/your/project
+
+# Inizializza npm (se non esiste package.json)
+npm init -y
+
+# Installa SASS come dev dependency
+npm install --save-dev sass
+
+# Verifica installazione
+npx sass --version</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Vantaggi installazione locale:</strong></p>
+            <ul>
+                <li>Versione SASS specifica per progetto</li>
+                <li>Condivisibile con team (via package.json)</li>
+                <li>Migliore per progetti professionali</li>
+            </ul>
+        </div>
+
+        <h2>5. Primo File SCSS</h2>
+
+        <h3>5.1 Creare File SCSS</h3>
+        
+        <p>Crea una cartella per il progetto e un file SCSS:</p>
+        
+        <div class="codice">
+<pre># Struttura cartelle
+my-sass-project/
+├── scss/
+│   └── style.scss
+└── css/
+    └── (qui finirà il CSS compilato)</pre>
+        </div>
+
+        <p>Contenuto di <code>scss/style.scss</code>:</p>
+        
+        <div class="codice">
+<pre>// File: scss/style.scss
+// Il mio primo file SASS!
+
+// Variabile per il colore primario
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$font-stack: 'Helvetica Neue', Arial, sans-serif;
+
+// Reset base
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Stili body
+body {
+  font-family: $font-stack;
+  background: #f5f5f5;
+  color: #333;
+}
+
+// Header con nesting
+.header {
+  background: $primary-color;
+  color: white;
+  padding: 20px;
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+}
+
+// Button con function
+.button {
+  background: $primary-color;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    // darken() è una function SASS built-in
+    background: darken($primary-color, 10%);
+  }
+}</pre>
+        </div>
+
+        <h3>5.2 Compilare SCSS in CSS</h3>
+        
+        <p>Per convertire il file SCSS in CSS utilizzabile dal browser:</p>
+        
+        <div class="codice">
+<pre># Sintassi base
+sass input.scss output.css
+
+# Esempio concreto
+sass scss/style.scss css/style.css
+
+# Output nel terminale:
+# Compiled scss/style.scss to css/style.css.</pre>
+        </div>
+
+        <p>Il file <code>css/style.css</code> generato sarà:</p>
+        
+        <div class="codice">
+<pre>/* File: css/style.css (generato automaticamente) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.header {
+  background: #3498db;
+  color: white;
+  padding: 20px;
+}
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.header p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.button {
+  background: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.button:hover {
+  background: #2475a8; /* colore calcolato automaticamente! */
+}</pre>
+        </div>
+
+        <h2>6. Watch Mode - Compilazione Automatica</h2>
+        
+        <div class="teoria">
+            <p>Il <strong>watch mode</strong> monitora i file SCSS e li ricompila automaticamente ad ogni modifica. Essenziale durante lo sviluppo!</p>
+        </div>
+
+        <div class="codice">
+<pre># Attiva watch mode
+sass --watch scss/style.scss css/style.css
+
+# Output:
+# Sass is watching for changes. Press Ctrl-C to stop.
+# Compiled scss/style.scss to css/style.css.
+
+# Ora ogni volta che salvi style.scss, viene ricompilato automaticamente!</pre>
+        </div>
+
+        <p>Per monitorare un'intera cartella:</p>
+        
+        <div class="codice">
+<pre># Watch su cartella intera
+sass --watch scss:css
+
+# Monitora tutti i file .scss nella cartella scss/
+# e li compila nella cartella css/</pre>
+        </div>
+
+        <h2>7. Source Maps</h2>
+        
+        <div class="teoria">
+            <p>Le <strong>source maps</strong> permettono al browser di mostrare il file SCSS originale negli strumenti di sviluppo, invece del CSS compilato. Utilissimo per il debugging!</p>
+        </div>
+
+        <div class="codice">
+<pre># Compilazione con source map (default)
+sass scss/style.scss css/style.css
+
+# Disabilita source map
+sass --no-source-map scss/style.scss css/style.css
+
+# Con watch e source map
+sass --watch scss:css</pre>
+        </div>
+
+        <p>Con source maps abilitato, nel browser vedrai:</p>
+        
+        <div class="codice">
+<pre>/* Invece di vedere: */
+style.css:25
+
+/* Vedrai: */
+style.scss:15  ← file e riga originali!</pre>
+        </div>
+
+        <h2>8. Stili di Output CSS</h2>
+        
+        <p>SASS può generare CSS in diversi formati:</p>
+        
+        <table>
+            <tr>
+                <th>Stile</th>
+                <th>Descrizione</th>
+                <th>Uso</th>
+            </tr>
+            <tr>
+                <td><strong>expanded</strong> (default)</td>
+                <td>CSS leggibile con indentazione</td>
+                <td>Sviluppo</td>
+            </tr>
+            <tr>
+                <td><strong>compressed</strong></td>
+                <td>CSS minificato su una riga</td>
+                <td>Produzione</td>
+            </tr>
+        </table>
+
+        <div class="codice">
+<pre># Stile expanded (default) - leggibile
+sass scss/style.scss css/style.css
+
+# Stile compressed - minificato per produzione
+sass --style=compressed scss/style.scss css/style.min.css
+
+# Risultato compressed:
+# *{margin:0;padding:0;box-sizing:border-box}body{font-family:"Helvetica Neue",Arial,sans-serif;background:#f5f5f5}...</pre>
+        </div>
+
+        <h2>9. Esempio Pratico Completo</h2>
+        
+        <h4>Primo Progetto SASS</h4>
+        <p>Visualizza l'esempio completo con HTML e SCSS funzionante:</p>
+        
+        <div class="esempio">
+            <iframe src="/lezione-4/esempi/primo-file-scss.html" style="width: 100%; height: 500px; border: 1px solid #ddd;"></iframe>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/primo-file-scss.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/primo-file-scss.html</a></p>
+        </div>
+
+        <h2>10. Risoluzione Problemi Comuni</h2>
+        
+        <table>
+            <tr>
+                <th>Problema</th>
+                <th>Soluzione</th>
+            </tr>
+            <tr>
+                <td><code>sass: command not found</code></td>
+                <td>SASS non installato. Esegui <code>npm install -g sass</code></td>
+            </tr>
+            <tr>
+                <td><code>Error: Can't find stylesheet to import</code></td>
+                <td>Percorso import errato. Verifica i path relativi</td>
+            </tr>
+            <tr>
+                <td>CSS non si aggiorna nel browser</td>
+                <td>Svuota cache browser (Ctrl+F5) o attiva hard reload</td>
+            </tr>
+            <tr>
+                <td>Watch mode non funziona</td>
+                <td>Riavvia il comando watch o verifica i permessi sui file</td>
+            </tr>
+        </table>
+
+        <h2>Punti Chiave</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li>SASS è un preprocessore che estende CSS con funzionalità di programmazione</li>
+                <li>SCSS è la sintassi raccomandata (compatibile con CSS)</li>
+                <li>Installazione: <code>npm install -g sass</code></li>
+                <li>Compilazione: <code>sass input.scss output.css</code></li>
+                <li>Watch mode: <code>sass --watch scss:css</code></li>
+                <li>Source maps per debugging nei DevTools</li>
+                <li>Stile compressed per produzione</li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-4/index.html" class="btn-prev">← Indice Lezione</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-4/lezione-4-2.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>

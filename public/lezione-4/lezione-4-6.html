@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.6 - Extend e Placeholder</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.6 - Extend e Placeholder</h1>
+            <p>Condividi stili tra selettori senza duplicazione CSS</p>
+        </div>
+
+        <h2>1. Cos'è @extend?</h2>
+        
+        <div class="teoria">
+            <p><code>@extend</code> permette a un selettore di <strong>ereditare</strong> tutti gli stili di un altro selettore, evitando la duplicazione di codice CSS.</p>
+            
+            <p><strong>Come funziona:</strong></p>
+            <ul>
+                <li>Un selettore "estende" un altro</li>
+                <li>SASS raggruppa i selettori nel CSS compilato</li>
+                <li>Nessuna duplicazione di proprietà</li>
+                <li>Output CSS più compatto</li>
+            </ul>
+        </div>
+
+        <h2>2. Sintassi @extend</h2>
+
+        <h3>2.1 Extend Base</h3>
+        
+        <div class="codice">
+<pre>// SCSS
+.message {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f5f5f5;
+}
+
+.success {
+  @extend .message;
+  border-color: #2ecc71;
+  background: #d5f4e6;
+}
+
+.error {
+  @extend .message;
+  border-color: #e74c3c;
+  background: #fadbd8;
+}
+
+.warning {
+  @extend .message;
+  border-color: #f39c12;
+  background: #fef5e7;
+}
+
+// CSS Compilato (selettori raggruppati!)
+.message, .success, .error, .warning {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f5f5f5;
+}
+
+.success {
+  border-color: #2ecc71;
+  background: #d5f4e6;
+}
+
+.error {
+  border-color: #e74c3c;
+  background: #fadbd8;
+}
+
+.warning {
+  border-color: #f39c12;
+  background: #fef5e7;
+}</pre>
+        </div>
+
+        <h3>2.2 Confronto: @extend vs Mixin</h3>
+        
+        <div class="codice">
+<pre>// === CON @EXTEND (no duplicazione) ===
+.button {
+  padding: 10px 20px;
+  border: none;
+}
+
+.button-primary { @extend .button; background: blue; }
+.button-danger { @extend .button; background: red; }
+
+// Output CSS (compatto):
+// .button, .button-primary, .button-danger {
+//   padding: 10px 20px;
+//   border: none;
+// }
+// .button-primary { background: blue; }
+// .button-danger { background: red; }
+
+// === CON @MIXIN (duplicazione) ===
+@mixin button {
+  padding: 10px 20px;
+  border: none;
+}
+
+.button-primary { @include button; background: blue; }
+.button-danger { @include button; background: red; }
+
+// Output CSS (ripetitivo):
+// .button-primary {
+//   padding: 10px 20px;
+//   border: none;
+//   background: blue;
+// }
+// .button-danger {
+//   padding: 10px 20px;
+//   border: none;
+//   background: red;
+// }</pre>
+        </div>
+
+        <h2>3. Placeholder Selectors (%)</h2>
+        
+        <div class="teoria">
+            <p>I <strong>placeholder selectors</strong> (iniziano con <code>%</code>) sono selettori speciali che esistono solo in SASS e non vengono compilati nel CSS finale a meno che non siano estesi.</p>
+            
+            <p><strong>Vantaggi:</strong></p>
+            <ul>
+                <li>Non generano CSS se non usati</li>
+                <li>Più puliti di classi utility</li>
+                <li>Ideali per librerie e framework</li>
+                <li>Prevengono classi inutilizzate nel CSS finale</li>
+            </ul>
+        </div>
+
+        <h3>3.1 Sintassi Placeholder</h3>
+        
+        <div class="codice">
+<pre>// Definizione placeholder (con %)
+%button-base {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+// Extend placeholder
+.button-primary {
+  @extend %button-base;
+  background: #3498db;
+  color: white;
+  
+  &:hover {
+    background: #2980b9;
+  }
+}
+
+.button-secondary {
+  @extend %button-base;
+  background: #95a5a6;
+  color: white;
+  
+  &:hover {
+    background: #7f8c8d;
+  }
+}
+
+// CSS Compilato (% non compare!)
+.button-primary, .button-secondary {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.button-primary {
+  background: #3498db;
+  color: white;
+}
+.button-primary:hover {
+  background: #2980b9;
+}
+
+.button-secondary {
+  background: #95a5a6;
+  color: white;
+}
+.button-secondary:hover {
+  background: #7f8c8d;
+}</pre>
+        </div>
+
+        <h3>3.2 Placeholder vs Classe Normale</h3>
+        
+        <div class="codice">
+<pre>// === CON CLASSE NORMALE ===
+.button-base {
+  padding: 10px 20px;
+  border: none;
+}
+
+.button-primary { @extend .button-base; background: blue; }
+
+// CSS Output (classe .button-base rimane anche se non usata in HTML!)
+.button-base, .button-primary {
+  padding: 10px 20px;
+  border: none;
+}
+.button-primary { background: blue; }
+
+
+// === CON PLACEHOLDER ===
+%button-base {
+  padding: 10px 20px;
+  border: none;
+}
+
+.button-primary { @extend %button-base; background: blue; }
+
+// CSS Output (% non compare, solo .button-primary)
+.button-primary {
+  padding: 10px 20px;
+  border: none;
+  background: blue;
+}</pre>
+        </div>
+
+        <h2>4. Extend con Selettori Complessi</h2>
+
+        <h3>4.1 Extend Chaining</h3>
+        
+        <div class="codice">
+<pre>// Catena di extend
+%base {
+  padding: 10px;
+}
+
+%enhanced {
+  @extend %base;
+  border: 1px solid #ddd;
+}
+
+.final {
+  @extend %enhanced;
+  background: white;
+}
+
+// CSS Output
+.final {
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: white;
+}</pre>
+        </div>
+
+        <h3>4.2 Extend con Pseudo-classi</h3>
+        
+        <div class="codice">
+<pre>%link-style {
+  color: #3498db;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.nav-link {
+  @extend %link-style;
+  font-weight: bold;
+}
+
+.footer-link {
+  @extend %link-style;
+  font-size: 14px;
+}
+
+// CSS Output
+.nav-link, .footer-link {
+  color: #3498db;
+  text-decoration: none;
+}
+.nav-link:hover, .footer-link:hover {
+  text-decoration: underline;
+}
+
+.nav-link {
+  font-weight: bold;
+}
+
+.footer-link {
+  font-size: 14px;
+}</pre>
+        </div>
+
+        <h2>5. Quando Usare @extend vs @mixin</h2>
+        
+        <table>
+            <tr>
+                <th>Usa @extend quando...</th>
+                <th>Usa @mixin quando...</th>
+            </tr>
+            <tr>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Stili identici condivisi</li>
+                        <li>Non servono parametri</li>
+                        <li>Vuoi output CSS compatto</li>
+                        <li>Relazione "è un tipo di" (is-a)</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Stili con variazioni (parametri)</li>
+                        <li>Logica condizionale</li>
+                        <li>Blocchi @content</li>
+                        <li>Vendor prefixes</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <h3>5.1 Esempi Pratici</h3>
+        
+        <div class="codice">
+<pre>// EXTEND - Buono
+// Stili base identici, solo colori diversi
+%alert {
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.alert-success { @extend %alert; background: #d5f4e6; }
+.alert-error { @extend %alert; background: #fadbd8; }
+
+
+// MIXIN - Buono
+// Stili con parametri personalizzabili
+@mixin alert($bg-color, $text-color, $border-color) {
+  padding: 15px;
+  border-radius: 4px;
+  background: $bg-color;
+  color: $text-color;
+  border: 2px solid $border-color;
+}
+
+.alert-success { @include alert(#d5f4e6, #27ae60, #2ecc71); }
+.alert-error { @include alert(#fadbd8, #c0392b, #e74c3c); }
+
+
+// ❌ EXTEND - Cattivo
+// Non usare extend per vendor prefixes!
+.box { 
+  @extend %border-radius; // ❌ NO
+}
+
+// MIXIN - Giusto
+.box {
+  @include border-radius(8px); // SÌ
+}</pre>
+        </div>
+
+        <h2>6. Problemi Comuni con @extend</h2>
+
+        <h3>6.1 Extend Bloat (Gonfiamento Selettori)</h3>
+        
+        <div class="codice">
+<pre>// ⚠️ PROBLEMA: Troppi extend creano selettori complicati
+.icon { color: #333; }
+.icon-small { @extend .icon; font-size: 12px; }
+.icon-large { @extend .icon; font-size: 24px; }
+.icon-primary { @extend .icon; color: blue; }
+.icon-danger { @extend .icon; color: red; }
+// ... 50+ classi che estendono .icon
+
+// CSS Output (orribile!):
+.icon, .icon-small, .icon-large, .icon-primary, .icon-danger, 
+.icon-warning, .icon-info, ... [50+ classi] {
+  color: #333;
+}
+
+// 💡 SOLUZIONE: Usa mixin o placeholder limitati</pre>
+        </div>
+
+        <h3>6.2 Extend Attraverso Media Queries</h3>
+        
+        <div class="codice">
+<pre>// ❌ ERRORE: Non puoi estendere attraverso media queries
+.button {
+  padding: 10px 20px;
+}
+
+@media (min-width: 768px) {
+  .button-large {
+    @extend .button; // ❌ ERRORE!
+    padding: 15px 30px;
+  }
+}
+
+// 💡 SOLUZIONE: Usa mixin
+@mixin button-base {
+  padding: 10px 20px;
+}
+
+.button {
+  @include button-base;
+}
+
+@media (min-width: 768px) {
+  .button-large {
+    @include button-base; // OK
+    padding: 15px 30px;
+  }
+}</pre>
+        </div>
+
+        <h2>7. Best Practices</h2>
+        
+        <div class="teoria">
+            <p><strong>Fare:</strong></p>
+            <ul>
+                <li>Usa placeholder <code>%</code> invece di classi per extend</li>
+                <li>Usa extend per relazioni "is-a" (un pulsante success "è un" pulsante)</li>
+                <li>Limita extend a un livello o due</li>
+                <li>Documenta chiaramente i placeholder</li>
+                <li>Usa extend per utility classes comuni (text-center, clearfix, etc.)</li>
+            </ul>
+            
+            <p><strong>❌ Evitare:</strong></p>
+            <ul>
+                <li>Extend attraverso media queries (usa mixin)</li>
+                <li>Extend chaining profondo (max 2-3 livelli)</li>
+                <li>Extend di classi esterne/vendor</li>
+                <li>Extend quando servono parametri (usa mixin)</li>
+                <li>Troppi extend dello stesso selettore</li>
+            </ul>
+        </div>
+
+        <h2>8. Pattern Comuni con Placeholder</h2>
+
+        <h3>8.1 Utility Placeholders</h3>
+        
+        <div class="codice">
+<pre>// File: _placeholders.scss
+
+// Clearfix
+%clearfix {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+// Text truncate
+%truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Visually hidden (per accessibility)
+%visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Center block
+%center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Utilizzo
+.container {
+  @extend %clearfix;
+}
+
+.title {
+  @extend %truncate;
+  width: 200px;
+}
+
+.sr-only {
+  @extend %visually-hidden;
+}</pre>
+        </div>
+
+        <h3>8.2 Component Base Styles</h3>
+        
+        <div class="codice">
+<pre>// Placeholder per card base
+%card-base {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+// Diversi tipi di card
+.product-card {
+  @extend %card-base;
+  
+  .product-image {
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+}
+
+.user-card {
+  @extend %card-base;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.stats-card {
+  @extend %card-base;
+  text-align: center;
+  
+  .stats-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #3498db;
+  }
+}</pre>
+        </div>
+
+        <h2>9. Extend vs Mixin: Decisione Rapida</h2>
+        
+        <div class="codice">
+<pre>// Domanda 1: Servono parametri?
+// SÌ → Mixin
+@mixin button($color) { background: $color; }
+
+// NO → Placeholder
+%button { background: blue; }
+
+
+// Domanda 2: Attraverso media queries?
+// SÌ → Mixin
+@mixin responsive-text {
+  font-size: 16px;
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+// NO → Placeholder
+%text-style {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+
+// Domanda 3: Vendor prefixes?
+// SÌ → Mixin
+@mixin transform($value) {
+  -webkit-transform: $value;
+  transform: $value;
+}
+
+
+// Domanda 4: Relazione is-a e stili identici?
+// SÌ → Placeholder
+%message { padding: 15px; }
+.success { @extend %message; }  // success "è un" message</pre>
+        </div>
+
+        <h2>10. Confronto Completo</h2>
+        
+        <table>
+            <tr>
+                <th>Caratteristica</th>
+                <th>@extend</th>
+                <th>@mixin</th>
+                <th>Placeholder %</th>
+            </tr>
+            <tr>
+                <td>Output CSS</td>
+                <td>Selettori raggruppati</td>
+                <td>Proprietà duplicate</td>
+                <td>Selettori raggruppati</td>
+            </tr>
+            <tr>
+                <td>Dimensione file</td>
+                <td>Più piccolo</td>
+                <td>⚠️ Più grande</td>
+                <td>Più piccolo</td>
+            </tr>
+            <tr>
+                <td>Parametri</td>
+                <td>❌ No</td>
+                <td>Sì</td>
+                <td>❌ No</td>
+            </tr>
+            <tr>
+                <td>@content</td>
+                <td>❌ No</td>
+                <td>Sì</td>
+                <td>❌ No</td>
+            </tr>
+            <tr>
+                <td>Media queries</td>
+                <td>❌ Problemi</td>
+                <td>Funziona</td>
+                <td>❌ Problemi</td>
+            </tr>
+            <tr>
+                <td>Nel CSS finale</td>
+                <td>Sì (se classe)</td>
+                <td>Sì (inline)</td>
+                <td>❌ No (solo se esteso)</td>
+            </tr>
+            <tr>
+                <td>Complessità</td>
+                <td>⚠️ Può complicare</td>
+                <td>Semplice</td>
+                <td>Pulito</td>
+            </tr>
+        </table>
+
+        <h2>Punti Chiave</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><code>@extend</code> raggruppa selettori, evita duplicazione CSS</li>
+                <li><code>%placeholder</code> non compare nel CSS finale se non esteso</li>
+                <li>Usa placeholder per utility e base styles condivisi</li>
+                <li>Extend = relazioni "is-a", Mixin = riuso con parametri</li>
+                <li>⚠️ NON estendere attraverso media queries</li>
+                <li>⚠️ Evita extend chaining profondo</li>
+                <li>⚠️ Attenzione al "extend bloat" con troppi selettori</li>
+                <li>Preferisci placeholder <code>%</code> a classi normali</li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-4/lezione-4-5.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-4/lezione-4-7.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>

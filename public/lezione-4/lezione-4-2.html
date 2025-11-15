@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.2 - Variabili SASS</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.2 - Variabili SASS</h1>
+            <p>Memorizza e riutilizza valori in tutto il tuo stylesheet</p>
+        </div>
+
+        <h2>1. Cosa Sono le Variabili?</h2>
+        
+        <div class="teoria">
+            <p>Le <strong>variabili SASS</strong> permettono di memorizzare valori (colori, dimensioni, font, ecc.) e riutilizzarli in tutto il foglio di stile. Se devi cambiare un valore, lo modifichi una sola volta nella variabile e il cambiamento si propaga ovunque.</p>
+            
+            <p><strong>Vantaggi:</strong></p>
+            <ul>
+                <li>Elimina ripetizioni</li>
+                <li>Centralizza i valori del design system</li>
+                <li>Facilita la manutenzione e i cambiamenti</li>
+                <li>Migliora la leggibilità del codice</li>
+                <li>Permette di creare temi facilmente</li>
+            </ul>
+        </div>
+
+        <h2>2. Sintassi delle Variabili</h2>
+        
+        <div class="codice">
+<pre>// Dichiarazione variabile con $
+$nome-variabile: valore;
+
+// Esempi
+$primary-color: #3498db;
+$font-size-base: 16px;
+$spacing-unit: 8px;
+
+// Utilizzo
+.button {
+  background: $primary-color;
+  font-size: $font-size-base;
+  padding: $spacing-unit;
+}</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Convenzioni naming:</strong></p>
+            <ul>
+                <li>Inizia con <code>$</code></li>
+                <li>Usa <code>kebab-case</code> (parole separate da trattino)</li>
+                <li>Nomi descrittivi: <code>$primary-color</code> invece di <code>$blue</code></li>
+                <li>Raggruppa variabili correlate: <code>$font-size-small</code>, <code>$font-size-medium</code>, <code>$font-size-large</code></li>
+            </ul>
+        </div>
+
+        <h2>3. Tipi di Dati</h2>
+
+        <h3>3.1 Numeri</h3>
+        
+        <div class="codice">
+<pre>// Numeri interi e decimali
+$width: 100;
+$height: 75.5;
+
+// Con unità
+$font-size: 16px;
+$margin: 2rem;
+$line-height: 1.5; // unitless
+$rotation: 45deg;
+$duration: 0.3s;
+
+// Operazioni matematiche
+$container-width: 1200px;
+$sidebar-width: 300px;
+$content-width: $container-width - $sidebar-width; // 900px
+
+.content {
+  width: $content-width;
+  margin: $margin * 2; // 4rem
+  font-size: $font-size + 2px; // 18px
+}</pre>
+        </div>
+
+        <h3>3.2 Stringhe</h3>
+        
+        <div class="codice">
+<pre>// Con o senza virgolette
+$font-family: "Helvetica Neue", Arial, sans-serif;
+$font-family-mono: Courier, monospace;
+$image-path: "/images/";
+
+// Interpolazione stringa (vedremo dopo)
+$side: top;
+.box {
+  border-#{$side}: 1px solid black; // border-top
+}</pre>
+        </div>
+
+        <h3>3.3 Colori</h3>
+        
+        <div class="codice">
+<pre>// Diversi formati colore
+$color-hex: #3498db;
+$color-rgb: rgb(52, 152, 219);
+$color-rgba: rgba(52, 152, 219, 0.8);
+$color-hsl: hsl(204, 70%, 53%);
+$color-name: blue;
+
+// Funzioni colore SASS (built-in)
+$primary: #3498db;
+$primary-light: lighten($primary, 20%);   // #75b8e7
+$primary-dark: darken($primary, 20%);     // #1c5a85
+$primary-transparent: rgba($primary, 0.5); // rgba(52, 152, 219, 0.5)
+
+.box {
+  background: $primary;
+  border: 2px solid darken($primary, 10%);
+  box-shadow: 0 0 10px rgba($primary, 0.3);
+}</pre>
+        </div>
+
+        <h3>3.4 Booleani</h3>
+        
+        <div class="codice">
+<pre>// Valori true/false (usati con @if)
+$debug-mode: true;
+$enable-animations: false;
+
+@if $debug-mode {
+  .debug-info {
+    display: block;
+    background: yellow;
+  }
+}</pre>
+        </div>
+
+        <h3>3.5 Null</h3>
+        
+        <div class="codice">
+<pre>// Valore nullo (proprietà non generata)
+$shadow: null;
+
+.box {
+  box-shadow: $shadow; // questa riga non verrà generata nel CSS
+}</pre>
+        </div>
+
+        <h3>3.6 Liste</h3>
+        
+        <div class="codice">
+<pre>// Liste separate da spazi o virgole
+$font-stack: Helvetica, Arial, sans-serif;
+$padding-values: 10px 20px 10px 20px;
+$colors-list: #3498db, #2ecc71, #e74c3c;
+
+// Utilizzo
+.element {
+  font-family: $font-stack;
+  padding: $padding-values;
+}
+
+// Accesso elementi lista (1-based!)
+$first-color: nth($colors-list, 1); // #3498db
+$list-length: length($colors-list); // 3</pre>
+        </div>
+
+        <h3>3.7 Mappe</h3>
+        
+        <div class="codice">
+<pre>// Mappe: coppie chiave-valore (come oggetti)
+$colors: (
+  primary: #3498db,
+  secondary: #2ecc71,
+  danger: #e74c3c,
+  warning: #f39c12,
+  info: #3498db
+);
+
+$font-sizes: (
+  small: 12px,
+  medium: 16px,
+  large: 20px,
+  xlarge: 24px
+);
+
+// Accesso valori con map-get()
+.alert {
+  background: map-get($colors, danger); // #e74c3c
+  font-size: map-get($font-sizes, medium); // 16px
+}
+
+// Loop su mappe (vedremo nella lezione 7)
+@each $name, $color in $colors {
+  .text-#{$name} {
+    color: $color;
+  }
+}</pre>
+        </div>
+
+        <h2>4. Scope delle Variabili</h2>
+
+        <h3>4.1 Variabili Globali</h3>
+        
+        <div class="codice">
+<pre>// Definite al livello top del file
+$primary-color: #3498db; // Globale
+
+.header {
+  background: $primary-color; // Accessibile
+}
+
+.footer {
+  background: $primary-color; // Accessibile
+}</pre>
+        </div>
+
+        <h3>4.2 Variabili Locali</h3>
+        
+        <div class="codice">
+<pre>// Definite dentro un blocco (scope locale)
+.sidebar {
+  $sidebar-width: 250px; // Locale a .sidebar
+  width: $sidebar-width;  // Accessibile
+  
+  .sidebar-content {
+    width: $sidebar-width; // Accessibile (nested)
+  }
+}
+
+.main {
+  width: $sidebar-width; // ❌ ERRORE! Non accessibile
+}</pre>
+        </div>
+
+        <h3>4.3 Shadowing (Sovrascrittura)</h3>
+        
+        <div class="codice">
+<pre>$color: red; // Globale
+
+.box {
+  color: $color; // red
+}
+
+.special-box {
+  $color: blue; // Locale (shadowing)
+  color: $color; // blue (usa variabile locale)
+  
+  .inner {
+    color: $color; // blue (usa variabile locale del genitore)
+  }
+}
+
+.another-box {
+  color: $color; // red (variabile globale non modificata)
+}</pre>
+        </div>
+
+        <h3>4.4 Flag !global</h3>
+        
+        <div class="codice">
+<pre>$color: red; // Globale
+
+.box {
+  $color: blue !global; // Modifica la variabile globale!
+  color: $color; // blue
+}
+
+.another-box {
+  color: $color; // blue (globale è stata modificata)
+}
+
+// ⚠️ Usa !global con cautela! Può creare confusione</pre>
+        </div>
+
+        <h2>5. Flag !default</h2>
+        
+        <div class="teoria">
+            <p>Il flag <code>!default</code> assegna un valore solo se la variabile non è già stata definita. Utile per creare valori di default personalizzabili.</p>
+        </div>
+
+        <div class="codice">
+<pre>// Esempio senza !default
+$primary-color: #3498db;
+$primary-color: #e74c3c; // Sovrascrive
+// Risultato: $primary-color è #e74c3c
+
+// Esempio con !default
+$primary-color: #3498db;
+$primary-color: #e74c3c !default; // NON sovrascrive perché già definita
+// Risultato: $primary-color è ancora #3498db
+
+// Caso d'uso pratico: libreria personalizzabile
+// File: _defaults.scss (libreria)
+$button-bg: #3498db !default;
+$button-padding: 10px 20px !default;
+
+.button {
+  background: $button-bg;
+  padding: $button-padding;
+}
+
+// File: main.scss (utente)
+// Personalizza prima di importare
+$button-bg: #e74c3c; // Sovrascrive il default!
+@import 'defaults';</pre>
+        </div>
+
+        <h2>6. Best Practices per Variabili</h2>
+
+        <h3>6.1 Organizzazione Variabili</h3>
+        
+        <div class="codice">
+<pre>// File: _variables.scss
+// Organizza variabili per categoria
+
+// === COLORS ===
+// Brand Colors
+$color-primary: #3498db;
+$color-secondary: #2ecc71;
+$color-accent: #f39c12;
+
+// Semantic Colors
+$color-success: #2ecc71;
+$color-danger: #e74c3c;
+$color-warning: #f39c12;
+$color-info: #3498db;
+
+// Neutral Colors
+$color-dark: #2c3e50;
+$color-grey: #95a5a6;
+$color-light: #ecf0f1;
+$color-white: #ffffff;
+
+// === TYPOGRAPHY ===
+$font-primary: 'Helvetica Neue', Arial, sans-serif;
+$font-secondary: Georgia, serif;
+$font-mono: 'Courier New', monospace;
+
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-base: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 24px;
+$font-size-xxl: 32px;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+// === SPACING ===
+// Sistema spacing 8px
+$spacing-xs: 4px;   // 0.5 unit
+$spacing-sm: 8px;   // 1 unit
+$spacing-md: 16px;  // 2 units
+$spacing-lg: 24px;  // 3 units
+$spacing-xl: 32px;  // 4 units
+$spacing-xxl: 48px; // 6 units
+
+// === BREAKPOINTS ===
+$breakpoint-mobile: 576px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 992px;
+$breakpoint-wide: 1200px;
+
+// === Z-INDEX ===
+$z-index-dropdown: 1000;
+$z-index-modal: 1050;
+$z-index-tooltip: 1100;
+
+// === TRANSITIONS ===
+$transition-speed-fast: 0.15s;
+$transition-speed-base: 0.3s;
+$transition-speed-slow: 0.5s;
+$transition-easing: ease-in-out;</pre>
+        </div>
+
+        <h3>6.2 Naming Conventions</h3>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Semantico:</strong> <code>$color-primary</code> invece di <code>$blue</code></li>
+                <li><strong>Descrittivo:</strong> <code>$header-height</code> invece di <code>$h</code></li>
+                <li><strong>Consistente:</strong> Usa sempre lo stesso pattern</li>
+                <li><strong>Prefissi:</strong> Raggruppa con prefissi (<code>$color-*</code>, <code>$font-*</code>)</li>
+                <li><strong>Suffissi di stato:</strong> <code>$button-hover-bg</code>, <code>$input-focus-border</code></li>
+            </ul>
+        </div>
+
+        <h2>7. Variabili vs CSS Custom Properties</h2>
+        
+        <table>
+            <tr>
+                <th>SASS Variables</th>
+                <th>CSS Custom Properties</th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="codice">
+<pre>$primary: #3498db;
+
+.button {
+  background: $primary;
+}</pre>
+                    </div>
+                </td>
+                <td>
+                    <div class="codice">
+<pre>:root {
+  --primary: #3498db;
+}
+
+.button {
+  background: var(--primary);
+}</pre>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Compilate a build time</li>
+                        <li>Non modificabili a runtime</li>
+                        <li>Supporto completo a operazioni</li>
+                        <li>Non nel DOM</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Interpretate dal browser</li>
+                        <li>Modificabili con JavaScript</li>
+                        <li>Cascading e inheritance</li>
+                        <li>Supporto browser moderni</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <h3>Possono anche essere usate entrambe le varianti</h3>
+        
+        <div class="codice">
+<pre>// SASS variables per logica di build
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+
+// Genera CSS custom properties per runtime
+:root {
+  --color-primary: #{$primary-color};
+  --color-secondary: #{$secondary-color};
+  --color-primary-light: #{lighten($primary-color, 20%)};
+}
+
+// Usa CSS variables nel codice
+.button {
+  background: var(--color-primary);
+  &:hover {
+    background: var(--color-primary-light);
+  }
+}
+
+// Cambio tema con JavaScript
+// document.documentElement.style.setProperty('--color-primary', '#e74c3c');</pre>
+        </div>
+
+        <h2>8. Esempio Pratico Completo</h2>
+        
+        <h4>Sistema di Variabili Completo</h4>
+        <p>Visualizza un esempio pratico con variabili organizzate:</p>
+        
+        <div class="esempio">
+            <iframe src="/lezione-4/esempi/variabili-demo.html" style="width: 100%; height: 600px; border: 1px solid #ddd;"></iframe>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/variabili-demo.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/variabili-demo.html</a></p>
+        </div>
+
+        <h2>Punti Chiave</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li>Variabili iniziano con <code>$</code></li>
+                <li>Supportano diversi tipi: numeri, stringhe, colori, liste, mappe</li>
+                <li>Scope: globali (top-level) o locali (dentro blocchi)</li>
+                <li><code>!default</code> per valori di default personalizzabili</li>
+                <li><code>!global</code> per modificare variabili globali (usare con cautela)</li>
+                <li>Organizza variabili in file separati (_variables.scss)</li>
+                <li>Usa nomi semantici e convenzioni consistenti</li>
+                <li>Combina SASS variables con CSS custom properties per flessibilità runtime</li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-4/lezione-4-1.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-4/lezione-4-3.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>

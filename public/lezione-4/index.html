@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4 - Introduzione</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4 - SASS/SCSS</h1>
+            <p>Preprocessore per fogli di stile professionali</p>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Argomento:</strong> SASS (Syntactically Awesome Style Sheets), il preprocessore CSS più potente e maturo per scrivere fogli di stile mantenibili e scalabili</p>
+        </div>
+
+        <h2>Descrizione</h2>
+        
+        <p>Questa lezione introduce SASS, un preprocessore CSS che estende le funzionalità del CSS standard aggiungendo caratteristiche di un linguaggio di programmazione. SASS permette di utilizzare variabili, nesting, mixins, functions e molto altro, rendendo il codice CSS più organizzato, riutilizzabile e facile da mantenere.</p>
+        
+        <p>SASS si distingue per due sintassi: SASS (indentazione) e SCSS (più simile al CSS). In questo corso utilizzeremo principalmente SCSS, che è più familiare per chi già conosce CSS e più diffusa nell'industria.</p>
+
+        <h2>Obiettivi di Apprendimento</h2>
+        
+        <p>Al termine di questa lezione saremo in grado di:</p>
+        
+        <ul>
+            <li>Comprendere cos'è SASS e quando utilizzarlo</li>
+            <li>Installare e configurare SASS in un progetto</li>
+            <li>Utilizzare variabili per gestire colori, font e valori riutilizzabili</li>
+            <li>Applicare il nesting per scrivere CSS più leggibile</li>
+            <li>Organizzare il codice con partials e moduli</li>
+            <li>Creare mixins e functions per riutilizzare codice</li>
+            <li>Utilizzare @extend e placeholder per ereditare stili</li>
+            <li>Applicare control directives (if, for, each) per generare CSS dinamicamente</li>
+            <li>Implementare best practices per progetti SASS scalabili</li>
+            <li>Creare un sistema di design completo con SASS</li>
+        </ul>
+
+        <h2>Struttura della Lezione</h2>
+        
+        <table>
+            <tr>
+                <th>Parte</th>
+                <th>Contenuti</th>
+            </tr>
+            <tr>
+                <td>Parte 1: Introduzione e Setup</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Cos'è SASS/SCSS</li>
+                        <li>Differenza tra SASS e SCSS</li>
+                        <li>Installazione (Node.js, npm, sass package)</li>
+                        <li>Primo file SCSS</li>
+                        <li>Compilazione (command line, watch mode)</li>
+                        <li>Source maps</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Parte 2: Variabili</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Dichiarazione variabili</li>
+                        <li>Tipi di dati (numeri, stringi, colori, liste, mappe)</li>
+                        <li>Scope delle variabili</li>
+                        <li>Variabili globali e locali</li>
+                        <li>!default flag</li>
+                        <li>Best practices per naming</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Parte 3: Nesting</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Nesting base</li>
+                        <li>Parent selector (&)</li>
+                        <li>Nesting properties</li>
+                        <li>Quando evitare nesting eccessivo</li>
+                        <li>BEM con SASS</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Parte 4: Partials e Import</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Cosa sono i partial</li>
+                        <li>Organizzazione file (_variables.scss, _mixins.scss, etc.)</li>
+                        <li>@import vs @use vs @forward</li>
+                        <li>Struttura progetto 7-1 pattern</li>
+                        <li>Namespace con @use</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Parte 5: Mixins e Functions</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Creare mixins</li>
+                        <li>Parametri e valori default</li>
+                        <li>@content directive</li>
+                        <li>Mixins comuni (media queries, flexbox, etc.)</li>
+                        <li>Functions custom</li>
+                        <li>Built-in functions (darken, lighten, etc.)</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Parte 6: Extend e Placeholder</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>@extend</li>
+                        <li>Placeholder selectors (%)</li>
+                        <li>Extend vs Mixins</li>
+                        <li>Best practices</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Parte 7: Control Directives</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>@if, @else if, @else</li>
+                        <li>@for loops</li>
+                        <li>@each loops</li>
+                        <li>@while loops</li>
+                        <li>Esempi pratici (generare utilities classes)</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Parte 8: SASS Avanzato e Best Practices</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Maps e liste avanzate</li>
+                        <li>Color functions</li>
+                        <li>Math operations</li>
+                        <li>Interpolation</li>
+                        <li>Organizzazione codice</li>
+                        <li>Performance optimization</li>
+                        <li>CSS custom properties con SASS</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Progetto Finale</td>
+                <td>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Sistema completo con SASS</li>
+                        <li>Variabili per theme</li>
+                        <li>Mixins per responsive</li>
+                        <li>Struttura file organizzata</li>
+                        <li>Dashboard moderna con SASS compilato</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <h2>Software Necessario</h2>
+        
+        <div class="info-box">
+            <h3>Prerequisiti</h3>
+            <ul>
+                <li><strong>Node.js:</strong> Ambiente runtime JavaScript (versione 14 o superiore)</li>
+                <li><strong>npm:</strong> Package manager (incluso con Node.js)</li>
+                <li><strong>Editor di codice:</strong> VS Code, Sublime Text, o simili</li>
+                <li><strong>Terminal/Command Line:</strong> Per compilare SASS</li>
+            </ul>
+
+            <h3>Installazione SASS</h3>
+            <p>Dopo aver installato Node.js, eseguire da terminale:</p>
+            <div class="codice">
+<pre># Installazione globale di SASS
+npm install -g sass
+
+# Verifica installazione
+sass --version</pre>
+            </div>
+        </div>
+
+        <h2>Risorse Aggiuntive</h2>
+        
+        <ul>
+            <li><a href="https://sass-lang.com/" target="_blank">Documentazione Ufficiale SASS</a></li>
+            <li><a href="https://sass-lang.com/guide" target="_blank">SASS Guide</a></li>
+            <li><a href="https://github.com/KittyGiraudel/sass-guidelines" target="_blank">SASS Guidelines</a></li>
+            <li><a href="/link-utili.html">Link Utili del Corso</a></li>
+        </ul>
+
+        <div class="navigazione">
+            <a href="/lezione-3/lezione-3-99.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-4/lezione-4-1.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>

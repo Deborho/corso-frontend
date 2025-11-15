@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.4 - Partials e Import</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.4 - Partials e Import</h1>
+            <p>Organizza il codice SASS in file modulari e manutenibili</p>
+        </div>
+
+        <h2>1. Cosa Sono i Partials?</h2>
+        
+        <div class="teoria">
+            <p>I <strong>partials</strong> (parziali) sono file SASS che contengono porzioni di codice CSS destinate ad essere importate in altri file. Permettono di dividere un grande foglio di stile in file più piccoli e gestibili.</p>
+            
+            <p><strong>Caratteristiche:</strong></p>
+            <ul>
+                <li>Nome inizia con underscore: <code>_variables.scss</code>, <code>_mixins.scss</code></li>
+                <li>Non vengono compilati direttamente in CSS</li>
+                <li>Devono essere importati in un file principale</li>
+                <li>Mantengono il codice organizzato e modulare</li>
+            </ul>
+            
+            <p><strong>Vantaggi:</strong></p>
+            <ul>
+                <li>Codice più organizzato e manutenibile</li>
+                <li>Facile trovare e modificare specifiche parti</li>
+                <li>Riutilizzo di codice tra progetti</li>
+                <li>Collaborazione team più semplice</li>
+                <li>Migliore separazione delle responsabilità</li>
+            </ul>
+        </div>
+
+        <h2>2. Creare e Usare Partials</h2>
+
+        <h3>2.1 Struttura Base</h3>
+        
+        <div class="codice">
+<pre>// Struttura progetto
+scss/
+├── main.scss          // File principale (da compilare)
+├── _variables.scss    // Partial per variabili
+├── _mixins.scss       // Partial per mixins
+├── _reset.scss        // Partial per reset CSS
+└── _components.scss   // Partial per componenti</pre>
+        </div>
+
+        <h3>2.2 File Partial: _variables.scss</h3>
+        
+        <div class="codice">
+<pre>// File: scss/_variables.scss
+// Underscore indica che è un partial
+
+// Colors
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$danger-color: #e74c3c;
+
+// Typography
+$font-primary: 'Helvetica Neue', Arial, sans-serif;
+$font-size-base: 16px;
+
+// Spacing
+$spacing-small: 8px;
+$spacing-medium: 16px;
+$spacing-large: 24px;</pre>
+        </div>
+
+        <h3>2.3 File Partial: _reset.scss</h3>
+        
+        <div class="codice">
+<pre>// File: scss/_reset.scss
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-primary;
+  font-size: $font-size-base;
+  line-height: 1.6;
+}</pre>
+        </div>
+
+        <h3>2.4 File Principale: main.scss</h3>
+        
+        <div class="codice">
+<pre>// File: scss/main.scss
+// Questo è il file che compiliamo in CSS
+
+// Import partials (nota: senza underscore e .scss)
+@import 'variables';
+@import 'reset';
+@import 'mixins';
+@import 'components';
+
+// Stili custom
+.app {
+  background: $primary-color;
+  padding: $spacing-large;
+}</pre>
+        </div>
+
+        <h3>2.5 Compilazione</h3>
+        
+        <div class="codice">
+<pre># Compila solo il file principale
+sass scss/main.scss css/main.css
+
+# I partials (_variables.scss, _reset.scss, etc.)
+# NON vengono compilati separatamente
+# Il loro contenuto viene incluso in main.css</pre>
+        </div>
+
+        <h2>3. @import (Metodo Classico)</h2>
+        
+        <div class="teoria">
+            <p><code>@import</code> è il metodo tradizionale per includere partials. Semplice ma con alcune limitazioni.</p>
+        </div>
+
+        <div class="codice">
+<pre>// File: main.scss
+
+// Import singolo
+@import 'variables';
+
+// Import con percorso
+@import 'base/reset';
+@import 'components/buttons';
+
+// Import multipli (su una riga)
+@import 'variables', 'mixins', 'functions';
+
+// Import con estensione (opzionale)
+@import 'variables.scss'; // Funziona, ma non necessario</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>⚠️ Problemi di @import:</strong></p>
+            <ul>
+                <li>Namespace globale (conflitti di nomi)</li>
+                <li>Difficile capire da dove viene una variabile/mixin</li>
+                <li>Tutto è globale e accessibile ovunque</li>
+                <li>Deprecato nelle versioni future di SASS</li>
+            </ul>
+        </div>
+
+        <h2>4. @use (Metodo Moderno - Raccomandato)</h2>
+        
+        <div class="teoria">
+            <p><code>@use</code> è il nuovo sistema di moduli introdotto in Dart Sass. Risolve i problemi di @import con namespace e scope.</p>
+            
+            <p><strong>Vantaggi:</strong></p>
+            <ul>
+                <li>Namespace automatico (no conflitti)</li>
+                <li>Scope privato (controllo esportazioni)</li>
+                <li>Migliore organizzazione</li>
+                <li>Performance migliori</li>
+            </ul>
+        </div>
+
+        <h3>4.1 Sintassi Base</h3>
+        
+        <div class="codice">
+<pre>// File: _variables.scss
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+
+@mixin button-style {
+  padding: 10px 20px;
+  border: none;
+}
+
+// File: main.scss
+@use 'variables';
+
+.button {
+  // Accesso con namespace (nome del file)
+  background: variables.$primary-color;
+  @include variables.button-style;
+}
+
+// Output CSS:
+// .button {
+//   background: #3498db;
+//   padding: 10px 20px;
+//   border: none;
+// }</pre>
+        </div>
+
+        <h3>4.2 Namespace Custom</h3>
+        
+        <div class="codice">
+<pre>// Namespace custom con 'as'
+@use 'variables' as vars;
+
+.button {
+  background: vars.$primary-color; // Più breve!
+}
+
+// Namespace globale (usa con cautela!)
+@use 'variables' as *;
+
+.button {
+  background: $primary-color; // Diretto, no namespace
+}</pre>
+        </div>
+
+        <h3>4.3 Membri Privati</h3>
+        
+        <div class="codice">
+<pre>// File: _variables.scss
+// Membri privati iniziano con - o _
+$primary-color: #3498db;      // Pubblico
+$-internal-color: #2c3e50;    // Privato
+$_private-spacing: 8px;       // Privato
+
+// File: main.scss
+@use 'variables';
+
+.button {
+  background: variables.$primary-color;    // OK
+  color: variables.$-internal-color;       // ❌ ERRORE! Privato
+}</pre>
+        </div>
+
+        <h3>4.4 Configurazione con @use</h3>
+        
+        <div class="codice">
+<pre>// File: _theme.scss
+$primary-color: #3498db !default;
+$secondary-color: #2ecc71 !default;
+
+.button {
+  background: $primary-color;
+}
+
+// File: main.scss
+// Configura variabili prima di usare il modulo
+@use 'theme' with (
+  $primary-color: #e74c3c,
+  $secondary-color: #f39c12
+);
+
+// Il button avrà background: #e74c3c</pre>
+        </div>
+
+        <h2>5. @forward (Per Librerie)</h2>
+        
+        <div class="teoria">
+            <p><code>@forward</code> permette di "inoltrare" membri di un modulo, creando un file "barrel" che raggruppa più moduli.</p>
+        </div>
+
+        <div class="codice">
+<pre>// File: base/_variables.scss
+$color-primary: #3498db;
+
+// File: base/_mixins.scss
+@mixin button { padding: 10px; }
+
+// File: base/_index.scss (barrel file)
+@forward 'variables';
+@forward 'mixins';
+
+// File: main.scss
+// Importa tutto da base/ con un solo @use
+@use 'base';
+
+.button {
+  background: base.$color-primary;
+  @include base.button;
+}</pre>
+        </div>
+
+        <h3>5.1 @forward con Prefisso</h3>
+        
+        <div class="codice">
+<pre>// File: _colors.scss
+$primary: #3498db;
+$secondary: #2ecc71;
+
+// File: _index.scss
+// Aggiungi prefisso ai membri
+@forward 'colors' as color-*;
+
+// File: main.scss
+@use 'index' as theme;
+
+.button {
+  background: theme.$color-primary;   // Nota il prefisso!
+  border: 1px solid theme.$color-secondary;
+}</pre>
+        </div>
+
+        <h2>6. Struttura Progetto: 7-1 Pattern</h2>
+        
+        <div class="teoria">
+            <p>Il <strong>7-1 pattern</strong> è una architettura popolare per organizzare file SASS in grandi progetti.</p>
+            
+            <p><strong>7 cartelle + 1 file principale:</strong></p>
+        </div>
+
+        <div class="codice">
+<pre>scss/
+│
+├── abstracts/          (o utilities/)
+│   ├── _variables.scss    // Variabili globali
+│   ├── _functions.scss    // Functions SASS
+│   ├── _mixins.scss       // Mixins
+│   └── _placeholders.scss // Placeholder %
+│
+├── base/
+│   ├── _reset.scss        // Reset/normalize
+│   ├── _typography.scss   // Regole tipografia
+│   └── _base.scss         // Stili base HTML
+│
+├── components/
+│   ├── _buttons.scss      // Button styles
+│   ├── _cards.scss        // Card component
+│   ├── _forms.scss        // Form elements
+│   └── _navbar.scss       // Navigation
+│
+├── layout/
+│   ├── _header.scss       // Header
+│   ├── _footer.scss       // Footer
+│   ├── _sidebar.scss      // Sidebar
+│   └── _grid.scss         // Grid system
+│
+├── pages/
+│   ├── _home.scss         // Home page specifici
+│   ├── _about.scss        // About page
+│   └── _contact.scss      // Contact page
+│
+├── themes/
+│   ├── _default.scss      // Tema default
+│   ├── _dark.scss         // Tema scuro
+│   └── _admin.scss        // Tema admin
+│
+├── vendors/
+│   ├── _bootstrap.scss    // Override Bootstrap
+│   └── _jquery-ui.scss    // Override jQueryUI
+│
+└── main.scss              // File principale (unico compilato)</pre>
+        </div>
+
+        <h3>6.1 File main.scss (7-1 Pattern)</h3>
+        
+        <div class="codice">
+<pre>// File: scss/main.scss
+
+// === ABSTRACTS ===
+@use 'abstracts/variables' as *;
+@use 'abstracts/functions' as *;
+@use 'abstracts/mixins' as *;
+
+// === VENDORS ===
+@use 'vendors/bootstrap';
+
+// === BASE ===
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/base';
+
+// === LAYOUT ===
+@use 'layout/header';
+@use 'layout/footer';
+@use 'layout/sidebar';
+@use 'layout/grid';
+
+// === COMPONENTS ===
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/forms';
+@use 'components/navbar';
+
+// === PAGES ===
+@use 'pages/home';
+@use 'pages/about';
+@use 'pages/contact';
+
+// === THEMES ===
+@use 'themes/default';</pre>
+        </div>
+
+        <h2>7. Esempio Organizzazione Pratica</h2>
+
+        <h3>7.1 Progetto Piccolo</h3>
+        
+        <div class="codice">
+<pre>// Per progetti piccoli
+scss/
+├── _variables.scss
+├── _mixins.scss
+├── _base.scss
+├── _components.scss
+└── main.scss
+
+// main.scss
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'base';
+@use 'components';</pre>
+        </div>
+
+        <h3>7.2 Progetto Medio</h3>
+        
+        <div class="codice">
+<pre>// Per progetti medi
+scss/
+├── base/
+│   ├── _reset.scss
+│   └── _typography.scss
+├── components/
+│   ├── _buttons.scss
+│   ├── _cards.scss
+│   └── _forms.scss
+├── _variables.scss
+├── _mixins.scss
+└── main.scss</pre>
+        </div>
+
+        <h3>7.3 Progetto Grande</h3>
+        
+        <div class="codice">
+<pre>// Per progetti grandi (7-1 pattern completo)
+scss/
+├── abstracts/
+├── base/
+├── components/
+├── layout/
+├── pages/
+├── themes/
+├── vendors/
+└── main.scss</pre>
+        </div>
+
+        <h2>8. Best Practices</h2>
+        
+        <div class="teoria">
+            <p><strong>Organizzazione File:</strong></p>
+            <ul>
+                <li>Un componente = un file</li>
+                <li>Nomi file descrittivi: <code>_button.scss</code>, <code>_card.scss</code></li>
+                <li>Raggruppa file correlati in cartelle</li>
+                <li>Usa _index.scss come barrel file per cartelle</li>
+            </ul>
+            
+            <p><strong>Import Order:</strong></p>
+            <ul>
+                <li>1. Variables e functions (primo!)</li>
+                <li>2. Mixins</li>
+                <li>3. Vendors/librerie esterne</li>
+                <li>4. Base/reset</li>
+                <li>5. Layout</li>
+                <li>6. Components</li>
+                <li>7. Pages</li>
+                <li>8. Themes</li>
+            </ul>
+            
+            <p><strong>Moduli (@use vs @import):</strong></p>
+            <ul>
+                <li>Usa <code>@use</code> per nuovi progetti</li>
+                <li>Mantieni namespace espliciti (meglio <code>vars.$color</code> che solo <code>$color</code>)</li>
+                <li>Usa <code>@forward</code> per creare index files</li>
+                <li>⚠️ <code>@import</code> solo per legacy/compatibilità</li>
+            </ul>
+        </div>
+
+        <h2>9. Esempio Pratico Completo</h2>
+        
+        <h4>Progetto Organizzato con Partials</h4>
+        <p>Visualizza un esempio di progetto completo con struttura modulare:</p>
+        
+        <div class="esempio">
+            <iframe src="/lezione-4/esempi/progetto-organizzato.html" style="width: 100%; height: 700px; border: 1px solid #ddd;"></iframe>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/progetto-organizzato.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/progetto-organizzato.html</a></p>
+        </div>
+
+        <h2>10. Confronto @import vs @use</h2>
+        
+        <table>
+            <tr>
+                <th>Caratteristica</th>
+                <th>@import</th>
+                <th>@use</th>
+            </tr>
+            <tr>
+                <td><strong>Namespace</strong></td>
+                <td>❌ Globale</td>
+                <td>Automatico</td>
+            </tr>
+            <tr>
+                <td><strong>Conflitti nomi</strong></td>
+                <td>❌ Possibili</td>
+                <td>Prevenuti</td>
+            </tr>
+            <tr>
+                <td><strong>Performance</strong></td>
+                <td>❌ File importati più volte</td>
+                <td>Importati una sola volta</td>
+            </tr>
+            <tr>
+                <td><strong>Membri privati</strong></td>
+                <td>❌ Non supportati</td>
+                <td>Supportati (_var)</td>
+            </tr>
+            <tr>
+                <td><strong>Configurazione</strong></td>
+                <td>❌ Limitata</td>
+                <td>Tramite 'with'</td>
+            </tr>
+            <tr>
+                <td><strong>Futuro</strong></td>
+                <td>⚠️ Deprecato</td>
+                <td>Raccomandato</td>
+            </tr>
+        </table>
+
+        <h2>Punti Chiave</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li>Partials iniziano con <code>_</code> e non vengono compilati direttamente</li>
+                <li><code>@use</code> è il metodo moderno (namespace, private members)</li>
+                <li><code>@import</code> è deprecato ma ancora funzionante</li>
+                <li><code>@forward</code> per creare barrel files</li>
+                <li>Usa 7-1 pattern per progetti grandi</li>
+                <li>Import order: variables → mixins → base → components → pages</li>
+                <li>Un componente = un file partial</li>
+                <li>Membri privati con <code>$-variabile</code> o <code>$_variabile</code></li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-4/lezione-4-3.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-4/lezione-4-5.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>

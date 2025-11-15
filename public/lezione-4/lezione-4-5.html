@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.5 - Mixins e Functions</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.5 - Mixins e Functions</h1>
+            <p>Riutilizza codice CSS e crea logica dinamica</p>
+        </div>
+
+        <h2>1. Cosa Sono i Mixins?</h2>
+        
+        <div class="teoria">
+            <p>I <strong>mixins</strong> sono blocchi riutilizzabili di codice CSS che possono accettare parametri. Sono come funzioni che generano CSS.</p>
+            
+            <p><strong>Quando usarli:</strong></p>
+            <ul>
+                <li>Codice CSS ripetuto con piccole variazioni</li>
+                <li>Vendor prefixes</li>
+                <li>Media queries responsive</li>
+                <li>Pattern di styling complessi</li>
+                <li>Generazione di utility classes</li>
+            </ul>
+        </div>
+
+        <h2>2. Sintassi Mixins</h2>
+
+        <h3>2.1 Mixin Base (Senza Parametri)</h3>
+        
+        <div class="codice">
+<pre>// Definizione mixin con @mixin
+@mixin reset-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Utilizzo con @include
+.nav-list {
+  @include reset-list;
+  display: flex;
+}
+
+// Output CSS:
+// .nav-list {
+//   margin: 0;
+//   padding: 0;
+//   list-style: none;
+//   display: flex;
+// }</pre>
+        </div>
+
+        <h3>2.2 Mixin con Parametri</h3>
+        
+        <div class="codice">
+<pre>// Mixin con un parametro
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+.button {
+  @include border-radius(8px);
+}
+
+// Output CSS:
+// .button {
+//   -webkit-border-radius: 8px;
+//   -moz-border-radius: 8px;
+//   border-radius: 8px;
+// }</pre>
+        </div>
+
+        <h3>2.3 Mixin con Parametri Default</h3>
+        
+        <div class="codice">
+<pre>// Parametri con valori default
+@mixin box-shadow($x: 0, $y: 2px, $blur: 4px, $color: rgba(0,0,0,0.1)) {
+  box-shadow: $x $y $blur $color;
+}
+
+.card {
+  @include box-shadow; // Usa tutti i default
+}
+
+.elevated-card {
+  @include box-shadow(0, 4px, 8px, rgba(0,0,0,0.2)); // Custom
+}
+
+.custom-card {
+  @include box-shadow($blur: 10px); // Parametro nominato
+}
+
+// Output CSS:
+// .card { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+// .elevated-card { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+// .custom-card { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }</pre>
+        </div>
+
+        <h3>2.4 Mixin con Parametri Multipli</h3>
+        
+        <div class="codice">
+<pre>// Mixin complesso per buttons
+@mixin button-style($bg-color, $text-color, $padding: 10px 20px, $radius: 4px) {
+  background: $bg-color;
+  color: $text-color;
+  padding: $padding;
+  border: none;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: background 0.3s;
+  
+  &:hover {
+    background: darken($bg-color, 10%);
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.button-primary {
+  @include button-style(#3498db, white);
+}
+
+.button-success {
+  @include button-style(#2ecc71, white, 15px 30px, 8px);
+}
+
+.button-danger {
+  @include button-style($bg-color: #e74c3c, $text-color: white);
+}</pre>
+        </div>
+
+        <h2>3. @content - Blocchi di Contenuto</h2>
+        
+        <div class="teoria">
+            <p>La direttiva <code>@content</code> permette di passare un blocco di codice CSS al mixin. Estremamente utile per media queries e wrapper.</p>
+        </div>
+
+        <div class="codice">
+<pre>// Mixin per media queries responsive
+@mixin responsive($breakpoint) {
+  @if $breakpoint == mobile {
+    @media (max-width: 576px) {
+      @content;
+    }
+  } @else if $breakpoint == tablet {
+    @media (min-width: 577px) and (max-width: 992px) {
+      @content;
+    }
+  } @else if $breakpoint == desktop {
+    @media (min-width: 993px) {
+      @content;
+    }
+  }
+}
+
+// Utilizzo
+.container {
+  width: 100%;
+  padding: 15px;
+  
+  @include responsive(mobile) {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  @include responsive(tablet) {
+    padding: 20px;
+    max-width: 750px;
+  }
+  
+  @include responsive(desktop) {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+// Output CSS:
+// .container { width: 100%; padding: 15px; }
+// @media (max-width: 576px) {
+//   .container { padding: 10px; font-size: 14px; }
+// }
+// @media (min-width: 577px) and (max-width: 992px) {
+//   .container { padding: 20px; max-width: 750px; }
+// }
+// @media (min-width: 993px) {
+//   .container { padding: 30px; max-width: 1200px; margin: 0 auto; }
+// }</pre>
+        </div>
+
+        <h2>4. Mixins Comuni e Utili</h2>
+
+        <h3>4.1 Flexbox Center</h3>
+        
+        <div class="codice">
+<pre>@mixin flex-center($direction: row) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+
+.hero {
+  @include flex-center(column);
+  min-height: 100vh;
+}</pre>
+        </div>
+
+        <h3>4.2 Absolute Center</h3>
+        
+        <div class="codice">
+<pre>@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal {
+  @include absolute-center;
+  width: 500px;
+  background: white;
+}</pre>
+        </div>
+
+        <h3>4.3 Truncate Text</h3>
+        
+        <div class="codice">
+<pre>@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.title {
+  @include truncate; // Single line
+}
+
+.description {
+  @include truncate(3); // 3 lines max
+}</pre>
+        </div>
+
+        <h3>4.4 Aspect Ratio Box</h3>
+        
+        <div class="codice">
+<pre>@mixin aspect-ratio($width, $height) {
+  position: relative;
+  
+  &::before {
+    content: "";
+    display: block;
+    padding-top: ($height / $width) * 100%;
+  }
+  
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.video-container {
+  @include aspect-ratio(16, 9); // 16:9
+}
+
+.square-box {
+  @include aspect-ratio(1, 1); // 1:1
+}</pre>
+        </div>
+
+        <h3>4.5 Placeholder Styling</h3>
+        
+        <div class="codice">
+<pre>@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+  &:-moz-placeholder {
+    @content;
+  }
+  &::-moz-placeholder {
+    @content;
+  }
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+
+input {
+  @include placeholder {
+    color: #999;
+    font-style: italic;
+  }
+}</pre>
+        </div>
+
+        <h2>5. Functions SASS</h2>
+        
+        <div class="teoria">
+            <p>Le <strong>functions</strong> SASS restituiscono un valore (colore, numero, stringa) invece di generare CSS. Perfette per calcoli e trasformazioni.</p>
+            
+            <p><strong>Differenza Mixin vs Function:</strong></p>
+            <ul>
+                <li><strong>Mixin:</strong> Genera blocchi di CSS → <code>@include mixin-name</code></li>
+                <li><strong>Function:</strong> Restituisce un valore → <code>function-name()</code></li>
+            </ul>
+        </div>
+
+        <h3>5.1 Sintassi Function</h3>
+        
+        <div class="codice">
+<pre>// Definizione function con @function e @return
+@function calculate-rem($pixels) {
+  @return $pixels / 16px * 1rem;
+}
+
+// Utilizzo (come un valore)
+.text {
+  font-size: calculate-rem(18px); // 1.125rem
+  margin-bottom: calculate-rem(24px); // 1.5rem
+}</pre>
+        </div>
+
+        <h3>5.2 Function per Spacing System</h3>
+        
+        <div class="codice">
+<pre>// Base spacing unit
+$spacing-unit: 8px;
+
+@function spacing($multiplier) {
+  @return $spacing-unit * $multiplier;
+}
+
+.card {
+  padding: spacing(2);        // 16px
+  margin-bottom: spacing(3);  // 24px
+  gap: spacing(1);            // 8px
+}
+
+.container {
+  padding: spacing(4) spacing(2); // 32px 16px
+}</pre>
+        </div>
+
+        <h3>5.3 Function per Colori</h3>
+        
+        <div class="codice">
+<pre>// Genera colore con opacità
+@function alpha-color($color, $opacity) {
+  @return rgba($color, $opacity);
+}
+
+// Genera tinta più chiara
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+// Genera shade più scura
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+$primary: #3498db;
+
+.overlay {
+  background: alpha-color($primary, 0.8); // rgba(52, 152, 219, 0.8)
+}
+
+.button-light {
+  background: tint($primary, 20%); // 20% più chiaro
+}
+
+.button-dark {
+  background: shade($primary, 20%); // 20% più scuro
+}</pre>
+        </div>
+
+        <h3>5.4 Function per Z-index Management</h3>
+        
+        <div class="codice">
+<pre>// Lista layers in ordine
+$z-layers: (
+  'modal',
+  'dropdown',
+  'header',
+  'default'
+);
+
+@function z-index($layer) {
+  $index: index($z-layers, $layer);
+  
+  @if $index {
+    @return (length($z-layers) - $index + 1) * 100;
+  }
+  
+  @warn "Layer #{$layer} not found in $z-layers";
+  @return null;
+}
+
+.header {
+  z-index: z-index('header'); // 200
+}
+
+.dropdown {
+  z-index: z-index('dropdown'); // 300
+}
+
+.modal {
+  z-index: z-index('modal'); // 400
+}</pre>
+        </div>
+
+        <h2>6. Built-in Functions SASS</h2>
+        
+        <div class="teoria">
+            <p>SASS include molte funzioni built-in per colori, numeri, stringhe, liste e mappe.</p>
+        </div>
+
+        <h3>6.1 Color Functions</h3>
+        
+        <div class="codice">
+<pre>$primary: #3498db;
+
+// Luminosità
+.light {
+  background: lighten($primary, 20%);  // Più chiaro
+}
+.dark {
+  background: darken($primary, 20%);   // Più scuro
+}
+
+// Saturazione
+.vibrant {
+  background: saturate($primary, 20%); // Più saturo
+}
+.muted {
+  background: desaturate($primary, 20%); // Meno saturo
+}
+
+// Trasparenza
+.transparent {
+  background: rgba($primary, 0.5);     // 50% opacità
+  background: transparentize($primary, 0.5); // Stesso risultato
+  background: fade-out($primary, 0.5); // Stesso risultato
+}
+
+// Miscela colori
+.mixed {
+  background: mix(#3498db, #e74c3c, 50%); // 50% di ognuno
+}
+
+// Inversione e complemento
+.inverted {
+  background: invert($primary);        // Colore invertito
+}
+.complementary {
+  background: complement($primary);    // Colore complementare
+}
+
+// Grayscale
+.grayscale {
+  background: grayscale($primary);     // Scala di grigi
+}</pre>
+        </div>
+
+        <h3>6.2 Math Functions</h3>
+        
+        <div class="codice">
+<pre>@use 'sass:math';
+
+// Arrotondamento
+$value: 12.7px;
+.rounded {
+  width: math.round($value);  // 13px
+  width: math.ceil($value);   // 13px
+  width: math.floor($value);  // 12px
+}
+
+// Min/Max
+.responsive {
+  width: math.max(300px, 50%);  // Il maggiore tra i due
+  height: math.min(500px, 80vh); // Il minore tra i due
+}
+
+// Percentuali
+$width: 960px;
+$container: 1200px;
+.column {
+  width: math.percentage($width / $container); // 80%
+}
+
+// Absolute value
+.margin {
+  margin-top: math.abs(-20px); // 20px
+}</pre>
+        </div>
+
+        <h3>6.3 String Functions</h3>
+        
+        <div class="codice">
+<pre>@use 'sass:string';
+
+// Lunghezza stringa
+$text: "Hello";
+$length: string.length($text); // 5
+
+// Unquote / Quote
+$quoted: string.quote(sans-serif);   // "sans-serif"
+$unquoted: string.unquote("Arial");  // Arial
+
+// To-upper-case / To-lower-case
+$upper: string.to-upper-case("hello"); // "HELLO"
+$lower: string.to-lower-case("WORLD"); // "world"</pre>
+        </div>
+
+        <h3>6.4 List Functions</h3>
+        
+        <div class="codice">
+<pre>@use 'sass:list';
+
+$colors: #3498db, #2ecc71, #e74c3c;
+
+// Lunghezza lista
+$count: list.length($colors); // 3
+
+// Accesso elemento (1-based!)
+$first: list.nth($colors, 1);  // #3498db
+
+// Append elemento
+$new-colors: list.append($colors, #f39c12); // 4 elementi
+
+// Join liste
+$more-colors: #9b59b6, #1abc9c;
+$all-colors: list.join($colors, $more-colors);</pre>
+        </div>
+
+        <h3>6.5 Map Functions</h3>
+        
+        <div class="codice">
+<pre>@use 'sass:map';
+
+$theme-colors: (
+  'primary': #3498db,
+  'secondary': #2ecc71,
+  'danger': #e74c3c
+);
+
+// Get value
+$primary: map.get($theme-colors, 'primary'); // #3498db
+
+// Has key?
+$has-warning: map.has-key($theme-colors, 'warning'); // false
+
+// Keys
+$keys: map.keys($theme-colors); // 'primary', 'secondary', 'danger'
+
+// Values
+$values: map.values($theme-colors); // #3498db, #2ecc71, #e74c3c
+
+// Merge maps
+$extended: map.merge($theme-colors, ('warning': #f39c12));</pre>
+        </div>
+
+        <h2>7. Mixins vs Functions vs Extend</h2>
+        
+        <table>
+            <tr>
+                <th>Caratteristica</th>
+                <th>Mixin</th>
+                <th>Function</th>
+                <th>Extend</th>
+            </tr>
+            <tr>
+                <td><strong>Output</strong></td>
+                <td>Genera CSS</td>
+                <td>Restituisce valore</td>
+                <td>Condivide CSS</td>
+            </tr>
+            <tr>
+                <td><strong>Parametri</strong></td>
+                <td>Sì</td>
+                <td>Sì</td>
+                <td>❌ No</td>
+            </tr>
+            <tr>
+                <td><strong>Utilizzo</strong></td>
+                <td><code>@include</code></td>
+                <td>Chiamata diretta</td>
+                <td><code>@extend</code></td>
+            </tr>
+            <tr>
+                <td><strong>Duplicazione CSS</strong></td>
+                <td>⚠️ Possibile</td>
+                <td>N/A</td>
+                <td>No (selettori raggruppati)</td>
+            </tr>
+            <tr>
+                <td><strong>Quando usare</strong></td>
+                <td>Blocchi CSS riutilizzabili</td>
+                <td>Calcoli, trasformazioni</td>
+                <td>Condivisione stili identici</td>
+            </tr>
+        </table>
+
+        <h2>8. Esempio Pratico Completo</h2>
+        
+        <h4>Libreria di Mixins e Functions</h4>
+        <p>Visualizza un esempio con mixins e functions pratiche:</p>
+        
+        <div class="esempio">
+            <iframe src="/lezione-4/esempi/mixins-demo.html" style="width: 100%; height: 800px; border: 1px solid #ddd;"></iframe>
+            <p class="no-print" style="text-align: center; margin-top: 5px; font-size: 12px;"><a href="esempi/mixins-demo.html" target="_blank" style="color: #0066cc; text-decoration: none;">esempi/mixins-demo.html</a></p>
+        </div>
+
+        <h2>Punti Chiave</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Mixins:</strong> Blocchi CSS riutilizzabili con <code>@mixin</code> e <code>@include</code></li>
+                <li>Mixins supportano parametri con valori default</li>
+                <li><code>@content</code> per passare blocchi di codice ai mixins</li>
+                <li><strong>Functions:</strong> Restituiscono valori con <code>@function</code> e <code>@return</code></li>
+                <li>Functions per calcoli: spacing, rem, z-index, colori</li>
+                <li>SASS include molte built-in functions (color, math, string, list, map)</li>
+                <li>Usa mixins per pattern CSS, functions per calcoli</li>
+                <li>Organizza mixins/functions in file <code>_mixins.scss</code> e <code>_functions.scss</code></li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-4/lezione-4-4.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-4/lezione-4-6.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>
