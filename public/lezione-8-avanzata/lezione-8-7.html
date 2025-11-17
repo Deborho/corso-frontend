@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.7 - Remote e GitHub</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.7 - Remote e GitHub</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è un Remote?</h2>
+            <p>Un <strong>remote</strong> è una versione del repository ospitata su un server (GitHub, GitLab, Bitbucket). Permette collaborazione e backup cloud.</p>
+            
+            <div class="codice">
+<pre><strong>Repository Locale vs Remote:</strong>
+
+Local Repository            Remote Repository (GitHub)
+─────────────────           ──────────────────────────
+.git/ directory       ←→    Server Git
+Tuo computer                Internet/Cloud
+Private                     Può essere public/private
+Lavoro offline              Richiede connessione
+
+<strong>Workflow Tipico:</strong>
+1. Clone remote → locale
+2. Lavora locale (commit)
+3. Push locale → remote
+4. Pull remote → locale (aggiornamenti altri)</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Clonare un Repository</h2>
+            
+            <div class="codice">
+<pre># Clone repository via HTTPS:
+git clone https://github.com/username/repo.git
+
+# Clone con nome directory custom:
+git clone https://github.com/username/repo.git mio-progetto
+
+# Clone via SSH (più sicuro, richiede setup chiavi):
+git clone git@github.com:username/repo.git
+
+# Clone solo branch specifico:
+git clone -b main https://github.com/username/repo.git
+
+# Clone shallow (solo ultimo commit, più veloce):
+git clone --depth 1 https://github.com/username/repo.git
+
+# Esempio completo:
+git clone https://github.com/facebook/react.git
+cd react
+# Ora hai copia locale completa del repository!</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Gestire Remote</h2>
+            
+            <div class="codice">
+<pre># Lista remotes:
+git remote
+# Output: origin  (nome default dopo clone)
+
+# Lista remotes con URL:
+git remote -v
+# Output:
+# origin  https://github.com/user/repo.git (fetch)
+# origin  https://github.com/user/repo.git (push)
+
+# Aggiungere remote:
+git remote add nome-remote https://github.com/user/repo.git
+git remote add upstream https://github.com/original/repo.git
+
+# Rinominare remote:
+git remote rename origin old-origin
+
+# Rimuovere remote:
+git remote remove nome-remote
+git remote rm nome-remote
+
+# Vedere info dettagliate remote:
+git remote show origin
+# Mostra: URL, branch tracked, configurazione push/pull
+
+# Cambiare URL remote:
+git remote set-url origin https://github.com/newuser/repo.git</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Push - Inviare Commit al Remote</h2>
+            
+            <div class="codice">
+<pre># Push branch corrente al remote:
+git push origin main
+
+# Push e imposta upstream (tracking):
+git push -u origin main
+git push --set-upstream origin main
+# Dopo questo, basta fare: git push
+
+# Push tutti i branch:
+git push --all origin
+
+# Push con tags:
+git push --tags
+
+# Push branch specifico:
+git push origin feature-auth
+
+# Cancellare branch remoto:
+git push origin --delete feature-auth
+git push origin :feature-auth  # Sintassi vecchia
+
+# Force push (⚠️ PERICOLOSO):
+git push --force origin main
+git push -f origin main
+# Riscrive storia remota! Usa solo se necessario!
+
+# Force push sicuro (fallisce se altri hanno pushato):
+git push --force-with-lease origin main</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Pull - Scaricare Aggiornamenti</h2>
+            
+            <div class="codice">
+<pre># Pull (fetch + merge):
+git pull origin main
+
+# Pull con rebase invece di merge:
+git pull --rebase origin main
+
+# Pull da upstream tracking branch:
+git pull
+# Funziona se hai configurato upstream con -u
+
+<strong>git pull = git fetch + git merge</strong>
+
+# Equivalente manuale:
+git fetch origin
+git merge origin/main
+
+# Pull all remotes:
+git pull --all
+
+# ⚠️ Pull può causare merge conflicts
+# Risolvi come normale merge conflict</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Fetch - Scaricare Senza Merge</h2>
+            
+            <div class="codice">
+<pre># Fetch da remote (scarica ma non merge):
+git fetch origin
+
+# Fetch branch specifico:
+git fetch origin main
+
+# Fetch tutti i remotes:
+git fetch --all
+
+# Fetch e cancella branch remoti eliminati:
+git fetch --prune
+git fetch -p
+
+# Dopo fetch, vedi differenze:
+git log origin/main..main      # Commit locali non pushati
+git log main..origin/main      # Commit remoti non ancora merged
+
+# Merge manuale dopo fetch:
+git merge origin/main
+
+<strong>Differenza Fetch vs Pull:</strong>
+git fetch    # Scarica, NON modifica working directory (sicuro)
+git pull     # Scarica E merge (può creare conflitti)
+
+# Best practice: fetch prima, poi merge se ok</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Tracking Branches</h2>
+            
+            <div class="codice">
+<pre># Vedere tracking relationships:
+git branch -vv
+# Output:
+# * main    7a3f2d1 [origin/main] feat: dark mode
+#   feature 2b5e9f3 feat: login
+
+# Impostare upstream per branch:
+git branch --set-upstream-to=origin/main main
+git branch -u origin/main main
+
+# Creare branch locale da remote:
+git checkout -b feature origin/feature
+# Oppure (Git 2.23+):
+git switch -c feature origin/feature
+
+# Automatico con stesso nome:
+git checkout feature
+# Git crea automaticamente local branch tracking origin/feature
+
+# Vedere branch remoti:
+git branch -r
+# Output:
+#   origin/main
+#   origin/feature-auth
+#   origin/develop</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Setup GitHub - Prima Volta</h2>
+            
+            <h3>1. Creare Repository su GitHub</h3>
+            <div class="codice">
+<pre># 1. Vai su github.com
+# 2. Click "New repository"
+# 3. Nome: mio-progetto
+# 4. Public o Private
+# 5. NON inizializzare con README (se hai già codice locale)
+# 6. Click "Create repository"</pre>
+            </div>
+            
+            <h3>2. Connettere Repository Locale</h3>
+            <div class="codice">
+<pre><strong>Scenario A: Hai già repository locale</strong>
+cd mio-progetto
+git remote add origin https://github.com/username/mio-progetto.git
+git branch -M main
+git push -u origin main
+
+<strong>Scenario B: Inizi da zero</strong>
+git clone https://github.com/username/mio-progetto.git
+cd mio-progetto
+# Crea file e committa
+git add .
+git commit -m "Initial commit"
+git push</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>SSH vs HTTPS</h2>
+            
+            <div class="codice">
+<pre><strong>HTTPS (più semplice):</strong>
+git clone https://github.com/user/repo.git
+✅ Facile setup
+✅ Funziona ovunque (anche dietro firewall)
+❌ Richiede username/password ogni volta (o token)
+
+<strong>SSH (più sicuro):</strong>
+git clone git@github.com:user/repo.git
+✅ Nessuna password dopo setup
+✅ Più sicuro
+✅ Consigliato per uso frequente
+❌ Richiede generare e configurare SSH key
+
+<strong>Setup SSH Key:</strong>
+# 1. Genera chiave SSH:
+ssh-keygen -t ed25519 -C "your@email.com"
+# Premi Enter per defaults
+
+# 2. Copia chiave pubblica:
+cat ~/.ssh/id_ed25519.pub
+# Oppure (macOS):
+pbcopy < ~/.ssh/id_ed25519.pub
+
+# 3. Aggiungi su GitHub:
+# Settings → SSH and GPG keys → New SSH key
+# Incolla chiave pubblica
+
+# 4. Testa connessione:
+ssh -T git@github.com
+# Output: Hi username! You've successfully authenticated
+
+# 5. Cambia remote da HTTPS a SSH (opzionale):
+git remote set-url origin git@github.com:user/repo.git</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Personal Access Token (HTTPS)</h2>
+            
+            <div class="codice">
+<pre># GitHub non accetta più password per HTTPS
+# Devi usare Personal Access Token (PAT)
+
+<strong>Creare PAT:</strong>
+# 1. GitHub → Settings → Developer settings
+# 2. Personal access tokens → Tokens (classic)
+# 3. Generate new token
+# 4. Seleziona scopes: repo, workflow, etc.
+# 5. Generate token
+# 6. COPIA TOKEN (non lo vedrai più!)
+
+<strong>Usare PAT:</strong>
+# Quando git chiede password, usa PAT invece
+git push
+# Username: your-username
+# Password: ghp_xxxxxxxxxxxxxxxxxxxx  ← PAT
+
+<strong>Salvare Credenziali:</strong>
+# Cache temporaneo (15 min):
+git config --global credential.helper cache
+
+# Cache permanente (macOS):
+git config --global credential.helper osxkeychain
+
+# Cache permanente (Windows):
+git config --global credential.helper wincred
+
+# Cache personalizzato (1 ora):
+git config --global credential.helper 'cache --timeout=3600'</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - Remote</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Usa SSH per repository che usi frequentemente</li>
+                <li>Pull prima di iniziare a lavorare (evita conflitti)</li>
+                <li>Push spesso (backup e collaborazione)</li>
+                <li>Usa branch per features, non committare su main</li>
+                <li>Usa <code>fetch</code> prima di <code>pull</code> per vedere cosa cambierà</li>
+                <li>Configura upstream con <code>-u</code> al primo push</li>
+                <li>Usa <code>--force-with-lease</code> invece di <code>--force</code></li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non fare force push su branch condivisi (main, develop)</li>
+                <li>Non committare credenziali, password, API keys</li>
+                <li>Non ignorare conflitti di merge</li>
+                <li>Non pushare codice non testato su main</li>
+                <li>Non condividere SSH private key</li>
+                <li>Non usare password per HTTPS (usa PAT o SSH)</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Workflow Tipico Giornaliero</h2>
+            
+            <div class="codice">
+<pre># 1. Mattina - Sincronizza:
+git checkout main
+git pull origin main
+
+# 2. Crea branch per task:
+git checkout -b feature/add-login
+
+# 3. Lavora e committa:
+echo "code" > login.js
+git add login.js
+git commit -m "feat: add login form"
+
+# 4. Push branch:
+git push -u origin feature/add-login
+
+# 5. Crea Pull Request su GitHub
+
+# 6. Dopo merge, cleanup:
+git checkout main
+git pull origin main
+git branch -d feature/add-login
+
+# Ripeti per prossima feature!</pre>
+            </div>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-8-6.html" class="btn-nav">← Precedente: Undo</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-8-8.html" class="btn-nav">Prossima: Collaboration →</a>
+        </div>
+    </div>
+</body>
+</html>

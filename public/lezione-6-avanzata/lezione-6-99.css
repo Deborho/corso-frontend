@@ -1,0 +1,195 @@
+/* lezione-6-99.css - Stili per Progetto Finale TypeScript */
+
+:root {
+    --ts-blue: #3178c6;
+    --ts-dark: #235a97;
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light-bg: #f8f9fa;
+    --border-color: #dee2e6;
+}
+
+.project-header {
+    background: linear-gradient(135deg, var(--ts-blue) 0%, var(--ts-dark) 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 12px;
+    margin: 30px 0;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.project-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 2.5em;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.project-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-info h2 {
+    margin-top: 0;
+}
+
+.project-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.project-info li {
+    padding: 10px 0;
+    padding-left: 30px;
+    position: relative;
+}
+
+.project-info li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: #4ade80;
+    font-size: 1.2em;
+}
+
+.code-section {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 30px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.code-section h2 {
+    color: var(--ts-blue);
+    margin-top: 0;
+    border-bottom: 2px solid var(--ts-blue);
+    padding-bottom: 10px;
+}
+
+.typescript-features {
+    background: var(--light-bg);
+    padding: 30px;
+    border-radius: 12px;
+    margin: 30px 0;
+}
+
+.typescript-features h2 {
+    color: var(--ts-blue);
+    margin-top: 0;
+    text-align: center;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.feature-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--ts-blue);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card h3 {
+    margin: 0 0 10px 0;
+    color: var(--ts-blue);
+    font-size: 1.1em;
+}
+
+.feature-card p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95em;
+}
+
+.setup-instructions {
+    background: #1e2936;
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 30px 0;
+}
+
+.setup-instructions h2 {
+    color: white;
+    margin-top: 0;
+}
+
+.setup-instructions .codice {
+    background: #2d3748;
+    border-left: 4px solid var(--ts-blue);
+}
+
+.setup-instructions pre {
+    color: #4ade80;
+}
+
+.benefits {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.benefits h2 {
+    color: var(--ts-blue);
+    margin-top: 0;
+}
+
+.benefits ul {
+    list-style: none;
+    padding: 0;
+}
+
+.benefits li {
+    padding: 12px 0;
+    padding-left: 35px;
+    position: relative;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.benefits li:last-child {
+    border-bottom: none;
+}
+
+.benefits li::before {
+    content: "💡";
+    position: absolute;
+    left: 0;
+    font-size: 1.3em;
+}
+
+@media (max-width: 768px) {
+    .project-header h1 {
+        font-size: 1.8em;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}

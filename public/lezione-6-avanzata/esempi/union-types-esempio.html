@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Union Types - Esempio TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio - Union Types e Type Guards</h1>
+        
+        <div class="codice">
+<pre>// Union types
+let id: string | number;
+id = "ABC123";
+id = 42;
+
+// Type narrowing con typeof
+function formatta(input: string | number): string {
+    if (typeof input === "string") {
+        return input.toUpperCase();
+    }
+    return input.toFixed(2);
+}
+
+console.log(formatta("ciao"));  // "CIAO"
+console.log(formatta(3.14159)); // "3.14"
+
+// Discriminated union
+interface Cerchio {
+    tipo: "cerchio";
+    raggio: number;
+}
+
+interface Quadrato {
+    tipo: "quadrato";
+    lato: number;
+}
+
+type Forma = Cerchio | Quadrato;
+
+function area(forma: Forma): number {
+    switch (forma.tipo) {
+        case "cerchio":
+            return Math.PI * forma.raggio ** 2;
+        case "quadrato":
+            return forma.lato ** 2;
+    }
+}
+
+let c: Cerchio = { tipo: "cerchio", raggio: 5 };
+let q: Quadrato = { tipo: "quadrato", lato: 10 };
+
+console.log("Area cerchio:", area(c));
+console.log("Area quadrato:", area(q));
+
+// Custom type guard
+interface Pesce { nuota(): void; }
+interface Uccello { vola(): void; }
+
+function isPesce(animale: Pesce | Uccello): animale is Pesce {
+    return (animale as Pesce).nuota !== undefined;
+}
+
+// Intersection type
+interface Nominabile { nome: string; }
+interface Identificabile { id: number; }
+
+type Entita = Nominabile & Identificabile;
+
+let ent: Entita = { id: 1, nome: "Marco" };
+
+console.log("✅ Union types e guards funzionano!");</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-6.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.7 - Type Aliases e Literal Types</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.7 - Type Aliases e Literal Types</h1>
+        
+        <h2>1. Type Aliases</h2>
+        
+        <div class="teoria">
+            <p><strong>Type alias</strong> crea un nome per un tipo, rendendolo riutilizzabile:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Type alias base
+type ID = string | number;
+type Nome = string;
+type Eta = number;
+
+let userId: ID = "ABC123";
+let adminId: ID = 42;
+
+// Type alias per oggetti
+type Utente = {
+    id: ID;
+    nome: Nome;
+    eta: Eta;
+    email: string;
+};
+
+let utente: Utente = {
+    id: 1,
+    nome: "Marco",
+    eta: 25,
+    email: "marco@email.com"
+};
+
+// Riuso del type
+let altroUtente: Utente = {
+    id: "U-002",
+    nome: "Lucia",
+    eta: 30,
+    email: "lucia@email.com"
+};</pre>
+        </div>
+        
+        <h2>2. Type Aliases vs Interfaces</h2>
+        
+        <div class="codice">
+<pre>// Interface
+interface PersonaInterface {
+    nome: string;
+    eta: number;
+}
+
+// Type alias (equivalente)
+type PersonaType = {
+    nome: string;
+    eta: number;
+};
+
+// Differenza 1: Union types (solo type)
+type StringOrNumber = string | number;  // ✅ OK
+// interface StringOrNumber = string | number;  // ❌ Errore
+
+// Differenza 2: Primitives (solo type)
+type Email = string;  // ✅ OK
+// interface Email = string;  // ❌ Errore
+
+// Differenza 3: Tuple (solo type)
+type Point = [number, number];  // ✅ OK
+// interface Point = [number, number];  // ❌ Errore
+
+// Quando usare cosa:
+// - Type: union, intersection, primitives, tuple, utility types
+// - Interface: oggetti, classi, estensione, declaration merging</pre>
+        </div>
+        
+        <h2>3. Literal Types</h2>
+        
+        <div class="teoria">
+            <p><strong>Literal type</strong> è un tipo che accetta solo un valore specifico:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// String literal type
+let direzione: "nord" = "nord";
+direzione = "sud";  // ❌ Errore: solo "nord" è permesso
+
+// Number literal type
+let zero: 0 = 0;
+zero = 1;  // ❌ Errore
+
+// Boolean literal type
+let vero: true = true;
+vero = false;  // ❌ Errore
+
+// Literal types con const
+const PI = 3.14;        // type: 3.14 (literal)
+const NOME = "Marco";   // type: "Marco" (literal)
+
+let num = 3.14;         // type: number (not literal)
+let nome = "Marco";     // type: string (not literal)</pre>
+        </div>
+        
+        <h2>4. Union di Literal Types</h2>
+        
+        <div class="codice">
+<pre>// Union di string literals
+type Direzione = "nord" | "sud" | "est" | "ovest";
+
+function muovi(direzione: Direzione) {
+    console.log(`Muovo verso ${direzione}`);
+}
+
+muovi("nord");  // ✅ OK
+muovi("left");  // ❌ Errore
+
+// Union di number literals
+type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6;
+
+function lanciaDado(): DiceRoll {
+    return (Math.floor(Math.random() * 6) + 1) as DiceRoll;
+}
+
+// Union miste
+type Status = "success" | "error" | "pending" | null;
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+function richiestaAPI(method: HttpMethod, url: string) {
+    // TypeScript sa che method può essere solo uno dei 5 valori
+}
+
+richiestaAPI("GET", "/api/users");    // ✅ OK
+richiestaAPI("FETCH", "/api/users");  // ❌ Errore</pre>
+        </div>
+        
+        <h2>5. Template Literal Types</h2>
+        
+        <div class="teoria">
+            <p><strong>Template literal types</strong> creano tipi da pattern di stringhe:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Template literal type base
+type Saluto = `Ciao ${string}`;
+
+let messaggio: Saluto = "Ciao Marco";    // ✅ OK
+let errore: Saluto = "Buongiorno";       // ❌ Errore
+
+// Combinazione con union
+type Colore = "rosso" | "verde" | "blu";
+type Tonalita = "chiaro" | "scuro";
+
+type ColoreCompleto = `${Colore}-${Tonalita}`;
+// "rosso-chiaro" | "rosso-scuro" | "verde-chiaro" | ... (6 combinazioni)
+
+let colore: ColoreCompleto = "rosso-chiaro";  // ✅ OK
+let errore2: ColoreCompleto = "giallo-chiaro"; // ❌ Errore
+
+// CSS Properties
+type CSSProperty = "color" | "background" | "border";
+type CSSValue = string;
+
+type CSSRule = `${CSSProperty}: ${CSSValue}`;
+
+let regola: CSSRule = "color: red";           // ✅ OK
+let regola2: CSSRule = "background: blue";    // ✅ OK
+
+// Event names
+type EventName = "click" | "focus" | "blur";
+type OnEvent = `on${Capitalize&lt;EventName&gt;}`;
+// "onClick" | "onFocus" | "onBlur"
+
+let handler: OnEvent = "onClick";  // ✅ OK</pre>
+        </div>
+        
+        <h2>6. Intrinsic String Manipulation Types</h2>
+        
+        <div class="codice">
+<pre>// Uppercase
+type Upper = Uppercase&lt;"hello"&gt;;  // "HELLO"
+type METODO = Uppercase&lt;"get" | "post"&gt;;  // "GET" | "POST"
+
+// Lowercase
+type Lower = Lowercase&lt;"HELLO"&gt;;  // "hello"
+
+// Capitalize
+type Cap = Capitalize&lt;"mario"&gt;;  // "Mario"
+
+// Uncapitalize
+type Uncap = Uncapitalize&lt;"Mario"&gt;;  // "mario"
+
+// Esempio pratico: event handlers
+type EventName = "click" | "scroll" | "keydown";
+type EventHandler = `on${Capitalize&lt;EventName&gt;}`;
+// "onClick" | "onScroll" | "onKeydown"
+
+interface ComponentProps {
+    onClick?: () => void;
+    onScroll?: () => void;
+    onKeydown?: () => void;
+}</pre>
+        </div>
+        
+        <h2>7. Type Aliases per Funzioni</h2>
+        
+        <div class="codice">
+<pre>// Type alias per signature funzione
+type Comparatore = (a: number, b: number) => number;
+
+const crescente: Comparatore = (a, b) => a - b;
+const decrescente: Comparatore = (a, b) => b - a;
+
+let numeri = [5, 2, 8, 1, 9];
+numeri.sort(crescente);    // [1, 2, 5, 8, 9]
+numeri.sort(decrescente);  // [9, 8, 5, 2, 1]
+
+// Type per callback
+type Callback&lt;T&gt; = (error: Error | null, data: T | null) => void;
+
+function fetchData&lt;T&gt;(url: string, callback: Callback&lt;T&gt;) {
+    // ...
+}
+
+// Type per event handlers
+type EventHandler = (event: Event) => void;
+type MouseEventHandler = (event: MouseEvent) => void;
+
+const handleClick: MouseEventHandler = (e) => {
+    console.log(e.clientX, e.clientY);
+};</pre>
+        </div>
+        
+        <h2>8. Nested Type Aliases</h2>
+        
+        <div class="codice">
+<pre>// Type alias annidati
+type Indirizzo = {
+    via: string;
+    citta: string;
+    cap: string;
+};
+
+type Contatto = {
+    email: string;
+    telefono?: string;
+};
+
+type Utente = {
+    id: number;
+    nome: string;
+    indirizzo: Indirizzo;
+    contatti: Contatto;
+};
+
+let utente: Utente = {
+    id: 1,
+    nome: "Marco",
+    indirizzo: {
+        via: "Via Roma 10",
+        citta: "Milano",
+        cap: "20100"
+    },
+    contatti: {
+        email: "marco@email.com",
+        telefono: "3331234567"
+    }
+};</pre>
+        </div>
+        
+        <h2>9. Recursive Type Aliases</h2>
+        
+        <div class="codice">
+<pre>// Type ricorsivi per strutture ad albero
+type JSONValue =
+    | string
+    | number
+    | boolean
+    | null
+    | JSONValue[]
+    | { [key: string]: JSONValue };
+
+let json: JSONValue = {
+    nome: "Marco",
+    eta: 25,
+    attivo: true,
+    tags: ["developer", "typescript"],
+    indirizzo: {
+        citta: "Milano",
+        cap: "20100"
+    }
+};
+
+// Tree structure
+type TreeNode&lt;T&gt; = {
+    value: T;
+    children: TreeNode&lt;T&gt;[];
+};
+
+let tree: TreeNode&lt;number&gt; = {
+    value: 1,
+    children: [
+        { value: 2, children: [] },
+        { value: 3, children: [
+            { value: 4, children: [] }
+        ]}
+    ]
+};</pre>
+        </div>
+        
+        <h2>10. Conditional Types Base</h2>
+        
+        <div class="codice">
+<pre>// Conditional type: T extends U ? X : Y
+type IsString&lt;T&gt; = T extends string ? true : false;
+
+type A = IsString&lt;string&gt;;   // true
+type B = IsString&lt;number&gt;;   // false
+
+// Esempio pratico: extract return type
+type ReturnType&lt;T&gt; = T extends (...args: any[]) => infer R ? R : never;
+
+function getUser() {
+    return { id: 1, nome: "Marco" };
+}
+
+type User = ReturnType&lt;typeof getUser&gt;;  // { id: number; nome: string; }
+
+// Exclude null/undefined
+type NonNullable&lt;T&gt; = T extends null | undefined ? never : T;
+
+type A1 = NonNullable&lt;string | null&gt;;  // string
+type A2 = NonNullable&lt;number | undefined&gt;;  // number</pre>
+        </div>
+        
+        <h2>11. Best Practices</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Type Aliases:</strong> Usa per tipi riutilizzabili, union, tuple, primitives</li>
+                <li><strong>Naming:</strong> PascalCase per type e interface (es: <code>UserProfile</code>)</li>
+                <li><strong>Literal Types:</strong> Usa per set fissi di valori invece di enums</li>
+                <li><strong>Union of Literals:</strong> Preferisci a string/number generici quando possibile</li>
+                <li><strong>Template Literals:</strong> Usa per pattern stringhe type-safe (CSS, eventi, etc.)</li>
+                <li><strong>Type vs Interface:</strong> Interface per oggetti/classi, Type per resto</li>
+                <li><strong>Documentazione:</strong> Aggiungi commenti JSDoc ai type complessi</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Prova l'esempio interattivo: <a href="esempi/type-aliases-esempio.html">Type Aliases</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-6.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-8.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

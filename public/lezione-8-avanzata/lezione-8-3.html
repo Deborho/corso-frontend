@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.3 - Add, Commit e Status</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.3 - Add, Commit e Status</h1>
+        
+        <div class="teoria">
+            <h2>Il Comando git add</h2>
+            <p><strong>git add</strong> sposta i file dalla Working Directory alla Staging Area, preparandoli per il commit.</p>
+            
+            <h3>Sintassi Base</h3>
+            <div class="codice">
+<pre># Aggiungi un file specifico:
+git add index.html
+
+# Aggiungi più file:
+git add index.html style.css script.js
+
+# Aggiungi tutti i file in una directory:
+git add src/
+
+# Aggiungi tutti i file modificati e nuovi:
+git add .
+
+# Aggiungi tutti i file (inclusi cancellati):
+git add -A
+git add --all
+
+# Aggiungi solo file modificati (no nuovi):
+git add -u
+git add --update
+
+# Modalità interattiva:
+git add -i
+git add --interactive
+
+# Aggiungi parti di file (patch mode):
+git add -p
+git add --patch</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Differenze tra add ., add -A, add -u</h2>
+            
+            <div class="codice">
+<pre><strong>git add .</strong>
+- Aggiungi file nuovi e modificati nella directory corrente
+- NON include file cancellati
+- Cerca ricorsivamente in subdirectories
+Usa quando: vuoi stageare nuovi file e modifiche
+
+<strong>git add -A (o --all)</strong>
+- Aggiungi TUTTO: nuovi, modificati, cancellati
+- Dalla root del repository
+- Più completo
+Usa quando: vuoi stageare ogni cambiamento
+
+<strong>git add -u (o --update)</strong>
+- Aggiungi solo file già tracciati (modificati/cancellati)
+- NON include file nuovi
+- Utile per update senza aggiungere file indesiderati
+Usa quando: vuoi solo aggiornare file esistenti
+
+<strong>Esempio:</strong>
+# File modificati: index.html, style.css
+# File nuovi: script.js
+# File cancellati: old.html
+
+git add .         # Staged: index.html, style.css, script.js
+git add -A        # Staged: index.html, style.css, script.js, old.html (deleted)
+git add -u        # Staged: index.html, style.css, old.html (deleted)</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Il Comando git commit</h2>
+            <p><strong>git commit</strong> salva permanentemente lo snapshot della Staging Area nel repository.</p>
+            
+            <h3>Sintassi Base</h3>
+            <div class="codice">
+<pre># Commit con messaggio inline:
+git commit -m "Aggiunto homepage e stili"
+
+# Commit con editor per messaggio lungo:
+git commit
+# Si apre l'editor configurato (VS Code, Vim, Nano)
+
+# Commit con messaggio multi-linea:
+git commit -m "Titolo del commit" -m "Descrizione dettagliata del commit"
+
+# Aggiungi e committa in un comando (solo file già tracciati):
+git commit -am "Corretto bug nella navbar"
+git commit -a -m "Corretto bug nella navbar"
+
+# Commit vuoto (senza modifiche):
+git commit --allow-empty -m "Trigger CI/CD"
+
+# Modifica ultimo commit (aggiunge file o cambia messaggio):
+git commit --amend
+
+# Amend senza cambiare messaggio:
+git commit --amend --no-edit</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Anatomia di un Commit Message</h2>
+            
+            <div class="codice">
+<pre><strong>Formato Standard:</strong>
+
+Titolo breve (50 caratteri max)
+
+Corpo del messaggio opzionale più dettagliato che spiega
+COSA è cambiato e PERCHÉ (non il COME, quello si vede dal codice).
+Wrappa a 72 caratteri per leggibilità.
+
+Puoi usare:
+- Liste puntate
+- Link a issues: Fixes #123
+- Breaking changes: BREAKING CHANGE: API v1 rimossa
+
+Footer opzionale per metadata:
+Reviewed-by: Mario Rossi
+Refs: #123, #456
+
+<strong>Esempio Reale:</strong>
+
+Aggiunto sistema di autenticazione utente
+
+Implementato login/logout con JWT tokens.
+- Form di login con validazione
+- Middleware per route protette
+- Session storage per persistenza
+
+Fixes #42
+Reviewed-by: Luigi Verdi</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Convenzioni Commit Messages</h2>
+            
+            <h3>Conventional Commits</h3>
+            <div class="codice">
+<pre><strong>Formato:</strong>
+type(scope): subject
+
+<strong>Types comuni:</strong>
+feat:     Nuova feature
+fix:      Bug fix
+docs:     Documentazione
+style:    Formatting, no code change
+refactor: Refactoring codice
+test:     Aggiungere/modificare test
+chore:    Task manutenzione (build, dependencies)
+perf:     Performance improvement
+ci:       CI/CD changes
+
+<strong>Esempi:</strong>
+feat(auth): aggiunto login con OAuth
+fix(navbar): corretto menu mobile non funzionante
+docs(readme): aggiornate istruzioni installazione
+style(css): formattato con Prettier
+refactor(api): semplificato handler utenti
+test(auth): aggiunti test integrazione login
+chore(deps): aggiornato React a v18.2.0
+perf(images): implementato lazy loading</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Il Comando git status</h2>
+            <p><strong>git status</strong> mostra lo stato della Working Directory e Staging Area.</p>
+            
+            <div class="codice">
+<pre># Status dettagliato:
+git status
+
+# Status breve (compatto):
+git status -s
+git status --short
+
+# Mostra branch e tracking info:
+git status -b
+git status --branch
+
+# Output esempio status breve:
+ M index.html     # Modified, not staged
+M  style.css      # Modified, staged
+MM script.js      # Modified, staged, poi modificato di nuovo
+A  new.html       # Added (new file staged)
+D  old.html       # Deleted, staged
+?? test.js        # Untracked
+
+# Legenda:
+# Primo carattere = stato in staging
+# Secondo carattere = stato in working directory
+# ?? = untracked
+# M = modified
+# A = added
+# D = deleted
+# R = renamed
+# C = copied</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Workflow Completo: Add, Commit, Status</h2>
+            
+            <div class="codice">
+<pre># 1. Crea/modifica file:
+echo "&lt;h1&gt;Hello World&lt;/h1&gt;" &gt; index.html
+echo "body { margin: 0; }" &gt; style.css
+
+# 2. Verifica status:
+git status
+# On branch main
+# Untracked files:
+#   index.html
+#   style.css
+
+# 3. Aggiungi file a staging:
+git add index.html style.css
+
+# 4. Verifica status:
+git status
+# On branch main
+# Changes to be committed:
+#   new file:   index.html
+#   new file:   style.css
+
+# 5. Commit:
+git commit -m "feat: aggiunta homepage con stili base"
+# [main 7a3f2d1] feat: aggiunta homepage con stili base
+# 2 files changed, 2 insertions(+)
+# create mode 100644 index.html
+# create mode 100644 style.css
+
+# 6. Verifica status finale:
+git status
+# On branch main
+# nothing to commit, working tree clean</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Unstaging: Rimuovere File da Staging</h2>
+            
+            <div class="codice">
+<pre># Rimuovi file specifico da staging (mantieni modifiche):
+git restore --staged index.html
+
+# Comando vecchio (ancora funziona):
+git reset HEAD index.html
+
+# Rimuovi tutto da staging:
+git restore --staged .
+git reset HEAD .
+
+# Esempio workflow:
+git add .                        # Oops, aggiunto troppo!
+git status                       # Vedo file indesiderato
+git restore --staged unwanted.js # Rimuovo da staging
+git status                       # unwanted.js ora untracked/modified</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Discardare Modifiche</h2>
+            
+            <div class="codice">
+<pre># Scarta modifiche a file specifico (ATTENZIONE: irreversibile!):
+git restore index.html
+
+# Comando vecchio:
+git checkout -- index.html
+
+# Scarta tutte le modifiche non staged:
+git restore .
+
+# Rimuovi file untracked:
+git clean -n    # Dry run (mostra cosa sarebbe cancellato)
+git clean -f    # Force (cancella file untracked)
+git clean -fd   # Force + directories
+git clean -fX   # Cancella solo file in .gitignore
+git clean -fx   # Cancella untracked + ignored</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Commit Amend: Modificare Ultimo Commit</h2>
+            
+            <div class="codice">
+<pre># Scenario: dimenticato file nell'ultimo commit
+git add forgotten-file.js
+git commit --amend --no-edit  # Aggiunge file senza cambiare messaggio
+
+# Scenario: errore nel messaggio commit
+git commit --amend -m "Messaggio corretto"
+
+# Scenario: modificare file nell'ultimo commit
+# 1. Modifica file
+echo "fix" &gt;&gt; index.html
+# 2. Stage modifiche
+git add index.html
+# 3. Amend commit
+git commit --amend --no-edit
+
+# ⚠️ ATTENZIONE:
+# - Amend cambia l'hash del commit (riscrive storia)
+# - Non usare su commit già pushati!
+# - Ok per commit locali non condivisi</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - Add & Commit</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Commit piccoli e focalizzati (una cosa alla volta)</li>
+                <li>Scrivi messaggi commit chiari e descrittivi</li>
+                <li>Usa <code>git status</code> prima di ogni add/commit</li>
+                <li>Verifica cosa stai staggiando prima di committare</li>
+                <li>Committa spesso (ogni feature/fix logico)</li>
+                <li>Usa present tense nei messaggi: "Add feature" non "Added feature"</li>
+                <li>Inizia messaggio con maiuscola: "Fix bug" non "fix bug"</li>
+                <li>Usa Conventional Commits per progetti strutturati</li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non committare file generati (build/, node_modules/, .env)</li>
+                <li>Non usare <code>git add .</code> senza verificare cosa stai aggiungendo</li>
+                <li>Non scrivere messaggi generici: "fix", "update", "changes"</li>
+                <li>Non committare codice rotto o non funzionante</li>
+                <li>Non committare segreti, password, API keys</li>
+                <li>Non usare amend su commit già pushati</li>
+                <li>Non committare whitespace changes con code changes</li>
+                <li>Non fare commit giganti con 50 file modificati</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Esempi Commit Messages Buoni vs Cattivi</h2>
+            
+            <div class="codice">
+<pre><strong>❌ CATTIVI:</strong>
+git commit -m "fix"                    # Cosa hai fixato?
+git commit -m "update"                 # Cosa hai aggiornato?
+git commit -m "asdfgh"                 # Non ha senso
+git commit -m "fixed the bug"          # Quale bug?
+git commit -m "changes"                # Quali changes?
+git commit -m "wip"                    # Work in progress non dovrebbe essere committato
+
+<strong>✅ BUONI:</strong>
+git commit -m "fix: corretto menu mobile che non si chiudeva"
+git commit -m "feat: aggiunto dark mode toggle"
+git commit -m "docs: aggiornato README con istruzioni deploy"
+git commit -m "refactor: semplificata logica validazione form"
+git commit -m "perf: ottimizzate immagini hero (80% riduzione)"
+git commit -m "fix(auth): risolto redirect loop dopo login"</pre>
+            </div>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-8-2.html" class="btn-nav">← Precedente: Repository</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-8-4.html" class="btn-nav">Prossima: Branching →</a>
+        </div>
+    </div>
+</body>
+</html>

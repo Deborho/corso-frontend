@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6 - TypeScript Fondamentale</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .lezione-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .lezione-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .lezione-card h3 {
+            color: #3178c6;
+            margin-top: 0;
+        }
+        
+        .lezione-card p {
+            color: #666;
+            margin: 10px 0;
+        }
+        
+        .lezione-card a {
+            display: inline-block;
+            background: #3178c6;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .lezione-card a:hover {
+            background: #2563a8;
+        }
+        
+        .intro-section {
+            background: linear-gradient(135deg, #3178c6 0%, #235a97 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin: 30px 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .intro-section h1 {
+            margin-top: 0;
+            font-size: 2.5em;
+        }
+        
+        .intro-section ul {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+        
+        .esempi-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .esempi-section h2 {
+            color: #3178c6;
+            margin-top: 0;
+        }
+        
+        .esempi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .esempio-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .esempio-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .esempio-card h4 {
+            color: #3178c6;
+            margin-top: 0;
+        }
+        
+        .esempio-card a {
+            color: #3178c6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .esempio-card a:hover {
+            text-decoration: underline;
+        }
+        
+        .final-project {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin: 30px 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .final-project h2 {
+            margin-top: 0;
+            font-size: 2em;
+        }
+        
+        .final-project .btn-large {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .final-project .btn-large:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="intro-section">
+            <h1>🎯 Lezione 6 - TypeScript Fondamentale</h1>
+            <p><strong>TypeScript è un superset di JavaScript che aggiunge tipizzazione statica e altre potenti funzionalità per scrivere codice più robusto e manutenibile.</strong></p>
+            <ul>
+                <li><strong>Type Safety:</strong> Cattura errori a compile-time invece che runtime</li>
+                <li><strong>Autocompletamento:</strong> IDE offre suggerimenti intelligenti basati sui tipi</li>
+                <li><strong>Refactoring:</strong> Rinominare variabili/funzioni in sicurezza</li>
+                <li><strong>Documentazione:</strong> I tipi documentano automaticamente il codice</li>
+                <li><strong>Scalabilità:</strong> Perfetto per progetti grandi e team numerosi</li>
+                <li><strong>JavaScript++:</strong> Tutto il JavaScript valido è TypeScript valido</li>
+            </ul>
+        </div>
+        
+        <h2>📚 Argomenti della Lezione</h2>
+        
+        <div class="lezione-card">
+            <h3>1️⃣ Introduzione e Setup TypeScript</h3>
+            <p>Cos'è TypeScript, perché usarlo, installazione compiler, tsconfig.json, primo progetto TypeScript.</p>
+            <a href="lezione-6-1.html">Vai alla Lezione 1</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>2️⃣ Tipi Primitivi e Type Annotations</h3>
+            <p>String, number, boolean, any, unknown, void, never, null, undefined, type inference.</p>
+            <a href="lezione-6-2.html">Vai alla Lezione 2</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>3️⃣ Array, Tuple e Enum</h3>
+            <p>Array tipizzati, tuple per strutture fisse, enum per costanti, readonly arrays.</p>
+            <a href="lezione-6-3.html">Vai alla Lezione 3</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>4️⃣ Oggetti e Interfacce</h3>
+            <p>Type per oggetti, interfacce, proprietà opzionali, readonly, index signatures.</p>
+            <a href="lezione-6-4.html">Vai alla Lezione 4</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>5️⃣ Funzioni Tipizzate</h3>
+            <p>Parametri tipizzati, return types, arrow functions, optional parameters, rest parameters, overloading.</p>
+            <a href="lezione-6-5.html">Vai alla Lezione 5</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>6️⃣ Union Types e Type Guards</h3>
+            <p>Union types (|), intersection types (&), type narrowing, typeof, instanceof, custom type guards.</p>
+            <a href="lezione-6-6.html">Vai alla Lezione 6</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>7️⃣ Type Aliases e Literal Types</h3>
+            <p>Type alias per riutilizzo, literal types, template literal types, mapped types base.</p>
+            <a href="lezione-6-7.html">Vai alla Lezione 7</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>8️⃣ Classi in TypeScript</h3>
+            <p>Classi tipizzate, modificatori di accesso (public, private, protected), readonly, abstract, implements.</p>
+            <a href="lezione-6-8.html">Vai alla Lezione 8</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>9️⃣ Generics Base</h3>
+            <p>Generic functions, generic interfaces, generic classes, constraints, utility types (Partial, Pick, Omit).</p>
+            <a href="lezione-6-9.html">Vai alla Lezione 9</a>
+        </div>
+        
+        <div class="lezione-card">
+            <h3>🔟 Moduli e Namespaces</h3>
+            <p>Import/export tipizzati, declaration files (.d.ts), type-only imports, namespace vs modules.</p>
+            <a href="lezione-6-10.html">Vai alla Lezione 10</a>
+        </div>
+        
+        <div class="esempi-section">
+            <h2>💻 Esempi Pratici</h2>
+            <p>Esercizi interattivi per praticare ogni concetto di TypeScript:</p>
+            <div class="esempi-grid">
+                <div class="esempio-card">
+                    <h4>📝 Setup e Config</h4>
+                    <a href="esempi/setup-esempio.html">Apri Esempio</a>
+                </div>
+                <div class="esempio-card">
+                    <h4>🔢 Tipi Primitivi</h4>
+                    <a href="esempi/tipi-primitivi-esempio.html">Apri Esempio</a>
+                </div>
+                <div class="esempio-card">
+                    <h4>📊 Array e Tuple</h4>
+                    <a href="esempi/array-tuple-esempio.html">Apri Esempio</a>
+                </div>
+                <div class="esempio-card">
+                    <h4>🎯 Interfacce</h4>
+                    <a href="esempi/interfacce-esempio.html">Apri Esempio</a>
+                </div>
+                <div class="esempio-card">
+                    <h4>⚡ Funzioni</h4>
+                    <a href="esempi/funzioni-esempio.html">Apri Esempio</a>
+                </div>
+                <div class="esempio-card">
+                    <h4>🔀 Union Types</h4>
+                    <a href="esempi/union-types-esempio.html">Apri Esempio</a>
+                </div>
+                <div class="esempio-card">
+                    <h4>🏷️ Type Aliases</h4>
+                    <a href="esempi/type-aliases-esempio.html">Apri Esempio</a>
+                </div>
+                <div class="esempio-card">
+                    <h4>🎨 Classi</h4>
+                    <a href="esempi/classi-esempio.html">Apri Esempio</a>
+                </div>
+                <div class="esempio-card">
+                    <h4>🔧 Generics</h4>
+                    <a href="esempi/generics-esempio.html">Apri Esempio</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="final-project">
+            <h2>🚀 Progetto Finale</h2>
+            <h3>Sistema di Gestione Prodotti con TypeScript</h3>
+            <p>Un'applicazione completa che dimostra tutte le funzionalità di TypeScript:</p>
+            <ul>
+                <li><strong>Interfacce e Types:</strong> Modelli dati fortemente tipizzati</li>
+                <li><strong>Classi:</strong> Product, Category, Cart con incapsulamento</li>
+                <li><strong>Generics:</strong> Repository generico per CRUD operations</li>
+                <li><strong>Union Types:</strong> Gestione stati e filtri</li>
+                <li><strong>Type Guards:</strong> Validazione dati a runtime</li>
+                <li><strong>Utility Types:</strong> Partial, Pick, Omit per trasformazioni</li>
+                <li><strong>localStorage:</strong> Persistenza con type safety</li>
+                <li><strong>DOM Manipulation:</strong> Completamente tipizzata</li>
+            </ul>
+            <a href="lezione-6-99.html" class="btn-large">🎯 Vai al Progetto Finale</a>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../index.html" class="btn-nav">⬅️ Torna all'Indice</a>
+            <a href="../lezione-5/index.html" class="btn-nav">⬅️ Lezione 5 - JavaScript</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.2 - Repository e Init</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.2 - Repository e Init</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è un Repository?</h2>
+            <p>Un <strong>repository</strong> (o "repo") è una directory che contiene il tuo progetto e tutta la sua storia delle modifiche. Include:</p>
+            
+            <ul>
+                <li><strong>Working Directory:</strong> I file del progetto su cui lavori</li>
+                <li><strong>.git Directory:</strong> Database Git con tutta la storia e metadata</li>
+                <li><strong>Staging Area:</strong> Area intermedia per preparare commit</li>
+            </ul>
+            
+            <div class="codice">
+<pre>my-project/
+├── .git/              ← Git database (nascosto)
+│   ├── objects/       ← Tutti i contenuti versionati
+│   ├── refs/          ← Puntatori a commit (branches, tags)
+│   ├── HEAD           ← Puntatore al branch corrente
+│   ├── config         ← Configurazione repository
+│   └── ...
+├── src/               ← Working directory
+├── README.md
+└── package.json</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Creare un Nuovo Repository</h2>
+            
+            <h3>Metodo 1: Inizializzare Directory Esistente</h3>
+            <div class="codice">
+<pre># Naviga nella directory del progetto:
+cd ~/progetti/mio-sito
+
+# Inizializza repository Git:
+git init
+
+# Output:
+# Initialized empty Git repository in /Users/mario/progetti/mio-sito/.git/</pre>
+            </div>
+            
+            <h3>Metodo 2: Creare Nuovo Progetto con Git</h3>
+            <div class="codice">
+<pre># Crea directory e inizializza in un comando:
+git init mio-nuovo-progetto
+
+# Entra nella directory:
+cd mio-nuovo-progetto
+
+# Output simile:
+# Initialized empty Git repository in /Users/mario/mio-nuovo-progetto/.git/</pre>
+            </div>
+            
+            <h3>Metodo 3: Inizializzare con Branch Specifico</h3>
+            <div class="codice">
+<pre># Inizializza con branch "main" invece di "master":
+git init -b main mio-progetto
+
+# Oppure (Git 2.28+):
+git init --initial-branch=main mio-progetto</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Anatomia della Directory .git</h2>
+            
+            <div class="codice">
+<pre>.git/
+├── HEAD                 # Puntatore al branch corrente
+├── config               # Configurazione repository-specific
+├── description          # Descrizione repository (per GitWeb)
+├── hooks/               # Script automatici (pre-commit, post-merge, ecc.)
+├── info/                # File exclude globali
+│   └── exclude
+├── objects/             # Database degli oggetti Git
+│   ├── pack/            # Oggetti compressi
+│   └── info/
+├── refs/                # References (branches, tags)
+│   ├── heads/           # Branch locali
+│   ├── remotes/         # Branch remoti
+│   └── tags/            # Tags
+└── logs/                # Logs di refs (reflog)</pre>
+            </div>
+            
+            <p><strong>⚠️ Importante:</strong> Non modificare mai manualmente i file in .git/ a meno che tu non sappia esattamente cosa stai facendo!</p>
+        </div>
+        
+        <div class="teoria">
+            <h2>Stati dei File in Git</h2>
+            <p>I file in un repository Git possono essere in uno di questi stati:</p>
+            
+            <div class="codice">
+<pre><strong>1. Untracked (Non tracciato)</strong>
+   - File nuovo, Git non lo conosce ancora
+   - Non è mai stato aggiunto al repository
+   - Appare come "Untracked files" in git status
+
+<strong>2. Unmodified (Non modificato)</strong>
+   - File tracciato ma non modificato dall'ultimo commit
+   - Git lo ha nel database e corrisponde all'ultima versione
+   - Non appare in git status (tutto ok)
+
+<strong>3. Modified (Modificato)</strong>
+   - File tracciato e modificato rispetto all'ultimo commit
+   - Modifiche non ancora in staging
+   - Appare come "Changes not staged for commit"
+
+<strong>4. Staged (In staging)</strong>
+   - File pronto per il prossimo commit
+   - Aggiunto alla staging area con git add
+   - Appare come "Changes to be committed"</pre>
+            </div>
+            
+            <h3>Diagramma Ciclo di Vita File</h3>
+            <div class="codice">
+<pre>
+Untracked ──git add──▶ Staged ──git commit──▶ Unmodified
+                          ▲                        │
+                          │                        │ (edit file)
+                          │                        ▼
+                          └────────────────── Modified
+                          git add
+</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Le Tre Aree di Git</h2>
+            
+            <div class="codice">
+<pre><strong>1. Working Directory (Working Tree)</strong>
+   - Directory del progetto sul filesystem
+   - Dove modifichi i file
+   - Può contenere file untracked
+   
+<strong>2. Staging Area (Index)</strong>
+   - Area intermedia
+   - File pronti per il commit
+   - Snapshot di cosa andrà nel prossimo commit
+   - Permette commit selettivi
+   
+<strong>3. Repository (.git Directory)</strong>
+   - Database Git con tutta la storia
+   - Commit salvati permanentemente
+   - Contiene tutti i branch, tags, refs</pre>
+            </div>
+            
+            <h3>Flusso di Lavoro Tipico</h3>
+            <div class="codice">
+<pre>
+Working Directory    Staging Area      Repository
+─────────────────    ────────────      ──────────
+  file.txt     ──git add──▶  file.txt  ──git commit──▶  file.txt
+ (modified)                  (staged)                   (committed)
+</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Verificare Stato del Repository</h2>
+            
+            <div class="codice">
+<pre># Verifica se sei in un repository Git:
+git status
+
+# Se NON sei in un repo:
+# fatal: not a git repository (or any of the parent directories): .git
+
+# Se SEI in un repo (esempio output):
+On branch main
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)</pre>
+            </div>
+            
+            <h3>Output Dettagliato di git status</h3>
+            <div class="codice">
+<pre>On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged &lt;file&gt;..." to unstage)
+        new file:   index.html      ← File staged
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+        modified:   style.css       ← File modificato ma non staged
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+        script.js                   ← File nuovo, non tracciato</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Comandi Utili per Repository</h2>
+            
+            <div class="codice">
+<pre># Verifica se directory è un repository Git:
+git rev-parse --is-inside-work-tree
+# Output: true (se sei in un repo)
+
+# Mostra path alla root del repository:
+git rev-parse --show-toplevel
+# Output: /Users/mario/progetti/mio-sito
+
+# Mostra path alla directory .git:
+git rev-parse --git-dir
+# Output: /Users/mario/progetti/mio-sito/.git
+
+# Mostra branch corrente:
+git branch --show-current
+# Output: main
+
+# Verifica configurazione repository:
+git config --local --list
+
+# Rimuovi repository Git (ATTENZIONE!):
+rm -rf .git  # Linux/macOS
+# OPPURE
+rmdir /s .git  # Windows
+# Questo cancella tutta la storia Git ma mantiene i file!</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Repository Bare vs Non-Bare</h2>
+            
+            <div class="codice">
+<pre><strong>Repository Normale (Non-Bare)</strong>
+git init mio-progetto
+# Ha working directory + .git directory
+# Per sviluppo locale
+mio-progetto/
+├── .git/
+└── [file del progetto]
+
+<strong>Repository Bare</strong>
+git init --bare mio-progetto.git
+# Solo .git directory, nessuna working directory
+# Per server/remotes (GitHub, GitLab)
+# Convenzione: nome termina con .git
+mio-progetto.git/
+├── HEAD
+├── objects/
+├── refs/
+└── config
+
+# Uso tipico bare repository:
+# - Repository centrale su server
+# - Destinazione per push
+# - Non si modifica direttamente</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - Repository</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Inizializza Git all'inizio del progetto, non alla fine</li>
+                <li>Crea un repository per ogni progetto separato</li>
+                <li>Usa "main" come nome del branch principale</li>
+                <li>Verifica con <code>git status</code> prima di operazioni importanti</li>
+                <li>Aggiungi subito .gitignore per file da non tracciare</li>
+                <li>Crea README.md come primo file del progetto</li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non inizializzare Git dentro un altro repository Git (no nested repos)</li>
+                <li>Non modificare manualmente file in .git/</li>
+                <li>Non committare .git/ in un altro repository</li>
+                <li>Non cancellare .git/ directory per "ricominciare" (usa git reset invece)</li>
+                <li>Non creare repository nella home directory (~)</li>
+                <li>Non inizializzare repository in directory di sistema (/, C:\)</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Esempio Pratico: Setup Nuovo Progetto</h2>
+            
+            <div class="codice">
+<pre># 1. Crea directory progetto:
+mkdir mio-sito-web
+cd mio-sito-web
+
+# 2. Inizializza Git:
+git init -b main
+
+# 3. Crea file iniziali:
+echo "# Mio Sito Web" &gt; README.md
+echo "node_modules/" &gt; .gitignore
+
+# 4. Verifica stato:
+git status
+# Output:
+# On branch main
+# No commits yet
+# Untracked files:
+#   .gitignore
+#   README.md
+
+# 5. Repository è pronto per il primo commit!
+# (vedremo come fare commit nella prossima lezione)</pre>
+            </div>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-8-1.html" class="btn-nav">← Lezione Precedente: Setup Git</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-8-3.html" class="btn-nav">Prossima: Add, Commit, Status →</a>
+        </div>
+    </div>
+</body>
+</html>

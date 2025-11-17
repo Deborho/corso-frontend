@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.9 - Custom Hooks</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7.9 - Custom Hooks</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è un Custom Hook?</h2>
+            <p>Un <strong>custom hook</strong> è una funzione JavaScript che usa altri hooks e permette di 
+            <strong>riutilizzare logica stateful</strong> tra componenti.</p>
+            
+            <h3>Regole Custom Hooks</h3>
+            <ul>
+                <li>✅ Nome deve iniziare con <code>use</code> (convenzione React)</li>
+                <li>✅ Può usare altri hooks (useState, useEffect, ecc.)</li>
+                <li>✅ Può chiamare altri custom hooks</li>
+                <li>✅ Restituisce valori o funzioni utili al componente</li>
+                <li>❌ Non può essere chiamato condizionalmente</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Esempio Base: useCounter</h2>
+            
+            <h3>❌ Senza Custom Hook (Codice Duplicato)</h3>
+            <div class="codice">
+<pre>// ❌ PROBLEMA: Stessa logica ripetuta in più componenti
+function Component1() {
+  const [count, setCount] = useState(0)
+  const increment = () =&gt; setCount(c =&gt; c + 1)
+  const decrement = () =&gt; setCount(c =&gt; c - 1)
+  const reset = () =&gt; setCount(0)
+  
+  return &lt;div&gt;{count}&lt;/div&gt;
+}
+
+function Component2() {
+  const [count, setCount] = useState(0)
+  const increment = () =&gt; setCount(c =&gt; c + 1)
+  const decrement = () =&gt; setCount(c =&gt; c - 1)
+  const reset = () =&gt; setCount(0)
+  
+  return &lt;div&gt;{count}&lt;/div&gt;
+}
+// ❌ Codice duplicato!</pre>
+            </div>
+            
+            <h3>✅ Con Custom Hook (Riutilizzabile)</h3>
+            <div class="codice">
+<pre>// ✅ SOLUZIONE: Custom Hook
+import { useState } from 'react'
+
+function useCounter(initialValue = 0) {
+  const [count, setCount] = useState(initialValue)
+  
+  const increment = () =&gt; setCount(c =&gt; c + 1)
+  const decrement = () =&gt; setCount(c =&gt; c - 1)
+  const reset = () =&gt; setCount(initialValue)
+  
+  return { count, increment, decrement, reset }
+}
+
+// Uso nei componenti
+function Component1() {
+  const { count, increment, decrement, reset } = useCounter(0)
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;{count}&lt;/p&gt;
+      &lt;button onClick={increment}&gt;+&lt;/button&gt;
+      &lt;button onClick={decrement}&gt;-&lt;/button&gt;
+      &lt;button onClick={reset}&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+function Component2() {
+  const { count, increment } = useCounter(10)  // Start da 10
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;{count}&lt;/p&gt;
+      &lt;button onClick={increment}&gt;+&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+// ✅ Logica riutilizzata!</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>useLocalStorage - Persistenza Dati</h2>
+            
+            <div class="codice">
+<pre>import { useState, useEffect } from 'react'
+
+function useLocalStorage(key, initialValue) {
+  // State con valore da localStorage (se esiste)
+  const [value, setValue] = useState(() =&gt; {
+    try {
+      const item = localStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
+    } catch (error) {
+      console.error(error)
+      return initialValue
+    }
+  })
+  
+  // Salva in localStorage quando value cambia
+  useEffect(() =&gt; {
+    try {
+      localStorage.setItem(key, JSON.stringify(value))
+    } catch (error) {
+      console.error(error)
+    }
+  }, [key, value])
+  
+  return [value, setValue]
+}
+
+// Uso
+function ThemeSelector() {
+  const [theme, setTheme] = useLocalStorage('theme', 'light')
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Tema attuale: {theme}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setTheme('light')}&gt;Light&lt;/button&gt;
+      &lt;button onClick={() =&gt; setTheme('dark')}&gt;Dark&lt;/button&gt;
+      {/* Tema salvato automaticamente in localStorage! */}
+    &lt;/div&gt;
+  )
+}
+
+function UserSettings() {
+  const [settings, setSettings] = useLocalStorage('settings', {
+    notifications: true,
+    language: 'it'
+  })
+  
+  return (
+    &lt;div&gt;
+      &lt;label&gt;
+        &lt;input
+          type="checkbox"
+          checked={settings.notifications}
+          onChange={(e) =&gt; setSettings({
+            ...settings,
+            notifications: e.target.checked
+          })}
+        /&gt;
+        Notifiche
+      &lt;/label&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>useFetch - API Requests</h2>
+            
+            <div class="codice">
+<pre>import { useState, useEffect } from 'react'
+
+function useFetch(url) {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  
+  useEffect(() =&gt; {
+    const controller = new AbortController()
+    
+    async function fetchData() {
+      try {
+        setLoading(true)
+        const response = await fetch(url, { signal: controller.signal })
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
+        const json = await response.json()
+        setData(json)
+        setError(null)
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          setError(err.message)
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchData()
+    
+    return () =&gt; controller.abort()
+  }, [url])
+  
+  return { data, loading, error }
+}
+
+// Uso
+function UserProfile({ userId }) {
+  const { data: user, loading, error } = useFetch(`/api/users/${userId}`)
+  
+  if (loading) return &lt;p&gt;Loading...&lt;/p&gt;
+  if (error) return &lt;p&gt;Error: {error}&lt;/p&gt;
+  if (!user) return &lt;p&gt;No user found&lt;/p&gt;
+  
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{user.name}&lt;/h2&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+function PostsList() {
+  const { data: posts, loading, error } = useFetch('/api/posts')
+  
+  if (loading) return &lt;p&gt;Loading posts...&lt;/p&gt;
+  if (error) return &lt;p&gt;Error: {error}&lt;/p&gt;
+  
+  return (
+    &lt;ul&gt;
+      {posts?.map(post =&gt; &lt;li key={post.id}&gt;{post.title}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>useToggle - Boolean State</h2>
+            
+            <div class="codice">
+<pre>import { useState } from 'react'
+
+function useToggle(initialValue = false) {
+  const [value, setValue] = useState(initialValue)
+  
+  const toggle = () =&gt; setValue(v =&gt; !v)
+  const setTrue = () =&gt; setValue(true)
+  const setFalse = () =&gt; setValue(false)
+  
+  return [value, { toggle, setTrue, setFalse }]
+}
+
+// Uso
+function Modal() {
+  const [isOpen, { toggle, setTrue, setFalse }] = useToggle(false)
+  
+  return (
+    &lt;div&gt;
+      &lt;button onClick={setTrue}&gt;Apri Modal&lt;/button&gt;
+      
+      {isOpen && (
+        &lt;div className="modal"&gt;
+          &lt;h2&gt;Modal Content&lt;/h2&gt;
+          &lt;button onClick={setFalse}&gt;Chiudi&lt;/button&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  )
+}
+
+function Sidebar() {
+  const [isVisible, { toggle }] = useToggle(true)
+  
+  return (
+    &lt;div&gt;
+      &lt;button onClick={toggle}&gt;
+        {isVisible ? 'Nascondi' : 'Mostra'} Sidebar
+      &lt;/button&gt;
+      {isVisible && &lt;aside&gt;Sidebar content&lt;/aside&gt;}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>useDebounce - Ottimizzazione Search</h2>
+            
+            <div class="codice">
+<pre>import { useState, useEffect } from 'react'
+
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value)
+  
+  useEffect(() =&gt; {
+    // Set timeout per aggiornare dopo delay
+    const timeoutId = setTimeout(() =&gt; {
+      setDebouncedValue(value)
+    }, delay)
+    
+    // Cleanup: cancella timeout se value cambia prima del delay
+    return () =&gt; clearTimeout(timeoutId)
+  }, [value, delay])
+  
+  return debouncedValue
+}
+
+// Uso
+function SearchBar() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const debouncedSearchTerm = useDebounce(searchTerm, 500)  // 500ms delay
+  const { data: results } = useFetch(`/api/search?q=${debouncedSearchTerm}`)
+  
+  // API chiamata solo dopo 500ms dall'ultimo input
+  // (invece di ad ogni keystroke!)
+  
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={searchTerm}
+        onChange={(e) =&gt; setSearchTerm(e.target.value)}
+        placeholder="Cerca..."
+      /&gt;
+      
+      {results && (
+        &lt;ul&gt;
+          {results.map(r =&gt; &lt;li key={r.id}&gt;{r.name}&lt;/li&gt;)}
+        &lt;/ul&gt;
+      )}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>useWindowSize - Responsive</h2>
+            
+            <div class="codice">
+<pre>import { useState, useEffect } from 'react'
+
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  })
+  
+  useEffect(() =&gt; {
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () =&gt; window.removeEventListener('resize', handleResize)
+  }, [])
+  
+  return windowSize
+}
+
+// Uso
+function ResponsiveComponent() {
+  const { width, height } = useWindowSize()
+  const isMobile = width < 768
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Window: {width} x {height}&lt;/p&gt;
+      {isMobile ? (
+        &lt;MobileMenu /&gt;
+      ) : (
+        &lt;DesktopMenu /&gt;
+      )}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Composizione di Custom Hooks</h2>
+            
+            <div class="codice">
+<pre>// Custom hook può usare altri custom hooks
+function useUser(userId) {
+  // Usa useFetch
+  const { data: user, loading, error } = useFetch(`/api/users/${userId}`)
+  
+  // Usa useLocalStorage per cache
+  const [cachedUser, setCachedUser] = useLocalStorage(`user-${userId}`, null)
+  
+  useEffect(() =&gt; {
+    if (user) {
+      setCachedUser(user)
+    }
+  }, [user, setCachedUser])
+  
+  return {
+    user: user || cachedUser,
+    loading,
+    error
+  }
+}
+
+// Uso
+function UserProfile({ userId }) {
+  const { user, loading, error } = useUser(userId)
+  
+  if (loading) return &lt;p&gt;Loading...&lt;/p&gt;
+  if (error) return &lt;p&gt;Error: {error}&lt;/p&gt;
+  
+  return &lt;h2&gt;{user?.name}&lt;/h2&gt;
+}</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ <strong>Naming:</strong> Sempre <code>use</code> prefix (useNome)</li>
+                <li>✅ <strong>Riutilizzo:</strong> Estrai logica comune usata in 2+ componenti</li>
+                <li>✅ <strong>Return chiaro:</strong> Oggetto o array (destructuring friendly)</li>
+                <li>✅ <strong>Parametri flessibili:</strong> Default values per parametri opzionali</li>
+                <li>✅ <strong>Composizione:</strong> Custom hooks possono usare altri custom hooks</li>
+                <li>✅ <strong>Focus:</strong> Un custom hook = una responsabilità</li>
+                <li>✅ <strong>Cleanup:</strong> Sempre cleanup in useEffect (timers, listeners)</li>
+                <li>❌ Non creare custom hook per logica usata una sola volta</li>
+                <li>❌ Non rendere custom hooks troppo complessi</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-7-8.html" class="btn-nav">← Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-7-10.html" class="btn-nav">Prossima Lezione →</a>
+            <a href="esempi/custom-hooks-esempio.html" class="btn-nav">📝 Esempio Pratico</a>
+        </div>
+    </div>
+</body>
+</html>

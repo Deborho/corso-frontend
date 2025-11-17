@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.4 - Oggetti e Interfacce</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.4 - Oggetti e Interfacce</h1>
+        
+        <h2>1. Type per Oggetti</h2>
+        
+        <div class="teoria">
+            <p>Puoi definire la forma di un oggetto usando <strong>type</strong>:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Type per oggetto
+type Utente = {
+    nome: string;
+    eta: number;
+    email: string;
+};
+
+let utente: Utente = {
+    nome: "Marco",
+    eta: 25,
+    email: "marco@email.com"
+};
+
+// ❌ Errore: manca proprietà
+let errore: Utente = {
+    nome: "Lucia",
+    eta: 30
+    // Manca email
+};
+
+// ❌ Errore: proprietà extra non permessa
+let errore2: Utente = {
+    nome: "Andrea",
+    eta: 28,
+    email: "andrea@email.com",
+    telefono: "123456"  // Errore!
+};</pre>
+        </div>
+        
+        <h2>2. Interfacce</h2>
+        
+        <div class="teoria">
+            <p><strong>Interface</strong> è simile a type ma con sintassi leggermente diversa e funzionalità extra:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Interface per oggetto
+interface Prodotto {
+    id: number;
+    nome: string;
+    prezzo: number;
+    disponibile: boolean;
+}
+
+let prodotto: Prodotto = {
+    id: 1,
+    nome: "Laptop",
+    prezzo: 999.99,
+    disponibile: true
+};
+
+// Accesso con autocompletamento
+console.log(prodotto.nome);     // "Laptop"
+console.log(prodotto.prezzo);   // 999.99</pre>
+        </div>
+        
+        <h2>3. Proprietà Opzionali</h2>
+        
+        <div class="codice">
+<pre>interface Utente {
+    nome: string;
+    cognome: string;
+    email: string;
+    telefono?: string;      // Opzionale
+    indirizzo?: string;     // Opzionale
+}
+
+// OK senza proprietà opzionali
+let utente1: Utente = {
+    nome: "Marco",
+    cognome: "Rossi",
+    email: "marco@email.com"
+};
+
+// OK con proprietà opzionali
+let utente2: Utente = {
+    nome: "Lucia",
+    cognome: "Bianchi",
+    email: "lucia@email.com",
+    telefono: "3331234567"
+};
+
+// Accesso a proprietà opzionale
+if (utente2.telefono) {
+    console.log(utente2.telefono);  // string
+}
+
+// Optional chaining
+console.log(utente1.telefono?.length);  // undefined</pre>
+        </div>
+        
+        <h2>4. Proprietà Readonly</h2>
+        
+        <div class="codice">
+<pre>interface Config {
+    readonly apiUrl: string;
+    readonly apiKey: string;
+    timeout: number;
+}
+
+let config: Config = {
+    apiUrl: "https://api.example.com",
+    apiKey: "abc123",
+    timeout: 5000
+};
+
+// ✅ OK modificare proprietà normale
+config.timeout = 10000;
+
+// ❌ Errore: non puoi modificare readonly
+config.apiUrl = "https://newapi.com";  // Errore!
+config.apiKey = "xyz789";              // Errore!
+
+// readonly previene modifiche accidentali
+// Utile per configurazioni, costanti, props immutabili</pre>
+        </div>
+        
+        <h2>5. Index Signatures</h2>
+        
+        <div class="teoria">
+            <p><strong>Index signature</strong> permette proprietà dinamiche:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Oggetto con proprietà dinamiche
+interface Dizionario {
+    [chiave: string]: string;
+}
+
+let traduzioni: Dizionario = {
+    hello: "ciao",
+    goodbye: "arrivederci",
+    thanks: "grazie"
+};
+
+// Accesso dinamico
+traduzioni["welcome"] = "benvenuto";
+console.log(traduzioni["hello"]);  // "ciao"
+
+// Index signature con tipo misto
+interface DatabaseRecord {
+    id: number;              // Proprietà fissa
+    timestamp: Date;         // Proprietà fissa
+    [campo: string]: any;    // Proprietà dinamiche
+}
+
+let record: DatabaseRecord = {
+    id: 1,
+    timestamp: new Date(),
+    nome: "Marco",
+    eta: 25,
+    attivo: true
+};</pre>
+        </div>
+        
+        <h2>6. Metodi in Interfacce</h2>
+        
+        <div class="codice">
+<pre>interface Calcolatrice {
+    valore: number;
+    somma(n: number): number;
+    sottrai(n: number): number;
+    reset(): void;
+}
+
+let calc: Calcolatrice = {
+    valore: 0,
+    somma(n: number): number {
+        this.valore += n;
+        return this.valore;
+    },
+    sottrai(n: number): number {
+        this.valore -= n;
+        return this.valore;
+    },
+    reset(): void {
+        this.valore = 0;
+    }
+};
+
+calc.somma(10);      // 10
+calc.somma(5);       // 15
+calc.sottrai(3);     // 12
+
+// Sintassi alternativa per metodi
+interface Logger {
+    log: (message: string) => void;
+    error: (message: string) => void;
+}</pre>
+        </div>
+        
+        <h2>7. Extending Interfaces</h2>
+        
+        <div class="teoria">
+            <p>Le interfacce possono estendere altre interfacce (ereditarietà):</p>
+        </div>
+        
+        <div class="codice">
+<pre>interface Persona {
+    nome: string;
+    cognome: string;
+    eta: number;
+}
+
+// Estende Persona aggiungendo nuove proprietà
+interface Dipendente extends Persona {
+    id: number;
+    ruolo: string;
+    stipendio: number;
+}
+
+let dipendente: Dipendente = {
+    nome: "Marco",
+    cognome: "Rossi",
+    eta: 30,
+    id: 101,
+    ruolo: "Developer",
+    stipendio: 50000
+};
+
+// Estensione multipla
+interface Timestamped {
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+interface UtenteCompleto extends Persona, Timestamped {
+    email: string;
+}
+
+let utente: UtenteCompleto = {
+    nome: "Lucia",
+    cognome: "Bianchi",
+    eta: 28,
+    email: "lucia@email.com",
+    createdAt: new Date(),
+    updatedAt: new Date()
+};</pre>
+        </div>
+        
+        <h2>8. Interface vs Type</h2>
+        
+        <div class="teoria">
+            <p>Differenze principali tra <code>interface</code> e <code>type</code>:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Interface
+interface User {
+    name: string;
+}
+
+// Type
+type UserType = {
+    name: string;
+};
+
+// ✅ Interface può essere estesa
+interface Admin extends User {
+    role: string;
+}
+
+// ✅ Type può usare union/intersection
+type ID = string | number;
+type UserWithID = UserType & { id: ID };
+
+// ✅ Interface può essere "reopened" (declaration merging)
+interface Window {
+    customProp: string;
+}
+// Stesso nome, aggiunge proprietà
+interface Window {
+    anotherProp: number;
+}
+
+// ✅ Type può usare utility types, mapped types, conditional types
+type Readonly&lt;T&gt; = { readonly [P in keyof T]: T[P] };
+
+// Quando usare cosa:
+// - Interface: per oggetti, classi, API pubbliche
+// - Type: per union, intersection, utility types complessi</pre>
+        </div>
+        
+        <h2>9. Oggetti Annidati</h2>
+        
+        <div class="codice">
+<pre>interface Indirizzo {
+    via: string;
+    citta: string;
+    cap: string;
+    paese: string;
+}
+
+interface UtenteCompleto {
+    id: number;
+    nome: string;
+    email: string;
+    indirizzo: Indirizzo;           // Oggetto annidato
+    indirizzoFatturazione?: Indirizzo;  // Opzionale
+}
+
+let utente: UtenteCompleto = {
+    id: 1,
+    nome: "Marco Rossi",
+    email: "marco@email.com",
+    indirizzo: {
+        via: "Via Roma 10",
+        citta: "Milano",
+        cap: "20100",
+        paese: "Italia"
+    }
+};
+
+// Accesso annidato
+console.log(utente.indirizzo.citta);  // "Milano"
+
+// Optional chaining per proprietà annidate opzionali
+let capFatturazione = utente.indirizzoFatturazione?.cap;  // undefined</pre>
+        </div>
+        
+        <h2>10. Utility Type: Partial, Required, Pick, Omit</h2>
+        
+        <div class="codice">
+<pre>interface Prodotto {
+    id: number;
+    nome: string;
+    descrizione: string;
+    prezzo: number;
+    disponibile: boolean;
+}
+
+// Partial: tutte proprietà opzionali
+type ProdottoParziale = Partial&lt;Prodotto&gt;;
+let update: ProdottoParziale = {
+    prezzo: 99.99  // Solo prezzo, resto opzionale
+};
+
+// Required: tutte proprietà obbligatorie
+interface Config {
+    host?: string;
+    port?: number;
+}
+type ConfigCompleta = Required&lt;Config&gt;;  // host e port obbligatori
+
+// Pick: seleziona solo alcune proprietà
+type ProdottoMinimo = Pick&lt;Prodotto, "id" | "nome"&gt;;
+let mini: ProdottoMinimo = {
+    id: 1,
+    nome: "Laptop"
+    // Solo id e nome richiesti
+};
+
+// Omit: esclude alcune proprietà
+type ProdottoSenzaID = Omit&lt;Prodotto, "id"&gt;;
+let nuovo: ProdottoSenzaID = {
+    nome: "Mouse",
+    descrizione: "Mouse wireless",
+    prezzo: 29.99,
+    disponibile: true
+    // id non presente
+};</pre>
+        </div>
+        
+        <h2>11. Best Practices</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Interface per oggetti:</strong> Preferisci <code>interface</code> per definire forme di oggetti</li>
+                <li><strong>Proprietà opzionali:</strong> Usa <code>?</code> per proprietà che possono mancare</li>
+                <li><strong>Readonly:</strong> Proteggi dati che non devono cambiare</li>
+                <li><strong>Naming:</strong> Usa PascalCase per interface/type (es: <code>UserProfile</code>)</li>
+                <li><strong>Estensione:</strong> Riusa interfacce con <code>extends</code> invece di duplicare</li>
+                <li><strong>Utility Types:</strong> Sfrutta Partial, Pick, Omit per trasformazioni comuni</li>
+                <li><strong>Optional Chaining:</strong> Usa <code>?.</code> per accesso sicuro a proprietà opzionali</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Prova l'esempio interattivo: <a href="esempi/interfacce-esempio.html">Interfacce e Oggetti</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-3.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-5.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

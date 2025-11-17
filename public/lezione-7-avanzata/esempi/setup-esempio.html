@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup React con Vite</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .terminal {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .terminal .command { color: #4ec9b0; }
+        .terminal .comment { color: #6a9955; }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .comparison > div {
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .cra { background: #282c34; color: white; }
+        .vite { background: linear-gradient(135deg, #646cff 0%, #747bff 100%); color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Setup React con Vite</h1>
+        
+        <div class="teoria">
+            <h2>🚀 Vite: Build Tool Moderno</h2>
+            <p><strong>Vite</strong> è il successor di Create React App. È più veloce, più leggero e più moderno.</p>
+        </div>
+        
+        <div class="comparison">
+            <div class="cra">
+                <h3>❌ Create React App (Vecchio)</h3>
+                <ul>
+                    <li>Lento (webpack)</li>
+                    <li>Bundle pesante</li>
+                    <li>Hot reload lento</li>
+                    <li>Non più mantenuto</li>
+                </ul>
+            </div>
+            <div class="vite">
+                <h3>✅ Vite (Moderno)</h3>
+                <ul>
+                    <li>Velocissimo (esbuild)</li>
+                    <li>Bundle ottimizzato</li>
+                    <li>Hot reload istantaneo</li>
+                    <li>Attivamente sviluppato</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>📦 Installazione e Setup</h2>
+            
+            <h3>1. Crea Nuovo Progetto</h3>
+            <div class="terminal">
+<span class="command">npm create vite@latest my-react-app -- --template react</span>
+<span class="comment"># Crea progetto React con Vite</span>
+
+✔ Select a framework: › React
+✔ Select a variant: › JavaScript
+
+<span class="comment"># Con TypeScript:</span>
+<span class="command">npm create vite@latest my-react-app -- --template react-ts</span>
+            </div>
+            
+            <h3>2. Installa Dipendenze</h3>
+            <div class="terminal">
+<span class="command">cd my-react-app</span>
+<span class="command">npm install</span>
+
+<span class="comment"># Installa react, react-dom e tutte le dipendenze</span>
+            </div>
+            
+            <h3>3. Avvia Development Server</h3>
+            <div class="terminal">
+<span class="command">npm run dev</span>
+
+  VITE v5.0.0  ready in 300 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+            </div>
+            
+            <h3>4. Build per Produzione</h3>
+            <div class="terminal">
+<span class="command">npm run build</span>
+
+<span class="comment"># Crea cartella dist/ con app ottimizzata</span>
+vite v5.0.0 building for production...
+✓ 34 modules transformed.
+dist/index.html                  0.45 kB │ gzip:  0.30 kB
+dist/assets/index-abc123.css     1.23 kB │ gzip:  0.65 kB
+dist/assets/index-def456.js     45.67 kB │ gzip: 14.23 kB
+✓ built in 1.23s
+
+<span class="comment"># Preview build</span>
+<span class="command">npm run preview</span>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>📁 Struttura Progetto</h2>
+            
+            <div class="codice">
+<pre>my-react-app/
+├── node_modules/           # Dipendenze installate
+├── public/                 # File statici (copiati in dist/)
+│   └── vite.svg           # Logo esempio
+├── src/                    # Codice sorgente
+│   ├── App.jsx            # Componente principale
+│   ├── App.css            # Stili App
+│   ├── main.jsx           # Entry point
+│   ├── index.css          # Stili globali
+│   └── assets/            # Immagini, fonts
+├── .gitignore             # File da ignorare in git
+├── index.html             # Template HTML
+├── package.json           # Dipendenze e scripts
+├── package-lock.json      # Lock versioni dipendenze
+├── vite.config.js         # Configurazione Vite
+└── README.md              # Documentazione</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>📝 File Principali</h2>
+            
+            <h3>index.html</h3>
+            <div class="codice">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;link rel="icon" type="image/svg+xml" href="/vite.svg" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;title&gt;Vite + React&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="root"&gt;&lt;/div&gt;
+    &lt;script type="module" src="/src/main.jsx"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+            </div>
+            
+            <h3>src/main.jsx</h3>
+            <div class="codice">
+<pre>import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+// Monta React app nel DOM
+ReactDOM.createRoot(document.getElementById('root')).render(
+  &lt;React.StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/React.StrictMode&gt;,
+)</pre>
+            </div>
+            
+            <h3>src/App.jsx</h3>
+            <div class="codice">
+<pre>import { useState } from 'react'
+import './App.css'
+
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    &lt;div className="App"&gt;
+      &lt;h1&gt;Vite + React&lt;/h1&gt;
+      &lt;div className="card"&gt;
+        &lt;button onClick={() =&gt; setCount((count) =&gt; count + 1)}&gt;
+          count is {count}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>⚙️ package.json Scripts</h2>
+            
+            <div class="codice">
+<pre>{
+  "name": "my-react-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",              // Development server
+    "build": "vite build",      // Build produzione
+    "preview": "vite preview"   // Preview build locale
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.0"
+  }
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>🔧 vite.config.js</h2>
+            
+            <div class="codice">
+<pre>import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,        // Cambia porta (default: 5173)
+    open: true         // Apri browser automaticamente
+  }
+})</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>🎯 Comandi Utili</h2>
+            
+            <div class="terminal">
+<span class="comment"># Installare nuove librerie</span>
+<span class="command">npm install react-router-dom</span>
+<span class="command">npm install axios</span>
+
+<span class="comment"># Dev dependencies</span>
+<span class="command">npm install --save-dev eslint</span>
+
+<span class="comment"># Rimuovere libreria</span>
+<span class="command">npm uninstall axios</span>
+
+<span class="comment"># Aggiornare dipendenze</span>
+<span class="command">npm update</span>
+
+<span class="comment"># Controllare versioni disponibili</span>
+<span class="command">npm outdated</span>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ Usa <strong>Vite</strong> invece di Create React App</li>
+                <li>✅ Mantieni <strong>package.json</strong> pulito (rimuovi dipendenze inutilizzate)</li>
+                <li>✅ Usa <strong>.gitignore</strong> per escludere node_modules/</li>
+                <li>✅ Commit <strong>package-lock.json</strong> (assicura versioni consistenti)</li>
+                <li>✅ <strong>Hot Module Replacement:</strong> Vite aggiorna senza refresh completo</li>
+                <li>✅ <strong>Build ottimizzato:</strong> <code>npm run build</code> prima di deploy</li>
+                <li>❌ Non committare node_modules/ o dist/</li>
+                <li>❌ Non modificare package-lock.json manualmente</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-7-1.html" class="btn-nav">← Torna alla Lezione</a>
+            <a href="../index.html" class="btn-nav">📚 Indice Lezione 7</a>
+        </div>
+    </div>
+</body>
+</html>

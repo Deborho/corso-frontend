@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.3 - State con useState</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7.3 - State con useState</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è lo State?</h2>
+            <p>Lo <strong>state</strong> è la memoria interna di un componente. Quando lo state cambia, 
+            React ri-renderizza automaticamente il componente con i nuovi dati.</p>
+            
+            <h3>Props vs State</h3>
+            <ul>
+                <li><strong>Props:</strong> Dati passati dal parent (immutabili, read-only)</li>
+                <li><strong>State:</strong> Dati gestiti dal componente stesso (mutabili con setState)</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Hook useState</h2>
+            <p><code>useState</code> è l'hook che permette di aggiungere state ai function components.</p>
+            
+            <h3>Sintassi Base</h3>
+            <div class="codice">
+<pre>import { useState } from 'react'
+
+function Counter() {
+  // useState restituisce un array con [valore, funzione per aggiornarlo]
+  const [count, setCount] = useState(0)
+  //      ↑        ↑              ↑
+  //   valore  setter       valore iniziale
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Contatore: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+        Incrementa
+      &lt;/button&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Esempio: Toggle Boolean</h3>
+            <div class="codice">
+<pre>function ToggleSwitch() {
+  const [isOn, setIsOn] = useState(false)
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Switch è {isOn ? "ACCESO" : "SPENTO"}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setIsOn(!isOn)}&gt;
+        Toggle
+      &lt;/button&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Multiple State Variables</h3>
+            <div class="codice">
+<pre>function UserForm() {
+  // Ogni state è indipendente
+  const [name, setName] = useState('')
+  const [age, setAge] = useState(0)
+  const [email, setEmail] = useState('')
+  
+  return (
+    &lt;div&gt;
+      &lt;input 
+        value={name}
+        onChange={(e) =&gt; setName(e.target.value)}
+        placeholder="Nome"
+      /&gt;
+      &lt;input 
+        type="number"
+        value={age}
+        onChange={(e) =&gt; setAge(Number(e.target.value))}
+        placeholder="Età"
+      /&gt;
+      &lt;input 
+        type="email"
+        value={email}
+        onChange={(e) =&gt; setEmail(e.target.value)}
+        placeholder="Email"
+      /&gt;
+      
+      &lt;p&gt;{name}, {age} anni, {email}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Aggiornare lo State</h2>
+            
+            <h3>⚠️ State è Immutabile</h3>
+            <div class="codice">
+<pre>function Counter() {
+  const [count, setCount] = useState(0)
+  
+  // ❌ SBAGLIATO: Non modificare direttamente lo state
+  const handleClickWrong = () =&gt; {
+    count = count + 1  // Non funziona!
+  }
+  
+  // ✅ CORRETTO: Usa sempre il setter
+  const handleClickRight = () =&gt; {
+    setCount(count + 1)  // React ri-renderizza il componente
+  }
+  
+  return &lt;button onClick={handleClickRight}&gt;{count}&lt;/button&gt;
+}</pre>
+            </div>
+            
+            <h3>Updater Function (Importante!)</h3>
+            <div class="codice">
+<pre>function Counter() {
+  const [count, setCount] = useState(0)
+  
+  // ❌ Problema con multiple updates
+  const handleTripleWrong = () =&gt; {
+    setCount(count + 1)  // count = 0, set to 1
+    setCount(count + 1)  // count ancora 0, set to 1
+    setCount(count + 1)  // count ancora 0, set to 1
+    // Risultato: count = 1 (non 3!)
+  }
+  
+  // ✅ SOLUZIONE: Updater function
+  const handleTripleRight = () =&gt; {
+    setCount(prev =&gt; prev + 1)  // prev = 0, set to 1
+    setCount(prev =&gt; prev + 1)  // prev = 1, set to 2
+    setCount(prev =&gt; prev + 1)  // prev = 2, set to 3
+    // Risultato: count = 3 ✅
+  }
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={handleTripleRight}&gt;+3&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>State con Oggetti</h2>
+            <p>Per oggetti, devi creare un nuovo oggetto (spread operator).</p>
+            
+            <div class="codice">
+<pre>function UserProfile() {
+  const [user, setUser] = useState({
+    name: 'Mario',
+    age: 25,
+    email: 'mario@example.com'
+  })
+  
+  // ❌ SBAGLIATO: Modifica diretta
+  const updateNameWrong = () =&gt; {
+    user.name = 'Luigi'  // Non funziona!
+    setUser(user)
+  }
+  
+  // ✅ CORRETTO: Crea nuovo oggetto con spread
+  const updateNameRight = () =&gt; {
+    setUser({
+      ...user,              // Copia tutte le proprietà esistenti
+      name: 'Luigi'         // Sovrascrivi solo name
+    })
+  }
+  
+  const updateAge = () =&gt; {
+    setUser(prev =&gt; ({
+      ...prev,
+      age: prev.age + 1
+    }))
+  }
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;{user.name}, {user.age} anni&lt;/p&gt;
+      &lt;button onClick={updateNameRight}&gt;Cambia Nome&lt;/button&gt;
+      &lt;button onClick={updateAge}&gt;Incrementa Età&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>State con Array</h2>
+            <p>Per array, devi creare un nuovo array (map, filter, spread).</p>
+            
+            <div class="codice">
+<pre>function TodoList() {
+  const [todos, setTodos] = useState(['Studiare React', 'Fare esercizi'])
+  
+  // Aggiungere elemento
+  const addTodo = (text) =&gt; {
+    setTodos([...todos, text])  // Spread + nuovo elemento
+    // oppure: setTodos(prev =&gt; [...prev, text])
+  }
+  
+  // Rimuovere elemento per indice
+  const removeTodo = (index) =&gt; {
+    setTodos(todos.filter((_, i) =&gt; i !== index))
+  }
+  
+  // Modificare elemento
+  const updateTodo = (index, newText) =&gt; {
+    setTodos(todos.map((todo, i) =&gt; 
+      i === index ? newText : todo
+    ))
+  }
+  
+  // Svuotare array
+  const clearTodos = () =&gt; {
+    setTodos([])
+  }
+  
+  return (
+    &lt;div&gt;
+      &lt;ul&gt;
+        {todos.map((todo, index) =&gt; (
+          &lt;li key={index}&gt;
+            {todo}
+            &lt;button onClick={() =&gt; removeTodo(index)}&gt;X&lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;button onClick={() =&gt; addTodo('Nuovo todo')}&gt;Aggiungi&lt;/button&gt;
+      &lt;button onClick={clearTodos}&gt;Cancella Tutto&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Controlled Components (Form Inputs)</h2>
+            <p>Gli input controllati sincronizzano il valore dell'input con lo state.</p>
+            
+            <div class="codice">
+<pre>function SearchBox() {
+  const [query, setQuery] = useState('')
+  
+  return (
+    &lt;div&gt;
+      {/* Input controllato */}
+      &lt;input
+        type="text"
+        value={query}  {/* Valore sempre uguale allo state */}
+        onChange={(e) =&gt; setQuery(e.target.value)}  {/* Aggiorna state */}
+        placeholder="Cerca..."
+      /&gt;
+      
+      &lt;p&gt;Stai cercando: {query}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setQuery('')}&gt;Cancella&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Checkbox controllato
+function AcceptTerms() {
+  const [accepted, setAccepted] = useState(false)
+  
+  return (
+    &lt;label&gt;
+      &lt;input
+        type="checkbox"
+        checked={accepted}
+        onChange={(e) =&gt; setAccepted(e.target.checked)}
+      /&gt;
+      Accetto i termini
+    &lt;/label&gt;
+  )
+}
+
+// Select controllato
+function CountrySelect() {
+  const [country, setCountry] = useState('it')
+  
+  return (
+    &lt;select value={country} onChange={(e) =&gt; setCountry(e.target.value)}&gt;
+      &lt;option value="it"&gt;Italia&lt;/option&gt;
+      &lt;option value="fr"&gt;Francia&lt;/option&gt;
+      &lt;option value="de"&gt;Germania&lt;/option&gt;
+    &lt;/select&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>State Iniziale Costoso</h2>
+            <p>Se calcolare lo state iniziale è costoso, usa una funzione.</p>
+            
+            <div class="codice">
+<pre>// ❌ La funzione viene eseguita ad ogni render
+function Component() {
+  const [data, setData] = useState(expensiveCalculation())
+  // expensiveCalculation() eseguita ogni volta!
+}
+
+// ✅ La funzione viene eseguita solo al mount
+function Component() {
+  const [data, setData] = useState(() =&gt; expensiveCalculation())
+  // expensiveCalculation() eseguita solo una volta!
+}
+
+// Esempio reale: localStorage
+function useLocalStorage(key, defaultValue) {
+  const [value, setValue] = useState(() =&gt; {
+    // Questa funzione eseguita solo al mount
+    const stored = localStorage.getItem(key)
+    return stored ? JSON.parse(stored) : defaultValue
+  })
+  
+  return [value, setValue]
+}</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ <strong>Usa updater function</strong> quando il nuovo state dipende dal precedente</li>
+                <li>✅ <strong>Immutabilità:</strong> Crea sempre nuovi oggetti/array, non modificare</li>
+                <li>✅ <strong>Un state per dato:</strong> Meglio più useState piccoli che un oggetto grande</li>
+                <li>✅ <strong>Lazy initialization:</strong> Usa funzione per state iniziale costoso</li>
+                <li>✅ <strong>Controlled components:</strong> Sincronizza sempre input con state</li>
+                <li>❌ Non chiamare useState in condizioni o loop</li>
+                <li>❌ Non modificare direttamente state (push, splice, =)</li>
+                <li>❌ Non fare state per dati derivabili (es: fullName da name+surname)</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-7-2.html" class="btn-nav">← Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-7-4.html" class="btn-nav">Prossima Lezione →</a>
+            <a href="esempi/usestate-esempio.html" class="btn-nav">📝 Esempio Pratico</a>
+        </div>
+    </div>
+</body>
+</html>

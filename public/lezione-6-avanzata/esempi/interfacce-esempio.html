@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfacce - Esempio TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio - Interfacce e Oggetti</h1>
+        
+        <div class="codice">
+<pre>// Interface base
+interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+    telefono?: string;  // Opzionale
+    readonly createdAt: Date;  // Readonly
+}
+
+let utente: Utente = {
+    id: 1,
+    nome: "Marco Rossi",
+    email: "marco@email.com",
+    createdAt: new Date()
+};
+
+console.log(utente.nome);
+// utente.createdAt = new Date();  // ❌ Errore: readonly
+
+// Interface con metodi
+interface Prodotto {
+    id: number;
+    nome: string;
+    prezzo: number;
+    scontato(percentuale: number): number;
+}
+
+let laptop: Prodotto = {
+    id: 1,
+    nome: "Laptop Pro",
+    prezzo: 1299,
+    scontato(perc) {
+        return this.prezzo * (1 - perc / 100);
+    }
+};
+
+console.log(laptop.scontato(10));  // 1169.10
+
+// Extends
+interface Dipendente extends Utente {
+    ruolo: string;
+    stipendio: number;
+}
+
+let dip: Dipendente = {
+    id: 2,
+    nome: "Lucia Bianchi",
+    email: "lucia@company.com",
+    createdAt: new Date(),
+    ruolo: "Developer",
+    stipendio: 50000
+};
+
+console.log(`${dip.nome} - ${dip.ruolo}`);</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-4.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+        </div>
+    </div>
+</body>
+</html>

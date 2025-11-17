@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.1 - Introduzione e Setup TypeScript</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.1 - Introduzione e Setup TypeScript</h1>
+        
+        <h2>1. Cos'è TypeScript?</h2>
+        
+        <div class="teoria">
+            <p><strong>TypeScript</strong> è un linguaggio di programmazione open-source sviluppato da Microsoft che si basa su JavaScript aggiungendo tipizzazione statica opzionale.</p>
+            
+            <ul>
+                <li><strong>Superset di JavaScript:</strong> Ogni codice JavaScript valido è TypeScript valido</li>
+                <li><strong>Compilato in JavaScript:</strong> Il browser esegue JavaScript, TypeScript viene compilato</li>
+                <li><strong>Type Safety:</strong> Errori rilevati durante la scrittura, non a runtime</li>
+                <li><strong>Tooling Avanzato:</strong> Autocompletamento, refactoring, navigazione codice</li>
+            </ul>
+        </div>
+        
+        <h2>2. Perché Usare TypeScript?</h2>
+        
+        <div class="teoria">
+            <p><strong>Vantaggi principali:</strong></p>
+            
+            <ul>
+                <li><strong>Prevenzione Errori:</strong> Catch bugs prima che il codice venga eseguito</li>
+                <li><strong>Documentazione Automatica:</strong> I tipi documentano come usare funzioni/oggetti</li>
+                <li><strong>Refactoring Sicuro:</strong> Rinomina variabili senza romper nulla</li>
+                <li><strong>Migliore IDE Support:</strong> IntelliSense accurato e suggerimenti contestuali</li>
+                <li><strong>Scalabilità:</strong> Gestire grandi codebase con più sviluppatori</li>
+                <li><strong>Adozione Industriale:</strong> Usato da Google, Microsoft, Airbnb, Slack</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>Esempio: JavaScript vs TypeScript</h3>
+        </div>
+        
+        <div class="codice">
+<pre>// ❌ JavaScript - Errore scoperto a runtime
+function saluta(nome) {
+    return "Ciao " + nome.toUpperCase();
+}
+
+saluta(123); // TypeError: nome.toUpperCase is not a function
+
+
+// ✅ TypeScript - Errore scoperto subito nell'editor
+function saluta(nome: string): string {
+    return "Ciao " + nome.toUpperCase();
+}
+
+saluta(123); // ❌ Errore: Argument of type 'number' is not assignable to parameter of type 'string'
+saluta("Marco"); // ✅ OK</pre>
+        </div>
+        
+        <h2>3. Installare TypeScript</h2>
+        
+        <div class="teoria">
+            <p><strong>Requisiti:</strong> Node.js e npm installati sul sistema.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Installazione globale
+npm install -g typescript
+
+// Verifica installazione
+tsc --version
+
+// Output: Version 5.3.3 (o superiore)</pre>
+        </div>
+        
+        <div class="codice">
+<pre>// Installazione locale in un progetto
+npm init -y
+npm install --save-dev typescript
+
+// Verifica
+npx tsc --version</pre>
+        </div>
+        
+        <h2>4. Primo File TypeScript</h2>
+        
+        <div class="teoria">
+            <p>I file TypeScript hanno estensione <code>.ts</code>. Vengono compilati in <code>.js</code> con il comando <code>tsc</code>.</p>
+        </div>
+        
+        <div class="esempio">
+            <h3>Esempio: hello.ts</h3>
+        </div>
+        
+        <div class="codice">
+<pre>// hello.ts
+function saluta(nome: string): string {
+    return `Ciao, ${nome}!`;
+}
+
+const messaggio: string = saluta("TypeScript");
+console.log(messaggio);</pre>
+        </div>
+        
+        <div class="codice">
+<pre>// Compilazione
+tsc hello.ts
+
+// Genera hello.js:
+function saluta(nome) {
+    return "Ciao, " + nome + "!";
+}
+var messaggio = saluta("TypeScript");
+console.log(messaggio);
+
+// Esecuzione
+node hello.js
+// Output: Ciao, TypeScript!</pre>
+        </div>
+        
+        <h2>5. File di Configurazione: tsconfig.json</h2>
+        
+        <div class="teoria">
+            <p><strong>tsconfig.json</strong> definisce come TypeScript compila il progetto.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Genera tsconfig.json
+tsc --init</pre>
+        </div>
+        
+        <div class="esempio">
+            <h3>tsconfig.json Base</h3>
+        </div>
+        
+        <div class="codice">
+<pre>{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2020",                  // Versione JavaScript output
+    
+    /* Modules */
+    "module": "ESNext",                  // Sistema moduli (ESNext, CommonJS)
+    "moduleResolution": "node",          // Risoluzione moduli come Node.js
+    
+    /* Emit */
+    "outDir": "./dist",                  // Cartella output file compilati
+    "rootDir": "./src",                  // Cartella sorgenti TypeScript
+    "removeComments": true,              // Rimuovi commenti dal .js
+    
+    /* Type Checking */
+    "strict": true,                      // Abilita tutte le opzioni strict
+    "noImplicitAny": true,               // Errore se TypeScript inferisce 'any'
+    "strictNullChecks": true,            // null/undefined devono essere gestiti
+    "strictFunctionTypes": true,         // Controlli più rigidi sulle funzioni
+    
+    /* Interop Constraints */
+    "esModuleInterop": true,             // Compatibilità import CommonJS
+    "forceConsistentCasingInFileNames": true, // Case-sensitive nei nomi file
+    
+    /* Skip Checking */
+    "skipLibCheck": true                 // Salta controllo file .d.ts di librerie
+  },
+  "include": ["src/**/*"],               // File da compilare
+  "exclude": ["node_modules", "dist"]    // File da escludere
+}</pre>
+        </div>
+        
+        <h2>6. Opzioni Compiler Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>target:</strong> Versione JavaScript output (ES5, ES2015, ES2020, ESNext)</li>
+                <li><strong>module:</strong> Sistema moduli (CommonJS per Node, ESNext per browser moderni)</li>
+                <li><strong>strict:</strong> Abilita tutti i controlli strict (raccomandato)</li>
+                <li><strong>outDir:</strong> Dove salvare i file .js compilati</li>
+                <li><strong>sourceMap:</strong> Genera .map files per debugging</li>
+                <li><strong>lib:</strong> Librerie TypeScript da includere (DOM, ES2020, ecc.)</li>
+                <li><strong>noEmitOnError:</strong> Non genera .js se ci sono errori TypeScript</li>
+            </ul>
+        </div>
+        
+        <h2>7. Struttura Progetto TypeScript</h2>
+        
+        <div class="codice">
+<pre>mio-progetto-ts/
+├── src/                  # Sorgenti TypeScript (.ts)
+│   ├── index.ts
+│   ├── models/
+│   │   └── user.ts
+│   └── utils/
+│       └── helpers.ts
+├── dist/                 # File compilati (.js) - generata da tsc
+├── node_modules/         # Dipendenze npm
+├── package.json          # Configurazione npm
+└── tsconfig.json         # Configurazione TypeScript</pre>
+        </div>
+        
+        <h2>8. Watch Mode</h2>
+        
+        <div class="teoria">
+            <p><strong>Watch mode</strong> ricompila automaticamente quando modifichi i file:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Watch mode per singolo file
+tsc hello.ts --watch
+
+// Watch mode per intero progetto
+tsc --watch
+
+// Output:
+// [12:34:56 PM] Starting compilation in watch mode...
+// [12:34:57 PM] Found 0 errors. Watching for file changes.</pre>
+        </div>
+        
+        <h2>9. TypeScript nel Browser</h2>
+        
+        <div class="teoria">
+            <p>Per usare TypeScript nel browser:</p>
+            <ol>
+                <li>Compila TypeScript in JavaScript</li>
+                <li>Includi il file .js nell'HTML</li>
+                <li>Oppure usa bundler come Vite o Webpack</li>
+            </ol>
+        </div>
+        
+        <div class="esempio">
+            <h3>Workflow Base</h3>
+        </div>
+        
+        <div class="codice">
+<pre>// 1. Scrivi TypeScript (src/app.ts)
+const messaggio: string = "Hello TypeScript!";
+console.log(messaggio);
+
+// 2. Compila
+tsc
+
+// 3. Include nell'HTML
+&lt;script src="dist/app.js"&gt;&lt;/script&gt;</pre>
+        </div>
+        
+        <h2>10. Setup con Vite (Raccomandato)</h2>
+        
+        <div class="teoria">
+            <p><strong>Vite</strong> è un build tool moderno con supporto TypeScript nativo:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Crea progetto Vite + TypeScript
+npm create vite@latest mio-app -- --template vanilla-ts
+
+cd mio-app
+npm install
+npm run dev
+
+// Struttura generata:
+// ├── src/
+// │   ├── main.ts          # Entry point
+// │   ├── style.css
+// │   └── vite-env.d.ts    # Type definitions per Vite
+// ├── index.html
+// ├── tsconfig.json
+// └── package.json</pre>
+        </div>
+        
+        <h2>11. Best Practices per Iniziare</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Strict Mode:</strong> Usa sempre <code>"strict": true</code> in tsconfig.json</li>
+                <li><strong>Evita any:</strong> Specifica sempre tipi espliciti, evita <code>any</code></li>
+                <li><strong>Type Inference:</strong> Fidati dell'inferenza quando ovvia, esplicita quando serve chiarezza</li>
+                <li><strong>Incrementale:</strong> Puoi migrare JavaScript → TypeScript gradualmente (.js e .ts convivono)</li>
+                <li><strong>Lint:</strong> Usa ESLint con plugin TypeScript per mantenere codice pulito</li>
+                <li><strong>Documentazione:</strong> Consulta la <a href="https://www.typescriptlang.org/docs/" target="_blank">TypeScript Handbook</a></li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Vedi l'esempio interattivo per setup completo TypeScript: <a href="esempi/setup-esempio.html">Setup TypeScript</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-2.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

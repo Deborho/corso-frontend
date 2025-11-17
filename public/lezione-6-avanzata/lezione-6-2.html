@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.2 - Tipi Primitivi e Type Annotations</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.2 - Tipi Primitivi e Type Annotations</h1>
+        
+        <h2>1. Type Annotations</h2>
+        
+        <div class="teoria">
+            <p><strong>Type annotation</strong> è la sintassi per dire a TypeScript che tipo ha una variabile:</p>
+            <code>let variabile: tipo = valore;</code>
+        </div>
+        
+        <div class="codice">
+<pre>// Sintassi base
+let nome: string = "Marco";
+let eta: number = 25;
+let attivo: boolean = true;
+
+// TypeScript inferisce automaticamente il tipo se omesso
+let cognome = "Rossi";  // string (inferito)
+let altezza = 180;      // number (inferito)
+let verificato = false; // boolean (inferito)</pre>
+        </div>
+        
+        <h2>2. string - Tipo Stringa</h2>
+        
+        <div class="teoria">
+            <p>Rappresenta testo. Include stringhe con apici singoli, doppi e template literals.</p>
+        </div>
+        
+        <div class="codice">
+<pre>let nome: string = "Maria";
+let cognome: string = 'Bianchi';
+let nomeCompleto: string = `${nome} ${cognome}`;
+
+// Metodi string disponibili con autocompletamento
+let maiuscolo: string = nome.toUpperCase();
+let lunghezza: number = nome.length;
+
+// ❌ Errore TypeScript
+let errore: string = 123; // Type 'number' is not assignable to type 'string'</pre>
+        </div>
+        
+        <h2>3. number - Tipo Numerico</h2>
+        
+        <div class="teoria">
+            <p>Rappresenta numeri interi e decimali. TypeScript non distingue tra int e float.</p>
+        </div>
+        
+        <div class="codice">
+<pre>let intero: number = 42;
+let decimale: number = 3.14;
+let negativo: number = -10;
+let esponenziale: number = 1e6;  // 1000000
+let binario: number = 0b1010;    // 10
+let esadecimale: number = 0xFF;  // 255
+
+// Operazioni matematiche
+let somma: number = intero + decimale;
+let prodotto: number = intero * 2;
+
+// ❌ Errore TypeScript
+let errore: number = "42"; // Type 'string' is not assignable to type 'number'</pre>
+        </div>
+        
+        <h2>4. boolean - Tipo Booleano</h2>
+        
+        <div class="teoria">
+            <p>Rappresenta valori vero/falso. Solo <code>true</code> e <code>false</code> sono ammessi.</p>
+        </div>
+        
+        <div class="codice">
+<pre>let attivo: boolean = true;
+let disabilitato: boolean = false;
+
+// Espressioni booleane
+let maggiorenne: boolean = eta >= 18;
+let isAdmin: boolean = ruolo === "admin";
+
+// ❌ Errori TypeScript
+let errore1: boolean = 1;        // number non è boolean
+let errore2: boolean = "true";   // string non è boolean
+let errore3: boolean = null;     // null non è boolean</pre>
+        </div>
+        
+        <h2>5. any - Tipo Generico (Da Evitare)</h2>
+        
+        <div class="teoria">
+            <p><strong>any</strong> disabilita il type checking. Accetta qualsiasi tipo, ma elimina i vantaggi di TypeScript.</p>
+            <p><strong>⚠️ Evitalo quando possibile!</strong></p>
+        </div>
+        
+        <div class="codice">
+<pre>let qualsiasi: any = 42;
+qualsiasi = "ora è una stringa";
+qualsiasi = true;
+qualsiasi = { nome: "Marco" };
+qualsiasi = [1, 2, 3];
+
+// Nessun type checking, nessun errore
+qualsiasi.metodoCheNonEsiste();  // ✅ Nessun errore TypeScript (ma crash a runtime!)
+
+// Usa any solo per:
+// 1. Migrazione graduale da JavaScript
+// 2. Dati da API esterne non tipizzate
+// 3. Librerie JS senza types</pre>
+        </div>
+        
+        <h2>6. unknown - Tipo Sicuro per Valori Sconosciuti</h2>
+        
+        <div class="teoria">
+            <p><strong>unknown</strong> è simile ad <code>any</code> ma più sicuro. Devi fare type checking prima di usarlo.</p>
+        </div>
+        
+        <div class="codice">
+<pre>let valore: unknown = "ciao";
+
+// ❌ Non puoi usare unknown direttamente
+let lunghezza = valore.length; // Errore!
+
+// ✅ Devi prima controllare il tipo
+if (typeof valore === "string") {
+    let lunghezza = valore.length;  // OK, TypeScript sa che è string
+}
+
+// Esempio pratico: parsing JSON
+function parseJSON(json: string): unknown {
+    return JSON.parse(json);  // Non sappiamo cosa restituisce
+}
+
+let risultato: unknown = parseJSON('{"nome": "Marco"}');
+
+// Validazione esplicita
+if (risultato && typeof risultato === "object" && "nome" in risultato) {
+    console.log(risultato.nome);
+}</pre>
+        </div>
+        
+        <h2>7. void - Nessun Valore di Ritorno</h2>
+        
+        <div class="teoria">
+            <p><strong>void</strong> indica che una funzione non restituisce nulla.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Funzione con void
+function saluta(nome: string): void {
+    console.log(`Ciao ${nome}!`);
+    // Nessun return
+}
+
+// Funzione che ritorna undefined è void
+function logMessaggio(msg: string): void {
+    console.log(msg);
+    return undefined;  // OK, ma inutile
+}
+
+// Arrow function void
+const stampa = (testo: string): void => {
+    console.log(testo);
+};
+
+// void per callback che non ritornano nulla
+setTimeout((): void => {
+    console.log("Timeout!");
+}, 1000);</pre>
+        </div>
+        
+        <h2>8. never - Tipo per Valori che Non Possono Esistere</h2>
+        
+        <div class="teoria">
+            <p><strong>never</strong> rappresenta valori che non si verificano mai. Usato per funzioni che:</p>
+            <ul>
+                <li>Lanciano sempre errori</li>
+                <li>Hanno loop infiniti</li>
+                <li>Non raggiungono mai il return</li>
+            </ul>
+        </div>
+        
+        <div class="codice">
+<pre>// Funzione che lancia sempre errore
+function errore(messaggio: string): never {
+    throw new Error(messaggio);
+}
+
+// Loop infinito
+function loopInfinito(): never {
+    while (true) {
+        console.log("Loop...");
+    }
+}
+
+// Exhaustive checking in switch
+type Forma = "cerchio" | "quadrato";
+
+function area(forma: Forma): number {
+    switch (forma) {
+        case "cerchio":
+            return 3.14;
+        case "quadrato":
+            return 4;
+        default:
+            // Se aggiungi un nuovo tipo, TypeScript ti avvisa
+            const _exhaustive: never = forma;
+            return _exhaustive;
+    }
+}</pre>
+        </div>
+        
+        <h2>9. null e undefined</h2>
+        
+        <div class="teoria">
+            <p>In TypeScript, <code>null</code> e <code>undefined</code> sono tipi separati.</p>
+            <p>Con <code>"strictNullChecks": true</code>, devi gestirli esplicitamente.</p>
+        </div>
+        
+        <div class="codice">
+<pre>let valorenullo: null = null;
+let nonDefinito: undefined = undefined;
+
+// Con strictNullChecks, null/undefined non sono assegnabili ad altri tipi
+let nome: string = "Marco";
+nome = null;       // ❌ Errore
+nome = undefined;  // ❌ Errore
+
+// Devi usare union types
+let nomeFacoltativo: string | null = "Marco";
+nomeFacoltativo = null;  // ✅ OK
+
+let eta: number | undefined = 25;
+eta = undefined;  // ✅ OK
+
+// Optional chaining
+interface User {
+    nome: string;
+    indirizzo?: {
+        via: string;
+        citta: string;
+    };
+}
+
+const user: User = { nome: "Marco" };
+const citta = user.indirizzo?.citta;  // string | undefined</pre>
+        </div>
+        
+        <h2>10. Type Inference (Inferenza dei Tipi)</h2>
+        
+        <div class="teoria">
+            <p>TypeScript <strong>inferisce automaticamente</strong> i tipi quando possibile. Non serve sempre scrivere type annotations.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// TypeScript inferisce i tipi
+let nome = "Marco";           // string (inferito)
+let eta = 25;                 // number (inferito)
+let attivo = true;            // boolean (inferito)
+
+// Inferenza nelle funzioni
+function somma(a: number, b: number) {
+    return a + b;  // return type: number (inferito)
+}
+
+// Inferenza con const
+const PI = 3.14;              // literal type 3.14
+const NOME = "Marco";         // literal type "Marco"
+
+// Quando specificare il tipo esplicitamente:
+// 1. Parametri di funzione (sempre)
+// 2. Quando il valore iniziale è null/undefined
+// 3. Quando vuoi essere esplicito per chiarezza
+
+let risultato: number;        // Dichiaro ora, assegno dopo
+risultato = somma(5, 10);</pre>
+        </div>
+        
+        <h2>11. Best Practices Tipi Primitivi</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Fidati dell'inferenza:</strong> Non serve <code>: string</code> se assegni subito un valore stringa</li>
+                <li><strong>Evita any:</strong> Usa <code>unknown</code> se non conosci il tipo</li>
+                <li><strong>Strict Mode:</strong> Abilita <code>strictNullChecks</code> per gestire null/undefined</li>
+                <li><strong>Tipi espliciti:</strong> Usali per parametri funzioni, props, API pubbliche</li>
+                <li><strong>const over let:</strong> <code>const</code> permette inferenza più precisa (literal types)</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Prova l'esempio interattivo: <a href="esempi/tipi-primitivi-esempio.html">Tipi Primitivi</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-1.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-3.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

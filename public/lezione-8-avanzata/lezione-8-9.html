@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.9 - .gitignore e File Management</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.9 - .gitignore e File Management</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è .gitignore?</h2>
+            <p>Il file <strong>.gitignore</strong> specifica quali file e directory Git deve ignorare (non tracciare).</p>
+            
+            <div class="codice">
+<pre><strong>Perché usare .gitignore?</strong>
+
+✅ Evita di committare file generati (build/, dist/)
+✅ Non traccia dipendenze (node_modules/, vendor/)
+✅ Protegge file sensibili (.env, secrets.json)
+✅ Ignora file di sistema (.DS_Store, Thumbs.db)
+✅ Esclude file IDE (.vscode/, .idea/)
+✅ Mantiene repository pulito e leggero
+
+<strong>Dove va .gitignore?</strong>
+- Root del repository
+- Nome esatto: .gitignore (con punto)
+- Committato nel repository
+- Condiviso con team</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Sintassi .gitignore</h2>
+            
+            <div class="codice">
+<pre><strong>Pattern Base:</strong>
+
+# Commento (linea ignorata)
+
+# File specifico:
+secrets.txt
+
+# Tutti i file con estensione:
+*.log
+*.tmp
+*.cache
+
+# Directory (con trailing slash):
+node_modules/
+build/
+dist/
+
+# File in directory specifica:
+logs/debug.log
+
+# Tutti i file in directory:
+logs/*.log
+
+# Ricorsivo in tutte le subdirectories:
+**/*.log
+
+# Negazione (NON ignorare):
+!important.log
+
+# Ignora tutti .txt tranne important.txt:
+*.txt
+!important.txt
+
+# Ignora directory solo nella root:
+/build/
+
+# Ignora directory ovunque:
+build/</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Pattern Matching Avanzati</h2>
+            
+            <div class="codice">
+<pre><strong>Wildcard:</strong>
+
+*        Match qualsiasi carattere (eccetto /)
+?        Match singolo carattere
+[abc]    Match uno dei caratteri tra parentesi
+[0-9]    Match range di caratteri
+**       Match zero o più directory
+
+<strong>Esempi:</strong>
+
+# Tutti i .log in directory logs:
+logs/*.log
+
+# Tutti i .log ricorsivamente:
+logs/**/*.log
+**/*.log
+
+# File che iniziano con temp:
+temp*
+
+# File che finiscono con .old:
+*.old
+
+# Directory dist ovunque:
+**/dist/
+
+# File specifici in qualsiasi public/:
+**/public/robots.txt
+
+# Ignora src/temp ma non other/temp:
+/src/temp/
+
+# File con pattern specifico:
+test_*.js
+*_backup.*</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>.gitignore Template - Node.js</h2>
+            
+            <div class="codice">
+<pre># File: .gitignore
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json  # se usi yarn
+yarn.lock          # se usi npm
+
+# Build output
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.temp/
+.tmp/
+*.pid
+*.seed</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>.gitignore Template - Python</h2>
+            
+            <div class="codice">
+<pre># Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Templates Altre Tecnologie</h2>
+            
+            <div class="codice">
+<pre><strong>React:</strong>
+node_modules/
+build/
+.env.local
+.DS_Store
+npm-debug.log
+
+<strong>Java:</strong>
+target/
+*.class
+*.jar
+*.war
+.idea/
+.settings/
+
+<strong>Ruby:</strong>
+*.gem
+.bundle/
+vendor/bundle
+log/
+tmp/
+
+<strong>Go:</strong>
+*.exe
+*.test
+vendor/
+bin/
+
+<strong>Rust:</strong>
+target/
+Cargo.lock
+**/*.rs.bk
+
+<strong>PHP:</strong>
+vendor/
+composer.lock
+*.log
+.env
+
+<strong>C#/.NET:</strong>
+bin/
+obj/
+*.suo
+*.user
+.vs/</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Global .gitignore</h2>
+            <p>File ignorati per TUTTI i tuoi repository locali:</p>
+            
+            <div class="codice">
+<pre># 1. Crea file gitignore globale:
+touch ~/.gitignore_global
+
+# 2. Configura Git per usarlo:
+git config --global core.excludesfile ~/.gitignore_global
+
+# 3. Aggiungi patterns comuni:
+cat &lt;&lt;EOF &gt;&gt; ~/.gitignore_global
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Misc
+.temp/
+*.bak
+EOF
+
+# Ora questi file sono ignorati in TUTTI i repository!</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Gestire File Già Tracciati</h2>
+            
+            <div class="codice">
+<pre># Problema: file già committato, ora vuoi ignorarlo
+echo "node_modules/" &gt;&gt; .gitignore
+# ⚠️ Non basta! File già tracciato continua ad esserlo
+
+# Soluzione: Rimuovi da tracking (mantieni locale):
+git rm --cached node_modules/ -r
+git commit -m "chore: remove node_modules from tracking"
+
+# Ora node_modules/ è ignorato
+
+# Per singolo file:
+git rm --cached .env
+git commit -m "chore: remove .env from tracking"
+
+# ⚠️ --cached = rimuovi solo da Git, non da filesystem
+# ⚠️ senza --cached = rimuove anche da filesystem
+
+# Verifica file ignorati:
+git status --ignored
+
+# Forza aggiungere file ignorato (raramente necessario):
+git add -f file-ignorato.txt</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Debugging .gitignore</h2>
+            
+            <div class="codice">
+<pre># Verifica perché file è ignorato:
+git check-ignore -v path/to/file.txt
+# Output:
+# .gitignore:12:*.txt    path/to/file.txt
+# ↑ File, linea, pattern che lo ignora
+
+# Lista tutti i file ignorati:
+git status --ignored
+
+# Mostra file ignorati nella directory corrente:
+git ls-files --others --ignored --exclude-standard
+
+# Testa se pattern matcha file:
+git check-ignore path/to/file.txt
+# Exit code 0 = ignorato
+# Exit code 1 = NON ignorato
+
+# Debug pattern specifico:
+# Crea .gitignore test, verifica con check-ignore</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Casi d'Uso Speciali</h2>
+            
+            <div class="codice">
+<pre><strong>1. Ignorare directory ma non alcune subdirectory:</strong>
+# Ignora build/ ma mantieni build/static/
+build/*
+!build/static/
+
+<strong>2. Ignorare tutti file tranne specifici:</strong>
+# Ignora tutto in config/ tranne config.example.json
+config/*
+!config/config.example.json
+
+<strong>3. Pattern per OS specifici:</strong>
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+
+<strong>4. Ignorare file temporanei editor:</strong>
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*#
+.#*
+
+# Sublime
+*.sublime-workspace
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - .gitignore</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Crea .gitignore PRIMA del primo commit</li>
+                <li>Usa template per la tua tecnologia (gitignore.io)</li>
+                <li>Ignora sempre node_modules/, build/, dist/</li>
+                <li>Ignora sempre .env e file con segreti</li>
+                <li>Ignora file OS (.DS_Store, Thumbs.db)</li>
+                <li>Commita .gitignore nel repository</li>
+                <li>Usa global .gitignore per preferenze personali</li>
+                <li>Documenta perché ignori file specifici (commenti)</li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non committare .env, secrets, passwords</li>
+                <li>Non committare node_modules/ o vendor/</li>
+                <li>Non committare file build/compilati</li>
+                <li>Non ignorare .gitignore stesso</li>
+                <li>Non usare .gitignore per file-specific (usa .git/info/exclude)</li>
+                <li>Non committare file IDE di team members</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>File Già Committati con Secrets</h2>
+            <p>⚠️ Se hai committato file con password/keys per errore:</p>
+            
+            <div class="codice">
+<pre><strong>Problema GRAVE:</strong>
+# Hai committato .env con API key
+git add .env
+git commit -m "Add config"
+git push
+
+# ❌ CHIAVE COMPROMESSA!
+# Anche se rimuovi file, rimane nella storia Git
+
+<strong>Soluzione Immediata:</strong>
+1. REVOCA la chiave/password (cambiale!)
+2. Rimuovi file dalla storia Git (BFG Repo Cleaner o git filter-branch)
+3. Force push (⚠️ impatta collaboratori)
+
+<strong>Prevenzione:</strong>
+# 1. Usa .env.example con valori finti:
+API_KEY=your_api_key_here
+DB_PASSWORD=your_password_here
+
+# 2. Ignora .env reale:
+echo ".env" &gt;&gt; .gitignore
+
+# 3. Documenta in README:
+"Copy .env.example to .env and fill with real values"
+
+# 4. Usa tools come git-secrets per prevenire:
+git secrets --install
+git secrets --register-aws</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Risorse Utili</h2>
+            
+            <div class="codice">
+<pre><strong>Generatori .gitignore:</strong>
+
+# gitignore.io - template per ogni linguaggio
+https://www.toptal.com/developers/gitignore
+
+# GitHub templates ufficiali:
+https://github.com/github/gitignore
+
+# Comando rapido:
+curl https://www.toptal.com/developers/gitignore/api/node,react,vscode &gt; .gitignore
+
+<strong>Documentazione:</strong>
+git help gitignore
+man gitignore</pre>
+            </div>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-8-8.html" class="btn-nav">← Precedente: Collaboration</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-8-10.html" class="btn-nav">Prossima: Tags e Releases →</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -426,9 +426,9 @@
     margin: 0;
 }
 
-/* ===== React Connection ===== */
-.react-connection {
-    background: linear-gradient(135deg, #61dafb 0%, #21a1c4 100%);
+/* ===== Architecture Info ===== */
+.architecture-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 30px;
     border-radius: 12px;
@@ -436,16 +436,16 @@
     box-shadow: var(--shadow);
 }
 
-.react-connection h3 {
+.architecture-info h3 {
     margin-top: 0;
     font-size: 1.8em;
 }
 
-.react-connection ul {
+.architecture-info ul {
     line-height: 1.8;
 }
 
-.react-connection .code-block {
+.architecture-info .code-block {
     margin-top: 20px;
     background: #1e2936;
 }

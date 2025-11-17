@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzioni - Esempio TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio - Funzioni Tipizzate</h1>
+        
+        <div class="codice">
+<pre>// Funzioni con tipi
+function somma(a: number, b: number): number {
+    return a + b;
+}
+
+// Arrow function
+const moltiplica = (a: number, b: number): number => a * b;
+
+// Parametri opzionali
+function saluta(nome: string, cognome?: string): string {
+    return cognome ? `Ciao ${nome} ${cognome}!` : `Ciao ${nome}!`;
+}
+
+console.log(saluta("Marco"));
+console.log(saluta("Marco", "Rossi"));
+
+// Parametri default
+function creaUtente(nome: string, ruolo: string = "user") {
+    return { nome, ruolo };
+}
+
+console.log(creaUtente("Marco"));
+console.log(creaUtente("Lucia", "admin"));
+
+// Rest parameters
+function sommaNumeri(...numeri: number[]): number {
+    return numeri.reduce((acc, n) => acc + n, 0);
+}
+
+console.log(sommaNumeri(1, 2, 3, 4, 5));  // 15
+
+// Function type
+type Operazione = (a: number, b: number) => number;
+
+const dividi: Operazione = (a, b) => a / b;
+const modulo: Operazione = (a, b) => a % b;
+
+// Generic function
+function primoElemento&lt;T&gt;(array: T[]): T | undefined {
+    return array[0];
+}
+
+let num = primoElemento([1, 2, 3]);      // number | undefined
+let str = primoElemento(["a", "b", "c"]); // string | undefined
+
+console.log("✅ Tutte le funzioni funzionano!");</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-5.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+        </div>
+    </div>
+</body>
+</html>

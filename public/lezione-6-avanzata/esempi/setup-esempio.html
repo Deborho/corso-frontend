@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Setup TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .code-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .code-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .code-panel h3 {
+            margin-top: 0;
+            color: #3178c6;
+        }
+        
+        .ts-code {
+            border-left: 4px solid #3178c6;
+        }
+        
+        .js-code {
+            border-left: 4px solid #f7df1e;
+        }
+        
+        @media (max-width: 768px) {
+            .code-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio Pratico - Setup TypeScript</h1>
+        
+        <div class="teoria">
+            <h2>Installazione e Configurazione</h2>
+            <p>Vediamo come configurare un progetto TypeScript da zero.</p>
+        </div>
+        
+        <div class="codice">
+            <h3>1. Installazione TypeScript</h3>
+<pre># Installa TypeScript globalmente
+npm install -g typescript
+
+# Verifica installazione
+tsc --version
+
+# Oppure installa localmente nel progetto
+npm init -y
+npm install --save-dev typescript</pre>
+        </div>
+        
+        <div class="codice">
+            <h3>2. Crea tsconfig.json</h3>
+<pre># Genera tsconfig.json con defaults
+tsc --init
+
+# Oppure crea manualmente:
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}</pre>
+        </div>
+        
+        <div class="code-comparison">
+            <div class="code-panel ts-code">
+                <h3>📝 TypeScript (src/hello.ts)</h3>
+<pre>// TypeScript con tipi
+function saluta(nome: string): string {
+    return `Ciao, ${nome}!`;
+}
+
+const utente: string = "Marco";
+const messaggio: string = saluta(utente);
+
+console.log(messaggio);
+
+// Errore TypeScript:
+// saluta(123);  // ❌ number non è string</pre>
+            </div>
+            
+            <div class="code-panel js-code">
+                <h3>⚙️ JavaScript Compilato (dist/hello.js)</h3>
+<pre>// JavaScript generato
+function saluta(nome) {
+    return `Ciao, ${nome}!`;
+}
+
+const utente = "Marco";
+const messaggio = saluta(utente);
+
+console.log(messaggio);
+
+// I tipi vengono rimossi!</pre>
+            </div>
+        </div>
+        
+        <div class="codice">
+            <h3>3. Compila e Esegui</h3>
+<pre># Compila singolo file
+tsc src/hello.ts
+
+# Compila tutto il progetto
+tsc
+
+# Watch mode (ricompila automaticamente)
+tsc --watch
+
+# Esegui il JavaScript compilato
+node dist/hello.js</pre>
+        </div>
+        
+        <div class="code-comparison">
+            <div class="code-panel ts-code">
+                <h3>📝 Esempio con Interface</h3>
+<pre>interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+    attivo?: boolean;
+}
+
+function creaUtente(
+    nome: string,
+    email: string
+): Utente {
+    return {
+        id: Date.now(),
+        nome,
+        email,
+        attivo: true
+    };
+}
+
+const utente = creaUtente(
+    "Marco Rossi",
+    "marco@email.com"
+);
+
+console.log(utente.nome);  // Autocomplete!</pre>
+            </div>
+            
+            <div class="code-panel js-code">
+                <h3>⚙️ JavaScript Compilato</h3>
+<pre>// Interface sparisce completamente
+
+function creaUtente(nome, email) {
+    return {
+        id: Date.now(),
+        nome,
+        email,
+        attivo: true
+    };
+}
+
+const utente = creaUtente(
+    "Marco Rossi",
+    "marco@email.com"
+);
+
+console.log(utente.nome);</pre>
+            </div>
+        </div>
+        
+        <div class="teoriaproject-info">
+            <h2>✅ Vantaggi Setup TypeScript</h2>
+            <ul>
+                <li><strong>Type Safety:</strong> Errori rilevati durante sviluppo, non a runtime</li>
+                <li><strong>Autocompletamento:</strong> IDE suggerisce proprietà e metodi disponibili</li>
+                <li><strong>Refactoring:</strong> Rinominare con sicurezza in tutto il progetto</li>
+                <li><strong>Documentazione:</strong> Tipi documentano automaticamente l'API</li>
+                <li><strong>JavaScript Compatibile:</strong> Output pulito, compatibile con browser</li>
+            </ul>
+        </div>
+        
+        <div class="codice">
+            <h3>4. Package.json Scripts</h3>
+<pre>{
+  "name": "mio-progetto-ts",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
+
+# Uso:
+npm run build   # Compila
+npm run watch   # Watch mode
+npm run dev     # Compila + esegui</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-1.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+            <a href="../index.html" class="btn-nav">📚 Indice Lezione 6</a>
+        </div>
+    </div>
+</body>
+</html>

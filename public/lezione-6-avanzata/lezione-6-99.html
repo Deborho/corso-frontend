@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progetto Finale - Sistema Gestione Prodotti TypeScript</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="lezione-6-99.css">
+</head>
+<body>
+    <div class="container">
+        <div class="project-header">
+            <h1>🚀 Progetto Finale - Sistema Gestione Prodotti</h1>
+            <p class="subtitle">Applicazione completa TypeScript con tutte le features del linguaggio</p>
+        </div>
+        
+        <div class="project-info">
+            <h2>📋 Caratteristiche del Progetto</h2>
+            <ul>
+                <li><strong>Interfacce e Types:</strong> Modelli dati fortemente tipizzati</li>
+                <li><strong>Classi:</strong> Product, Category, Cart con incapsulamento</li>
+                <li><strong>Generics:</strong> Repository&lt;T&gt; generico per CRUD</li>
+                <li><strong>Union Types:</strong> Gestione stati e filtri</li>
+                <li><strong>Type Guards:</strong> Validazione dati runtime</li>
+                <li><strong>Utility Types:</strong> Partial, Pick, Omit, Record</li>
+                <li><strong>localStorage:</strong> Persistenza con type safety</li>
+                <li><strong>DOM Manipulation:</strong> Completamente tipizzata</li>
+            </ul>
+        </div>
+        
+        <div class="code-section">
+            <h2>📝 Modelli Dati (types.ts)</h2>
+            <div class="codice">
+<pre>// Tipi base
+type ID = string | number;
+type Price = number;
+type Quantity = number;
+
+// Product status
+type ProductStatus = "available" | "out_of_stock" | "discontinued";
+
+// Filter options
+type SortBy = "name" | "price" | "category";
+type SortOrder = "asc" | "desc";
+
+// Interfacce principali
+interface BaseEntity {
+    id: ID;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+interface Category extends BaseEntity {
+    name: string;
+    description: string;
+}
+
+interface Product extends BaseEntity {
+    name: string;
+    description: string;
+    price: Price;
+    category: Category;
+    status: ProductStatus;
+    stock: Quantity;
+    imageUrl?: string;
+}
+
+// Tipi derivati con Utility Types
+type ProductCreate = Omit&lt;Product, "id" | "createdAt" | "updatedAt"&gt;;
+type ProductUpdate = Partial&lt;ProductCreate&gt;;
+type ProductMinimal = Pick&lt;Product, "id" | "name" | "price"&gt;;
+
+// Cart Item
+interface CartItem {
+    product: Product;
+    quantity: Quantity;
+    subtotal: Price;
+}
+
+// Statistiche
+interface ProductStats {
+    totalProducts: number;
+    totalValue: Price;
+    byCategory: Record&lt;string, number&gt;;
+    byStatus: Record&lt;ProductStatus, number&gt;;
+}
+
+// API Response
+interface ApiResponse&lt;T&gt; {
+    success: boolean;
+    data?: T;
+    error?: string;
+    timestamp: Date;
+}</pre>
+            </div>
+        </div>
+        
+        <div class="code-section">
+            <h2>🔧 Repository Generico (repository.ts)</h2>
+            <div class="codice">
+<pre>// Generic Repository con constraints
+class Repository&lt;T extends BaseEntity&gt; {
+    protected items: Map&lt;ID, T&gt; = new Map();
+    private storageKey: string;
+    
+    constructor(storageKey: string) {
+        this.storageKey = storageKey;
+        this.loadFromStorage();
+    }
+    
+    // Create
+    add(item: T): T {
+        this.items.set(item.id, item);
+        this.saveToStorage();
+        return item;
+    }
+    
+    // Read
+    getById(id: ID): T | undefined {
+        return this.items.get(id);
+    }
+    
+    getAll(): T[] {
+        return Array.from(this.items.values());
+    }
+    
+    // Update
+    update(id: ID, updates: Partial&lt;T&gt;): T | undefined {
+        const item = this.items.get(id);
+        if (!item) return undefined;
+        
+        const updated = { ...item, ...updates, updatedAt: new Date() };
+        this.items.set(id, updated);
+        this.saveToStorage();
+        return updated;
+    }
+    
+    // Delete
+    delete(id: ID): boolean {
+        const deleted = this.items.delete(id);
+        if (deleted) this.saveToStorage();
+        return deleted;
+    }
+    
+    // Search con generic
+    find(predicate: (item: T) => boolean): T[] {
+        return this.getAll().filter(predicate);
+    }
+    
+    // Storage (type-safe)
+    private saveToStorage(): void {
+        const data = Array.from(this.items.entries());
+        localStorage.setItem(this.storageKey, JSON.stringify(data));
+    }
+    
+    private loadFromStorage(): void {
+        const data = localStorage.getItem(this.storageKey);
+        if (data) {
+            const entries: [ID, T][] = JSON.parse(data);
+            this.items = new Map(entries);
+        }
+    }
+    
+    clear(): void {
+        this.items.clear();
+        localStorage.removeItem(this.storageKey);
+    }
+}</pre>
+            </div>
+        </div>
+        
+        <div class="code-section">
+            <h2>🛒 Product Service (product-service.ts)</h2>
+            <div class="codice">
+<pre>class ProductService extends Repository&lt;Product&gt; {
+    constructor() {
+        super("products");
+    }
+    
+    // Create con generazione ID
+    createProduct(data: ProductCreate): Product {
+        const product: Product = {
+            ...data,
+            id: `PROD-${Date.now()}`,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        };
+        return this.add(product);
+    }
+    
+    // Search
+    searchByName(query: string): Product[] {
+        const lower = query.toLowerCase();
+        return this.find(p => 
+            p.name.toLowerCase().includes(lower)
+        );
+    }
+    
+    // Filter by category
+    getByCategory(categoryId: ID): Product[] {
+        return this.find(p => p.category.id === categoryId);
+    }
+    
+    // Filter by status
+    getByStatus(status: ProductStatus): Product[] {
+        return this.find(p => p.status === status);
+    }
+    
+    // Sort
+    sort(products: Product[], by: SortBy, order: SortOrder = "asc"): Product[] {
+        return [...products].sort((a, b) => {
+            let comparison = 0;
+            
+            switch (by) {
+                case "name":
+                    comparison = a.name.localeCompare(b.name);
+                    break;
+                case "price":
+                    comparison = a.price - b.price;
+                    break;
+                case "category":
+                    comparison = a.category.name.localeCompare(b.category.name);
+                    break;
+            }
+            
+            return order === "asc" ? comparison : -comparison;
+        });
+    }
+    
+    // Update stock
+    updateStock(id: ID, quantity: Quantity): Product | undefined {
+        const product = this.getById(id);
+        if (!product) return undefined;
+        
+        const newStock = product.stock + quantity;
+        if (newStock < 0) {
+            throw new Error("Stock cannot be negative");
+        }
+        
+        const status: ProductStatus = 
+            newStock === 0 ? "out_of_stock" : "available";
+        
+        return this.update(id, { stock: newStock, status });
+    }
+    
+    // Statistics
+    getStats(): ProductStats {
+        const products = this.getAll();
+        
+        return {
+            totalProducts: products.length,
+            totalValue: products.reduce((sum, p) => sum + (p.price * p.stock), 0),
+            byCategory: this.groupByCategory(products),
+            byStatus: this.groupByStatus(products)
+        };
+    }
+    
+    private groupByCategory(products: Product[]): Record&lt;string, number&gt; {
+        return products.reduce((acc, p) => {
+            const cat = p.category.name;
+            acc[cat] = (acc[cat] || 0) + 1;
+            return acc;
+        }, {} as Record&lt;string, number&gt;);
+    }
+    
+    private groupByStatus(products: Product[]): Record&lt;ProductStatus, number&gt; {
+        return products.reduce((acc, p) => {
+            acc[p.status] = (acc[p.status] || 0) + 1;
+            return acc;
+        }, {} as Record&lt;ProductStatus, number&gt;);
+    }
+}</pre>
+            </div>
+        </div>
+        
+        <div class="code-section">
+            <h2>🛍️ Cart Service (cart-service.ts)</h2>
+            <div class="codice">
+<pre>class CartService {
+    private items: Map&lt;ID, CartItem&gt; = new Map();
+    
+    addItem(product: Product, quantity: Quantity = 1): CartItem {
+        const existing = this.items.get(product.id);
+        
+        if (existing) {
+            const newQty = existing.quantity + quantity;
+            const item: CartItem = {
+                product,
+                quantity: newQty,
+                subtotal: product.price * newQty
+            };
+            this.items.set(product.id, item);
+            return item;
+        }
+        
+        const item: CartItem = {
+            product,
+            quantity,
+            subtotal: product.price * quantity
+        };
+        this.items.set(product.id, item);
+        return item;
+    }
+    
+    removeItem(productId: ID): boolean {
+        return this.items.delete(productId);
+    }
+    
+    updateQuantity(productId: ID, quantity: Quantity): CartItem | undefined {
+        const item = this.items.get(productId);
+        if (!item) return undefined;
+        
+        if (quantity <= 0) {
+            this.removeItem(productId);
+            return undefined;
+        }
+        
+        const updated: CartItem = {
+            ...item,
+            quantity,
+            subtotal: item.product.price * quantity
+        };
+        this.items.set(productId, updated);
+        return updated;
+    }
+    
+    getItems(): CartItem[] {
+        return Array.from(this.items.values());
+    }
+    
+    getTotal(): Price {
+        return this.getItems().reduce((sum, item) => sum + item.subtotal, 0);
+    }
+    
+    getItemCount(): number {
+        return this.getItems().reduce((sum, item) => sum + item.quantity, 0);
+    }
+    
+    clear(): void {
+        this.items.clear();
+    }
+    
+    isEmpty(): boolean {
+        return this.items.size === 0;
+    }
+}</pre>
+            </div>
+        </div>
+        
+        <div class="code-section">
+            <h2>✅ Type Guards (validators.ts)</h2>
+            <div class="codice">
+<pre>// Type guards per validazione runtime
+function isProduct(obj: any): obj is Product {
+    return (
+        obj &&
+        typeof obj === "object" &&
+        "id" in obj &&
+        "name" in obj &&
+        "price" in obj &&
+        typeof obj.price === "number" &&
+        "category" in obj
+    );
+}
+
+function isProductStatus(value: any): value is ProductStatus {
+    return ["available", "out_of_stock", "discontinued"].includes(value);
+}
+
+function isPositiveNumber(value: any): value is number {
+    return typeof value === "number" && value > 0;
+}
+
+// Assertion functions
+function assertProduct(obj: any): asserts obj is Product {
+    if (!isProduct(obj)) {
+        throw new Error("Invalid product object");
+    }
+}
+
+function assertPositivePrice(price: any): asserts price is Price {
+    if (!isPositiveNumber(price)) {
+        throw new Error("Price must be a positive number");
+    }
+}
+
+// Validators con Result type
+type ValidationResult&lt;T&gt; = 
+    | { valid: true; data: T }
+    | { valid: false; errors: string[] };
+
+function validateProduct(data: any): ValidationResult&lt;Product&gt; {
+    const errors: string[] = [];
+    
+    if (!data.name || typeof data.name !== "string") {
+        errors.push("Name is required and must be a string");
+    }
+    
+    if (!isPositiveNumber(data.price)) {
+        errors.push("Price must be a positive number");
+    }
+    
+    if (!isProductStatus(data.status)) {
+        errors.push("Invalid product status");
+    }
+    
+    if (errors.length > 0) {
+        return { valid: false, errors };
+    }
+    
+    return { valid: true, data: data as Product };
+}</pre>
+            </div>
+        </div>
+        
+        <div class="typescript-features">
+            <h2>🎯 Features TypeScript Dimostrate</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>✅ Tipi Base</h3>
+                    <p>string, number, boolean, type aliases</p>
+                </div>
+                <div class="feature-card">
+                    <h3>✅ Interfacce</h3>
+                    <p>Extends, optional properties, readonly</p>
+                </div>
+                <div class="feature-card">
+                    <h3>✅ Classi</h3>
+                    <p>Inheritance, private/protected, generics</p>
+                </div>
+                <div class="feature-card">
+                    <h3>✅ Generics</h3>
+                    <p>Repository&lt;T&gt;, constraints, utility types</p>
+                </div>
+                <div class="feature-card">
+                    <h3>✅ Union Types</h3>
+                    <p>Literal types, discriminated unions</p>
+                </div>
+                <div class="feature-card">
+                    <h3>✅ Type Guards</h3>
+                    <p>typeof, is predicates, assertions</p>
+                </div>
+                <div class="feature-card">
+                    <h3>✅ Utility Types</h3>
+                    <p>Partial, Pick, Omit, Record</p>
+                </div>
+                <div class="feature-card">
+                    <h3>✅ Type Safety</h3>
+                    <p>Compile-time errors, autocomplete</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="setup-instructions">
+            <h2>🚀 Come Eseguire il Progetto</h2>
+            <div class="codice">
+<pre># 1. Struttura progetto
+product-manager/
+├── src/
+│   ├── types.ts
+│   ├── repository.ts
+│   ├── product-service.ts
+│   ├── cart-service.ts
+│   ├── validators.ts
+│   └── main.ts
+├── tsconfig.json
+└── package.json
+
+# 2. Installa TypeScript
+npm init -y
+npm install --save-dev typescript
+
+# 3. Configura tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true
+  }
+}
+
+# 4. Compila
+npx tsc
+
+# 5. Esegui
+node dist/main.js</pre>
+            </div>
+        </div>
+        
+        <div class="benefits">
+            <h2>💡 Vantaggi di TypeScript in questo Progetto</h2>
+            <ul>
+                <li><strong>Type Safety:</strong> Nessun errore di tipo a runtime (price: number sempre numero)</li>
+                <li><strong>Autocompletamento:</strong> IDE suggerisce tutte le proprietà di Product</li>
+                <li><strong>Refactoring:</strong> Rinominare Product.name aggiorna tutto il codice</li>
+                <li><strong>Documentazione:</strong> Interface = documentazione sempre aggiornata</li>
+                <li><strong>Errori Compile-Time:</strong> Impossibile passare string dove serve number</li>
+                <li><strong>Generics Riutilizzabili:</strong> Repository&lt;T&gt; funziona per qualsiasi entità</li>
+                <li><strong>Type Guards:</strong> Validazione sicura di dati esterni (API, localStorage)</li>
+                <li><strong>Manutenibilità:</strong> Codice più leggibile e facile da mantenere</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="index.html" class="btn-nav">📚 Indice Lezione 6</a>
+            <a href="../index.html" class="btn-nav">🏠 Home Corso</a>
+        </div>
+    </div>
+</body>
+</html>

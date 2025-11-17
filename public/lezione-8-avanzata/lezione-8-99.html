@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.99 - Progetto Finale: Git Workflow Completo</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .project-hero {
+            background: linear-gradient(135deg, #f05033 0%, #362701 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 16px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .project-hero h1 {
+            margin: 0 0 15px 0;
+            font-size: 2.5em;
+        }
+        
+        .workflow-section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .workflow-section h2 {
+            color: #f05033;
+            border-bottom: 3px solid #f05033;
+            padding-bottom: 10px;
+        }
+        
+        .phase {
+            background: #f8f9fa;
+            border-left: 5px solid #f05033;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .phase h3 {
+            margin-top: 0;
+            color: #362701;
+        }
+        
+        .terminal {
+            background: #1e1e1e;
+            color: #4ade80;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .terminal-header {
+            background: #2d2d2d;
+            color: #aaa;
+            padding: 8px 15px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.9em;
+            margin: 15px 0 0 0;
+        }
+        
+        .terminal-body {
+            background: #1e1e1e;
+            color: #4ade80;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 0 0 15px 0;
+        }
+        
+        .checklist {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .checklist ul {
+            margin: 10px 0;
+        }
+        
+        .checklist li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="project-hero">
+            <div style="font-size: 80px; margin-bottom: 20px;">🚀</div>
+            <h1>Progetto Finale: Git Workflow Completo</h1>
+            <p>Workflow Git professionale end-to-end per un progetto web reale</p>
+        </div>
+        
+        <div class="workflow-section">
+            <h2>📋 Scenario del Progetto</h2>
+            <p><strong>Progetto:</strong> Portfolio Website con blog</p>
+            <p><strong>Team:</strong> Te + 2 collaboratori</p>
+            <p><strong>Workflow:</strong> GitHub Flow con Pull Requests</p>
+            <p><strong>Obiettivo:</strong> Dalla creazione repository al deploy, gestendo collaborazione, versioning e releases</p>
+        </div>
+        
+        <div class="phase">
+            <h3>Fase 1: Setup Iniziale del Progetto</h3>
+            
+            <div class="terminal-header">📁 Terminale - Setup Locale</div>
+            <div class="terminal-body">
+<pre># 1. Crea directory progetto
+mkdir portfolio-website
+cd portfolio-website
+
+# 2. Inizializza Git repository
+git init -b main
+# Initialized empty Git repository in portfolio-website/.git/
+
+# 3. Configura identità (se non già fatto globalmente)
+git config user.name "Mario Rossi"
+git config user.email "mario.rossi@example.com"
+
+# 4. Crea .gitignore
+cat &lt;&lt;EOF &gt; .gitignore
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Build
+dist/
+build/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+EOF
+
+# 5. Crea README.md
+cat &lt;&lt;EOF &gt; README.md
+# Portfolio Website
+
+Modern portfolio website with integrated blog.
+
+## Tech Stack
+- HTML5, CSS3, JavaScript
+- Node.js for build tools
+- GitHub Pages for hosting
+
+## Getting Started
+\`\`\`bash
+npm install
+npm run dev
+\`\`\`
+
+## License
+MIT
+EOF
+
+# 6. Crea struttura progetto
+mkdir -p src/{css,js,images}
+mkdir -p blog/posts
+
+# 7. Crea file iniziali
+echo "&lt;!DOCTYPE html&gt;" &gt; src/index.html
+echo "body { margin: 0; }" &gt; src/css/style.css
+echo "console.log('Portfolio loaded');" &gt; src/js/main.js
+
+# 8. Crea package.json
+npm init -y
+
+# 9. Primo commit
+git add .
+git status  # Verifica file staged
+
+git commit -m "chore: initial project setup
+
+- Initialize Git repository
+- Add .gitignore for Node.js project
+- Create README.md with project info
+- Setup basic project structure
+- Add package.json"
+
+# 10. Verifica
+git log --oneline
+# 7a3f2d1 (HEAD -> main) chore: initial project setup</pre>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3>Fase 2: Setup GitHub e Remote</h3>
+            
+            <div class="terminal-header">🌐 GitHub - Crea Repository</div>
+            <div class="terminal-body">
+<pre># 1. Vai su github.com
+# 2. Click "New repository"
+# 3. Repository name: portfolio-website
+# 4. Description: "Modern portfolio website with blog"
+# 5. Public repository
+# 6. NON inizializzare con README (hai già file locali)
+# 7. Click "Create repository"
+
+# GitHub mostra istruzioni per push esistente repository:</pre>
+            </div>
+            
+            <div class="terminal-header">📁 Terminale - Connetti a GitHub</div>
+            <div class="terminal-body">
+<pre># 1. Aggiungi remote origin
+git remote add origin https://github.com/mario-rossi/portfolio-website.git
+
+# 2. Verifica remote
+git remote -v
+# origin  https://github.com/mario-rossi/portfolio-website.git (fetch)
+# origin  https://github.com/mario-rossi/portfolio-website.git (push)
+
+# 3. Push primo commit
+git push -u origin main
+# Enumerating objects: 12, done.
+# Counting objects: 100% (12/12), done.
+# ...
+# To https://github.com/mario-rossi/portfolio-website.git
+#  * [new branch]      main -> main
+# Branch 'main' set up to track remote branch 'main' from 'origin'.
+
+# 4. Setup branch protection su GitHub:
+# Settings → Branches → Add rule
+# - Branch name pattern: main
+# - ✅ Require pull request reviews before merging
+# - ✅ Require status checks to pass
+# - Save changes
+
+# Ora NESSUNO può pushare direttamente a main!</pre>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3>Fase 3: Sviluppo Feature - Homepage</h3>
+            
+            <div class="terminal-header">📁 Workflow Feature Branch</div>
+            <div class="terminal-body">
+<pre># 1. Sincronizza con remote (buona abitudine)
+git checkout main
+git pull origin main
+
+# 2. Crea branch per feature
+git checkout -b feature/homepage-design
+
+# 3. Lavora sulla feature
+cat &lt;&lt;EOF &gt; src/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang="it"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Mario Rossi - Portfolio&lt;/title&gt;
+    &lt;link rel="stylesheet" href="css/style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;h1&gt;Mario Rossi&lt;/h1&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#projects"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#blog"&gt;Blog&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    
+    &lt;main&gt;
+        &lt;section class="hero"&gt;
+            &lt;h2&gt;Full Stack Developer&lt;/h2&gt;
+            &lt;p&gt;Building modern web applications&lt;/p&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+    
+    &lt;script src="js/main.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF
+
+# 4. Aggiungi stili
+cat &lt;&lt;EOF &gt; src/css/style.css
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+}
+
+header {
+    background: #333;
+    color: white;
+    padding: 1rem 2rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+.hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+EOF
+
+# 5. Commit incrementali
+git add src/index.html
+git commit -m "feat(homepage): add HTML structure and navigation"
+
+git add src/css/style.css
+git commit -m "feat(homepage): add responsive styles and hero section"
+
+# 6. Verifica stato
+git status  # working tree clean
+git log --oneline
+# 5f3a9e2 (HEAD -> feature/homepage-design) feat(homepage): add styles
+# 8d2c7b1 feat(homepage): add HTML structure
+# 7a3f2d1 (origin/main, main) chore: initial project setup
+
+# 7. Push feature branch
+git push -u origin feature/homepage-design
+# To https://github.com/mario-rossi/portfolio-website.git
+#  * [new branch]      feature/homepage-design -> feature/homepage-design</pre>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3>Fase 4: Pull Request e Code Review</h3>
+            
+            <div class="terminal-header">🌐 GitHub - Crea Pull Request</div>
+            <div class="terminal-body">
+<pre># 1. Vai su GitHub repository
+# 2. Banner giallo appare: "feature/homepage-design had recent pushes"
+# 3. Click "Compare & pull request"
+
+# 4. Compila PR:
+Title: feat: Implement homepage design with navigation
+
+Description:
+## What
+Implements homepage with hero section and responsive navigation.
+
+## Changes
+- Added HTML5 semantic structure
+- Implemented responsive navigation bar
+- Created hero section with CTA
+- Added mobile-responsive styles
+- Used CSS Flexbox for layouts
+
+## Testing
+- ✅ Tested on Chrome, Firefox, Safari
+- ✅ Mobile responsive (tested on iPhone/Android)
+- ✅ Accessibility checked (alt tags, semantic HTML)
+
+## Screenshots
+[Attach screenshot della homepage]
+
+Closes #1
+
+# 5. Reviewers: Aggiungi collaboratori
+# 6. Labels: enhancement, frontend
+# 7. Click "Create pull request"
+
+# 8. Collaboratore rivede codice e lascia commenti:
+"Great work! Suggestion: Consider extracting colors 
+to CSS variables for easier theming. Line 15-20."
+
+# 9. Tu rispondi e implementi feedback:
+</pre>
+            </div>
+            
+            <div class="terminal-header">📁 Terminale - Implementa Feedback</div>
+            <div class="terminal-body">
+<pre># 1. Ancora su feature branch
+git checkout feature/homepage-design
+
+# 2. Implementa feedback
+cat &lt;&lt;EOF &gt; src/css/style.css
+:root {
+    --primary-color: #333;
+    --text-color: #333;
+    --bg-color: #fff;
+    --accent-color: #007bff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+}
+
+/* ... rest of styles with CSS variables ... */
+EOF
+
+# 3. Commit modifiche
+git add src/css/style.css
+git commit -m "refactor(homepage): extract colors to CSS variables
+
+- Added CSS custom properties for colors
+- Improved theming capability
+- Addresses review feedback"
+
+# 4. Push update
+git push origin feature/homepage-design
+# PR si aggiorna automaticamente!
+
+# 5. Collaboratore approva PR su GitHub
+# ✅ "Approved - Looks good to merge!"
+
+# 6. Click "Merge pull request" su GitHub
+# 7. Click "Confirm merge"
+# 8. Click "Delete branch" (cleanup)</pre>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3>Fase 5: Sincronizzazione Post-Merge</h3>
+            
+            <div class="terminal-header">📁 Terminale - Cleanup Locale</div>
+            <div class="terminal-body">
+<pre># 1. Torna a main
+git checkout main
+
+# 2. Pull modifiche da remote (include merge PR)
+git pull origin main
+# Updating 7a3f2d1..9e5b3c4
+# Fast-forward
+#  src/index.html     | 28 ++++++++++++++++
+#  src/css/style.css  | 45 ++++++++++++++++++++++++++
+#  2 files changed, 73 insertions(+)
+
+# 3. Cancella branch locale (già merged)
+git branch -d feature/homepage-design
+# Deleted branch feature/homepage-design (was 5f3a9e2).
+
+# 4. Cleanup remoto (se non fatto su GitHub)
+git push origin --delete feature/homepage-design
+
+# 5. Verifica branches
+git branch -a
+# * main
+#   remotes/origin/main
+
+# 6. Verifica log
+git log --oneline --graph -5
+# * 9e5b3c4 (HEAD -> main, origin/main) Merge pull request #2
+# |\
+# | * 5f3a9e2 refactor(homepage): extract colors to CSS variables
+# | * 8d2c7b1 feat(homepage): add styles
+# | * 2b4e9f1 feat(homepage): add HTML structure
+# |/
+# * 7a3f2d1 chore: initial project setup</pre>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3>Fase 6: Hotfix su Produzione</h3>
+            
+            <div class="terminal-header">📁 Scenario: Bug Critico in Produzione</div>
+            <div class="terminal-body">
+<pre># Problema: Navbar non funziona su mobile
+
+# 1. Crea hotfix branch da main
+git checkout main
+git pull origin main  # Assicurati sia aggiornato
+git checkout -b hotfix/mobile-menu-fix
+
+# 2. Fix il bug
+cat &lt;&lt;EOF &gt;&gt; src/css/style.css
+
+/* Mobile Menu Fix */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+EOF
+
+# 3. Test il fix localmente
+# Apri browser in modalità mobile...
+# ✅ Menu funziona!
+
+# 4. Commit rapido
+git add src/css/style.css
+git commit -m "fix(navbar): resolve mobile menu layout issue
+
+- Added media query for mobile screens
+- Fixed navigation stacking on small devices
+- Tested on iPhone and Android
+
+Fixes #5"
+
+# 5. Push hotfix
+git push -u origin hotfix/mobile-menu-fix
+
+# 6. Crea PR URGENTE su GitHub
+# Marca come "urgent", richiedi review veloce
+
+# 7. Dopo approvazione veloce, merge in main
+# Su GitHub: Merge pull request
+
+# 8. Cleanup
+git checkout main
+git pull origin main
+git branch -d hotfix/mobile-menu-fix
+
+# 9. Deploy immediato (automatico via CI/CD)</pre>
+            </div>
+        </div>
+        
+        <div class="phase">
+            <h3>Fase 7: Versioning e Release</h3>
+            
+            <div class="terminal-header">📁 Preparazione Release v1.0.0</div>
+            <div class="terminal-body">
+<pre># Dopo diverse features merged, pronto per release
+
+# 1. Sincronizza main
+git checkout main
+git pull origin main
+
+# 2. Crea CHANGELOG.md
+cat &lt;&lt;EOF &gt; CHANGELOG.md
+# Changelog
+
+## [1.0.0] - 2024-11-17
+
+### Added
+- Homepage with hero section and navigation
+- Responsive design for all screen sizes
+- CSS theming with custom properties
+- Mobile-optimized navigation menu
+
+### Fixed
+- Mobile menu layout issue on small screens
+
+### Documentation
+- README.md with setup instructions
+- Project structure and tech stack documentation
+
+[1.0.0]: https://github.com/mario-rossi/portfolio-website/releases/tag/v1.0.0
+EOF
+
+git add CHANGELOG.md
+git commit -m "docs: add CHANGELOG for v1.0.0"
+git push origin main
+
+# 3. Crea annotated tag
+git tag -a v1.0.0 -m "Release version 1.0.0
+
+First stable release of portfolio website.
+
+Features:
+- Responsive homepage design
+- Mobile-friendly navigation
+- Modern CSS architecture
+
+This release is production-ready and deployed at:
+https://mario-rossi.github.io/portfolio-website"
+
+# 4. Push tag
+git push origin v1.0.0
+
+# 5. Crea Release su GitHub
+# GitHub → Releases → "Draft a new release"
+# - Tag: v1.0.0
+# - Title: "Portfolio Website v1.0.0 - First Stable Release"
+# - Description: Copy from CHANGELOG.md
+# - Attach artifacts (opzionale): build.zip
+# - Click "Publish release"
+
+# 6. Verifica release
+git tag -l
+# v1.0.0
+
+git show v1.0.0
+# tag v1.0.0
+# Tagger: Mario Rossi <mario.rossi@example.com>
+# Date:   Mon Nov 17 14:30:00 2024 +0100
+# 
+# Release version 1.0.0
+# ...
+
+# 7. Annuncia release al team/users!</pre>
+            </div>
+        </div>
+        
+        <div class="checklist">
+            <h3>✅ Checklist Finale - Hai Imparato:</h3>
+            <ul>
+                <li>✅ Inizializzare repository Git da zero</li>
+                <li>✅ Configurare .gitignore appropriato</li>
+                <li>✅ Creare repository su GitHub e collegarlo</li>
+                <li>✅ Workflow con feature branches</li>
+                <li>✅ Commit messages semantici e strutturati</li>
+                <li>✅ Push e pull da remote</li>
+                <li>✅ Aprire e gestire Pull Requests</li>
+                <li>✅ Code review e implementare feedback</li>
+                <li>✅ Merge branch dopo approvazione</li>
+                <li>✅ Cleanup branches dopo merge</li>
+                <li>✅ Gestire hotfix urgenti</li>
+                <li>✅ Sincronizzare team con remote</li>
+                <li>✅ Creare tags per releases</li>
+                <li>✅ Pubblicare releases su GitHub</li>
+                <li>✅ Mantenere CHANGELOG aggiornato</li>
+                <li>✅ Branch protection e workflow sicuri</li>
+            </ul>
+        </div>
+        
+        <div class="workflow-section">
+            <h2>🎯 Workflow Git Professionale - Riepilogo</h2>
+            
+            <div class="codice">
+<pre><strong>Daily Workflow:</strong>
+
+1. Mattina - Sincronizza:
+   git checkout main
+   git pull origin main
+
+2. Nuova feature/task:
+   git checkout -b feature/nome-descrittivo
+
+3. Lavora e committa spesso:
+   git add file.js
+   git commit -m "feat: add new functionality"
+
+4. Push branch:
+   git push -u origin feature/nome-descrittivo
+
+5. Apri Pull Request su GitHub
+   - Descrizione chiara
+   - Link a issues
+   - Request reviewers
+
+6. Implementa feedback:
+   git add .
+   git commit -m "fix: address review comments"
+   git push
+
+7. Dopo merge:
+   git checkout main
+   git pull origin main
+   git branch -d feature/nome-descrittivo
+
+8. Ripeti per prossima feature!
+
+<strong>Release Workflow:</strong>
+
+1. Merge tutte le features per release
+2. Aggiorna CHANGELOG.md
+3. git tag -a vX.Y.Z -m "Release vX.Y.Z"
+4. git push origin vX.Y.Z
+5. Crea GitHub Release con note
+6. Deploy (manuale o CI/CD)
+7. Annuncia release
+
+<strong>Hotfix Workflow:</strong>
+
+1. git checkout main && git pull
+2. git checkout -b hotfix/nome-fix
+3. Fix bug e test
+4. git commit -m "fix: critical issue"
+5. git push e crea PR urgente
+6. Fast review e merge
+7. Deploy immediato</pre>
+            </div>
+        </div>
+        
+        <div class="workflow-section">
+            <h2>💡 Best Practices Applicate</h2>
+            <ul>
+                <li><strong>Branch Protection:</strong> main protetto, tutte le modifiche via PR</li>
+                <li><strong>Commit Semantici:</strong> feat, fix, docs, chore con descrizioni chiare</li>
+                <li><strong>Code Review:</strong> Ogni PR rivista da almeno un collaboratore</li>
+                <li><strong>Small PRs:</strong> Pull requests focalizzate e piccole</li>
+                <li><strong>Frequent Commits:</strong> Commit spesso con messaggi descrittivi</li>
+                <li><strong>CHANGELOG:</strong> Documentazione di tutte le modifiche</li>
+                <li><strong>Semantic Versioning:</strong> vMAJOR.MINOR.PATCH per releases</li>
+                <li><strong>Branch Cleanup:</strong> Cancellazione branches merged</li>
+                <li><strong>.gitignore:</strong> File generati e sensibili mai committati</li>
+                <li><strong>Documentation:</strong> README e commenti sempre aggiornati</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="index.html" class="btn-nav">📚 Indice Lezione 8</a>
+            <a href="../index.html" class="btn-nav">🏠 Home Corso</a>
+        </div>
+    </div>
+</body>
+</html>

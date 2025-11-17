@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type Aliases - Esempio TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio - Type Aliases e Literal Types</h1>
+        
+        <div class="codice">
+<pre>// Type aliases
+type ID = string | number;
+type Email = string;
+
+let userId: ID = "U-001";
+let adminId: ID = 42;
+
+// Literal types
+type Direzione = "nord" | "sud" | "est" | "ovest";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+
+function muovi(dir: Direzione) {
+    console.log(`Muovo verso ${dir}`);
+}
+
+muovi("nord");  // ✅ OK
+// muovi("left");  // ❌ Errore
+
+// Template literal types
+type Colore = "rosso" | "verde" | "blu";
+type Tonalita = "chiaro" | "scuro";
+type ColoreCompleto = `${Colore}-${Tonalita}`;
+
+let colore: ColoreCompleto = "rosso-chiaro";
+
+// Type per oggetti
+type Utente = {
+    id: ID;
+    nome: string;
+    email: Email;
+    attivo: boolean;
+};
+
+let utente: Utente = {
+    id: 1,
+    nome: "Marco",
+    email: "marco@email.com",
+    attivo: true
+};
+
+// Type per funzioni
+type Callback = (error: Error | null, data?: any) => void;
+type Comparatore = (a: number, b: number) => number;
+
+const crescente: Comparatore = (a, b) => a - b;
+
+// Utility types
+type UtenteParziale = Partial&lt;Utente&gt;;
+let update: UtenteParziale = { email: "nuovo@email.com" };
+
+type UtenteReadonly = Readonly&lt;Utente&gt;;
+type UtenteMinimo = Pick&lt;Utente, "id" | "nome"&gt;;
+type UtenteSenzaID = Omit&lt;Utente, "id"&gt;;
+
+console.log("✅ Type aliases funzionano!");</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-7.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+        </div>
+    </div>
+</body>
+</html>

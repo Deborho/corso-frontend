@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.8 - Collaboration Workflow</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.8 - Collaboration Workflow</h1>
+        
+        <div class="teoria">
+            <h2>Fork Workflow</h2>
+            <p>Il <strong>fork workflow</strong> è il metodo standard per contribuire a progetti open source.</p>
+            
+            <div class="codice">
+<pre><strong>Processo Completo:</strong>
+
+1. Fork repository originale su GitHub
+   ↓
+2. Clone tuo fork localmente
+   ↓
+3. Configura remote "upstream" (repository originale)
+   ↓
+4. Crea branch per feature
+   ↓
+5. Lavora e committa
+   ↓
+6. Push a tuo fork
+   ↓
+7. Apri Pull Request verso originale
+   ↓
+8. Code review e discussione
+   ↓
+9. Merge (se approvato)</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Setup Fork - Passo per Passo</h2>
+            
+            <div class="codice">
+<pre># 1. Fork repository su GitHub:
+# Vai su https://github.com/original-owner/repo
+# Click "Fork" button
+# Ora hai: https://github.com/tuo-username/repo
+
+# 2. Clone TUO fork:
+git clone https://github.com/tuo-username/repo.git
+cd repo
+
+# 3. Aggiungi upstream (repository originale):
+git remote add upstream https://github.com/original-owner/repo.git
+
+# 4. Verifica remotes:
+git remote -v
+# origin    https://github.com/tuo-username/repo.git (fetch)
+# origin    https://github.com/tuo-username/repo.git (push)
+# upstream  https://github.com/original-owner/repo.git (fetch)
+# upstream  https://github.com/original-owner/repo.git (push)
+
+# 5. Fetch upstream per aggiornamenti:
+git fetch upstream
+
+# 6. Merge aggiornamenti upstream nel tuo main:
+git checkout main
+git merge upstream/main
+
+# 7. Push aggiornamenti al tuo fork:
+git push origin main</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Contribuire con Pull Request</h2>
+            
+            <div class="codice">
+<pre># 1. Sincronizza con upstream:
+git checkout main
+git fetch upstream
+git merge upstream/main
+
+# 2. Crea branch per feature:
+git checkout -b feature/add-dark-mode
+
+# 3. Lavora sulla feature:
+echo "dark mode code" > darkmode.js
+git add darkmode.js
+git commit -m "feat: add dark mode toggle"
+
+# 4. Push branch al TUO fork:
+git push origin feature/add-dark-mode
+
+# 5. Apri Pull Request su GitHub:
+# - Vai al repository originale
+# - Click "Pull requests" → "New pull request"
+# - Click "compare across forks"
+# - Base: original-owner/repo main
+# - Head: tuo-username/repo feature/add-dark-mode
+# - Click "Create pull request"
+# - Scrivi descrizione chiara
+# - Click "Create pull request"
+
+# 6. Aspetta review e feedback
+
+# 7. Se richieste modifiche:
+# Modifica file localmente
+git add .
+git commit -m "fix: address review comments"
+git push origin feature/add-dark-mode
+# PR si aggiorna automaticamente!
+
+# 8. Dopo merge:
+# - PR chiusa
+# - Cancella branch locale e remoto
+git checkout main
+git branch -d feature/add-dark-mode
+git push origin --delete feature/add-dark-mode</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Pull Request Best Practices</h2>
+            
+            <div class="codice">
+<pre><strong>✅ Buona Pull Request:</strong>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Title: feat: Add dark mode toggle to navbar
+
+<strong>Description:</strong>
+## What
+Implements dark mode functionality with toggle button in navbar.
+
+## Why
+Addresses issue #42 - users requested dark mode for better UX.
+
+## How
+- Added darkmode.css with CSS variables
+- Created toggle button component
+- Implemented localStorage persistence
+- Added accessibility (prefers-color-scheme)
+
+## Testing
+- [ ] Tested toggle functionality
+- [ ] Verified localStorage works
+- [ ] Checked accessibility
+- [ ] Mobile responsive
+
+## Screenshots
+[Screenshot of dark mode]
+
+Closes #42
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<strong>❌ Cattiva Pull Request:</strong>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Title: Update
+
+Description: changed some stuff
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Code Review Process</h2>
+            
+            <div class="codice">
+<pre><strong>Come Reviewer:</strong>
+
+# 1. Checkout PR localmente per testare:
+git fetch origin pull/123/head:pr-123
+git checkout pr-123
+
+# 2. Testa modifiche
+# 3. Lascia feedback costruttivo su GitHub:
+
+✅ Buon feedback:
+"Ottimo lavoro! Suggerimento: potresti estrarre questa logica 
+in una funzione separata per migliorare la leggibilità? 
+File: darkmode.js, linea 45"
+
+❌ Cattivo feedback:
+"Questo fa schifo"
+
+# 4. Approva o richiedi modifiche
+# 5. Merge se tutto ok
+
+<strong>Come Contributor:</strong>
+
+# 1. Leggi feedback attentamente
+# 2. Rispondi a commenti
+# 3. Implementa modifiche richieste
+# 4. Push aggiornamenti
+# 5. Risolvi conversations su GitHub
+# 6. Richiedi re-review
+
+<strong>Etiquette:</strong>
+✅ Sii rispettoso e costruttivo
+✅ Spiega il "perché" delle tue richieste
+✅ Suggerisci alternative
+✅ Ringrazia per il contributo
+✅ Rispondi in tempi ragionevoli
+❌ Non essere aggressivo o sprezzante
+❌ Non fare commenti personali</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Branch Protection Rules</h2>
+            <p>Configurazione GitHub per proteggere branch importanti (main, develop):</p>
+            
+            <div class="codice">
+<pre><strong>Regole Comuni:</strong>
+
+✅ Require pull request reviews before merging
+   - Numero di approvals richieste (es: 2)
+   
+✅ Require status checks to pass
+   - Tests devono passare
+   - Build deve completare
+   
+✅ Require branches to be up to date
+   - Branch deve essere aggiornato con main
+   
+✅ Require conversation resolution
+   - Tutti i commenti devono essere risolti
+   
+✅ Restrict who can push
+   - Solo maintainers
+   
+✅ Require signed commits
+   - Commit devono essere firmati GPG
+
+<strong>Come Configurare:</strong>
+GitHub → Settings → Branches → Add rule
+- Branch name pattern: main
+- Seleziona regole desiderate
+- Save changes
+
+<strong>Risultato:</strong>
+- Nessuno può pushare direttamente a main
+- Tutte le modifiche tramite PR
+- PR devono essere approvate
+- Tests devono passare</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Workflows Popolari</h2>
+            
+            <h3>1. GitHub Flow (Semplice)</h3>
+            <div class="codice">
+<pre><strong>Branch:</strong>
+- main (produzione, sempre deployable)
+- feature branches
+
+<strong>Workflow:</strong>
+1. Branch da main
+2. Committa modifiche
+3. Apri Pull Request
+4. Review e discussione
+5. Deploy e test
+6. Merge in main
+
+✅ Semplice
+✅ Deploy continuo
+✅ Perfetto per web apps
+❌ Meno adatto per software con releases</pre>
+            </div>
+            
+            <h3>2. Git Flow (Strutturato)</h3>
+            <div class="codice">
+<pre><strong>Branch Permanenti:</strong>
+- main (produzione)
+- develop (staging)
+
+<strong>Branch Temporanei:</strong>
+- feature/* (da develop)
+- release/* (da develop, merge in main e develop)
+- hotfix/* (da main, merge in main e develop)
+
+<strong>Workflow:</strong>
+1. Sviluppo normale: develop → feature → develop
+2. Release: develop → release → main + tag
+3. Hotfix: main → hotfix → main + develop
+
+✅ Strutturato e scalabile
+✅ Supporta release scheduled
+✅ Clear separation of concerns
+❌ Più complesso
+❌ Overhead per progetti piccoli</pre>
+            </div>
+            
+            <h3>3. Trunk-Based Development</h3>
+            <div class="codice">
+<pre><strong>Branch:</strong>
+- main (trunk) - tutti committano qui
+- short-lived feature branches (max 1-2 giorni)
+
+<strong>Workflow:</strong>
+1. Small, frequent commits to main
+2. Feature flags per WIP features
+3. Continuous integration
+4. Deploy spesso
+
+✅ Massima velocità
+✅ Riduce merge conflicts
+✅ Continuous deployment
+❌ Richiede ottimi test
+❌ Richiede feature flags
+❌ Team deve essere disciplinato</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Mantenere Fork Aggiornato</h2>
+            
+            <div class="codice">
+<pre># Metodo 1: Fetch e Merge
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+
+# Metodo 2: Pull con Rebase
+git checkout main
+git pull --rebase upstream main
+git push origin main
+
+# Metodo 3: GitHub UI
+# Vai al tuo fork su GitHub
+# Click "Sync fork" → "Update branch"
+
+# Aggiornare branch feature con main:
+git checkout feature/my-feature
+git fetch upstream
+git rebase upstream/main
+# Risolvi conflitti se necessario
+git push --force-with-lease origin feature/my-feature
+
+# ⚠️ Force push solo su TUO branch!</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - Collaboration</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Scrivi PR descriptive con contesto</li>
+                <li>Mantieni PR piccole e focalizzate</li>
+                <li>Testa il codice prima di aprire PR</li>
+                <li>Rispondi a feedback in modo costruttivo</li>
+                <li>Mantieni fork sincronizzato con upstream</li>
+                <li>Usa branch protection su main</li>
+                <li>Scrivi commit messages chiari</li>
+                <li>Documenta modifiche significative</li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non aprire PR con 100+ file modificati</li>
+                <li>Non ignorare commenti di review</li>
+                <li>Non fare force push su branch condivisi</li>
+                <li>Non committare codice non testato</li>
+                <li>Non lasciare PR aperte per settimane</li>
+                <li>Non essere difensivo con feedback</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-8-7.html" class="btn-nav">← Precedente: Remote</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-8-9.html" class="btn-nav">Prossima: .gitignore →</a>
+        </div>
+    </div>
+</body>
+</html>

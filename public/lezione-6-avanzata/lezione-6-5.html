@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.5 - Funzioni Tipizzate</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.5 - Funzioni Tipizzate</h1>
+        
+        <h2>1. Function Type Annotations</h2>
+        
+        <div class="teoria">
+            <p>In TypeScript puoi specificare tipi per parametri e return value:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Funzione con tipi espliciti
+function somma(a: number, b: number): number {
+    return a + b;
+}
+
+// TypeScript inferisce il return type se omesso
+function moltiplica(a: number, b: number) {
+    return a * b;  // return type: number (inferito)
+}
+
+// Arrow function tipizzata
+const sottrai = (a: number, b: number): number => {
+    return a - b;
+};
+
+// Arrow function concisa
+const dividi = (a: number, b: number): number => a / b;
+
+// ❌ Errori TypeScript
+somma(5, "10");        // Errore: string non è number
+somma(5);              // Errore: manca secondo parametro
+let x: string = somma(2, 3);  // Errore: number non è string</pre>
+        </div>
+        
+        <h2>2. Parametri Opzionali</h2>
+        
+        <div class="codice">
+<pre>// Parametro opzionale con ?
+function saluta(nome: string, cognome?: string): string {
+    if (cognome) {
+        return `Ciao ${nome} ${cognome}!`;
+    }
+    return `Ciao ${nome}!`;
+}
+
+saluta("Marco");              // OK
+saluta("Marco", "Rossi");     // OK
+
+// Parametro con valore default
+function creaUtente(nome: string, ruolo: string = "user"): object {
+    return { nome, ruolo };
+}
+
+creaUtente("Marco");              // { nome: "Marco", ruolo: "user" }
+creaUtente("Lucia", "admin");     // { nome: "Lucia", ruolo: "admin" }
+
+// ⚠️ Parametri opzionali devono venire DOPO quelli obbligatori
+function errore(a?: number, b: number) {  // ❌ Errore!
+    return a + b;
+}</pre>
+        </div>
+        
+        <h2>3. Rest Parameters</h2>
+        
+        <div class="codice">
+<pre>// Rest parameters tipizzati
+function sommaNumeri(...numeri: number[]): number {
+    return numeri.reduce((acc, n) => acc + n, 0);
+}
+
+sommaNumeri(1, 2, 3);           // 6
+sommaNumeri(10, 20, 30, 40);    // 100
+sommaNumeri();                   // 0
+
+// Rest con altri parametri
+function log(messaggio: string, ...dettagli: any[]): void {
+    console.log(messaggio, ...dettagli);
+}
+
+log("Errore:", 404, "Not Found");
+log("Success!");
+
+// Rest deve essere l'ultimo parametro
+function formato(formato: string, ...valori: any[]): string {
+    return `${formato}: ${valori.join(", ")}`;
+}</pre>
+        </div>
+        
+        <h2>4. Function Types</h2>
+        
+        <div class="teoria">
+            <p>Puoi definire un tipo per una funzione:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Type per funzione
+type Operazione = (a: number, b: number) => number;
+
+// Funzioni che rispettano il type
+const somma: Operazione = (a, b) => a + b;
+const sottrai: Operazione = (a, b) => a - b;
+const moltiplica: Operazione = (a, b) => a * b;
+
+// Uso
+function calcola(op: Operazione, x: number, y: number): number {
+    return op(x, y);
+}
+
+calcola(somma, 5, 3);        // 8
+calcola(moltiplica, 4, 2);   // 8
+
+// Type per callback
+type Callback = (risultato: string) => void;
+
+function fetchData(url: string, callback: Callback): void {
+    setTimeout(() => {
+        callback(`Dati da ${url}`);
+    }, 1000);
+}
+
+fetchData("https://api.example.com", (data) => {
+    console.log(data);
+});</pre>
+        </div>
+        
+        <h2>5. Void Return Type</h2>
+        
+        <div class="codice">
+<pre>// Funzione che non ritorna nulla
+function log(messaggio: string): void {
+    console.log(messaggio);
+}
+
+// void per side effects
+function aggiornaDOM(elemento: HTMLElement, testo: string): void {
+    elemento.textContent = testo;
+}
+
+// Callback void
+function forEach(array: number[], callback: (n: number) => void): void {
+    for (let item of array) {
+        callback(item);
+    }
+}
+
+forEach([1, 2, 3], (n) => {
+    console.log(n * 2);
+});</pre>
+        </div>
+        
+        <h2>6. Never Return Type</h2>
+        
+        <div class="codice">
+<pre>// Funzione che non ritorna mai
+function errore(messaggio: string): never {
+    throw new Error(messaggio);
+}
+
+function loopInfinito(): never {
+    while (true) {
+        console.log("Loop...");
+    }
+}
+
+// Uso pratico: assert functions
+function assert(condizione: boolean, msg: string): asserts condizione {
+    if (!condizione) {
+        throw new Error(msg);
+    }
+}
+
+function processaUtente(id: string | null) {
+    assert(id !== null, "ID non può essere null");
+    // Dopo assert, TypeScript sa che id è string
+    console.log(id.toUpperCase());
+}</pre>
+        </div>
+        
+        <h2>7. Function Overloading</h2>
+        
+        <div class="teoria">
+            <p><strong>Overloading</strong> permette signature multiple per stessa funzione:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Overload signatures
+function formatta(valore: string): string;
+function formatta(valore: number): string;
+function formatta(valore: boolean): string;
+
+// Implementation signature
+function formatta(valore: string | number | boolean): string {
+    if (typeof valore === "string") {
+        return valore.toUpperCase();
+    }
+    if (typeof valore === "number") {
+        return valore.toFixed(2);
+    }
+    return valore ? "Vero" : "Falso";
+}
+
+formatta("ciao");      // "CIAO"
+formatta(3.14159);     // "3.14"
+formatta(true);        // "Vero"
+
+// Overload con return type diversi
+function parse(input: string): object;
+function parse(input: number): string;
+function parse(input: string | number): object | string {
+    if (typeof input === "string") {
+        return JSON.parse(input);
+    }
+    return input.toString();
+}
+
+let obj = parse('{"nome": "Marco"}');  // object
+let str = parse(123);                   // string</pre>
+        </div>
+        
+        <h2>8. Generic Functions</h2>
+        
+        <div class="teoria">
+            <p><strong>Generics</strong> permettono funzioni che funzionano con tipi multipli:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Funzione generica
+function identity&lt;T&gt;(valore: T): T {
+    return valore;
+}
+
+let num = identity&lt;number&gt;(42);        // number
+let str = identity&lt;string&gt;("ciao");    // string
+let bool = identity(true);              // boolean (inferito)
+
+// Generic con array
+function primoElemento&lt;T&gt;(array: T[]): T | undefined {
+    return array[0];
+}
+
+let primo = primoElemento([1, 2, 3]);          // number | undefined
+let primaLettera = primoElemento(["a", "b"]);  // string | undefined
+
+// Generic con constraint
+function lunghezza&lt;T extends { length: number }&gt;(item: T): number {
+    return item.length;
+}
+
+lunghezza("ciao");        // 4
+lunghezza([1, 2, 3]);     // 3
+lunghezza({ length: 10 }); // 10
+// lunghezza(123);         // ❌ Errore: number non ha length</pre>
+        </div>
+        
+        <h2>9. This Parameter</h2>
+        
+        <div class="codice">
+<pre>// Tipo esplicito per 'this'
+interface Database {
+    dati: string[];
+    query(this: Database, filtro: string): string[];
+}
+
+const db: Database = {
+    dati: ["apple", "banana", "cherry"],
+    query(filtro: string) {
+        return this.dati.filter(item => item.includes(filtro));
+    }
+};
+
+db.query("a");  // ["apple", "banana"]
+
+// Arrow function NON può avere this parameter
+// (arrow function cattura this dal contesto esterno)</pre>
+        </div>
+        
+        <h2>10. Callback Tipizzate</h2>
+        
+        <div class="codice">
+<pre>// Callback tipizzata
+interface FetchOptions {
+    method: string;
+    headers?: Record&lt;string, string&gt;;
+}
+
+type FetchCallback = (error: Error | null, data?: any) => void;
+
+function fetchAPI(url: string, options: FetchOptions, callback: FetchCallback): void {
+    fetch(url, options)
+        .then(res => res.json())
+        .then(data => callback(null, data))
+        .catch(err => callback(err));
+}
+
+// Uso con type safety
+fetchAPI("https://api.example.com/users", { method: "GET" }, (error, data) => {
+    if (error) {
+        console.error(error);
+        return;
+    }
+    console.log(data);
+});
+
+// Promise tipizzata (preferita)
+async function fetchData&lt;T&gt;(url: string): Promise&lt;T&gt; {
+    const response = await fetch(url);
+    return response.json();
+}
+
+interface User {
+    id: number;
+    name: string;
+}
+
+const user = await fetchData&lt;User&gt;("https://api.example.com/user/1");
+console.log(user.name);  // Type-safe!</pre>
+        </div>
+        
+        <h2>11. Best Practices</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Tipi espliciti per parametri:</strong> Sempre specificare tipi parametri</li>
+                <li><strong>Return type inferito:</strong> Lascia che TypeScript inferisca il return type se ovvio</li>
+                <li><strong>Optional vs Default:</strong> Usa default parameters invece di opzionali quando possibile</li>
+                <li><strong>Arrow vs Function:</strong> Arrow per callback/inline, function per metodi/this</li>
+                <li><strong>Generics:</strong> Usa generics per funzioni riutilizzabili con tipi diversi</li>
+                <li><strong>Overloading:</strong> Usa con parsimonia, union types spesso migliori</li>
+                <li><strong>Promise&lt;T&gt;:</strong> Preferisci async/await con Promise tipizzate</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Prova l'esempio interattivo: <a href="esempi/funzioni-esempio.html">Funzioni Tipizzate</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-4.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-6.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

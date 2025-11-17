@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.8 - Classi in TypeScript</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.8 - Classi in TypeScript</h1>
+        
+        <h2>1. Classi Base con Tipi</h2>
+        
+        <div class="teoria">
+            <p>Le classi TypeScript aggiungono tipizzazione alle classi ES6:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Classe tipizzata
+class Utente {
+    nome: string;
+    eta: number;
+    
+    constructor(nome: string, eta: number) {
+        this.nome = nome;
+        this.eta = eta;
+    }
+    
+    saluta(): string {
+        return `Ciao, sono ${this.nome}`;
+    }
+    
+    compieAnni(): void {
+        this.eta++;
+    }
+}
+
+let utente = new Utente("Marco", 25);
+console.log(utente.saluta());  // "Ciao, sono Marco"
+utente.compieAnni();
+console.log(utente.eta);  // 26</pre>
+        </div>
+        
+        <h2>2. Modificatori di Accesso</h2>
+        
+        <div class="teoria">
+            <p>TypeScript aggiunge <strong>modificatori di accesso</strong> alle proprietà:</p>
+            <ul>
+                <li><strong>public:</strong> Accessibile ovunque (default)</li>
+                <li><strong>private:</strong> Accessibile solo dentro la classe</li>
+                <li><strong>protected:</strong> Accessibile nella classe e nelle sottoclassi</li>
+            </ul>
+        </div>
+        
+        <div class="codice">
+<pre>class BankAccount {
+    public titolare: string;      // Pubblico (accessibile ovunque)
+    private saldo: number;        // Privato (solo dentro la classe)
+    protected pin: string;        // Protected (classe + sottoclassi)
+    
+    constructor(titolare: string, saldoIniziale: number, pin: string) {
+        this.titolare = titolare;
+        this.saldo = saldoIniziale;
+        this.pin = pin;
+    }
+    
+    public deposita(importo: number): void {
+        this.saldo += importo;
+    }
+    
+    public preleva(importo: number): boolean {
+        if (importo <= this.saldo) {
+            this.saldo -= importo;
+            return true;
+        }
+        return false;
+    }
+    
+    public getSaldo(): number {
+        return this.saldo;
+    }
+}
+
+let conto = new BankAccount("Marco", 1000, "1234");
+conto.titolare = "Lucia";     // ✅ OK (public)
+conto.deposita(500);           // ✅ OK (public method)
+console.log(conto.getSaldo()); // 1500
+
+// conto.saldo = 9999;         // ❌ Errore: saldo è private
+// conto.pin = "0000";         // ❌ Errore: pin è protected</pre>
+        </div>
+        
+        <h2>3. Parameter Properties (Shorthand)</h2>
+        
+        <div class="codice">
+<pre>// Sintassi verbosa
+class Punto {
+    x: number;
+    y: number;
+    
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+// Sintassi shorthand (equivalente)
+class PuntoBreve {
+    constructor(public x: number, public y: number) {
+        // TypeScript crea automaticamente le proprietà
+    }
+}
+
+let p = new PuntoBreve(10, 20);
+console.log(p.x, p.y);  // 10 20
+
+// Con modificatori di accesso
+class Persona {
+    constructor(
+        public nome: string,
+        private eta: number,
+        protected id: string
+    ) {}
+    
+    getEta(): number {
+        return this.eta;
+    }
+}</pre>
+        </div>
+        
+        <h2>4. Readonly Properties</h2>
+        
+        <div class="codice">
+<pre>class Config {
+    readonly apiUrl: string;
+    readonly apiKey: string;
+    
+    constructor(url: string, key: string) {
+        this.apiUrl = url;
+        this.apiKey = key;
+    }
+    
+    // reset(): void {
+    //     this.apiUrl = "new-url";  // ❌ Errore: readonly
+    // }
+}
+
+// Shorthand con readonly
+class Prodotto {
+    constructor(
+        public readonly id: number,
+        public nome: string,
+        public prezzo: number
+    ) {}
+}
+
+let prodotto = new Prodotto(1, "Laptop", 999);
+prodotto.nome = "Desktop";      // ✅ OK
+prodotto.prezzo = 1099;         // ✅ OK
+// prodotto.id = 2;             // ❌ Errore: id è readonly</pre>
+        </div>
+        
+        <h2>5. Getters e Setters</h2>
+        
+        <div class="codice">
+<pre>class Temperatura {
+    private _celsius: number = 0;
+    
+    // Getter
+    get celsius(): number {
+        return this._celsius;
+    }
+    
+    // Setter con validazione
+    set celsius(valore: number) {
+        if (valore < -273.15) {
+            throw new Error("Temperatura troppo bassa!");
+        }
+        this._celsius = valore;
+    }
+    
+    // Getter calcolato
+    get fahrenheit(): number {
+        return this._celsius * 9/5 + 32;
+    }
+    
+    set fahrenheit(valore: number) {
+        this._celsius = (valore - 32) * 5/9;
+    }
+}
+
+let temp = new Temperatura();
+temp.celsius = 25;              // Usa setter
+console.log(temp.celsius);      // 25 (usa getter)
+console.log(temp.fahrenheit);   // 77 (getter calcolato)
+
+temp.fahrenheit = 32;           // Imposta tramite fahrenheit
+console.log(temp.celsius);      // 0</pre>
+        </div>
+        
+        <h2>6. Ereditarietà</h2>
+        
+        <div class="codice">
+<pre>// Classe base
+class Animale {
+    constructor(public nome: string) {}
+    
+    muovi(distanza: number): void {
+        console.log(`${this.nome} si muove di ${distanza}m`);
+    }
+}
+
+// Sottoclasse con extends
+class Cane extends Animale {
+    constructor(nome: string, public razza: string) {
+        super(nome);  // Chiama constructor della classe padre
+    }
+    
+    abbaia(): void {
+        console.log(`${this.nome} fa: Bau bau!`);
+    }
+    
+    // Override metodo
+    muovi(distanza: number): void {
+        console.log("Corre...");
+        super.muovi(distanza);  // Chiama metodo padre
+    }
+}
+
+let cane = new Cane("Fido", "Labrador");
+cane.abbaia();        // "Fido fa: Bau bau!"
+cane.muovi(10);       // "Corre..." + "Fido si muove di 10m"
+console.log(cane.razza);  // "Labrador"</pre>
+        </div>
+        
+        <h2>7. Abstract Classes</h2>
+        
+        <div class="teoria">
+            <p><strong>Abstract class</strong> è una classe base che non può essere istanziata direttamente:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Classe astratta
+abstract class Forma {
+    constructor(public nome: string) {}
+    
+    // Metodo astratto (deve essere implementato dalle sottoclassi)
+    abstract calcolaArea(): number;
+    
+    // Metodo concreto (ereditato dalle sottoclassi)
+    descrivi(): string {
+        return `Sono una ${this.nome} con area ${this.calcolaArea()}`;
+    }
+}
+
+// let f = new Forma("test");  // ❌ Errore: cannot create instance
+
+class Cerchio extends Forma {
+    constructor(public raggio: number) {
+        super("Cerchio");
+    }
+    
+    // Implementa metodo astratto
+    calcolaArea(): number {
+        return Math.PI * this.raggio ** 2;
+    }
+}
+
+class Quadrato extends Forma {
+    constructor(public lato: number) {
+        super("Quadrato");
+    }
+    
+    calcolaArea(): number {
+        return this.lato ** 2;
+    }
+}
+
+let cerchio = new Cerchio(5);
+let quadrato = new Quadrato(10);
+
+console.log(cerchio.descrivi());   // "Sono una Cerchio con area 78.54..."
+console.log(quadrato.descrivi());  // "Sono una Quadrato con area 100"</pre>
+        </div>
+        
+        <h2>8. Implements con Interfacce</h2>
+        
+        <div class="codice">
+<pre>// Interface definisce il contratto
+interface Stampabile {
+    stampa(): void;
+}
+
+interface Salvabile {
+    salva(filename: string): void;
+}
+
+// Classe implementa interfacce
+class Documento implements Stampabile, Salvabile {
+    constructor(public contenuto: string) {}
+    
+    stampa(): void {
+        console.log(this.contenuto);
+    }
+    
+    salva(filename: string): void {
+        console.log(`Salvataggio in ${filename}...`);
+    }
+}
+
+// TypeScript forza l'implementazione dei metodi
+let doc = new Documento("Hello World");
+doc.stampa();           // "Hello World"
+doc.salva("doc.txt");   // "Salvataggio in doc.txt..."
+
+// Funzione che accetta interface
+function stampaDocumento(doc: Stampabile) {
+    doc.stampa();
+}
+
+stampaDocumento(doc);  // ✅ OK</pre>
+        </div>
+        
+        <h2>9. Static Members</h2>
+        
+        <div class="codice">
+<pre>class Matematica {
+    static readonly PI = 3.14159;
+    
+    static somma(a: number, b: number): number {
+        return a + b;
+    }
+    
+    static max(...numeri: number[]): number {
+        return Math.max(...numeri);
+    }
+}
+
+// Accesso senza istanziare la classe
+console.log(Matematica.PI);           // 3.14159
+console.log(Matematica.somma(5, 3));  // 8
+console.log(Matematica.max(1, 5, 3)); // 5
+
+// Utility class
+class StringUtils {
+    static capitalize(str: string): string {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    
+    static reverse(str: string): string {
+        return str.split("").reverse().join("");
+    }
+}
+
+console.log(StringUtils.capitalize("hello"));  // "Hello"
+console.log(StringUtils.reverse("typescript")); // "tpircsepyt"</pre>
+        </div>
+        
+        <h2>10. Generic Classes</h2>
+        
+        <div class="codice">
+<pre>// Classe generica
+class Box&lt;T&gt; {
+    private contenuto?: T;
+    
+    set(valore: T): void {
+        this.contenuto = valore;
+    }
+    
+    get(): T | undefined {
+        return this.contenuto;
+    }
+    
+    isEmpty(): boolean {
+        return this.contenuto === undefined;
+    }
+}
+
+// Uso con tipi diversi
+let boxNumero = new Box&lt;number&gt;();
+boxNumero.set(42);
+console.log(boxNumero.get());  // 42
+
+let boxStringa = new Box&lt;string&gt;();
+boxStringa.set("TypeScript");
+console.log(boxStringa.get());  // "TypeScript"
+
+// Generic con constraint
+class Repository&lt;T extends { id: number }&gt; {
+    private items: T[] = [];
+    
+    add(item: T): void {
+        this.items.push(item);
+    }
+    
+    findById(id: number): T | undefined {
+        return this.items.find(item => item.id === id);
+    }
+    
+    getAll(): T[] {
+        return [...this.items];
+    }
+}
+
+interface Prodotto {
+    id: number;
+    nome: string;
+    prezzo: number;
+}
+
+let repo = new Repository&lt;Prodotto&gt;();
+repo.add({ id: 1, nome: "Laptop", prezzo: 999 });
+repo.add({ id: 2, nome: "Mouse", prezzo: 29 });
+
+console.log(repo.findById(1));  // { id: 1, nome: "Laptop", prezzo: 999 }</pre>
+        </div>
+        
+        <h2>11. Best Practices</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Parameter Properties:</strong> Usa shorthand per costruttori semplici</li>
+                <li><strong>Private by Default:</strong> Rendi proprietà private a meno che non servano pubbliche</li>
+                <li><strong>Readonly:</strong> Usa per valori che non devono cambiare dopo inizializzazione</li>
+                <li><strong>Abstract Classes:</strong> Usa per classi base condivise con metodi comuni</li>
+                <li><strong>Interfaces:</strong> Usa <code>implements</code> per contratti, non solo ereditarietà</li>
+                <li><strong>Static:</strong> Usa per utility functions che non dipendono dallo stato</li>
+                <li><strong>Getters/Setters:</strong> Usa per validazione o calcoli</li>
+                <li><strong>Composizione > Ereditarietà:</strong> Preferisci composition quando possibile</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Prova l'esempio interattivo: <a href="esempi/classi-esempio.html">Classi TypeScript</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-7.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-9.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

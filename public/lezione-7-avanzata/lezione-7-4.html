@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.4 - Event Handling</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7.4 - Event Handling</h1>
+        
+        <div class="teoria">
+            <h2>Eventi in React</h2>
+            <p>React gestisce gli eventi in modo simile al DOM, ma con alcune differenze sintattiche.</p>
+            
+            <h3>Differenze con HTML</h3>
+            <ul>
+                <li><strong>camelCase:</strong> <code>onclick</code> → <code>onClick</code></li>
+                <li><strong>Funzioni:</strong> <code>onClick="handleClick()"</code> → <code>onClick={handleClick}</code></li>
+                <li><strong>preventDefault:</strong> Devi chiamarlo esplicitamente</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>onClick - Click Events</h2>
+            
+            <h3>Gestione Base</h3>
+            <div class="codice">
+<pre>function ClickButton() {
+  // Definisci handler
+  const handleClick = () =&gt; {
+    alert('Button cliccato!')
+  }
+  
+  return (
+    &lt;div&gt;
+      {/* Passa riferimento alla funzione (senza ()) */}
+      &lt;button onClick={handleClick}&gt;
+        Click Me
+      &lt;/button&gt;
+      
+      {/* Inline arrow function */}
+      &lt;button onClick={() =&gt; alert('Inline!')}&gt;
+        Click Me Inline
+      &lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+// ❌ ERRORE COMUNE: Non invocare la funzione!
+&lt;button onClick={handleClick()}&gt;Wrong&lt;/button&gt;  // Esegue subito!
+
+// ✅ CORRETTO
+&lt;button onClick={handleClick}&gt;Right&lt;/button&gt;    // Esegue al click</pre>
+            </div>
+            
+            <h3>Passare Parametri agli Handler</h3>
+            <div class="codice">
+<pre>function ButtonList() {
+  const handleClick = (name) =&gt; {
+    alert(`Cliccato ${name}`)
+  }
+  
+  return (
+    &lt;div&gt;
+      {/* Arrow function per passare parametri */}
+      &lt;button onClick={() =&gt; handleClick('Bottone 1')}&gt;
+        Bottone 1
+      &lt;/button&gt;
+      
+      &lt;button onClick={() =&gt; handleClick('Bottone 2')}&gt;
+        Bottone 2
+      &lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Esempio con lista
+function ItemList() {
+  const items = ['Mela', 'Banana', 'Arancia']
+  
+  const handleItemClick = (item) =&gt; {
+    console.log(`Selezionato: ${item}`)
+  }
+  
+  return (
+    &lt;ul&gt;
+      {items.map((item, index) =&gt; (
+        &lt;li key={index} onClick={() =&gt; handleItemClick(item)}&gt;
+          {item}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>onChange - Input Events</h2>
+            <p><code>onChange</code> si attiva ad ogni modifica dell'input (non solo al blur come in HTML).</p>
+            
+            <div class="codice">
+<pre>import { useState } from 'react'
+
+function InputExample() {
+  const [text, setText] = useState('')
+  
+  // Event object contiene tutte le informazioni
+  const handleChange = (event) =&gt; {
+    console.log('Valore:', event.target.value)
+    console.log('Nome input:', event.target.name)
+    setText(event.target.value)
+  }
+  
+  return (
+    &lt;div&gt;
+      &lt;input
+        type="text"
+        value={text}
+        onChange={handleChange}
+      /&gt;
+      
+      {/* Versione concisa */}
+      &lt;input
+        type="text"
+        value={text}
+        onChange={(e) =&gt; setText(e.target.value)}
+      /&gt;
+      
+      &lt;p&gt;Testo: {text}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Multiple Inputs</h3>
+            <div class="codice">
+<pre>function MultiInputForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    age: ''
+  })
+  
+  // Handler unico per tutti gli input
+  const handleChange = (e) =&gt; {
+    const { name, value } = e.target
+    setFormData(prev =&gt; ({
+      ...prev,
+      [name]: value  // Computed property name
+    }))
+  }
+  
+  return (
+    &lt;div&gt;
+      &lt;input
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Nome"
+      /&gt;
+      
+      &lt;input
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="Email"
+      /&gt;
+      
+      &lt;input
+        name="age"
+        type="number"
+        value={formData.age}
+        onChange={handleChange}
+        placeholder="Età"
+      /&gt;
+      
+      &lt;pre&gt;{JSON.stringify(formData, null, 2)}&lt;/pre&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>onSubmit - Form Submission</h2>
+            
+            <div class="codice">
+<pre>function LoginForm() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  
+  const handleSubmit = (e) =&gt; {
+    // Previeni il refresh della pagina
+    e.preventDefault()
+    
+    // Validazione
+    if (!email || !password) {
+      alert('Compila tutti i campi')
+      return
+    }
+    
+    // Invia dati
+    console.log('Login:', { email, password })
+    
+    // Reset form
+    setEmail('')
+    setPassword('')
+  }
+  
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        type="email"
+        value={email}
+        onChange={(e) =&gt; setEmail(e.target.value)}
+        placeholder="Email"
+        required
+      /&gt;
+      
+      &lt;input
+        type="password"
+        value={password}
+        onChange={(e) =&gt; setPassword(e.target.value)}
+        placeholder="Password"
+        required
+      /&gt;
+      
+      &lt;button type="submit"&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Event Object</h2>
+            <p>React passa un <strong>SyntheticEvent</strong> (wrapper cross-browser dell'evento nativo).</p>
+            
+            <div class="codice">
+<pre>function EventInfo() {
+  const handleEvent = (e) =&gt; {
+    console.log('Event type:', e.type)           // "click", "change", etc
+    console.log('Target:', e.target)             // Elemento che ha generato evento
+    console.log('Current target:', e.currentTarget) // Elemento con listener
+    console.log('Value:', e.target.value)        // Valore input
+    console.log('Checked:', e.target.checked)    // Checkbox state
+    console.log('Key pressed:', e.key)           // Tasto premuto
+    
+    // Metodi utili
+    e.preventDefault()  // Previeni comportamento default
+    e.stopPropagation() // Ferma propagazione evento
+  }
+  
+  return &lt;input onChange={handleEvent} /&gt;
+}</pre>
+            </div>
+            
+            <h3>Keyboard Events</h3>
+            <div class="codice">
+<pre>function KeyboardInput() {
+  const [text, setText] = useState('')
+  
+  const handleKeyDown = (e) =&gt; {
+    console.log('Key pressed:', e.key)
+    
+    // Enter per submit
+    if (e.key === 'Enter') {
+      console.log('Submit:', text)
+    }
+    
+    // Escape per cancellare
+    if (e.key === 'Escape') {
+      setText('')
+    }
+  }
+  
+  return (
+    &lt;input
+      value={text}
+      onChange={(e) =&gt; setText(e.target.value)}
+      onKeyDown={handleKeyDown}
+      placeholder="Premi Enter o Escape"
+    /&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Altri Eventi Comuni</h2>
+            
+            <div class="codice">
+<pre>function AllEvents() {
+  return (
+    &lt;div&gt;
+      {/* Mouse events */}
+      &lt;button onClick={() =&gt; console.log('click')}&gt;Click&lt;/button&gt;
+      &lt;div onDoubleClick={() =&gt; console.log('double click')}&gt;Double&lt;/div&gt;
+      &lt;div onMouseEnter={() =&gt; console.log('enter')}&gt;Hover me&lt;/div&gt;
+      &lt;div onMouseLeave={() =&gt; console.log('leave')}&gt;Leave&lt;/div&gt;
+      
+      {/* Form events */}
+      &lt;input onChange={(e) =&gt; console.log(e.target.value)} /&gt;
+      &lt;input onFocus={() =&gt; console.log('focus')} /&gt;
+      &lt;input onBlur={() =&gt; console.log('blur')} /&gt;
+      &lt;form onSubmit={(e) =&gt; e.preventDefault()}&gt;&lt;/form&gt;
+      
+      {/* Keyboard events */}
+      &lt;input onKeyDown={(e) =&gt; console.log('down', e.key)} /&gt;
+      &lt;input onKeyUp={(e) =&gt; console.log('up', e.key)} /&gt;
+      &lt;input onKeyPress={(e) =&gt; console.log('press', e.key)} /&gt;
+      
+      {/* Clipboard events */}
+      &lt;input onCopy={() =&gt; console.log('copied')} /&gt;
+      &lt;input onPaste={() =&gt; console.log('pasted')} /&gt;
+      &lt;input onCut={() =&gt; console.log('cut')} /&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Event Delegation</h2>
+            <p>Gestire eventi su parent invece che su ogni child (performance).</p>
+            
+            <div class="codice">
+<pre>function TodoList() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Todo 1' },
+    { id: 2, text: 'Todo 2' },
+    { id: 3, text: 'Todo 3' }
+  ])
+  
+  // Handler sul parent
+  const handleTodoClick = (e) =&gt; {
+    // Ottieni ID dal data attribute
+    const todoId = Number(e.target.dataset.id)
+    if (!todoId) return
+    
+    console.log('Cliccato todo:', todoId)
+    // Fai qualcosa con todoId...
+  }
+  
+  return (
+    &lt;ul onClick={handleTodoClick}&gt;
+      {todos.map(todo =&gt; (
+        &lt;li key={todo.id} data-id={todo.id}&gt;
+          {todo.text}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ <strong>Arrow functions inline:</strong> OK per handler semplici</li>
+                <li>✅ <strong>Funzioni definite:</strong> Meglio per logica complessa (più leggibile)</li>
+                <li>✅ <strong>preventDefault:</strong> Sempre per form submit</li>
+                <li>✅ <strong>Handler unico:</strong> Per multiple inputs usa <code>name</code> attribute</li>
+                <li>✅ <strong>Event delegation:</strong> Per liste lunghe (performance)</li>
+                <li>❌ Non invocare handler: <code>onClick={handleClick}</code> non <code>onClick={handleClick()}</code></li>
+                <li>❌ Non creare handler in render se possibile (usa useCallback per performance)</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-7-3.html" class="btn-nav">← Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-7-5.html" class="btn-nav">Prossima Lezione →</a>
+            <a href="esempi/events-esempio.html" class="btn-nav">📝 Esempio Pratico</a>
+        </div>
+    </div>
+</body>
+</html>

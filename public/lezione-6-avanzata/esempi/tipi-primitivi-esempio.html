@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipi Primitivi - Esempio TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio - Tipi Primitivi</h1>
+        
+        <div class="codice">
+<pre>// string
+let nome: string = "Marco";
+let cognome: string = 'Rossi';
+let fullName: string = `${nome} ${cognome}`;
+
+// number
+let eta: number = 25;
+let prezzo: number = 19.99;
+let hex: number = 0xFF;  // 255
+
+// boolean
+let attivo: boolean = true;
+let verificato: boolean = false;
+
+// any (evita!)
+let qualsiasi: any = "ciao";
+qualsiasi = 123;
+qualsiasi = true;
+
+// unknown (meglio di any)
+let sconosciuto: unknown = "test";
+if (typeof sconosciuto === "string") {
+    console.log(sconosciuto.toUpperCase());
+}
+
+// void
+function log(msg: string): void {
+    console.log(msg);
+}
+
+// null e undefined
+let nullo: null = null;
+let indefinito: undefined = undefined;
+
+// Union con null
+let opzionale: string | null = "valore";
+opzionale = null;
+
+console.log("✅ Tutti i tipi primitivi funzionano!");</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-2.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+        </div>
+    </div>
+</body>
+</html>

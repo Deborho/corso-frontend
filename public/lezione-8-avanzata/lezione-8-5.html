@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.5 - Log e History</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.5 - Log e History</h1>
+        
+        <div class="teoria">
+            <h2>Il Comando git log</h2>
+            <p><strong>git log</strong> visualizza la cronologia dei commit del repository.</p>
+            
+            <div class="codice">
+<pre># Log base (cronologia completa):
+git log
+
+# Output esempio:
+commit 7a3f2d1c8e9b4a5f6d2c3e8a9b1d4f7c2e5a8b9d (HEAD -> main)
+Author: Mario Rossi &lt;mario@example.com&gt;
+Date:   Mon Nov 17 10:30:45 2024 +0100
+
+    feat: aggiunto dark mode toggle
+    
+commit 2b5e9f3a4d8c1f7e6b9a2d5c8f1e4b7a9d2c5e8f
+Author: Mario Rossi &lt;mario@example.com&gt;
+Date:   Mon Nov 17 09:15:22 2024 +0100
+
+    fix: corretto bug menu mobile</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Opzioni di Formattazione</h2>
+            
+            <div class="codice">
+<pre># Log con una riga per commit:
+git log --oneline
+# Output:
+# 7a3f2d1 (HEAD -> main) feat: aggiunto dark mode
+# 2b5e9f3 fix: corretto bug menu mobile
+# 4c8a1e7 docs: aggiornato README
+
+# Log con grafico ASCII:
+git log --graph --oneline
+# Output:
+# * 7a3f2d1 (HEAD -> main) feat: aggiunto dark mode
+# * 2b5e9f3 fix: corretto bug menu mobile
+# | * 5f3a9e2 (feature-auth) feat: login form
+# |/
+# * 4c8a1e7 docs: aggiornato README
+
+# Log decorato (mostra branch e tags):
+git log --oneline --decorate
+# Output:
+# 7a3f2d1 (HEAD -> main, tag: v1.0.0) feat: dark mode
+# 2b5e9f3 (origin/main) fix: menu mobile
+
+# Log con statistiche file modificati:
+git log --stat
+# Mostra file modificati e linee aggiunte/rimosse per commit
+
+# Log con patch (diff completo):
+git log -p
+git log --patch
+
+# Log con formato custom:
+git log --pretty=format:"%h - %an, %ar : %s"
+# 7a3f2d1 - Mario Rossi, 2 hours ago : feat: dark mode
+# 2b5e9f3 - Luigi Verdi, 1 day ago : fix: menu mobile</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Filtrare la Cronologia</h2>
+            
+            <div class="codice">
+<pre># Limita numero di commit:
+git log -n 5          # Ultimi 5 commit
+git log -5            # Short form
+
+# Commit dopo una data:
+git log --since="2024-11-01"
+git log --after="2024-11-01"
+git log --since="2 weeks ago"
+git log --since="3 days ago"
+
+# Commit prima di una data:
+git log --until="2024-11-17"
+git log --before="2024-11-17"
+
+# Commit di un autore specifico:
+git log --author="Mario"
+git log --author="mario@example.com"
+
+# Commit che matchano pattern nel messaggio:
+git log --grep="fix"          # Messaggi con "fix"
+git log --grep="feat|fix"     # Regex: feat O fix
+git log -i --grep="BUG"       # Case insensitive
+
+# Commit che modificano file specifico:
+git log -- index.html
+git log --follow -- index.html   # Anche dopo rename
+
+# Commit che modificano directory:
+git log -- src/
+
+# Combina filtri:
+git log --author="Mario" --since="1 week ago" --grep="feat"</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Formati Pretty Custom</h2>
+            
+            <div class="codice">
+<pre><strong>Placeholder Format:</strong>
+%H   Commit hash completo
+%h   Commit hash abbreviato
+%T   Tree hash
+%t   Tree hash abbreviato
+%P   Parent hashes
+%p   Parent hashes abbreviati
+%an  Author name
+%ae  Author email
+%ad  Author date
+%ar  Author date, relative (2 days ago)
+%cn  Committer name
+%ce  Committer email
+%cd  Committer date
+%cr  Committer date, relative
+%s   Subject (titolo commit)
+%b   Body (corpo commit)
+
+<strong>Esempi Pratici:</strong>
+# Formato compatto con autore:
+git log --pretty=format:"%h %an: %s"
+# 7a3f2d1 Mario Rossi: feat: dark mode
+# 2b5e9f3 Luigi Verdi: fix: menu mobile
+
+# Formato con data:
+git log --pretty=format:"%h %ad | %s" --date=short
+# 7a3f2d1 2024-11-17 | feat: dark mode
+# 2b5e9f3 2024-11-16 | fix: menu mobile
+
+# Formato colorato:
+git log --pretty=format:"%C(yellow)%h%C(reset) - %C(cyan)%an%C(reset), %C(green)%ar%C(reset) : %s"
+
+<strong>Alias Utile:</strong>
+# Crea alias per log formattato:
+git config --global alias.lg "log --graph --pretty=format:'%C(yellow)%h%C(reset) -%C(red)%d%C(reset) %s %C(green)(%cr) %C(cyan)&lt;%an&gt;%C(reset)' --abbrev-commit --date=relative"
+
+# Usa con:
+git lg</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Visualizzare Branch nel Log</h2>
+            
+            <div class="codice">
+<pre># Log con tutti i branch:
+git log --all --graph --oneline
+
+# Log solo di un branch:
+git log feature-auth
+
+# Commit in feature-auth ma non in main:
+git log main..feature-auth
+
+# Commit in main ma non in feature-auth:
+git log feature-auth..main
+
+# Commit raggiungibili da uno dei due ma non entrambi:
+git log main...feature-auth --left-right
+# &lt; 7a3f2d1 commit solo in main
+# &gt; 5f3a9e2 commit solo in feature-auth
+
+# Visualizza merge commits:
+git log --merges
+
+# Escludi merge commits:
+git log --no-merges
+
+# Solo first-parent (segui solo main branch):
+git log --first-parent</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Show - Dettagli Commit Specifico</h2>
+            
+            <div class="codice">
+<pre># Mostra ultimo commit:
+git show
+git show HEAD
+
+# Mostra commit specifico:
+git show 7a3f2d1
+
+# Mostra commit precedente:
+git show HEAD~1    # Un commit prima
+git show HEAD~2    # Due commit prima
+git show HEAD~5    # Cinque commit prima
+
+# Mostra secondo parent di merge commit:
+git show HEAD^2
+
+# Mostra solo file modificato in commit:
+git show 7a3f2d1:path/to/file.js
+
+# Mostra solo nomi file modificati:
+git show --name-only HEAD
+
+# Mostra con stat:
+git show --stat HEAD</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Diff - Confrontare Modifiche</h2>
+            
+            <div class="codice">
+<pre># Diff working directory vs staging:
+git diff
+
+# Diff staging vs ultimo commit:
+git diff --staged
+git diff --cached
+
+# Diff working directory vs ultimo commit:
+git diff HEAD
+
+# Diff file specifico:
+git diff index.html
+
+# Diff tra due commit:
+git diff 2b5e9f3 7a3f2d1
+
+# Diff tra branch:
+git diff main feature-auth
+
+# Diff solo nomi file:
+git diff --name-only main feature-auth
+
+# Diff con statistiche:
+git diff --stat main feature-auth
+
+# Diff word-level (non line-level):
+git diff --word-diff
+
+# Diff ignorando whitespace:
+git diff -w
+git diff --ignore-all-space</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Reflog - History Completa</h2>
+            <p><strong>reflog</strong> registra ogni movimento di HEAD, anche commit cancellati!</p>
+            
+            <div class="codice">
+<pre># Mostra reflog:
+git reflog
+# Output:
+# 7a3f2d1 HEAD@{0}: commit: feat: dark mode
+# 2b5e9f3 HEAD@{1}: checkout: moving from feature-auth to main
+# 5f3a9e2 HEAD@{2}: commit: feat: login form
+# 4c8a1e7 HEAD@{3}: checkout: moving from main to feature-auth
+
+# Reflog di branch specifico:
+git reflog show main
+
+# Usare reflog per recuperare commit "persi":
+git checkout HEAD@{2}      # Vai a stato specifico
+git reset --hard HEAD@{1}  # Torna a stato precedente
+
+# Reflog con date:
+git reflog --date=iso
+
+# ⚠️ Reflog è locale (non pushato)
+# ⚠️ Reflog entries scadono dopo 90 giorni (default)</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Blame - Chi Ha Modificato Cosa</h2>
+            
+            <div class="codice">
+<pre># Mostra chi ha modificato ogni linea:
+git blame index.html
+# Output:
+# 7a3f2d1 (Mario Rossi 2024-11-17 10:30:45 +0100  1) &lt;!DOCTYPE html&gt;
+# 7a3f2d1 (Mario Rossi 2024-11-17 10:30:45 +0100  2) &lt;html&gt;
+# 2b5e9f3 (Luigi Verdi 2024-11-16 09:15:22 +0100  3) &lt;head&gt;
+
+# Blame range specifico di linee:
+git blame -L 10,20 index.html
+
+# Blame con email:
+git blame -e index.html
+
+# Blame ignorando whitespace:
+git blame -w index.html
+
+# Blame con più contesto:
+git blame -C index.html  # Rileva linee copiate da altri file
+git blame -M index.html  # Rileva linee spostate nello stesso file</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - Log e History</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Usa <code>git log --oneline</code> per overview veloce</li>
+                <li>Usa <code>git log --graph</code> per visualizzare branch</li>
+                <li>Crea aliases per log formattati che usi spesso</li>
+                <li>Usa <code>git blame</code> per capire contesto modifiche</li>
+                <li>Usa <code>git reflog</code> per recuperare commit "persi"</li>
+                <li>Filtra log per trovare commit specifici velocemente</li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non fare <code>git log</code> su repo enorme senza filtri (lentissimo)</li>
+                <li>Non dimenticare reflog quando perdi commit importante</li>
+                <li>Non usare blame per "incolpare" (è per capire contesto)</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Comandi Log Utili - Cheatsheet</h2>
+            
+            <div class="codice">
+<pre># Overview rapido:
+git log --oneline --graph --all -20
+
+# Log dettagliato con file modificati:
+git log --stat -5
+
+# Cerca commit con messaggio specifico:
+git log --grep="bug" -i --oneline
+
+# Commit di autore in range date:
+git log --author="Mario" --since="1 month ago"
+
+# File specifico con chi lo ha modificato:
+git log --follow -p -- index.html
+
+# Differenze tra branch:
+git log main..develop --oneline
+
+# Ultimo commit con diff:
+git show
+
+# Reflog ultimi 10 movimenti:
+git reflog -10</pre>
+            </div>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-8-4.html" class="btn-nav">← Precedente: Branching</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-8-6.html" class="btn-nav">Prossima: Undo e Reset →</a>
+        </div>
+    </div>
+</body>
+</html>

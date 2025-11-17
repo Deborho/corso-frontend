@@ -371,41 +371,44 @@ console.log(todos);</pre>
             </ul>
         </div>
 
-        <h2>11. Preparazione per React</h2>
+        <h2>11. Spread Operator nella Pratica</h2>
         
         <div class="teoria">
-            <p><strong>Perché spread operator è fondamentale per React:</strong></p>
+            <p><strong>Perché spread operator è fondamentale nello sviluppo moderno:</strong></p>
             <ul>
-                <li><strong>State updates:</strong> React richiede nuovi array/oggetti invece di mutazioni</li>
-                <li><strong>Immutabilità:</strong> React confronta referenze per ottimizzare re-rendering</li>
-                <li><strong>Pattern standard:</strong> Spread è il modo standard per aggiornare state in React</li>
-                <li><strong>Props spread:</strong> Passare tutte props a componente child: {...props}</li>
-                <li><strong>Shallow copy:</strong> Sufficiente per la maggior parte dei casi in React</li>
+                <li><strong>Aggiornamenti immutabili:</strong> Creare nuovi array/oggetti invece di mutazioni</li>
+                <li><strong>Codice pulito:</strong> Sintassi concisa per copiare e combinare dati</li>
+                <li><strong>Pattern standard:</strong> Spread è il modo standard per gestire collezioni</li>
+                <li><strong>Flessibilità:</strong> Passare dati dinamici e combinare oggetti</li>
+                <li><strong>Performance:</strong> Shallow copy è efficiente per la maggior parte dei casi</li>
             </ul>
             
-            <p>Esempio futuro in React:</p>
+            <p>Esempio pratico di gestione Todo List:</p>
         </div>
         
         <div class="codice">
-<pre>// Esempio React (vedrai nella Lezione 7)
-const [todos, setTodos] = useState([]);
+<pre>// Gestione moderna Todo List
+let todos = [];
 
 // Aggiungere todo
 const addTodo = (text) => {
     const newTodo = { id: Date.now(), text, completed: false };
-    setTodos([...todos, newTodo]);
+    todos = [...todos, newTodo];
+    renderTodos();
 };
 
 // Toggle completed
 const toggleTodo = (id) => {
-    setTodos(todos.map(todo =>
+    todos = todos.map(todo =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+    );
+    renderTodos();
 };
 
 // Rimuovere todo
 const deleteTodo = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+    todos = todos.filter(todo => todo.id !== id);
+    renderTodos();
 };</pre>
         </div>
 

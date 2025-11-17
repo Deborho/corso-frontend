@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array e Tuple - Esempio TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio - Array e Tuple</h1>
+        
+        <div class="codice">
+<pre>// Array tipizzati
+let numeri: number[] = [1, 2, 3, 4, 5];
+let nomi: string[] = ["Marco", "Lucia", "Andrea"];
+
+// Array methods type-safe
+let doppi = numeri.map(n => n * 2);        // number[]
+let pari = numeri.filter(n => n % 2 === 0); // number[]
+let somma = numeri.reduce((a, b) => a + b); // number
+
+// Array readonly
+let readonly: readonly number[] = [1, 2, 3];
+// readonly.push(4);  // ❌ Errore
+
+// Tuple
+let coppia: [string, number] = ["Marco", 25];
+let [nome, eta] = coppia;
+
+console.log(`${nome} ha ${eta} anni`);
+
+// Tuple readonly
+let punto: readonly [number, number] = [10, 20];
+
+// Enum
+enum Direzione {
+    Nord = "NORD",
+    Sud = "SUD",
+    Est = "EST",
+    Ovest = "OVEST"
+}
+
+let dir: Direzione = Direzione.Nord;
+console.log(dir);  // "NORD"
+
+console.log("✅ Array e Tuple funzionano!");</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-3.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+        </div>
+    </div>
+</body>
+</html>

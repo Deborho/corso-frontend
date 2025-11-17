@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.6 - useEffect Hook</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7.6 - useEffect Hook</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è useEffect?</h2>
+            <p><strong>useEffect</strong> permette di eseguire <strong>side effects</strong> nei componenti: 
+            operazioni che vanno oltre il rendering (fetch API, subscriptions, timers, DOM manipulation).</p>
+            
+            <h3>Lifecycle in Function Components</h3>
+            <ul>
+                <li><strong>Mount:</strong> Componente appare nel DOM</li>
+                <li><strong>Update:</strong> State o props cambiano</li>
+                <li><strong>Unmount:</strong> Componente rimosso dal DOM</li>
+            </ul>
+            
+            <p><code>useEffect</code> permette di gestire tutti questi momenti.</p>
+        </div>
+        
+        <div class="teoria">
+            <h2>Sintassi Base</h2>
+            
+            <div class="codice">
+<pre>import { useState, useEffect } from 'react'
+
+function Component() {
+  const [count, setCount] = useState(0)
+  
+  // ⚠️ Eseguito ad OGNI render
+  useEffect(() =&gt; {
+    console.log('Effect eseguito!')
+  })
+  
+  return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Dependency Array</h2>
+            <p>Il secondo parametro di useEffect controlla <strong>quando</strong> l'effect viene eseguito.</p>
+            
+            <h3>Tre Casi Principali</h3>
+            <div class="codice">
+<pre>// 1️⃣ NESSUN array: Esegue ad OGNI render
+useEffect(() =&gt; {
+  console.log('Ogni render')
+})
+
+// 2️⃣ ARRAY VUOTO: Esegue solo al MOUNT (una volta)
+useEffect(() =&gt; {
+  console.log('Solo una volta al mount')
+}, [])
+
+// 3️⃣ CON DIPENDENZE: Esegue quando le dipendenze cambiano
+useEffect(() =&gt; {
+  console.log('Quando count o name cambiano')
+}, [count, name])</pre>
+            </div>
+            
+            <h3>Esempio Pratico: Document Title</h3>
+            <div class="codice">
+<pre>function Counter() {
+  const [count, setCount] = useState(0)
+  
+  // Aggiorna il title quando count cambia
+  useEffect(() =&gt; {
+    document.title = `Count: ${count}`
+  }, [count])  // 👈 Ri-esegue solo quando count cambia
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;+1&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Fetch API con useEffect</h2>
+            <p>Pattern comune: caricare dati quando il componente monta.</p>
+            
+            <h3>Esempio Base</h3>
+            <div class="codice">
+<pre>function UserProfile({ userId }) {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  
+  useEffect(() =&gt; {
+    // Funzione async per fetch
+    async function fetchUser() {
+      try {
+        setLoading(true)
+        const response = await fetch(`/api/users/${userId}`)
+        const data = await response.json()
+        setUser(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchUser()
+  }, [userId])  // 👈 Ri-fetch quando userId cambia
+  
+  if (loading) return &lt;p&gt;Loading...&lt;/p&gt;
+  if (error) return &lt;p&gt;Error: {error}&lt;/p&gt;
+  if (!user) return &lt;p&gt;No user found&lt;/p&gt;
+  
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{user.name}&lt;/h2&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Con Abort Controller (Best Practice)</h3>
+            <div class="codice">
+<pre>function SearchResults({ query }) {
+  const [results, setResults] = useState([])
+  
+  useEffect(() =&gt; {
+    // AbortController per cancellare request
+    const controller = new AbortController()
+    
+    async function search() {
+      try {
+        const response = await fetch(`/api/search?q=${query}`, {
+          signal: controller.signal
+        })
+        const data = await response.json()
+        setResults(data)
+      } catch (err) {
+        // Ignora errore se aborted
+        if (err.name !== 'AbortError') {
+          console.error(err)
+        }
+      }
+    }
+    
+    search()
+    
+    // Cleanup: cancella request se componente unmount o query cambia
+    return () =&gt; controller.abort()
+  }, [query])
+  
+  return (
+    &lt;ul&gt;
+      {results.map(r =&gt; &lt;li key={r.id}&gt;{r.name}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Cleanup Function</h2>
+            <p>La funzione di cleanup viene eseguita prima del prossimo effect o all'unmount.</p>
+            
+            <h3>Esempio: Timers</h3>
+            <div class="codice">
+<pre>function Timer() {
+  const [seconds, setSeconds] = useState(0)
+  
+  useEffect(() =&gt; {
+    // Setup: avvia timer
+    const intervalId = setInterval(() =&gt; {
+      setSeconds(s =&gt; s + 1)
+    }, 1000)
+    
+    // Cleanup: ferma timer quando componente unmount
+    return () =&gt; {
+      clearInterval(intervalId)
+      console.log('Timer fermato')
+    }
+  }, [])  // Array vuoto = solo mount/unmount
+  
+  return &lt;p&gt;Secondi: {seconds}&lt;/p&gt;
+}
+
+// Quando Timer viene rimosso dal DOM, il timer si ferma automaticamente!</pre>
+            </div>
+            
+            <h3>Esempio: Event Listeners</h3>
+            <div class="codice">
+<pre>function WindowSize() {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  })
+  
+  useEffect(() =&gt; {
+    // Setup: aggiungi listener
+    const handleResize = () =&gt; {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+    
+    window.addEventListener('resize', handleResize)
+    
+    // Cleanup: rimuovi listener
+    return () =&gt; {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])  // Solo mount/unmount
+  
+  return &lt;p&gt;{size.width} x {size.height}&lt;/p&gt;
+}</pre>
+            </div>
+            
+            <h3>Esempio: Subscriptions</h3>
+            <div class="codice">
+<pre>function ChatRoom({ roomId }) {
+  const [messages, setMessages] = useState([])
+  
+  useEffect(() =&gt; {
+    // Setup: connetti alla chat room
+    const connection = chatAPI.connect(roomId)
+    
+    connection.on('message', (msg) =&gt; {
+      setMessages(prev =&gt; [...prev, msg])
+    })
+    
+    // Cleanup: disconnetti
+    return () =&gt; {
+      connection.disconnect()
+    }
+  }, [roomId])  // Ri-connetti se roomId cambia
+  
+  return (
+    &lt;div&gt;
+      {messages.map(msg =&gt; &lt;p key={msg.id}&gt;{msg.text}&lt;/p&gt;)}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Multiple Effects</h2>
+            <p>Separa effects diversi per chiarezza (Separation of Concerns).</p>
+            
+            <div class="codice">
+<pre>function UserDashboard({ userId }) {
+  const [user, setUser] = useState(null)
+  const [posts, setPosts] = useState([])
+  const [online, setOnline] = useState(false)
+  
+  // Effect 1: Fetch user
+  useEffect(() =&gt; {
+    fetch(`/api/users/${userId}`)
+      .then(r =&gt; r.json())
+      .then(setUser)
+  }, [userId])
+  
+  // Effect 2: Fetch posts
+  useEffect(() =&gt; {
+    fetch(`/api/users/${userId}/posts`)
+      .then(r =&gt; r.json())
+      .then(setPosts)
+  }, [userId])
+  
+  // Effect 3: Online status subscription
+  useEffect(() =&gt; {
+    const unsubscribe = onlineAPI.subscribe(userId, setOnline)
+    return unsubscribe
+  }, [userId])
+  
+  // Ogni effect ha la sua logica separata ✅
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Errori Comuni</h2>
+            
+            <h3>1. Dependency Array Incompleto</h3>
+            <div class="codice">
+<pre>function BadCounter({ initialCount }) {
+  const [count, setCount] = useState(initialCount)
+  
+  // ❌ ERRORE: initialCount usato ma non in dependencies
+  useEffect(() =&gt; {
+    console.log('Initial:', initialCount)
+  }, [])  // ESLint warning!
+  
+  // ✅ CORRETTO
+  useEffect(() =&gt; {
+    console.log('Initial:', initialCount)
+  }, [initialCount])
+}</pre>
+            </div>
+            
+            <h3>2. Infinite Loop</h3>
+            <div class="codice">
+<pre>function InfiniteLoop() {
+  const [count, setCount] = useState(0)
+  
+  // ❌ INFINITE LOOP!
+  useEffect(() =&gt; {
+    setCount(count + 1)  // Aggiorna count
+  })  // Nessun array = esegue ogni render = aggiorna count = render = loop!
+  
+  // ✅ CORRETTO: Dependency array vuoto
+  useEffect(() =&gt; {
+    setCount(count + 1)
+  }, [])  // Solo una volta
+}</pre>
+            </div>
+            
+            <h3>3. Oggetti/Array come Dipendenze</h3>
+            <div class="codice">
+<pre>// ❌ PROBLEMA: config è un nuovo oggetto ogni render
+function BadEffect() {
+  const config = { theme: 'dark' }
+  
+  useEffect(() =&gt; {
+    console.log('Config changed')
+  }, [config])  // Eseguito ogni render! (config sempre nuovo oggetto)
+}
+
+// ✅ SOLUZIONE 1: Usa valori primitivi
+function GoodEffect1() {
+  const theme = 'dark'
+  
+  useEffect(() =&gt; {
+    console.log('Theme changed')
+  }, [theme])  // ✅ Confronto per valore
+}
+
+// ✅ SOLUZIONE 2: useMemo
+import { useMemo } from 'react'
+
+function GoodEffect2() {
+  const config = useMemo(() =&gt; ({ theme: 'dark' }), [])
+  
+  useEffect(() =&gt; {
+    console.log('Config changed')
+  }, [config])  // ✅ Stesso oggetto finché deps non cambiano
+}</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ <strong>Array vuoto []</strong> per effects che vanno eseguiti solo al mount</li>
+                <li>✅ <strong>Cleanup function</strong> per timers, listeners, subscriptions</li>
+                <li>✅ <strong>AbortController</strong> per fetch cancellabili</li>
+                <li>✅ <strong>Separate effects</strong> per logiche diverse</li>
+                <li>✅ <strong>Dependencies complete:</strong> Includi tutto ciò che usi nell'effect</li>
+                <li>✅ <strong>Async functions:</strong> Definiscile dentro l'effect</li>
+                <li>❌ Non omettere dependencies (segui ESLint warnings)</li>
+                <li>❌ Non dimenticare cleanup per timers/listeners</li>
+                <li>❌ Non usare oggetti/array come dependencies senza useMemo</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-7-5.html" class="btn-nav">← Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-7-7.html" class="btn-nav">Prossima Lezione →</a>
+            <a href="esempi/useeffect-esempio.html" class="btn-nav">📝 Esempio Pratico</a>
+        </div>
+    </div>
+</body>
+</html>

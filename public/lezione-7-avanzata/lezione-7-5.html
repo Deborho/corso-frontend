@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.5 - Rendering Condizionale e Liste</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7.5 - Rendering Condizionale e Liste</h1>
+        
+        <div class="teoria">
+            <h2>Rendering Condizionale</h2>
+            <p>In React puoi renderizzare elementi diversi in base a condizioni, come l'if/else in JavaScript.</p>
+            
+            <h3>If/Else con Return Anticipato</h3>
+            <div class="codice">
+<pre>function Greeting({ isLoggedIn, username }) {
+  // Return anticipato per condizione
+  if (!isLoggedIn) {
+    return &lt;h1&gt;Benvenuto, Ospite!&lt;/h1&gt;
+  }
+  
+  return &lt;h1&gt;Benvenuto, {username}!&lt;/h1&gt;
+}
+
+// Uso
+&lt;Greeting isLoggedIn={false} /&gt;  // "Benvenuto, Ospite!"
+&lt;Greeting isLoggedIn={true} username="Mario" /&gt;  // "Benvenuto, Mario!"</pre>
+            </div>
+            
+            <h3>Ternary Operator (Inline)</h3>
+            <div class="codice">
+<pre>function LoginButton({ isLoggedIn }) {
+  return (
+    &lt;div&gt;
+      {/* condizione ? se_vero : se_falso */}
+      {isLoggedIn ? (
+        &lt;button&gt;Logout&lt;/button&gt;
+      ) : (
+        &lt;button&gt;Login&lt;/button&gt;
+      )}
+    &lt;/div&gt;
+  )
+}
+
+// Esempio con testo
+function Status({ isOnline }) {
+  return (
+    &lt;span style={{ color: isOnline ? 'green' : 'red' }}&gt;
+      {isOnline ? '🟢 Online' : '🔴 Offline'}
+    &lt;/span&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>&& Operator (Se Vero Renderizza)</h3>
+            <div class="codice">
+<pre>function Notification({ hasNotifications, count }) {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Dashboard&lt;/h1&gt;
+      
+      {/* Renderizza solo se true */}
+      {hasNotifications && (
+        &lt;div className="notification"&gt;
+          Hai {count} nuove notifiche
+        &lt;/div&gt;
+      )}
+      
+      {/* Attenzione con numeri! */}
+      {count && &lt;span&gt;{count}&lt;/span&gt;}  {/* ❌ Se count=0, renderizza "0" */}
+      {count > 0 && &lt;span&gt;{count}&lt;/span&gt;}  {/* ✅ Non renderizza se 0 */}
+    &lt;/div&gt;
+  )
+}
+
+// Esempio pratico
+function UserProfile({ user }) {
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{user.name}&lt;/h2&gt;
+      
+      {/* Mostra solo se presente */}
+      {user.bio && &lt;p&gt;{user.bio}&lt;/p&gt;}
+      {user.avatar && &lt;img src={user.avatar} alt={user.name} /&gt;}
+      {user.verified && &lt;span&gt;✓ Verificato&lt;/span&gt;}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Variabili per Conditional Rendering</h3>
+            <div class="codice">
+<pre>function TodoItem({ todo }) {
+  // Calcola il contenuto prima del return
+  let content
+  
+  if (todo.status === 'completed') {
+    content = &lt;span style={{ textDecoration: 'line-through' }}&gt;{todo.text}&lt;/span&gt;
+  } else if (todo.status === 'in-progress') {
+    content = &lt;span style={{ color: 'orange' }}&gt;🔄 {todo.text}&lt;/span&gt;
+  } else {
+    content = &lt;span&gt;{todo.text}&lt;/span&gt;
+  }
+  
+  return &lt;li&gt;{content}&lt;/li&gt;
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Renderizzare Liste</h2>
+            <p>Usa <code>map()</code> per trasformare array di dati in array di componenti.</p>
+            
+            <h3>Lista Base con map()</h3>
+            <div class="codice">
+<pre>function FruitList() {
+  const fruits = ['Mela', 'Banana', 'Arancia', 'Pera']
+  
+  return (
+    &lt;ul&gt;
+      {fruits.map((fruit, index) =&gt; (
+        &lt;li key={index}&gt;{fruit}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  )
+}
+
+// Output:
+// • Mela
+// • Banana
+// • Arancia
+// • Pera</pre>
+            </div>
+            
+            <h3>Lista di Oggetti</h3>
+            <div class="codice">
+<pre>function UserList() {
+  const users = [
+    { id: 1, name: 'Mario', email: 'mario@example.com' },
+    { id: 2, name: 'Laura', email: 'laura@example.com' },
+    { id: 3, name: 'Giuseppe', email: 'giuseppe@example.com' }
+  ]
+  
+  return (
+    &lt;div&gt;
+      {users.map(user =&gt; (
+        &lt;div key={user.id} className="user-card"&gt;
+          &lt;h3&gt;{user.name}&lt;/h3&gt;
+          &lt;p&gt;{user.email}&lt;/p&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Lista con Componente Separato</h3>
+            <div class="codice">
+<pre>// Componente per singolo item
+function ProductCard({ product }) {
+  return (
+    &lt;div className="product-card"&gt;
+      &lt;img src={product.image} alt={product.name} /&gt;
+      &lt;h3&gt;{product.name}&lt;/h3&gt;
+      &lt;p&gt;€{product.price}&lt;/p&gt;
+      &lt;button&gt;Aggiungi al carrello&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Componente lista
+function ProductList({ products }) {
+  return (
+    &lt;div className="product-grid"&gt;
+      {products.map(product =&gt; (
+        &lt;ProductCard key={product.id} product={product} /&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}
+
+// Uso
+const products = [
+  { id: 1, name: 'Laptop', price: 999, image: '/laptop.jpg' },
+  { id: 2, name: 'Mouse', price: 29, image: '/mouse.jpg' }
+]
+
+&lt;ProductList products={products} /&gt;</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Key Prop (Importante!)</h2>
+            <p>La prop <code>key</code> aiuta React a identificare quali elementi sono cambiati.</p>
+            
+            <h3>Regole per le Keys</h3>
+            <div class="codice">
+<pre>function TodoList({ todos }) {
+  return (
+    &lt;ul&gt;
+      {/* ✅ MIGLIORE: Usa ID stabile e unico */}
+      {todos.map(todo =&gt; (
+        &lt;li key={todo.id}&gt;{todo.text}&lt;/li&gt;
+      ))}
+      
+      {/* ⚠️ ACCETTABILE: Usa index solo se lista statica */}
+      {todos.map((todo, index) =&gt; (
+        &lt;li key={index}&gt;{todo.text}&lt;/li&gt;
+      ))}
+      
+      {/* ❌ ERRORE: Nessuna key */}
+      {todos.map(todo =&gt; (
+        &lt;li&gt;{todo.text}&lt;/li&gt;  // Warning in console!
+      ))}
+      
+      {/* ❌ ERRORE: Key non unica */}
+      {todos.map(todo =&gt; (
+        &lt;li key="same-key"&gt;{todo.text}&lt;/li&gt;  // Tutte stessa key!
+      ))}
+    &lt;/ul&gt;
+  )
+}
+
+// Perché NON usare index come key per liste dinamiche:
+function ProblematicList() {
+  const [items, setItems] = useState(['A', 'B', 'C'])
+  
+  const removeFirst = () =&gt; setItems(items.slice(1))
+  
+  return (
+    &lt;div&gt;
+      {/* ❌ Con index: React confonde gli elementi! */}
+      {items.map((item, index) =&gt; (
+        &lt;input key={index} defaultValue={item} /&gt;
+      ))}
+      {/* Se rimuovi 'A', React pensa che 'B' sia diventato 'C'! */}
+      
+      &lt;button onClick={removeFirst}&gt;Rimuovi primo&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Quando Usare Index come Key</h3>
+            <ul>
+                <li>✅ Lista <strong>statica</strong> (non cambia mai)</li>
+                <li>✅ Items senza <strong>ID unico</strong> disponibile</li>
+                <li>✅ Lista <strong>non riordinabile</strong></li>
+                <li>❌ <strong>Mai</strong> per liste con add/remove/reorder</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Filter + Map (Pattern Comune)</h2>
+            <p>Combina <code>filter()</code> e <code>map()</code> per renderizzare liste filtrate.</p>
+            
+            <div class="codice">
+<pre>function TaskList({ tasks }) {
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;Completati&lt;/h3&gt;
+      &lt;ul&gt;
+        {tasks
+          .filter(task =&gt; task.completed)
+          .map(task =&gt; (
+            &lt;li key={task.id}>{task.text}&lt;/li&gt;
+          ))}
+      &lt;/ul&gt;
+      
+      &lt;h3&gt;Da Fare&lt;/h3&gt;
+      &lt;ul&gt;
+        {tasks
+          .filter(task =&gt; !task.completed)
+          .map(task =&gt; (
+            &lt;li key={task.id}>{task.text}&lt;/li&gt;
+          ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Esempio con search
+function SearchableList({ items, searchQuery }) {
+  const filteredItems = items.filter(item =&gt;
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+  
+  return (
+    &lt;div&gt;
+      {filteredItems.length === 0 ? (
+        &lt;p&gt;Nessun risultato&lt;/p&gt;
+      ) : (
+        &lt;ul&gt;
+          {filteredItems.map(item =&gt; (
+            &lt;li key={item.id}&gt;{item.name}&lt;/li&gt;
+          ))}
+        &lt;/ul&gt;
+      )}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Liste Vuote e Stati Speciali</h2>
+            
+            <div class="codice">
+<pre>function ProductList({ products, isLoading, error }) {
+  // Loading state
+  if (isLoading) {
+    return &lt;p&gt;Caricamento...&lt;/p&gt;
+  }
+  
+  // Error state
+  if (error) {
+    return &lt;p style={{ color: 'red' }}&gt;Errore: {error}&lt;/p&gt;
+  }
+  
+  // Empty state
+  if (products.length === 0) {
+    return (
+      &lt;div className="empty-state"&gt;
+        &lt;p&gt;Nessun prodotto trovato&lt;/p&gt;
+        &lt;button&gt;Aggiungi Prodotto&lt;/button&gt;
+      &lt;/div&gt;
+    )
+  }
+  
+  // Lista normale
+  return (
+    &lt;div&gt;
+      {products.map(product =&gt; (
+        &lt;div key={product.id}&gt;{product.name}&lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ <strong>Ternary</strong> per if/else inline semplici</li>
+                <li>✅ <strong>&& operator</strong> per "renderizza se vero"</li>
+                <li>✅ <strong>Return anticipato</strong> per logica complessa</li>
+                <li>✅ <strong>ID unico</strong> come key (mai index per liste dinamiche)</li>
+                <li>✅ <strong>Filter + map</strong> per liste filtrate</li>
+                <li>✅ <strong>Empty state</strong> per liste vuote (UX migliore)</li>
+                <li>✅ <strong>Componenti separati</strong> per item complessi</li>
+                <li>❌ Non usare index come key se lista cambia</li>
+                <li>❌ Non dimenticare la key prop (console warning)</li>
+                <li>❌ Attenzione: <code>{count && ...}</code> renderizza "0"</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-7-4.html" class="btn-nav">← Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-7-6.html" class="btn-nav">Prossima Lezione →</a>
+            <a href="esempi/liste-esempio.html" class="btn-nav">📝 Esempio Pratico</a>
+        </div>
+    </div>
+</body>
+</html>

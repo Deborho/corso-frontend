@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.6 - Union Types e Type Guards</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.6 - Union Types e Type Guards</h1>
+        
+        <h2>1. Union Types</h2>
+        
+        <div class="teoria">
+            <p><strong>Union type</strong> permette a una variabile di avere uno tra più tipi possibili, usando <code>|</code>:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Union type base
+let id: string | number;
+
+id = "ABC123";   // ✅ OK
+id = 42;         // ✅ OK
+id = true;       // ❌ Errore: boolean non è nel union
+
+// Union con più tipi
+let valore: string | number | boolean = "ciao";
+valore = 123;
+valore = false;
+
+// Array con union
+let misto: (string | number)[] = ["ciao", 42, "mondo", 100];
+
+// Funzione con parametro union
+function formatta(input: string | number): string {
+    return `Valore: ${input}`;
+}
+
+formatta("testo");   // ✅ OK
+formatta(123);       // ✅ OK</pre>
+        </div>
+        
+        <h2>2. Type Narrowing (Restringimento)</h2>
+        
+        <div class="teoria">
+            <p><strong>Type narrowing</strong> è quando TypeScript capisce il tipo specifico dentro un union:</p>
+        </div>
+        
+        <div class="codice">
+<pre>function processa(valore: string | number) {
+    // Qui valore è string | number
+    
+    if (typeof valore === "string") {
+        // Qui TypeScript sa che valore è string
+        console.log(valore.toUpperCase());
+        console.log(valore.length);
+    } else {
+        // Qui TypeScript sa che valore è number
+        console.log(valore.toFixed(2));
+        console.log(valore * 2);
+    }
+}
+
+// Type narrowing con return early
+function stampa(input: string | null) {
+    if (input === null) {
+        return;  // Esce se null
+    }
+    // Qui TypeScript sa che input è string
+    console.log(input.toUpperCase());
+}</pre>
+        </div>
+        
+        <h2>3. typeof Type Guard</h2>
+        
+        <div class="codice">
+<pre>// typeof restrinse il tipo
+function double(valore: string | number): string | number {
+    if (typeof valore === "string") {
+        return valore + valore;    // "ciao" → "ciaociao"
+    }
+    if (typeof valore === "number") {
+        return valore * 2;         // 5 → 10
+    }
+    return valore;  // TypeScript sa che questo è never
+}
+
+// typeof con primitive types
+function descrivi(valore: string | number | boolean | undefined) {
+    if (typeof valore === "string") {
+        return `Stringa di ${valore.length} caratteri`;
+    }
+    if (typeof valore === "number") {
+        return `Numero: ${valore}`;
+    }
+    if (typeof valore === "boolean") {
+        return valore ? "Vero" : "Falso";
+    }
+    return "Undefined";
+}</pre>
+        </div>
+        
+        <h2>4. Truthiness Narrowing</h2>
+        
+        <div class="codice">
+<pre>// Truthiness per null/undefined checking
+function saluta(nome: string | null | undefined) {
+    if (nome) {
+        // nome è string (null e undefined sono falsy)
+        console.log(`Ciao ${nome}!`);
+    } else {
+        console.log("Ciao!");
+    }
+}
+
+// Attenzione: 0, "", false sono falsy!
+function stampaNumero(n: number | null) {
+    if (n) {  // ⚠️ 0 è falsy
+        console.log(n);
+    }
+}
+
+// Meglio confronto esplicito
+function stampaNumeroCorretto(n: number | null) {
+    if (n !== null) {  // ✅ Corretto
+        console.log(n);
+    }
+}</pre>
+        </div>
+        
+        <h2>5. instanceof Type Guard</h2>
+        
+        <div class="teoria">
+            <p><strong>instanceof</strong> controlla se un oggetto è istanza di una classe:</p>
+        </div>
+        
+        <div class="codice">
+<pre>class Cane {
+    abbaia() {
+        console.log("Bau bau!");
+    }
+}
+
+class Gatto {
+    miagola() {
+        console.log("Miao!");
+    }
+}
+
+type Animale = Cane | Gatto;
+
+function faiVerso(animale: Animale) {
+    if (animale instanceof Cane) {
+        animale.abbaia();  // TypeScript sa che è Cane
+    } else {
+        animale.miagola(); // TypeScript sa che è Gatto
+    }
+}
+
+// instanceof con errori
+function gestisciErrore(errore: Error | string) {
+    if (errore instanceof Error) {
+        console.log(errore.message);
+        console.log(errore.stack);
+    } else {
+        console.log(errore);
+    }
+}</pre>
+        </div>
+        
+        <h2>6. in Operator Narrowing</h2>
+        
+        <div class="codice">
+<pre>// 'in' controlla se una proprietà esiste
+interface Utente {
+    nome: string;
+    email: string;
+}
+
+interface Admin {
+    nome: string;
+    email: string;
+    ruolo: string;
+}
+
+type Persona = Utente | Admin;
+
+function mostraInfo(persona: Persona) {
+    console.log(persona.nome);
+    console.log(persona.email);
+    
+    if ("ruolo" in persona) {
+        // TypeScript sa che persona è Admin
+        console.log(`Ruolo: ${persona.ruolo}`);
+    }
+}
+
+// 'in' con metodi
+interface Rettangolo {
+    tipo: "rettangolo";
+    larghezza: number;
+    altezza: number;
+}
+
+interface Cerchio {
+    tipo: "cerchio";
+    raggio: number;
+}
+
+type Forma = Rettangolo | Cerchio;
+
+function calcolaArea(forma: Forma): number {
+    if ("raggio" in forma) {
+        return Math.PI * forma.raggio ** 2;
+    } else {
+        return forma.larghezza * forma.altezza;
+    }
+}</pre>
+        </div>
+        
+        <h2>7. Discriminated Unions (Tagged Unions)</h2>
+        
+        <div class="teoria">
+            <p><strong>Discriminated union</strong> usa una proprietà comune (tag) per distinguere i tipi:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Tag: tipo
+interface Cerchio {
+    tipo: "cerchio";
+    raggio: number;
+}
+
+interface Quadrato {
+    tipo: "quadrato";
+    lato: number;
+}
+
+interface Rettangolo {
+    tipo: "rettangolo";
+    larghezza: number;
+    altezza: number;
+}
+
+type Forma = Cerchio | Quadrato | Rettangolo;
+
+// Type narrowing con switch
+function area(forma: Forma): number {
+    switch (forma.tipo) {
+        case "cerchio":
+            return Math.PI * forma.raggio ** 2;
+        case "quadrato":
+            return forma.lato ** 2;
+        case "rettangolo":
+            return forma.larghezza * forma.altezza;
+        default:
+            // Exhaustive check
+            const _exhaustive: never = forma;
+            return _exhaustive;
+    }
+}
+
+// Uso
+let c: Cerchio = { tipo: "cerchio", raggio: 5 };
+let q: Quadrato = { tipo: "quadrato", lato: 10 };
+
+console.log(area(c));  // 78.54
+console.log(area(q));  // 100</pre>
+        </div>
+        
+        <h2>8. Custom Type Guards</h2>
+        
+        <div class="teoria">
+            <p>Puoi creare <strong>type guard custom</strong> con predicati di tipo:</p>
+        </div>
+        
+        <div class="codice">
+<pre>interface Pesce {
+    nuota(): void;
+}
+
+interface Uccello {
+    vola(): void;
+}
+
+type Animale = Pesce | Uccello;
+
+// Type predicate: 'animale is Pesce'
+function isPesce(animale: Animale): animale is Pesce {
+    return (animale as Pesce).nuota !== undefined;
+}
+
+function muovi(animale: Animale) {
+    if (isPesce(animale)) {
+        animale.nuota();  // TypeScript sa che è Pesce
+    } else {
+        animale.vola();   // TypeScript sa che è Uccello
+    }
+}
+
+// Type guard per null/undefined
+function isNotNull&lt;T&gt;(value: T | null | undefined): value is T {
+    return value !== null && value !== undefined;
+}
+
+let numeri: (number | null)[] = [1, null, 3, null, 5];
+let validi: number[] = numeri.filter(isNotNull);  // number[]</pre>
+        </div>
+        
+        <h2>9. Intersection Types</h2>
+        
+        <div class="teoria">
+            <p><strong>Intersection type</strong> combina più tipi insieme con <code>&</code>:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Intersection di interfacce
+interface Identificabile {
+    id: number;
+}
+
+interface Nominabile {
+    nome: string;
+}
+
+// & combina i tipi
+type Entita = Identificabile & Nominabile;
+
+let entita: Entita = {
+    id: 1,
+    nome: "Marco"
+    // Deve avere ENTRAMBE le proprietà
+};
+
+// Intersection con type
+type ConTimestamp = {
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+type UtenteCompleto = Identificabile & Nominabile & ConTimestamp;
+
+let utente: UtenteCompleto = {
+    id: 1,
+    nome: "Marco",
+    createdAt: new Date(),
+    updatedAt: new Date()
+};
+
+// Intersection vs Extends
+interface PersonaBase {
+    nome: string;
+}
+
+// Con extends
+interface Dipendente extends PersonaBase {
+    ruolo: string;
+}
+
+// Con intersection (equivalente)
+type DipendenteType = PersonaBase & { ruolo: string };</pre>
+        </div>
+        
+        <h2>10. Literal Types in Unions</h2>
+        
+        <div class="codice">
+<pre>// Union di literal types
+type Direzione = "nord" | "sud" | "est" | "ovest";
+
+function muovi(direzione: Direzione) {
+    console.log(`Muovi verso ${direzione}`);
+}
+
+muovi("nord");  // ✅ OK
+muovi("left");  // ❌ Errore
+
+// Union di numeri literal
+type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6;
+
+let lancio: DiceRoll = 4;  // ✅ OK
+lancio = 7;                 // ❌ Errore
+
+// Union miste
+type Risposta = "si" | "no" | "forse" | null;
+
+function chiedi(domanda: string): Risposta {
+    // ...
+    return "si";
+}</pre>
+        </div>
+        
+        <h2>11. Best Practices</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Union Types:</strong> Usa per valori che possono avere tipi diversi</li>
+                <li><strong>Type Narrowing:</strong> Controlla sempre il tipo prima di usare proprietà specifiche</li>
+                <li><strong>Discriminated Unions:</strong> Preferisci tag comuni per distinguere tipi facilmente</li>
+                <li><strong>Custom Type Guards:</strong> Crea helper per controlli tipo riutilizzabili</li>
+                <li><strong>typeof:</strong> Per primitive types (string, number, boolean)</li>
+                <li><strong>instanceof:</strong> Per classi e oggetti built-in (Date, Error)</li>
+                <li><strong>in operator:</strong> Per controllo proprietà in oggetti</li>
+                <li><strong>Exhaustive checks:</strong> Usa <code>never</code> in default per catch errori compile-time</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Prova l'esempio interattivo: <a href="esempi/union-types-esempio.html">Union Types e Type Guards</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-5.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-7.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.1 - Introduzione e Setup Git</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.1 - Introduzione e Setup Git</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è Git?</h2>
+            <p><strong>Git</strong> è un sistema di controllo versione distribuito (DVCS - Distributed Version Control System) creato da Linus Torvalds nel 2005. È lo standard de facto per il version control nel mondo dello sviluppo software.</p>
+            
+            <h3>Perché usare Git?</h3>
+            <ul>
+                <li><strong>Tracciamento Modifiche:</strong> Ogni cambiamento al codice è registrato con chi, quando e perché</li>
+                <li><strong>Collaborazione:</strong> Più sviluppatori possono lavorare sullo stesso progetto contemporaneamente</li>
+                <li><strong>Backup:</strong> Il codice è salvato in modo sicuro e distribuito</li>
+                <li><strong>Branching:</strong> Sviluppa features in isolamento senza impattare il codice principale</li>
+                <li><strong>History:</strong> Puoi tornare a qualsiasi versione precedente del codice</li>
+                <li><strong>Audit Trail:</strong> Storico completo di chi ha fatto cosa e quando</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git vs GitHub</h2>
+            <p>È importante capire la differenza:</p>
+            
+            <div class="codice">
+<pre><strong>Git:</strong>
+- Software open source per version control
+- Funziona localmente sul tuo computer
+- Command-line tool
+- Creato nel 2005 da Linus Torvalds
+
+<strong>GitHub:</strong>
+- Piattaforma web per hosting repository Git
+- Servizio cloud (proprietà di Microsoft)
+- Aggiunge features: pull requests, issues, projects
+- Alternativa: GitLab, Bitbucket</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Installazione Git</h2>
+            
+            <h3>🪟 Windows</h3>
+            <div class="codice">
+<pre># Scarica installer da: https://git-scm.com/download/win
+# Oppure con winget:
+winget install --id Git.Git -e --source winget
+
+# Verifica installazione:
+git --version</pre>
+            </div>
+            
+            <h3>🍎 macOS</h3>
+            <div class="codice">
+<pre># Con Homebrew (consigliato):
+brew install git
+
+# Oppure Xcode Command Line Tools:
+xcode-select --install
+
+# Verifica installazione:
+git --version</pre>
+            </div>
+            
+            <h3>🐧 Linux (Ubuntu/Debian)</h3>
+            <div class="codice">
+<pre># Aggiorna package list:
+sudo apt update
+
+# Installa Git:
+sudo apt install git
+
+# Verifica installazione:
+git --version</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Configurazione Iniziale</h2>
+            <p>Dopo l'installazione, devi configurare la tua identità. Queste informazioni saranno associate a ogni commit.</p>
+            
+            <h3>Configurazione Globale</h3>
+            <div class="codice">
+<pre># Imposta nome utente (obbligatorio):
+git config --global user.name "Mario Rossi"
+
+# Imposta email (obbligatorio):
+git config --global user.email "mario.rossi@example.com"
+
+# Imposta editor di default (opzionale):
+git config --global core.editor "code --wait"  # VS Code
+# Oppure:
+git config --global core.editor "nano"         # Nano
+git config --global core.editor "vim"          # Vim
+
+# Imposta branch di default "main" invece di "master":
+git config --global init.defaultBranch main
+
+# Abilita colori nel terminale:
+git config --global color.ui auto</pre>
+            </div>
+            
+            <h3>Verificare Configurazione</h3>
+            <div class="codice">
+<pre># Visualizza tutta la configurazione:
+git config --list
+
+# Visualizza configurazione specifica:
+git config user.name
+git config user.email
+
+# Visualizza dove è salvata la configurazione:
+git config --list --show-origin</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Livelli di Configurazione</h2>
+            <p>Git ha tre livelli di configurazione:</p>
+            
+            <div class="codice">
+<pre><strong>1. System (--system)</strong>
+   - Applica a tutti gli utenti del sistema
+   - File: /etc/gitconfig (Linux) o C:\ProgramData\Git\config (Windows)
+   - Uso: git config --system [...]
+
+<strong>2. Global (--global)</strong>
+   - Applica a tutti i repository dell'utente corrente
+   - File: ~/.gitconfig o ~/.config/git/config
+   - Uso: git config --global [...]
+   - <strong>📌 Più comune</strong>
+
+<strong>3. Local (--local)</strong>
+   - Applica solo al repository corrente
+   - File: .git/config nella directory del repository
+   - Uso: git config --local [...] (default se ometti flag)
+   
+<strong>Priorità:</strong> Local > Global > System</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Configurazioni Utili Aggiuntive</h2>
+            
+            <div class="codice">
+<pre># Aliases per comandi frequenti:
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.last "log -1 HEAD"
+
+# Configurazione line endings:
+# Windows:
+git config --global core.autocrlf true
+# macOS/Linux:
+git config --global core.autocrlf input
+
+# Configurazione pull strategy:
+git config --global pull.rebase false  # merge (default)
+# Oppure:
+git config --global pull.rebase true   # rebase
+
+# Configurazione diff tool:
+git config --global diff.tool vscode
+git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
+
+# Configurazione merge tool:
+git config --global merge.tool vscode
+git config --global mergetool.vscode.cmd 'code --wait $MERGED'</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Ottenere Aiuto</h2>
+            
+            <div class="codice">
+<pre># Aiuto completo su un comando:
+git help commit
+git commit --help
+man git-commit  # Linux/macOS
+
+# Aiuto rapido (opzioni principali):
+git commit -h
+
+# Lista di tutti i comandi:
+git help -a
+
+# Guida ai concetti:
+git help tutorial
+git help workflows</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - Configurazione</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Usa la tua vera identità (nome e email reale)</li>
+                <li>Usa email professionale per progetti di lavoro</li>
+                <li>Configura editor che conosci bene</li>
+                <li>Imposta branch di default "main" per nuovi progetti</li>
+                <li>Abilita colori per migliore leggibilità</li>
+                <li>Crea aliases per comandi che usi spesso</li>
+                <li>Configura line endings correttamente per il tuo OS</li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non usare email temporanee o fake</li>
+                <li>Non usare nome utente generico tipo "user" o "dev"</li>
+                <li>Non ignorare la configurazione iniziale</li>
+                <li>Non condividere la stessa identità Git con altri</li>
+                <li>Non modificare la configurazione a caso senza capire</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Verifica Setup Completo</h2>
+            <p>Esegui questi comandi per verificare che tutto sia configurato correttamente:</p>
+            
+            <div class="codice">
+<pre># 1. Verifica versione Git:
+git --version
+# Output atteso: git version 2.x.x (almeno 2.30+)
+
+# 2. Verifica configurazione identità:
+git config user.name
+git config user.email
+# Output atteso: il tuo nome e email
+
+# 3. Verifica configurazione completa:
+git config --list --global
+
+# 4. Test comando base:
+git help
+# Output atteso: lista comandi Git disponibili</pre>
+            </div>
+            
+            <p>✅ Se tutti i comandi funzionano, sei pronto per iniziare con Git!</p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="index.html" class="btn-nav">📚 Indice Lezione 8</a>
+            <a href="lezione-8-2.html" class="btn-nav">Prossima Lezione: Repository e Init →</a>
+        </div>
+    </div>
+</body>
+</html>

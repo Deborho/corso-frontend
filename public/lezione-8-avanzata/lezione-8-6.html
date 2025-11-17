@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.6 - Undo e Reset</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.6 - Undo e Reset</h1>
+        
+        <div class="teoria">
+            <h2>Annullare Modifiche: Overview</h2>
+            <p>Git offre diversi comandi per annullare modifiche, ciascuno per situazioni differenti:</p>
+            
+            <div class="codice">
+<pre><strong>Situazione:</strong>                  <strong>Comando:</strong>
+─────────────────────────────────────────────────────────────
+Working Directory modificato      git restore file.txt
+Staging Area (già fatto add)      git restore --staged file.txt
+Ultimo commit (non pushato)       git commit --amend
+Commit locale (non pushato)       git reset
+Commit già pushato                git revert
+File rimosso per errore            git restore file.txt
+Tutto rovinato, ricomincia         git reset --hard</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Restore - Annullare Modifiche File</h2>
+            
+            <div class="codice">
+<pre># Scarta modifiche in working directory (ATTENZIONE: irreversibile!):
+git restore index.html
+# index.html torna allo stato dell'ultimo commit
+
+# Scarta modifiche a più file:
+git restore index.html style.css
+
+# Scarta tutte le modifiche:
+git restore .
+
+# Unstage file (rimuovi da staging, mantieni modifiche):
+git restore --staged index.html
+
+# Restore file da commit specifico:
+git restore --source=7a3f2d1 index.html
+
+# Restore file da branch specifico:
+git restore --source=main index.html
+
+# ⚠️ ATTENZIONE:
+# git restore CANCELLA modifiche non committed!
+# Non c'è undo per git restore!</pre>
+            </div>
+            
+            <h3>Comandi Vecchi (ancora funzionanti)</h3>
+            <div class="codice">
+<pre># Equivalenti git restore (sintassi vecchia):
+git checkout -- index.html        # = git restore index.html
+git reset HEAD index.html         # = git restore --staged index.html
+
+# 💡 Meglio usare restore (più chiaro)</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Reset - Muovere Branch Pointer</h2>
+            <p><strong>git reset</strong> sposta il branch corrente a un commit diverso. Ha tre modalità:</p>
+            
+            <h3>1. Reset Soft (--soft)</h3>
+            <div class="codice">
+<pre># Sposta HEAD, mantieni staging e working directory:
+git reset --soft HEAD~1
+
+<strong>Effetto:</strong>
+- Ultimo commit "annullato" (ma file intatti)
+- Modifiche rimangono in staging
+- Pronto per re-commit
+
+<strong>Usa quando:</strong>
+- Vuoi rifare l'ultimo commit con modifiche diverse
+- Vuoi unire ultimi N commit in uno solo
+
+<strong>Esempio:</strong>
+# Prima:
+# A ← B ← C (HEAD)
+
+git reset --soft HEAD~1
+
+# Dopo:
+# A ← B (HEAD)
+# Modifiche di C in staging area</pre>
+            </div>
+            
+            <h3>2. Reset Mixed (default)</h3>
+            <div class="codice">
+<pre># Sposta HEAD, mantieni solo working directory:
+git reset HEAD~1
+git reset --mixed HEAD~1  # Stesso (mixed è default)
+
+<strong>Effetto:</strong>
+- Commit annullato
+- Staging area pulita
+- Modifiche rimangono in working directory (unstaged)
+
+<strong>Usa quando:</strong>
+- Vuoi annullare commit ma tenere modifiche
+- Vuoi re-stageare file diversamente
+
+<strong>Esempio:</strong>
+# Prima:
+# A ← B ← C (HEAD)
+
+git reset HEAD~1
+
+# Dopo:
+# A ← B (HEAD)
+# Modifiche di C in working directory (unstaged)</pre>
+            </div>
+            
+            <h3>3. Reset Hard (--hard)</h3>
+            <div class="codice">
+<pre># Sposta HEAD, CANCELLA tutto (⚠️ PERICOLOSO):
+git reset --hard HEAD~1
+
+<strong>Effetto:</strong>
+- Commit annullato
+- Staging area pulita
+- Working directory resettata
+- TUTTE le modifiche PERSE
+
+<strong>Usa quando:</strong>
+- Vuoi cancellare tutto e ricominciare
+- Sei sicuro al 100% di voler perdere modifiche
+
+<strong>Esempio:</strong>
+# Prima:
+# A ← B ← C (HEAD)
+
+git reset --hard HEAD~1
+
+# Dopo:
+# A ← B (HEAD)
+# Tutto sparito, come se C non fosse mai esistito
+
+# ⚠️ ATTENZIONE:
+# Non recuperabile (a meno di reflog)!
+# Verifica sempre con git status prima!</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Riferimenti Commit per Reset</h2>
+            
+            <div class="codice">
+<pre># Reset a commit specifico (hash):
+git reset 7a3f2d1
+
+# Reset N commit indietro:
+git reset HEAD~1    # 1 commit fa
+git reset HEAD~3    # 3 commit fa
+git reset HEAD~10   # 10 commit fa
+
+# Reset a branch/tag:
+git reset main
+git reset v1.0.0
+
+# Reset a reflog entry:
+git reset HEAD@{2}
+
+# Reset solo file specifico (unstage):
+git reset HEAD index.html
+
+<strong>Notazione Relative:</strong>
+HEAD      Commit corrente
+HEAD~1    Un commit prima (parent)
+HEAD~2    Due commit prima (grandparent)
+HEAD^     Primo parent (uguale HEAD~1)
+HEAD^2    Secondo parent (per merge commits)
+HEAD~3^2  Terzo commit prima, secondo parent</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Revert - Annullare Commit Pushati</h2>
+            <p><strong>git revert</strong> crea un NUOVO commit che annulla un commit precedente. Sicuro per storia condivisa.</p>
+            
+            <div class="codice">
+<pre># Revert ultimo commit:
+git revert HEAD
+# Crea nuovo commit che annulla HEAD
+# Editor si apre per messaggio commit
+
+# Revert commit specifico:
+git revert 7a3f2d1
+
+# Revert senza aprire editor:
+git revert 7a3f2d1 --no-edit
+
+# Revert multipli commit:
+git revert HEAD~3..HEAD
+git revert --no-commit HEAD~3..HEAD  # Revert all, commit once
+
+# Revert merge commit:
+git revert -m 1 merge-commit-hash
+# -m 1 = mantieni primo parent
+# -m 2 = mantieni secondo parent
+
+<strong>Esempio:</strong>
+# Storia prima:
+A ← B ← C ← D (HEAD, main)
+
+git revert C
+
+# Storia dopo:
+A ← B ← C ← D ← D' (HEAD, main)
+            ↑
+            Nuovo commit che annulla C
+
+# ✅ Storia non riscritta (safe per push)
+# ✅ C ancora esiste (audit trail)
+# ✅ Collaboratori non impattati</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Reset vs Revert - Quando Usare Cosa?</h2>
+            
+            <div class="codice">
+<pre><strong>Usa git reset quando:</strong>
+✅ Commit NON ancora pushato
+✅ Lavoro locale, storia non condivisa
+✅ Vuoi riscrivere storia locale
+✅ Vuoi "nascondere" commit sbagliati
+
+<strong>Usa git revert quando:</strong>
+✅ Commit già pushato
+✅ Storia condivisa con altri
+✅ Vuoi mantenere audit trail
+✅ Lavoro su branch pubblico (main, develop)
+
+<strong>Esempio Scenario:</strong>
+# Lavoro locale (non pushato):
+git reset --hard HEAD~1  ✅ OK
+
+# Dopo push:
+git revert HEAD          ✅ OK
+git reset --hard HEAD~1  ❌ NO! Riscrive storia pubblica!</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Git Clean - Rimuovere File Untracked</h2>
+            
+            <div class="codice">
+<pre># Dry run (mostra cosa sarebbe cancellato):
+git clean -n
+git clean --dry-run
+
+# Cancella file untracked:
+git clean -f
+git clean --force
+
+# Cancella anche directories:
+git clean -fd
+
+# Cancella file ignorati (.gitignore):
+git clean -fX
+
+# Cancella file untracked + ignorati:
+git clean -fx
+
+# Interattivo (chiede conferma):
+git clean -i
+
+# Esempio output dry run:
+git clean -n
+# Would remove test.js
+# Would remove temp/
+# Would remove .DS_Store</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Recuperare Commit "Persi"</h2>
+            <p>Se hai fatto reset --hard per errore, puoi recuperare con reflog:</p>
+            
+            <div class="codice">
+<pre># 1. Vedi reflog per trovare commit perso:
+git reflog
+# 7a3f2d1 HEAD@{0}: reset: moving to HEAD~1
+# 2b5e9f3 HEAD@{1}: commit: feat: dark mode  ← Voglio questo!
+# 4c8a1e7 HEAD@{2}: commit: fix: bug
+
+# 2. Reset a commit perso:
+git reset --hard HEAD@{1}
+# Oppure:
+git reset --hard 2b5e9f3
+
+# 3. Verifica:
+git log --oneline
+# 2b5e9f3 feat: dark mode  ← Recuperato!
+
+# ⚠️ Reflog locale (scade dopo 90 giorni)
+# ⚠️ Se hai fatto git gc aggressivo, potrebbe non esserci</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Scenari Comuni - Cheatsheet</h2>
+            
+            <div class="codice">
+<pre><strong>Scenario 1: Modifiche sbagliate, non ancora staged</strong>
+git restore file.txt        # Scarta modifiche
+git restore .               # Scarta tutto
+
+<strong>Scenario 2: File già in staging, voglio unstage</strong>
+git restore --staged file.txt
+
+<strong>Scenario 3: Commit sbagliato, non pushato</strong>
+git reset --soft HEAD~1     # Mantieni modifiche, refai commit
+git reset HEAD~1            # Unstage, modifica e ricommit
+git reset --hard HEAD~1     # Cancella tutto
+
+<strong>Scenario 4: Commit pushato, voglio annullare</strong>
+git revert HEAD             # Crea commit di annullamento
+
+<strong>Scenario 5: Messaggio commit sbagliato (non pushato)</strong>
+git commit --amend -m "Messaggio corretto"
+
+<strong>Scenario 6: File dimenticato nell'ultimo commit</strong>
+git add forgotten.txt
+git commit --amend --no-edit
+
+<strong>Scenario 7: Reset fatto per errore</strong>
+git reflog                  # Trova commit
+git reset --hard HEAD@{1}   # Recupera
+
+<strong>Scenario 8: File untracked da cancellare</strong>
+git clean -fd               # Cancella file e directory</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - Undo</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Usa sempre <code>git status</code> prima di reset/revert</li>
+                <li>Usa <code>--dry-run</code> per clean prima di eseguire</li>
+                <li>Usa <code>revert</code> per commit pushati</li>
+                <li>Usa <code>reset</code> solo per commit locali</li>
+                <li>Fai backup (branch) prima di reset --hard</li>
+                <li>Ricorda reflog per recuperare commit persi</li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non usare <code>reset --hard</code> su commit pushati</li>
+                <li>Non usare <code>git clean -f</code> senza dry-run prima</li>
+                <li>Non fare push forzato dopo reset (danneggia collaboratori)</li>
+                <li>Non dimenticare che reset --hard è irreversibile</li>
+                <li>Non usare reset per "nascondere" commit pubblici</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-8-5.html" class="btn-nav">← Precedente: Log</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-8-7.html" class="btn-nav">Prossima: Remote e GitHub →</a>
+        </div>
+    </div>
+</body>
+</html>

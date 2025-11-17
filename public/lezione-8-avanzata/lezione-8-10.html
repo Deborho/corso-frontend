@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.10 - Git Tags e Releases</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8.10 - Git Tags e Releases</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è un Tag?</h2>
+            <p>Un <strong>tag</strong> è un puntatore immutabile a un commit specifico. Usato per marcare versioni importanti (releases).</p>
+            
+            <div class="codice">
+<pre><strong>Differenza Tag vs Branch:</strong>
+
+Branch:               Tag:
+──────────────────    ─────────────────────
+Puntatore mobile      Puntatore fisso
+Si muove con commit   Immutabile
+Per sviluppo          Per releases
+Cancellabile          Permanente (best practice)
+
+<strong>Uso Tipico Tags:</strong>
+v1.0.0   Release principale
+v1.1.0   Feature release
+v1.1.1   Patch release
+v2.0.0   Breaking changes</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Tipi di Tag</h2>
+            
+            <h3>1. Lightweight Tag (Leggero)</h3>
+            <div class="codice">
+<pre># Crea tag lightweight (solo puntatore a commit):
+git tag v1.0.0
+
+# Leggero = semplicemente un nome per commit
+# Non contiene metadata aggiuntiva
+# Uso: marche temporanee, tag privati
+
+# Caratteristiche:
+✓ Veloce da creare
+✓ Minimo overhead
+✗ No metadata (autore, data, messaggio)
+✗ Non firmabile</pre>
+            </div>
+            
+            <h3>2. Annotated Tag (Annotato)</h3>
+            <div class="codice">
+<pre># Crea tag annotated (oggetto completo Git):
+git tag -a v1.0.0 -m "Release version 1.0.0"
+
+# Tag annotato = oggetto Git completo con:
+# - Nome tagger
+# - Email
+# - Data
+# - Messaggio
+# - Opzionalmente firma GPG
+
+# Caratteristiche:
+✓ Include metadata completa
+✓ Può essere firmato (GPG)
+✓ Best practice per releases
+✓ Permanente e tracciabile
+
+# <strong>CONSIGLIATO per release pubbliche</strong></pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Creare Tags</h2>
+            
+            <div class="codice">
+<pre># Tag annotated (raccomandato):
+git tag -a v1.0.0 -m "First stable release"
+
+# Tag lightweight:
+git tag v1.0.0-beta
+
+# Tag commit specifico:
+git tag -a v0.9.0 7a3f2d1 -m "Pre-release version"
+
+# Tag con messaggio multilinea:
+git tag -a v1.0.0
+# Si apre editor per messaggio lungo
+
+# Tag firmato con GPG:
+git tag -s v1.0.0 -m "Signed release"
+# Richiede GPG key configurata
+
+# Lista tutti i tags:
+git tag
+# v0.9.0
+# v1.0.0
+# v1.1.0
+
+# Lista tags con pattern:
+git tag -l "v1.*"
+# v1.0.0
+# v1.1.0
+
+# Mostra info tag:
+git show v1.0.0</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Semantic Versioning (SemVer)</h2>
+            <p>Standard per versionare software: <strong>MAJOR.MINOR.PATCH</strong></p>
+            
+            <div class="codice">
+<pre><strong>Formato: MAJOR.MINOR.PATCH</strong>
+
+v1.2.3
+ │ │ │
+ │ │ └─ PATCH: Bug fixes (backward compatible)
+ │ └─── MINOR: Nuove features (backward compatible)
+ └───── MAJOR: Breaking changes
+
+<strong>Esempi:</strong>
+
+v1.0.0  → v1.0.1   PATCH  (bug fix)
+v1.0.1  → v1.1.0   MINOR  (nuova feature)
+v1.1.0  → v2.0.0   MAJOR  (breaking change)
+
+<strong>Regole:</strong>
+
+Incrementa MAJOR quando:
+- Rimuovi o cambi API esistente
+- Breaking changes
+- Incompatibilità con versioni precedenti
+
+Incrementa MINOR quando:
+- Aggiungi nuove feature
+- Backward compatible
+- Funzionalità opzionali
+
+Incrementa PATCH quando:
+- Bug fixes
+- Security patches
+- Performance improvements
+- Backward compatible
+
+<strong>Pre-release:</strong>
+v1.0.0-alpha
+v1.0.0-beta
+v1.0.0-rc.1    (release candidate)
+
+<strong>Build metadata:</strong>
+v1.0.0+20240117
+v1.0.0-beta+exp.sha.5114f85</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Gestire Tags</h2>
+            
+            <div class="codice">
+<pre># Lista tags:
+git tag
+
+# Lista con sorting:
+git tag --sort=-version:refname  # Più recenti prima
+
+# Cerca tag con pattern:
+git tag -l "v2.*"
+
+# Mostra dettagli tag annotated:
+git show v1.0.0
+
+# Verifica tag firmato:
+git tag -v v1.0.0
+
+# Checkout tag (detached HEAD):
+git checkout v1.0.0
+# ⚠️ In detached HEAD state!
+
+# Crea branch da tag:
+git checkout -b hotfix-v1.0 v1.0.0
+
+# Cancella tag locale:
+git tag -d v1.0.0
+git tag --delete v1.0.0
+
+# Cancella tag remoto:
+git push origin --delete v1.0.0
+git push origin :refs/tags/v1.0.0  # Sintassi vecchia
+
+# Rinomina tag (cancella e ricrea):
+git tag new-name old-name
+git tag -d old-name
+git push origin :refs/tags/old-name
+git push origin new-name</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Push Tags a Remote</h2>
+            
+            <div class="codice">
+<pre># Push singolo tag:
+git push origin v1.0.0
+
+# Push tutti i tags:
+git push origin --tags
+
+# Push solo annotated tags (Git 2.4+):
+git push origin --follow-tags
+
+# Configurazione auto-push tags:
+git config --global push.followTags true
+# Ora git push pusha anche tags annotati
+
+# Fetch tags da remote:
+git fetch --tags
+
+# Pull con tags:
+git pull --tags
+
+# Esempio workflow release:
+git tag -a v1.0.0 -m "Release 1.0.0"
+git push origin v1.0.0
+# Tag ora visibile su GitHub</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>GitHub Releases</h2>
+            <p>GitHub Releases aggiunge UI e features aggiuntive ai Git tags.</p>
+            
+            <div class="codice">
+<pre><strong>Differenza Tag vs Release:</strong>
+
+Git Tag:
+- Solo Git object
+- Referenza a commit
+- Visibile in git log
+
+GitHub Release:
+- Tag Git + UI GitHub
+- Release notes
+- Binary attachments
+- Changelog automatico
+- Download statistics
+
+<strong>Creare Release su GitHub:</strong>
+
+1. Push tag:
+   git tag -a v1.0.0 -m "Version 1.0.0"
+   git push origin v1.0.0
+
+2. Vai su GitHub → Releases → "Draft a new release"
+
+3. Seleziona tag: v1.0.0
+
+4. Release title: "Version 1.0.0 - First Stable Release"
+
+5. Descrizione (Markdown):
+   ## What's New
+   - Feature 1
+   - Feature 2
+   
+   ## Bug Fixes
+   - Fix #42
+   - Fix #56
+   
+   ## Breaking Changes
+   - Renamed API endpoints
+   
+   ## Installation
+   ```bash
+   npm install mypackage@1.0.0
+   ```
+
+6. Allega binari (opzionale):
+   - myapp-v1.0.0-linux.tar.gz
+   - myapp-v1.0.0-windows.zip
+   - myapp-v1.0.0-macos.dmg
+
+7. Pre-release checkbox (se beta/alpha)
+
+8. "Publish release"
+
+<strong>Release Notes Auto-generate:</strong>
+GitHub → Settings → Repository → Features
+→ Enable "Automatically generated release notes"
+# GitHub genera changelog da PR e commits</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Workflow Release Completo</h2>
+            
+            <div class="codice">
+<pre><strong>Scenario: Preparare Release v1.2.0</strong>
+
+# 1. Assicurati che main sia aggiornato:
+git checkout main
+git pull origin main
+
+# 2. Verifica che tutto funzioni:
+npm test
+npm run build
+
+# 3. Aggiorna version in package.json:
+# "version": "1.2.0"
+git add package.json
+git commit -m "chore: bump version to 1.2.0"
+
+# 4. Crea tag annotato:
+git tag -a v1.2.0 -m "Release version 1.2.0
+
+New Features:
+- Dark mode implementation
+- User profile page
+- Email notifications
+
+Bug Fixes:
+- Fixed mobile menu (#123)
+- Resolved login redirect issue (#145)
+
+Breaking Changes:
+None"
+
+# 5. Push commit e tag:
+git push origin main
+git push origin v1.2.0
+
+# 6. Vai su GitHub:
+# - Releases → Draft new release
+# - Select tag v1.2.0
+# - Auto-generate release notes
+# - Edit e aggiungi dettagli
+# - Publish release
+
+# 7. Announce release:
+# - Twitter, blog, changelog
+# - Notifica utenti/customers
+
+# 8. Deploy (se automatizzato):
+# CI/CD triggered da tag push</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>CHANGELOG.md</h2>
+            <p>File che documenta tutte le modifiche tra versioni:</p>
+            
+            <div class="codice">
+<pre># File: CHANGELOG.md
+
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+### Added
+- Feature in development
+
+## [1.2.0] - 2024-11-17
+### Added
+- Dark mode implementation
+- User profile page
+- Email notifications
+
+### Fixed
+- Mobile menu not closing (#123)
+- Login redirect loop (#145)
+
+### Changed
+- Updated dependencies to latest versions
+- Improved performance of homepage
+
+## [1.1.0] - 2024-10-15
+### Added
+- Search functionality
+- Pagination for lists
+
+### Fixed
+- Memory leak in image gallery (#89)
+
+## [1.0.0] - 2024-09-01
+### Added
+- Initial release
+- User authentication
+- Basic CRUD operations
+
+[unreleased]: https://github.com/user/repo/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/user/repo/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/user/repo/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/user/repo/releases/tag/v1.0.0</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>✅ Best Practices - Tags e Releases</h2>
+            
+            <h3>✅ DO - Fare:</h3>
+            <ul>
+                <li>Usa Semantic Versioning (MAJOR.MINOR.PATCH)</li>
+                <li>Crea annotated tags per releases pubbliche</li>
+                <li>Scrivi release notes chiare e complete</li>
+                <li>Mantieni CHANGELOG.md aggiornato</li>
+                <li>Tagga solo commit su branch stable (main)</li>
+                <li>Test completi prima di taggare</li>
+                <li>Usa pre-release per alpha/beta</li>
+                <li>Firma tags per progetti critici (GPG)</li>
+            </ul>
+            
+            <h3>❌ DON'T - Evitare:</h3>
+            <ul>
+                <li>Non cancellare tags pushati (altera storia)</li>
+                <li>Non usare tag come branch (sono immutabili)</li>
+                <li>Non taggare commit su feature branch</li>
+                <li>Non usare versioning inconsistente</li>
+                <li>Non saltare versioni (no v1.0 → v1.3)</li>
+                <li>Non dimenticare di pushare tags</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Comandi Utili - Cheatsheet</h2>
+            
+            <div class="codice">
+<pre># Crea tag annotato:
+git tag -a v1.0.0 -m "Release 1.0.0"
+
+# Lista tutti i tags:
+git tag -l
+
+# Mostra dettagli tag:
+git show v1.0.0
+
+# Push tag:
+git push origin v1.0.0
+
+# Push tutti i tags:
+git push origin --tags
+
+# Cancella tag locale:
+git tag -d v1.0.0
+
+# Cancella tag remoto:
+git push origin --delete v1.0.0
+
+# Checkout tag:
+git checkout v1.0.0
+
+# Tag commit precedente:
+git tag -a v0.9.0 HEAD~1 -m "Previous version"
+
+# Auto-push tags con commit:
+git config --global push.followTags true</pre>
+            </div>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-8-9.html" class="btn-nav">← Precedente: .gitignore</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-8-99.html" class="btn-nav">Progetto Finale →</a>
+        </div>
+    </div>
+</body>
+</html>

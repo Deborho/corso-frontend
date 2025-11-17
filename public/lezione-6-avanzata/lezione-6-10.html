@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.10 - Moduli e Namespaces</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.10 - Moduli e Namespaces</h1>
+        
+        <h2>1. ES6 Modules in TypeScript</h2>
+        
+        <div class="teoria">
+            <p>TypeScript supporta completamente i <strong>moduli ES6</strong> con typesafety completa:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// file: utente.ts
+export interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+}
+
+export function creaUtente(nome: string, email: string): Utente {
+    return {
+        id: Date.now(),
+        nome,
+        email
+    };
+}
+
+export const RUOLI = {
+    ADMIN: "admin",
+    USER: "user",
+    GUEST: "guest"
+} as const;
+
+// file: main.ts
+import { Utente, creaUtente, RUOLI } from "./utente.js";
+
+let utente: Utente = creaUtente("Marco", "marco@email.com");
+console.log(utente);
+console.log(RUOLI.ADMIN);  // "admin"</pre>
+        </div>
+        
+        <h2>2. Export Patterns</h2>
+        
+        <div class="codice">
+<pre>// Named exports
+export interface Prodotto {
+    id: number;
+    nome: string;
+}
+
+export class ProdottoService {
+    getProdotto(id: number): Prodotto {
+        return { id, nome: "Laptop" };
+    }
+}
+
+export const API_URL = "https://api.example.com";
+
+// Default export
+export default class Database {
+    connect() {
+        console.log("Connesso");
+    }
+}
+
+// Export list
+interface User { id: number; }
+interface Post { id: number; }
+function getUser(id: number): User { return { id }; }
+function getPost(id: number): Post { return { id }; }
+
+export { User, Post, getUser, getPost };
+
+// Export con alias
+export { getUser as fetchUser, getPost as fetchPost };</pre>
+        </div>
+        
+        <h2>3. Import Patterns</h2>
+        
+        <div class="codice">
+<pre>// Named imports
+import { Prodotto, ProdottoService } from "./prodotto.js";
+
+// Import con alias
+import { Prodotto as Product } from "./prodotto.js";
+
+// Import tutto come namespace
+import * as ProdottoModule from "./prodotto.js";
+let prod: ProdottoModule.Prodotto = { id: 1, nome: "Mouse" };
+
+// Default import
+import Database from "./database.js";
+let db = new Database();
+
+// Mix default + named
+import Database, { config, logger } from "./database.js";
+
+// Import solo per side effects
+import "./init.js";  // Esegue codice ma non importa nulla</pre>
+        </div>
+        
+        <h2>4. Re-exporting</h2>
+        
+        <div class="codice">
+<pre>// file: models/utente.ts
+export interface Utente {
+    id: number;
+    nome: string;
+}
+
+// file: models/prodotto.ts
+export interface Prodotto {
+    id: number;
+    nome: string;
+}
+
+// file: models/index.ts (barrel export)
+export { Utente } from "./utente.js";
+export { Prodotto } from "./prodotto.js";
+export * from "./ordine.js";  // Re-export tutto
+
+// Uso semplificato
+import { Utente, Prodotto } from "./models/index.js";</pre>
+        </div>
+        
+        <h2>5. Type-Only Imports/Exports</h2>
+        
+        <div class="teoria">
+            <p><strong>Type-only imports</strong> importano solo tipi (rimossi in JS compilato):</p>
+        </div>
+        
+        <div class="codice">
+<pre>// file: types.ts
+export interface Config {
+    apiUrl: string;
+    timeout: number;
+}
+
+export const DEFAULT_TIMEOUT = 5000;
+
+// file: app.ts
+// Import solo tipo (non genera codice JS)
+import type { Config } from "./types.js";
+
+// Import sia tipo che valore
+import { DEFAULT_TIMEOUT, type Config } from "./types.js";
+
+let config: Config = {
+    apiUrl: "https://api.example.com",
+    timeout: DEFAULT_TIMEOUT
+};
+
+// Export type-only
+export type { Config };
+export type { Config as Configuration };</pre>
+        </div>
+        
+        <h2>6. Declaration Files (.d.ts)</h2>
+        
+        <div class="teoria">
+            <p><strong>Declaration files</strong> definiscono tipi per librerie JavaScript esistenti:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// file: math.js (JavaScript esistente)
+export function somma(a, b) {
+    return a + b;
+}
+
+export const PI = 3.14;
+
+// file: math.d.ts (Declaration file)
+export function somma(a: number, b: number): number;
+export const PI: number;
+
+// Ora TypeScript conosce i tipi:
+import { somma, PI } from "./math.js";
+let result: number = somma(5, 3);  // Type-safe!
+
+// Global declarations
+// file: globals.d.ts
+declare global {
+    interface Window {
+        myCustomProp: string;
+    }
+    
+    const VERSION: string;
+}
+
+// Uso
+window.myCustomProp = "test";  // ✅ OK
+console.log(VERSION);           // ✅ OK</pre>
+        </div>
+        
+        <h2>7. Ambient Declarations</h2>
+        
+        <div class="codice">
+<pre>// Dichiarare moduli esterni
+declare module "my-library" {
+    export function doSomething(value: string): number;
+    export interface Options {
+        verbose: boolean;
+    }
+}
+
+// Uso
+import { doSomething } from "my-library";
+let result = doSomething("test");  // number
+
+// Wildcard module declarations
+declare module "*.css" {
+    const content: { [className: string]: string };
+    export default content;
+}
+
+declare module "*.json" {
+    const value: any;
+    export default value;
+}
+
+// Uso in Vite/Webpack
+import styles from "./app.css";
+import data from "./config.json";</pre>
+        </div>
+        
+        <h2>8. Namespaces (Deprecati)</h2>
+        
+        <div class="teoria">
+            <p><strong>⚠️ Namespaces</strong> sono legacy. Usa ES6 modules invece.</p>
+            <p>Sono utili solo per:dichiarazioni globali o migrazioni da vecchio codice.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Namespace (legacy)
+namespace Matematica {
+    export function somma(a: number, b: number): number {
+        return a + b;
+    }
+    
+    export function sottrai(a: number, b: number): number {
+        return a - b;
+    }
+    
+    export const PI = 3.14;
+}
+
+// Uso
+let result = Matematica.somma(5, 3);
+console.log(Matematica.PI);
+
+// Namespace annidati
+namespace App {
+    export namespace Models {
+        export interface User {
+            id: number;
+            nome: string;
+        }
+    }
+    
+    export namespace Services {
+        export class UserService {
+            getUser(id: number): Models.User {
+                return { id, nome: "Marco" };
+            }
+        }
+    }
+}
+
+// Uso
+let user: App.Models.User = { id: 1, nome: "Lucia" };
+let service = new App.Services.UserService();</pre>
+        </div>
+        
+        <h2>9. Module Resolution</h2>
+        
+        <div class="teoria">
+            <p>TypeScript risolve i moduli in base a <code>moduleResolution</code> in tsconfig.json:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// tsconfig.json
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",  // o "bundler"
+    "baseUrl": "./src",
+    "paths": {
+      "@models/*": ["models/*"],
+      "@utils/*": ["utils/*"],
+      "@/*": ["*"]
+    }
+  }
+}
+
+// Uso con path mapping
+import { Utente } from "@models/utente.js";  // src/models/utente.ts
+import { logger } from "@utils/logger.js";   // src/utils/logger.ts
+import { config } from "@/config.js";        // src/config.ts
+
+// Invece di:
+// import { Utente } from "../../models/utente.js";</pre>
+        </div>
+        
+        <h2>10. Triple-Slash Directives</h2>
+        
+        <div class="codice">
+<pre>// Reference types
+/// &lt;reference types="node" /&gt;
+
+// Assicura che i types di Node.js siano disponibili
+process.env.NODE_ENV;
+
+// Reference path
+/// &lt;reference path="./types/custom.d.ts" /&gt;
+
+// Reference lib
+/// &lt;reference lib="es2020" /&gt;
+/// &lt;reference lib="dom" /&gt;
+
+// ⚠️ Usa raramente, preferisci imports e tsconfig.json</pre>
+        </div>
+        
+        <h2>11. Best Practices Moduli</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>ES6 Modules:</strong> Usa sempre ES6 modules, evita namespaces</li>
+                <li><strong>Named Exports:</strong> Preferisci named exports a default (migliore autocomplete/refactoring)</li>
+                <li><strong>Barrel Files:</strong> Usa index.ts per re-export e semplificare imports</li>
+                <li><strong>Type-Only:</strong> Usa <code>import type</code> quando importi solo tipi</li>
+                <li><strong>Path Mapping:</strong> Configura <code>paths</code> in tsconfig per import puliti</li>
+                <li><strong>.d.ts Files:</strong> Crea declaration files per librerie JS</li>
+                <li><strong>Estensioni:</strong> Includi <code>.js</code> negli import per compatibilità ESM</li>
+                <li><strong>Circular Dependencies:</strong> Evita dipendenze circolari tra moduli</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>📁 Struttura Progetto Consigliata</h3>
+        </div>
+        
+        <div class="codice">
+<pre>src/
+├── models/
+│   ├── index.ts          # Barrel export
+│   ├── utente.ts
+│   └── prodotto.ts
+├── services/
+│   ├── index.ts
+│   ├── api.ts
+│   └── storage.ts
+├── utils/
+│   ├── index.ts
+│   ├── validators.ts
+│   └── formatters.ts
+├── types/
+│   ├── global.d.ts       # Dichiarazioni globali
+│   └── custom.d.ts       # Tipi custom
+├── config.ts
+└── main.ts               # Entry point
+
+// Imports puliti:
+import { Utente, Prodotto } from "./models/index.js";
+import { ApiService } from "./services/index.js";
+import { validateEmail } from "./utils/index.js";</pre>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esempio Completo Moduli</h3>
+        </div>
+        
+        <div class="codice">
+<pre>// models/utente.ts
+export interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+}
+
+export type UtenteParziale = Partial&lt;Utente&gt;;
+
+// services/utente-service.ts
+import type { Utente, UtenteParziale } from "../models/utente.js";
+
+export class UtenteService {
+    private utenti: Map&lt;number, Utente&gt; = new Map();
+    
+    add(utente: Utente): void {
+        this.utenti.set(utente.id, utente);
+    }
+    
+    get(id: number): Utente | undefined {
+        return this.utenti.get(id);
+    }
+    
+    update(id: number, dati: UtenteParziale): void {
+        const utente = this.utenti.get(id);
+        if (utente) {
+            this.utenti.set(id, { ...utente, ...dati });
+        }
+    }
+}
+
+// main.ts
+import { Utente } from "./models/utente.js";
+import { UtenteService } from "./services/utente-service.js";
+
+const service = new UtenteService();
+const utente: Utente = {
+    id: 1,
+    nome: "Marco",
+    email: "marco@email.com"
+};
+
+service.add(utente);
+service.update(1, { nome: "Marco Rossi" });</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-9.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-99.html" class="btn-nav">Progetto Finale</a>
+        </div>
+    </div>
+</body>
+</html>

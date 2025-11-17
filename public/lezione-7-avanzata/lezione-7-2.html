@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.2 - Componenti e JSX</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7.2 - Componenti e JSX</h1>
+        
+        <div class="teoria">
+            <h2>Function Components</h2>
+            <p>I <strong>Function Components</strong> sono il modo moderno di creare componenti React. 
+            Sono semplici funzioni JavaScript che restituiscono JSX.</p>
+            
+            <h3>Componente Semplice</h3>
+            <div class="codice">
+<pre>// Componente senza parametri
+function Welcome() {
+  return &lt;h1&gt;Benvenuto!&lt;/h1&gt;
+}
+
+// Usare il componente
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Welcome /&gt;
+      &lt;Welcome /&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Export/Import Componenti</h3>
+            <div class="codice">
+<pre>// --- Button.jsx ---
+// Default export (un solo export per file)
+export default function Button() {
+  return &lt;button&gt;Click me&lt;/button&gt;
+}
+
+// --- Card.jsx ---
+// Named export (più export nello stesso file)
+export function Card() {
+  return &lt;div className="card"&gt;Card&lt;/div&gt;
+}
+
+export function CardHeader() {
+  return &lt;div className="card-header"&gt;Header&lt;/div&gt;
+}
+
+// --- App.jsx ---
+// Import default
+import Button from './Button'
+
+// Import named (con {})
+import { Card, CardHeader } from './Card'
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Button /&gt;
+      &lt;Card /&gt;
+      &lt;CardHeader /&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Props - Passare Dati ai Componenti</h2>
+            <p><strong>Props</strong> (properties) sono gli argomenti passati ai componenti, come gli attributi HTML.</p>
+            
+            <h3>Passare e Ricevere Props</h3>
+            <div class="codice">
+<pre>// Componente che riceve props
+function Greeting(props) {
+  return &lt;h1&gt;Ciao {props.name}!&lt;/h1&gt;
+}
+
+// Uso del componente con props
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Greeting name="Mario" /&gt;
+      &lt;Greeting name="Laura" /&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Output:
+// Ciao Mario!
+// Ciao Laura!</pre>
+            </div>
+            
+            <h3>Destructuring Props (Best Practice)</h3>
+            <div class="codice">
+<pre>// ❌ Senza destructuring (ripetitivo)
+function UserCard(props) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;{props.name}&lt;/h2&gt;
+      &lt;p&gt;{props.email}&lt;/p&gt;
+      &lt;p&gt;{props.age} anni&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+// ✅ Con destructuring (pulito e leggibile)
+function UserCard({ name, email, age }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;{name}&lt;/h2&gt;
+      &lt;p&gt;{email}&lt;/p&gt;
+      &lt;p&gt;{age} anni&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Uso
+&lt;UserCard 
+  name="Mario Rossi"
+  email="mario@example.com"
+  age={30}
+/&gt;</pre>
+            </div>
+            
+            <h3>Default Props</h3>
+            <div class="codice">
+<pre>// Default props con destructuring
+function Button({ text = "Click me", color = "blue" }) {
+  return (
+    &lt;button style={{ backgroundColor: color }}&gt;
+      {text}
+    &lt;/button&gt;
+  )
+}
+
+// Uso
+&lt;Button /&gt;                          {/* Usa defaults */}
+&lt;Button text="Submit" /&gt;            {/* Override text */}
+&lt;Button text="Delete" color="red" /&gt; {/* Override entrambi */}</pre>
+            </div>
+            
+            <h3>Props con Diversi Tipi</h3>
+            <div class="codice">
+<pre>function Product({ name, price, inStock, tags, onBuy }) {
+  return (
+    &lt;div&gt;
+      {/* String */}
+      &lt;h3&gt;{name}&lt;/h3&gt;
+      
+      {/* Number */}
+      &lt;p&gt;€{price.toFixed(2)}&lt;/p&gt;
+      
+      {/* Boolean */}
+      &lt;p&gt;{inStock ? "Disponibile" : "Esaurito"}&lt;/p&gt;
+      
+      {/* Array */}
+      &lt;div&gt;{tags.join(", ")}&lt;/div&gt;
+      
+      {/* Function */}
+      &lt;button onClick={onBuy}&gt;Acquista&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Uso
+&lt;Product
+  name="Laptop"
+  price={999.99}
+  inStock={true}
+  tags={["elettronica", "computer"]}
+  onBuy={() =&gt; alert("Acquistato!")}
+/&gt;</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Children Prop</h2>
+            <p>La prop speciale <code>children</code> permette di passare contenuto tra i tag del componente.</p>
+            
+            <h3>Wrapper Components con Children</h3>
+            <div class="codice">
+<pre>// Componente Container
+function Card({ children }) {
+  return (
+    &lt;div className="card"&gt;
+      {children}
+    &lt;/div&gt;
+  )
+}
+
+// Componente Alert
+function Alert({ type = "info", children }) {
+  return (
+    &lt;div className={`alert alert-${type}`}&gt;
+      {children}
+    &lt;/div&gt;
+  )
+}
+
+// Uso
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Card&gt;
+        &lt;h2&gt;Titolo Card&lt;/h2&gt;
+        &lt;p&gt;Contenuto della card&lt;/p&gt;
+      &lt;/Card&gt;
+      
+      &lt;Alert type="success"&gt;
+        &lt;strong&gt;Successo!&lt;/strong&gt; Operazione completata.
+      &lt;/Alert&gt;
+      
+      &lt;Alert type="error"&gt;
+        Errore durante l'operazione.
+      &lt;/Alert&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Component Composition</h2>
+            <p>I componenti possono essere composti insieme per creare UI complesse.</p>
+            
+            <h3>Esempio: Blog Post</h3>
+            <div class="codice">
+<pre>// Componenti piccoli e riutilizzabili
+function Avatar({ src, alt }) {
+  return &lt;img src={src} alt={alt} className="avatar" /&gt;
+}
+
+function AuthorInfo({ name, date }) {
+  return (
+    &lt;div className="author-info"&gt;
+      &lt;span className="author-name"&gt;{name}&lt;/span&gt;
+      &lt;span className="date"&gt;{date}&lt;/span&gt;
+    &lt;/div&gt;
+  )
+}
+
+function PostHeader({ author, date, avatarUrl }) {
+  return (
+    &lt;div className="post-header"&gt;
+      &lt;Avatar src={avatarUrl} alt={author} /&gt;
+      &lt;AuthorInfo name={author} date={date} /&gt;
+    &lt;/div&gt;
+  )
+}
+
+function PostContent({ title, body }) {
+  return (
+    &lt;div className="post-content"&gt;
+      &lt;h2&gt;{title}&lt;/h2&gt;
+      &lt;p&gt;{body}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Componente principale composto
+function BlogPost({ post }) {
+  return (
+    &lt;article className="blog-post"&gt;
+      &lt;PostHeader
+        author={post.author}
+        date={post.date}
+        avatarUrl={post.avatarUrl}
+      /&gt;
+      &lt;PostContent
+        title={post.title}
+        body={post.body}
+      /&gt;
+    &lt;/article&gt;
+  )
+}
+
+// Uso
+const post = {
+  author: "Mario Rossi",
+  date: "15 Nov 2025",
+  avatarUrl: "/avatar.jpg",
+  title: "Imparare React",
+  body: "React è fantastico..."
+}
+
+&lt;BlogPost post={post} /&gt;</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>React Fragments</h2>
+            <p>I Fragment permettono di raggruppare elementi senza aggiungere nodi extra al DOM.</p>
+            
+            <div class="codice">
+<pre>// Sintassi lunga
+import { Fragment } from 'react'
+
+function List() {
+  return (
+    &lt;Fragment&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;/Fragment&gt;
+  )
+}
+
+// Sintassi corta (preferita)
+function List() {
+  return (
+    &lt;&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;/&gt;
+  )
+}
+
+// Fragment con key (quando necessario)
+function DescriptionList({ items }) {
+  return (
+    &lt;dl&gt;
+      {items.map(item =&gt; (
+        &lt;Fragment key={item.id}&gt;
+          &lt;dt&gt;{item.term}&lt;/dt&gt;
+          &lt;dd&gt;{item.description}&lt;/dd&gt;
+        &lt;/Fragment&gt;
+      ))}
+    &lt;/dl&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ <strong>Componenti piccoli e focalizzati:</strong> Un componente = una responsabilità</li>
+                <li>✅ <strong>Props destructuring:</strong> Più leggibile di <code>props.name</code></li>
+                <li>✅ <strong>Props immutabili:</strong> Mai modificare le props ricevute</li>
+                <li>✅ <strong>Default props:</strong> Valori di default per props opzionali</li>
+                <li>✅ <strong>Children per wrapper:</strong> Card, Modal, Layout usano children</li>
+                <li>✅ <strong>Composition over inheritance:</strong> Componi componenti invece di ereditare</li>
+                <li>❌ Non creare componenti troppo grandi (>300 righe)</li>
+                <li>❌ Non passare troppe props (max 5-7, usa oggetti)</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-7-1.html" class="btn-nav">← Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-7-3.html" class="btn-nav">Prossima Lezione →</a>
+            <a href="esempi/componenti-esempio.html" class="btn-nav">📝 Esempio Pratico</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generics - Esempio TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio - Generics</h1>
+        
+        <div class="codice">
+<pre>// Generic function
+function identity&lt;T&gt;(value: T): T {
+    return value;
+}
+
+let num = identity(42);         // number
+let str = identity("ciao");     // string
+
+// Generic con array
+function primoElemento&lt;T&gt;(arr: T[]): T | undefined {
+    return arr[0];
+}
+
+let primo = primoElemento([1, 2, 3]);
+let primoStr = primoElemento(["a", "b"]);
+
+// Generic con constraint
+function stampaLunghezza&lt;T extends { length: number }&gt;(item: T): number {
+    return item.length;
+}
+
+console.log(stampaLunghezza("ciao"));      // 4
+console.log(stampaLunghezza([1, 2, 3]));  // 3
+
+// Generic interface
+interface ApiResponse&lt;T&gt; {
+    data: T;
+    status: number;
+    message: string;
+}
+
+interface User {
+    id: number;
+    nome: string;
+}
+
+let response: ApiResponse&lt;User&gt; = {
+    data: { id: 1, nome: "Marco" },
+    status: 200,
+    message: "Success"
+};
+
+// Generic class
+class Stack&lt;T&gt; {
+    private items: T[] = [];
+    
+    push(item: T): void {
+        this.items.push(item);
+    }
+    
+    pop(): T | undefined {
+        return this.items.pop();
+    }
+    
+    peek(): T | undefined {
+        return this.items[this.items.length - 1];
+    }
+    
+    size(): number {
+        return this.items.length;
+    }
+}
+
+let stack = new Stack&lt;number&gt;();
+stack.push(1);
+stack.push(2);
+stack.push(3);
+console.log(stack.pop());  // 3
+console.log(stack.size()); // 2
+
+// Utility types
+interface Prodotto {
+    id: number;
+    nome: string;
+    prezzo: number;
+}
+
+type ProdottoPartial = Partial&lt;Prodotto&gt;;
+type ProdottoReadonly = Readonly&lt;Prodotto&gt;;
+type ProdottoMinimo = Pick&lt;Prodotto, "id" | "nome"&gt;;
+
+console.log("✅ Generics funzionano!");</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-9.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+        </div>
+    </div>
+</body>
+</html>

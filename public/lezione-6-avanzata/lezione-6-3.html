@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.3 - Array, Tuple e Enum</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.3 - Array, Tuple e Enum</h1>
+        
+        <h2>1. Array Tipizzati</h2>
+        
+        <div class="teoria">
+            <p>In TypeScript puoi specificare che tipo di elementi contiene un array.</p>
+            <p><strong>Due sintassi equivalenti:</strong></p>
+            <ul>
+                <li><code>tipo[]</code> - Sintassi preferita</li>
+                <li><code>Array&lt;tipo&gt;</code> - Sintassi generics</li>
+            </ul>
+        </div>
+        
+        <div class="codice">
+<pre>// Array di stringhe
+let nomi: string[] = ["Marco", "Lucia", "Andrea"];
+let cognomi: Array&lt;string&gt; = ["Rossi", "Bianchi"];
+
+// Array di numeri
+let numeri: number[] = [1, 2, 3, 4, 5];
+let prezzi: Array&lt;number&gt; = [19.99, 29.99, 9.99];
+
+// Array di booleani
+let flags: boolean[] = [true, false, true];
+
+// ❌ Errori TypeScript
+nomi.push(123);           // Errore: numero non è stringa
+numeri = ["ciao"];        // Errore: stringa non è numero
+flags[0] = "true";        // Errore: stringa non è boolean</pre>
+        </div>
+        
+        <h2>2. Array Methods Tipizzati</h2>
+        
+        <div class="teoria">
+            <p>I metodi array mantengono e inferiscono i tipi automaticamente:</p>
+        </div>
+        
+        <div class="codice">
+<pre>let numeri: number[] = [1, 2, 3, 4, 5];
+
+// map mantiene o trasforma il tipo
+let doppi: number[] = numeri.map(n => n * 2);
+let stringhe: string[] = numeri.map(n => n.toString());
+
+// filter mantiene il tipo originale
+let pari: number[] = numeri.filter(n => n % 2 === 0);
+
+// reduce può cambiare tipo
+let somma: number = numeri.reduce((acc, n) => acc + n, 0);
+let concatenati: string = numeri.reduce((acc, n) => acc + n, "");
+
+// find ritorna tipo | undefined
+let primo: number | undefined = numeri.find(n => n > 3);
+
+// TypeScript inferisce automaticamente i tipi
+numeri.forEach(n => {
+    console.log(n.toFixed(2));  // n è number, autocompletamento funziona
+});</pre>
+        </div>
+        
+        <h2>3. Array Multidimensionali</h2>
+        
+        <div class="codice">
+<pre>// Array 2D (matrice)
+let matrice: number[][] = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+
+// Array 3D
+let cubo: number[][][] = [
+    [[1, 2], [3, 4]],
+    [[5, 6], [7, 8]]
+];
+
+// Accesso tipizzato
+let elemento: number = matrice[0][1];  // 2
+let riga: number[] = matrice[1];       // [4, 5, 6]</pre>
+        </div>
+        
+        <h2>4. Array di Oggetti</h2>
+        
+        <div class="codice">
+<pre>// Definisci la struttura dell'oggetto
+interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+}
+
+// Array di oggetti tipizzato
+let utenti: Utente[] = [
+    { id: 1, nome: "Marco", email: "marco@email.com" },
+    { id: 2, nome: "Lucia", email: "lucia@email.com" }
+];
+
+// TypeScript controlla la struttura
+utenti.push({ id: 3, nome: "Andrea", email: "andrea@email.com" });  // ✅ OK
+
+// ❌ Errore: manca email
+utenti.push({ id: 4, nome: "Sara" });
+
+// Map con oggetti
+let nomi: string[] = utenti.map(u => u.nome);
+let ids: number[] = utenti.map(u => u.id);</pre>
+        </div>
+        
+        <h2>5. ReadOnly Arrays</h2>
+        
+        <div class="teoria">
+            <p><strong>ReadonlyArray&lt;T&gt;</strong> impedisce modifiche all'array:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Array immutabile
+let numeri: ReadonlyArray&lt;number&gt; = [1, 2, 3, 4, 5];
+
+// Sintassi alternativa (preferita)
+let nomi: readonly string[] = ["Marco", "Lucia"];
+
+// ❌ Metodi di modifica non disponibili
+numeri.push(6);        // Errore
+numeri.pop();          // Errore
+numeri[0] = 10;        // Errore
+
+// ✅ Metodi di lettura funzionano
+let primo = numeri[0];
+let lunghezza = numeri.length;
+let doppi = numeri.map(n => n * 2);  // OK, crea nuovo array
+
+// Utile per:
+// - Costanti che non devono cambiare
+// - Props in componenti
+// - Parametri funzione per evitare side effects</pre>
+        </div>
+        
+        <h2>6. Tuple - Array a Lunghezza Fissa</h2>
+        
+        <div class="teoria">
+            <p><strong>Tuple</strong> sono array con lunghezza e tipi fissi per ogni posizione.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Tupla: [string, number]
+let utente: [string, number] = ["Marco", 25];
+
+// Accesso tipizzato per posizione
+let nome: string = utente[0];   // OK
+let eta: number = utente[1];    // OK
+
+// ❌ Errori TypeScript
+let errore1: [string, number] = [25, "Marco"];  // Ordine sbagliato
+let errore2: [string, number] = ["Marco"];      // Manca elemento
+utente[0] = 123;  // Errore: posizione 0 è string
+
+// Destructuring con tuple
+let [nomeUtente, etaUtente] = utente;
+console.log(nomeUtente);  // "Marco" (string)
+console.log(etaUtente);   // 25 (number)</pre>
+        </div>
+        
+        <h2>7. Tuple con Elementi Opzionali</h2>
+        
+        <div class="codice">
+<pre>// Tupla con elemento opzionale
+let coordinate: [number, number, number?] = [10, 20];
+coordinate = [10, 20, 30];  // Anche OK
+
+// Tupla con rest elements
+let dati: [string, ...number[]] = ["Marco", 25, 180, 75];
+
+// Tuple readonly
+let punto: readonly [number, number] = [10, 20];
+punto[0] = 5;  // ❌ Errore: readonly</pre>
+        </div>
+        
+        <h2>8. Casi d'Uso Tuple</h2>
+        
+        <div class="codice">
+<pre>// 1. Ritorno multiplo da funzione
+function getDimensioni(): [number, number] {
+    return [1920, 1080];
+}
+let [width, height] = getDimensioni();
+
+// 2. Coordinate
+type Punto2D = [number, number];
+type Punto3D = [number, number, number];
+
+let punto: Punto3D = [10, 20, 30];
+
+// 3. Coppie chiave-valore
+type KeyValue = [string, any];
+let entries: KeyValue[] = [
+    ["nome", "Marco"],
+    ["eta", 25],
+    ["attivo", true]
+];
+
+// 4. Stato + Setter (come useState in React)
+type State&lt;T&gt; = [T, (value: T) => void];
+
+function useState&lt;T&gt;(initial: T): State&lt;T&gt; {
+    let state = initial;
+    const setState = (value: T) => { state = value; };
+    return [state, setState];
+}
+
+let [count, setCount] = useState(0);</pre>
+        </div>
+        
+        <h2>9. Enum - Enumerazioni</h2>
+        
+        <div class="teoria">
+            <p><strong>Enum</strong> definisce un set di costanti nominate. Alternativa type-safe a magic numbers/strings.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Enum numerico (default: 0, 1, 2, ...)
+enum Direzione {
+    Su,      // 0
+    Giu,     // 1
+    Sinistra, // 2
+    Destra   // 3
+}
+
+let dir: Direzione = Direzione.Su;
+console.log(dir);  // 0
+
+// Enum con valori custom
+enum StatoOrdine {
+    Pending = 1,
+    Processing = 2,
+    Shipped = 3,
+    Delivered = 4
+}
+
+let stato: StatoOrdine = StatoOrdine.Processing;
+console.log(stato);  // 2
+
+// Reverse mapping (solo enum numerici)
+console.log(StatoOrdine[2]);  // "Processing"</pre>
+        </div>
+        
+        <h2>10. String Enum</h2>
+        
+        <div class="codice">
+<pre>// Enum con stringhe (più comune)
+enum Ruolo {
+    Admin = "ADMIN",
+    User = "USER",
+    Guest = "GUEST"
+}
+
+let ruoloUtente: Ruolo = Ruolo.Admin;
+console.log(ruoloUtente);  // "ADMIN"
+
+// Utile per confronti
+if (ruoloUtente === Ruolo.Admin) {
+    console.log("Accesso amministratore");
+}
+
+// Enum per status HTTP
+enum HttpStatus {
+    OK = 200,
+    Created = 201,
+    BadRequest = 400,
+    Unauthorized = 401,
+    NotFound = 404,
+    ServerError = 500
+}
+
+function handleResponse(status: HttpStatus) {
+    switch (status) {
+        case HttpStatus.OK:
+            console.log("Success!");
+            break;
+        case HttpStatus.NotFound:
+            console.log("Not found");
+            break;
+        default:
+            console.log("Unknown status");
+    }
+}</pre>
+        </div>
+        
+        <h2>11. Const Enum</h2>
+        
+        <div class="teoria">
+            <p><strong>const enum</strong> viene completamente rimosso in fase di compilazione (inline dei valori).</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Const enum
+const enum Colore {
+    Rosso = "#FF0000",
+    Verde = "#00FF00",
+    Blu = "#0000FF"
+}
+
+// Uso
+let colore = Colore.Rosso;
+
+// Compilato in JavaScript come:
+let colore = "#FF0000";  // Valore inline, nessun oggetto Colore
+
+// Vantaggio: codice JavaScript più piccolo
+// Svantaggio: niente reverse mapping, niente accesso dinamico</pre>
+        </div>
+        
+        <h2>12. Enum vs Union Types</h2>
+        
+        <div class="teoria">
+            <p>Quando usare enum vs union types:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// ✅ Enum: quando hai un set fisso di valori correlati
+enum TipoDocumento {
+    Fattura = "FATTURA",
+    Ricevuta = "RICEVUTA",
+    DDT = "DDT"
+}
+
+// ✅ Union: quando i valori sono semplici literal types
+type Dimensione = "small" | "medium" | "large";
+type Tema = "light" | "dark";
+
+// Union è spesso preferito perché:
+// - Più leggero (niente codice JS generato)
+// - Più flessibile
+// - Più "TypeScript-idiomatico"
+
+// Ma enum è meglio quando:
+// - Vuoi namespace esplicito (Colore.Rosso vs "rosso")
+// - Hai molti valori correlati
+// - Vuoi reverse mapping</pre>
+        </div>
+        
+        <h2>13. Best Practices</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Array:</strong> Preferisci <code>tipo[]</code> a <code>Array&lt;tipo&gt;</code> per sintassi più pulita</li>
+                <li><strong>Readonly:</strong> Usa <code>readonly</code> per array che non devono essere modificati</li>
+                <li><strong>Tuple:</strong> Usa per valori correlati di tipo fisso (coordinate, coppie chiave-valore)</li>
+                <li><strong>Enum:</strong> Usa string enum per valori human-readable</li>
+                <li><strong>Union vs Enum:</strong> Preferisci union types per semplicità, enum per namespace espliciti</li>
+                <li><strong>Const Enum:</strong> Usa per performance quando non serve reverse mapping</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Prova l'esempio interattivo: <a href="esempi/array-tuple-esempio.html">Array e Tuple</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-2.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-4.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

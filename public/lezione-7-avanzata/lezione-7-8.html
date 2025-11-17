@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.8 - Lifting State Up</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7.8 - Lifting State Up</h1>
+        
+        <div class="teoria">
+            <h2>Cos'è Lifting State Up?</h2>
+            <p><strong>Lifting state up</strong> significa spostare lo state nel componente parent comune quando 
+            più componenti figli devono condividere o sincronizzare dati.</p>
+            
+            <h3>Regola d'Oro di React</h3>
+            <blockquote>
+                <p><strong>I dati fluiscono verso il basso (top-down).</strong> I componenti parent passano dati ai children tramite props.</p>
+            </blockquote>
+            
+            <h3>Quando Fare Lifting State Up?</h3>
+            <ul>
+                <li>✅ Due o più componenti devono <strong>condividere</strong> lo stesso state</li>
+                <li>✅ Un componente deve <strong>modificare</strong> lo state di un altro</li>
+                <li>✅ Lo state deve essere <strong>sincronizzato</strong> tra componenti</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Esempio Base: Temperature Converter</h2>
+            
+            <h3>❌ Problema: State Duplicato</h3>
+            <div class="codice">
+<pre>// ❌ PROBLEMA: Ogni input ha il suo state (non sincronizzati!)
+function CelsiusInput() {
+  const [celsius, setCelsius] = useState('')
+  return &lt;input value={celsius} onChange={e =&gt; setCelsius(e.target.value)} /&gt;
+}
+
+function FahrenheitInput() {
+  const [fahrenheit, setFahrenheit] = useState('')
+  return &lt;input value={fahrenheit} onChange={e =&gt; setFahrenheit(e.target.value)} /&gt;
+}
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;CelsiusInput /&gt;
+      &lt;FahrenheitInput /&gt;
+      {/* ❌ I due input non si sincronizzano! */}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>✅ Soluzione: Lifting State Up</h3>
+            <div class="codice">
+<pre>// ✅ SOLUZIONE: State nel parent, props nei children
+function TemperatureInput({ temperature, scale, onTemperatureChange }) {
+  return (
+    &lt;div&gt;
+      &lt;label&gt;Temperatura in {scale === 'c' ? 'Celsius' : 'Fahrenheit'}:&lt;/label&gt;
+      &lt;input
+        value={temperature}
+        onChange={(e) =&gt; onTemperatureChange(e.target.value)}
+      /&gt;
+    &lt;/div&gt;
+  )
+}
+
+function Calculator() {
+  const [temperature, setTemperature] = useState('')
+  const [scale, setScale] = useState('c')
+  
+  // Conversioni
+  const toCelsius = (fahrenheit) =&gt; ((fahrenheit - 32) * 5) / 9
+  const toFahrenheit = (celsius) =&gt; (celsius * 9) / 5 + 32
+  
+  // Calcola valori per entrambi gli input
+  const celsius = scale === 'f' ? toCelsius(temperature) : temperature
+  const fahrenheit = scale === 'c' ? toFahrenheit(temperature) : temperature
+  
+  return (
+    &lt;div&gt;
+      &lt;TemperatureInput
+        scale="c"
+        temperature={celsius}
+        onTemperatureChange={(value) =&gt; {
+          setTemperature(value)
+          setScale('c')
+        }}
+      /&gt;
+      
+      &lt;TemperatureInput
+        scale="f"
+        temperature={fahrenheit}
+        onTemperatureChange={(value) =&gt; {
+          setTemperature(value)
+          setScale('f')
+        }}
+      /&gt;
+      
+      &lt;p&gt;
+        {temperature &gt;= 100 ? 'L\'acqua bolle!' : 'L\'acqua non bolle.'}
+      &lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+// ✅ Ora i due input sono sincronizzati!</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Pattern: Parent Gestisce State</h2>
+            
+            <div class="codice">
+<pre>// Children: Ricevono props e chiamano callback
+function FilterButton({ isActive, label, onClick }) {
+  return (
+    &lt;button
+      className={isActive ? 'active' : ''}
+      onClick={onClick}
+    &gt;
+      {label}
+    &lt;/button&gt;
+  )
+}
+
+function ProductList({ products, filter }) {
+  return (
+    &lt;ul&gt;
+      {products
+        .filter(p =&gt; filter === 'all' || p.category === filter)
+        .map(p =&gt; &lt;li key={p.id}&gt;{p.name}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  )
+}
+
+// Parent: Gestisce state e lo passa ai children
+function ProductPage() {
+  const [filter, setFilter] = useState('all')
+  const products = [
+    { id: 1, name: 'Laptop', category: 'electronics' },
+    { id: 2, name: 'Libro', category: 'books' },
+    { id: 3, name: 'Mouse', category: 'electronics' }
+  ]
+  
+  return (
+    &lt;div&gt;
+      &lt;div className="filters"&gt;
+        &lt;FilterButton
+          isActive={filter === 'all'}
+          label="Tutti"
+          onClick={() =&gt; setFilter('all')}
+        /&gt;
+        &lt;FilterButton
+          isActive={filter === 'electronics'}
+          label="Elettronica"
+          onClick={() =&gt; setFilter('electronics')}
+        /&gt;
+        &lt;FilterButton
+          isActive={filter === 'books'}
+          label="Libri"
+          onClick={() =&gt; setFilter('books')}
+        /&gt;
+      &lt;/div&gt;
+      
+      &lt;ProductList products={products} filter={filter} /&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Props Drilling</h2>
+            <p><strong>Props drilling</strong> è quando passi props attraverso molti livelli di componenti.</p>
+            
+            <h3>Esempio Props Drilling</h3>
+            <div class="codice">
+<pre>// ⚠️ PROPS DRILLING: user passa attraverso molti livelli
+function App() {
+  const [user, setUser] = useState({ name: 'Mario', role: 'admin' })
+  
+  return &lt;Dashboard user={user} /&gt;
+}
+
+function Dashboard({ user }) {
+  return &lt;Sidebar user={user} /&gt;
+}
+
+function Sidebar({ user }) {
+  return &lt;UserMenu user={user} /&gt;
+}
+
+function UserMenu({ user }) {
+  return &lt;UserProfile user={user} /&gt;
+}
+
+function UserProfile({ user }) {
+  return &lt;h2&gt;{user.name}&lt;/h2&gt;  // Finalmente usato qui!
+}
+
+// ⚠️ Problema: 4 componenti intermedi passano user senza usarlo</pre>
+            </div>
+            
+            <h3>Soluzioni al Props Drilling</h3>
+            <ul>
+                <li><strong>Lifting State Up:</strong> Se pochi livelli (2-3)</li>
+                <li><strong>Component Composition:</strong> Usa children prop</li>
+                <li><strong>Context API:</strong> Per state globale (vedremo nella prossima lezione)</li>
+            </ul>
+        </div>
+        
+        <div class="teoria">
+            <h2>Component Composition (Alternative Pattern)</h2>
+            <p>Invece di passare props in profondità, passa i componenti stessi come children.</p>
+            
+            <div class="codice">
+<pre>// ✅ SOLUZIONE: Component composition (evita props drilling)
+function App() {
+  const [user, setUser] = useState({ name: 'Mario', role: 'admin' })
+  
+  // Crea UserProfile qui e passalo come children
+  return (
+    &lt;Dashboard&gt;
+      &lt;Sidebar&gt;
+        &lt;UserMenu&gt;
+          &lt;UserProfile user={user} /&gt;
+        &lt;/UserMenu&gt;
+      &lt;/Sidebar&gt;
+    &lt;/Dashboard&gt;
+  )
+}
+
+// Componenti non hanno bisogno di user prop
+function Dashboard({ children }) {
+  return &lt;div className="dashboard"&gt;{children}&lt;/div&gt;
+}
+
+function Sidebar({ children }) {
+  return &lt;aside className="sidebar"&gt;{children}&lt;/aside&gt;
+}
+
+function UserMenu({ children }) {
+  return &lt;nav className="user-menu"&gt;{children}&lt;/nav&gt;
+}
+
+function UserProfile({ user }) {
+  return &lt;h2&gt;{user.name}&lt;/h2&gt;
+}
+
+// ✅ Nessun props drilling!</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Esempio Completo: Todo App</h2>
+            
+            <div class="codice">
+<pre>// Componenti figli
+function TodoInput({ value, onChange, onAdd }) {
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={value}
+        onChange={(e) =&gt; onChange(e.target.value)}
+        placeholder="Nuovo todo"
+      /&gt;
+      &lt;button onClick={onAdd}&gt;Aggiungi&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+function TodoItem({ todo, onToggle, onDelete }) {
+  return (
+    &lt;li&gt;
+      &lt;input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() =&gt; onToggle(todo.id)}
+      /&gt;
+      &lt;span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}&gt;
+        {todo.text}
+      &lt;/span&gt;
+      &lt;button onClick={() =&gt; onDelete(todo.id)}&gt;X&lt;/button&gt;
+    &lt;/li&gt;
+  )
+}
+
+function TodoList({ todos, onToggle, onDelete }) {
+  return (
+    &lt;ul&gt;
+      {todos.map(todo =&gt; (
+        &lt;TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        /&gt;
+      ))}
+    &lt;/ul&gt;
+  )
+}
+
+function TodoStats({ todos }) {
+  const total = todos.length
+  const completed = todos.filter(t =&gt; t.completed).length
+  const remaining = total - completed
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Totale: {total} | Completati: {completed} | Rimanenti: {remaining}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+// Parent: Gestisce tutto lo state
+function TodoApp() {
+  const [todos, setTodos] = useState([])
+  const [inputValue, setInputValue] = useState('')
+  
+  const handleAdd = () =&gt; {
+    if (!inputValue.trim()) return
+    
+    const newTodo = {
+      id: Date.now(),
+      text: inputValue,
+      completed: false
+    }
+    
+    setTodos([...todos, newTodo])
+    setInputValue('')
+  }
+  
+  const handleToggle = (id) =&gt; {
+    setTodos(todos.map(todo =&gt;
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ))
+  }
+  
+  const handleDelete = (id) =&gt; {
+    setTodos(todos.filter(todo =&gt; todo.id !== id))
+  }
+  
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Todo List&lt;/h1&gt;
+      
+      &lt;TodoInput
+        value={inputValue}
+        onChange={setInputValue}
+        onAdd={handleAdd}
+      /&gt;
+      
+      &lt;TodoList
+        todos={todos}
+        onToggle={handleToggle}
+        onDelete={handleDelete}
+      /&gt;
+      
+      &lt;TodoStats todos={todos} /&gt;
+    &lt;/div&gt;
+  )
+}
+
+// ✅ State gestito dal parent, children ricevono solo props</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ <strong>Lifting state up:</strong> Quando 2+ componenti devono condividere state</li>
+                <li>✅ <strong>State nel parent:</strong> Il componente comune più vicino</li>
+                <li>✅ <strong>Callback props:</strong> Per permettere ai children di aggiornare state</li>
+                <li>✅ <strong>Component composition:</strong> Usa children per evitare props drilling</li>
+                <li>✅ <strong>Props chiare:</strong> Nomi espliciti per callback (onAdd, onChange, onDelete)</li>
+                <li>✅ <strong>Single Source of Truth:</strong> Un solo componente possiede lo state</li>
+                <li>⚠️ <strong>Props drilling:</strong> OK per 2-3 livelli, dopo usa Context API</li>
+                <li>❌ Non duplicare state in più componenti</li>
+                <li>❌ Non cercare di "condividere" state tra sibling direttamente</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-7-7.html" class="btn-nav">← Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-7-9.html" class="btn-nav">Prossima Lezione →</a>
+            <a href="esempi/lifting-state-esempio.html" class="btn-nav">📝 Esempio Pratico</a>
+        </div>
+    </div>
+</body>
+</html>

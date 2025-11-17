@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.9 - Generics Base</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lezione 6.9 - Generics Base</h1>
+        
+        <h2>1. Cosa sono i Generics?</h2>
+        
+        <div class="teoria">
+            <p><strong>Generics</strong> permettono di scrivere codice riutilizzabile che funziona con tipi multipli mantenendo type safety.</p>
+            <p>Invece di usare <code>any</code>, usi una variabile di tipo <code>&lt;T&gt;</code> che verrà specificata all'uso.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// ❌ Senza generics (perde type safety)
+function identity(value: any): any {
+    return value;
+}
+
+let num = identity(42);        // any (perso il tipo)
+let str = identity("ciao");    // any (perso il tipo)
+
+// ✅ Con generics (mantiene type safety)
+function identityGeneric&lt;T&gt;(value: T): T {
+    return value;
+}
+
+let num2 = identityGeneric&lt;number&gt;(42);      // number
+let str2 = identityGeneric&lt;string&gt;("ciao"); // string
+let bool = identityGeneric(true);            // boolean (inferito)</pre>
+        </div>
+        
+        <h2>2. Generic Functions</h2>
+        
+        <div class="codice">
+<pre>// Funzione generica base
+function wrap&lt;T&gt;(value: T): T[] {
+    return [value];
+}
+
+wrap&lt;number&gt;(42);        // number[]
+wrap&lt;string&gt;("ciao");    // string[]
+wrap({ id: 1 });         // { id: number }[] (inferito)
+
+// Generic con array
+function primo&lt;T&gt;(array: T[]): T | undefined {
+    return array[0];
+}
+
+let num = primo([1, 2, 3]);        // number | undefined
+let str = primo(["a", "b"]);       // string | undefined
+
+// Generic con più parametri di tipo
+function coppia&lt;T, U&gt;(primo: T, secondo: U): [T, U] {
+    return [primo, secondo];
+}
+
+let result = coppia("nome", 25);        // [string, number]
+let result2 = coppia(true, "yes");      // [boolean, string]</pre>
+        </div>
+        
+        <h2>3. Generic Constraints</h2>
+        
+        <div class="teoria">
+            <p><strong>Constraints</strong> limitano i tipi che possono essere usati con un generic:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Constraint: T deve avere proprietà length
+function lunghezza&lt;T extends { length: number }&gt;(item: T): number {
+    return item.length;
+}
+
+lunghezza("ciao");           // 4 (string ha length)
+lunghezza([1, 2, 3]);        // 3 (array ha length)
+lunghezza({ length: 10 });   // 10 (oggetto con length)
+// lunghezza(123);           // ❌ Errore: number non ha length
+
+// Constraint con interfaccia
+interface HasId {
+    id: number;
+}
+
+function getId&lt;T extends HasId&gt;(obj: T): number {
+    return obj.id;
+}
+
+getId({ id: 1, nome: "Marco" });  // 1
+getId({ id: 42, attivo: true });  // 42
+// getId({ nome: "Test" });       // ❌ Errore: manca id
+
+// Constraint con keyof
+function getProperty&lt;T, K extends keyof T&gt;(obj: T, key: K): T[K] {
+    return obj[key];
+}
+
+let utente = { nome: "Marco", eta: 25 };
+let nome = getProperty(utente, "nome");   // string
+let eta = getProperty(utente, "eta");     // number
+// getProperty(utente, "email");          // ❌ Errore: "email" non esiste</pre>
+        </div>
+        
+        <h2>4. Generic Interfaces</h2>
+        
+        <div class="codice">
+<pre>// Interface generica
+interface Box&lt;T&gt; {
+    value: T;
+    getValue(): T;
+    setValue(value: T): void;
+}
+
+let boxNumero: Box&lt;number&gt; = {
+    value: 42,
+    getValue() { return this.value; },
+    setValue(value: number) { this.value = value; }
+};
+
+let boxStringa: Box&lt;string&gt; = {
+    value: "ciao",
+    getValue() { return this.value; },
+    setValue(value: string) { this.value = value; }
+};
+
+// Interface per Response API
+interface ApiResponse&lt;T&gt; {
+    data: T;
+    status: number;
+    message: string;
+}
+
+interface User {
+    id: number;
+    nome: string;
+    email: string;
+}
+
+let userResponse: ApiResponse&lt;User&gt; = {
+    data: { id: 1, nome: "Marco", email: "marco@email.com" },
+    status: 200,
+    message: "Success"
+};
+
+let usersResponse: ApiResponse&lt;User[]&gt; = {
+    data: [
+        { id: 1, nome: "Marco", email: "marco@email.com" },
+        { id: 2, nome: "Lucia", email: "lucia@email.com" }
+    ],
+    status: 200,
+    message: "Success"
+};</pre>
+        </div>
+        
+        <h2>5. Generic Classes</h2>
+        
+        <div class="codice">
+<pre>// Classe generica
+class Stack&lt;T&gt; {
+    private items: T[] = [];
+    
+    push(item: T): void {
+        this.items.push(item);
+    }
+    
+    pop(): T | undefined {
+        return this.items.pop();
+    }
+    
+    peek(): T | undefined {
+        return this.items[this.items.length - 1];
+    }
+    
+    isEmpty(): boolean {
+        return this.items.length === 0;
+    }
+    
+    size(): number {
+        return this.items.length;
+    }
+}
+
+// Stack di numeri
+let stackNumeri = new Stack&lt;number&gt;();
+stackNumeri.push(1);
+stackNumeri.push(2);
+console.log(stackNumeri.pop());  // 2
+
+// Stack di stringhe
+let stackStringhe = new Stack&lt;string&gt;();
+stackStringhe.push("a");
+stackStringhe.push("b");
+console.log(stackStringhe.pop());  // "b"
+
+// Generic class con constraint
+class Repository&lt;T extends { id: number }&gt; {
+    private items: Map&lt;number, T&gt; = new Map();
+    
+    add(item: T): void {
+        this.items.set(item.id, item);
+    }
+    
+    get(id: number): T | undefined {
+        return this.items.get(id);
+    }
+    
+    getAll(): T[] {
+        return Array.from(this.items.values());
+    }
+    
+    delete(id: number): boolean {
+        return this.items.delete(id);
+    }
+}</pre>
+        </div>
+        
+        <h2>6. Generic Type Aliases</h2>
+        
+        <div class="codice">
+<pre>// Type alias generico
+type Result&lt;T&gt; = {
+    success: boolean;
+    data?: T;
+    error?: string;
+};
+
+function fetchUser(id: number): Result&lt;User&gt; {
+    if (id > 0) {
+        return {
+            success: true,
+            data: { id, nome: "Marco", email: "marco@email.com" }
+        };
+    }
+    return {
+        success: false,
+        error: "ID invalido"
+    };
+}
+
+// Generic con union
+type Nullable&lt;T&gt; = T | null;
+type Optional&lt;T&gt; = T | undefined;
+
+let nome: Nullable&lt;string&gt; = "Marco";
+nome = null;  // ✅ OK
+
+// Generic con array
+type ReadonlyArray&lt;T&gt; = readonly T[];
+
+let numeri: ReadonlyArray&lt;number&gt; = [1, 2, 3];
+// numeri.push(4);  // ❌ Errore: readonly</pre>
+        </div>
+        
+        <h2>7. Utility Types Built-in</h2>
+        
+        <div class="teoria">
+            <p>TypeScript include <strong>utility types</strong> generici per trasformazioni comuni:</p>
+        </div>
+        
+        <div class="codice">
+<pre>interface Prodotto {
+    id: number;
+    nome: string;
+    descrizione: string;
+    prezzo: number;
+    disponibile: boolean;
+}
+
+// Partial&lt;T&gt; - Tutte proprietà opzionali
+type ProdottoPartial = Partial&lt;Prodotto&gt;;
+let update: ProdottoPartial = {
+    prezzo: 99.99  // Solo prezzo, resto opzionale
+};
+
+// Required&lt;T&gt; - Tutte proprietà obbligatorie
+interface Config {
+    host?: string;
+    port?: number;
+}
+type ConfigRequired = Required&lt;Config&gt;;  // host e port obbligatori
+
+// Readonly&lt;T&gt; - Tutte proprietà readonly
+type ProdottoReadonly = Readonly&lt;Prodotto&gt;;
+let prodotto: ProdottoReadonly = {
+    id: 1,
+    nome: "Laptop",
+    descrizione: "Laptop potente",
+    prezzo: 999,
+    disponibile: true
+};
+// prodotto.prezzo = 1099;  // ❌ Errore: readonly
+
+// Pick&lt;T, K&gt; - Seleziona solo alcune proprietà
+type ProdottoMinimo = Pick&lt;Prodotto, "id" | "nome" | "prezzo"&gt;;
+let mini: ProdottoMinimo = {
+    id: 1,
+    nome: "Mouse",
+    prezzo: 29.99
+};
+
+// Omit&lt;T, K&gt; - Esclude alcune proprietà
+type ProdottoSenzaID = Omit&lt;Prodotto, "id"&gt;;
+let nuovo: ProdottoSenzaID = {
+    nome: "Tastiera",
+    descrizione: "Meccanica",
+    prezzo: 79.99,
+    disponibile: true
+};
+
+// Record&lt;K, T&gt; - Oggetto con chiavi K e valori T
+type Roles = "admin" | "user" | "guest";
+type Permissions = Record&lt;Roles, string[]&gt;;
+
+let permissions: Permissions = {
+    admin: ["read", "write", "delete"],
+    user: ["read", "write"],
+    guest: ["read"]
+};</pre>
+        </div>
+        
+        <h2>8. ReturnType e Parameters</h2>
+        
+        <div class="codice">
+<pre>// ReturnType&lt;T&gt; - Estrae tipo di ritorno
+function getUser() {
+    return {
+        id: 1,
+        nome: "Marco",
+        email: "marco@email.com"
+    };
+}
+
+type User = ReturnType&lt;typeof getUser&gt;;
+// { id: number; nome: string; email: string; }
+
+// Parameters&lt;T&gt; - Estrae tipi parametri
+function createProdotto(nome: string, prezzo: number, disponibile: boolean) {
+    return { nome, prezzo, disponibile };
+}
+
+type CreateProdottoParams = Parameters&lt;typeof createProdotto&gt;;
+// [string, number, boolean]
+
+let params: CreateProdottoParams = ["Laptop", 999, true];
+createProdotto(...params);</pre>
+        </div>
+        
+        <h2>9. Promise&lt;T&gt; e Async/Await</h2>
+        
+        <div class="codice">
+<pre>// Promise tipizzata
+function fetchData(): Promise&lt;string&gt; {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve("Dati ricevuti");
+        }, 1000);
+    });
+}
+
+// Async function con type
+async function getUserAsync(id: number): Promise&lt;User&gt; {
+    // Simula API call
+    return {
+        id,
+        nome: "Marco",
+        email: "marco@email.com"
+    };
+}
+
+// Uso con await
+async function main() {
+    let data = await fetchData();       // string
+    let user = await getUserAsync(1);   // User
+    console.log(data, user);
+}
+
+// Generic async function
+async function fetchJSON&lt;T&gt;(url: string): Promise&lt;T&gt; {
+    const response = await fetch(url);
+    return response.json();
+}
+
+// Uso type-safe
+interface Post {
+    id: number;
+    title: string;
+    body: string;
+}
+
+let post = await fetchJSON&lt;Post&gt;("https://api.example.com/post/1");
+console.log(post.title);  // Type-safe!</pre>
+        </div>
+        
+        <h2>10. Default Generic Parameters</h2>
+        
+        <div class="codice">
+<pre>// Generic con valore default
+interface ApiResponse&lt;T = any&gt; {
+    data: T;
+    status: number;
+}
+
+// Senza specificare tipo (usa default any)
+let response: ApiResponse = {
+    data: "qualsiasi cosa",
+    status: 200
+};
+
+// Con tipo specifico
+let userResponse: ApiResponse&lt;User&gt; = {
+    data: { id: 1, nome: "Marco", email: "marco@email.com" },
+    status: 200
+};
+
+// Generic con default basato su altro generic
+interface Container&lt;T, U = T[]&gt; {
+    item: T;
+    items: U;
+}
+
+let container: Container&lt;number&gt; = {
+    item: 42,
+    items: [1, 2, 3]  // U default è number[]
+};</pre>
+        </div>
+        
+        <h2>11. Best Practices</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Naming:</strong> Usa <code>T</code> per single type, <code>T, U, V</code> per multiple, o nomi descrittivi (<code>TKey, TValue</code>)</li>
+                <li><strong>Inferenza:</strong> Lascia che TypeScript inferisca quando possibile</li>
+                <li><strong>Constraints:</strong> Aggiungi constraints per limitare tipi permessi</li>
+                <li><strong>Utility Types:</strong> Usa built-in utility types invece di ridefinirli</li>
+                <li><strong>Semplicità:</strong> Non abusare generics, usali solo quando necessario</li>
+                <li><strong>Documentazione:</strong> Commenta generics complessi per chiarezza</li>
+                <li><strong>Default Parameters:</strong> Usa per API flessibili con defaults sensati</li>
+            </ul>
+        </div>
+        
+        <div class="esempio">
+            <h3>🎯 Esercizio Pratico</h3>
+            <p>Prova l'esempio interattivo: <a href="esempi/generics-esempio.html">Generics</a></p>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-6-8.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 6</a>
+            <a href="lezione-6-10.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

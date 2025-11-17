@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classi - Esempio TypeScript</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio - Classi TypeScript</h1>
+        
+        <div class="codice">
+<pre>// Classe con tipi
+class Utente {
+    public nome: string;
+    private eta: number;
+    readonly id: number;
+    
+    constructor(nome: string, eta: number) {
+        this.nome = nome;
+        this.eta = eta;
+        this.id = Date.now();
+    }
+    
+    saluta(): string {
+        return `Ciao, sono ${this.nome}`;
+    }
+    
+    getEta(): number {
+        return this.eta;
+    }
+}
+
+let utente = new Utente("Marco", 25);
+console.log(utente.saluta());
+console.log(utente.getEta());
+
+// Parameter properties shorthand
+class Prodotto {
+    constructor(
+        public readonly id: number,
+        public nome: string,
+        public prezzo: number
+    ) {}
+    
+    scontato(percentuale: number): number {
+        return this.prezzo * (1 - percentuale / 100);
+    }
+}
+
+let laptop = new Prodotto(1, "Laptop", 999);
+console.log(laptop.scontato(10));  // 899.10
+
+// Ereditarietà
+class Animale {
+    constructor(public nome: string) {}
+    
+    muovi(metri: number): void {
+        console.log(`${this.nome} si muove di ${metri}m`);
+    }
+}
+
+class Cane extends Animale {
+    constructor(nome: string, public razza: string) {
+        super(nome);
+    }
+    
+    abbaia(): void {
+        console.log(`${this.nome}: Bau bau!`);
+    }
+}
+
+let fido = new Cane("Fido", "Labrador");
+fido.abbaia();
+fido.muovi(10);
+
+// Generics
+class Box&lt;T&gt; {
+    constructor(private contenuto: T) {}
+    
+    get(): T {
+        return this.contenuto;
+    }
+    
+    set(valore: T): void {
+        this.contenuto = valore;
+    }
+}
+
+let boxNum = new Box&lt;number&gt;(42);
+console.log(boxNum.get());
+
+console.log("✅ Classi funzionano!");</pre>
+        </div>
+        
+        <div class="navigazione">
+            <a href="../lezione-6-8.html" class="btn-nav">⬅️ Torna alla Lezione</a>
+        </div>
+    </div>
+</body>
+</html>

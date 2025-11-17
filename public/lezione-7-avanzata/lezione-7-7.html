@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.7 - Form e Controlled Components</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7.7 - Form e Controlled Components</h1>
+        
+        <div class="teoria">
+            <h2>Controlled Components</h2>
+            <p>In React, i form inputs sono <strong>controlled</strong> quando il loro valore è gestito dallo state.</p>
+            
+            <h3>Uncontrolled vs Controlled</h3>
+            <div class="codice">
+<pre>// ❌ UNCONTROLLED: DOM gestisce il valore
+function UncontrolledInput() {
+  return &lt;input type="text" /&gt;
+  // Il valore è nel DOM, non accessibile in React
+}
+
+// ✅ CONTROLLED: React gestisce il valore
+function ControlledInput() {
+  const [value, setValue] = useState('')
+  
+  return (
+    &lt;input
+      type="text"
+      value={value}  // Valore sempre uguale allo state
+      onChange={(e) =&gt; setValue(e.target.value)}  // Aggiorna state
+    /&gt;
+  )
+  // Il valore è nello state, totalmente controllato
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Form Completo Base</h2>
+            
+            <div class="codice">
+<pre>import { useState } from 'react'
+
+function LoginForm() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState({})
+  
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault()  // Previeni refresh pagina
+    
+    // Validazione
+    const newErrors = {}
+    if (!email) newErrors.email = 'Email obbligatoria'
+    if (!password) newErrors.password = 'Password obbligatoria'
+    if (password.length < 6) newErrors.password = 'Min 6 caratteri'
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+    
+    // Submit valido
+    console.log('Login:', { email, password })
+    setErrors({})
+    
+    // Reset form
+    setEmail('')
+    setPassword('')
+  }
+  
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;div&gt;
+        &lt;label htmlFor="email"&gt;Email:&lt;/label&gt;
+        &lt;input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) =&gt; setEmail(e.target.value)}
+        /&gt;
+        {errors.email && &lt;span className="error"&gt;{errors.email}&lt;/span&gt;}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label htmlFor="password"&gt;Password:&lt;/label&gt;
+        &lt;input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) =&gt; setPassword(e.target.value)}
+        /&gt;
+        {errors.password && &lt;span className="error"&gt;{errors.password}&lt;/span&gt;}
+      &lt;/div&gt;
+      
+      &lt;button type="submit"&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Multiple Inputs (Handler Unico)</h2>
+            <p>Per form con molti campi, usa un oggetto nello state e un handler generico.</p>
+            
+            <div class="codice">
+<pre>function RegistrationForm() {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    age: '',
+    country: 'it'
+  })
+  
+  // Handler unico per tutti gli input
+  const handleChange = (e) =&gt; {
+    const { name, value } = e.target
+    setFormData(prev =&gt; ({
+      ...prev,
+      [name]: value  // Computed property name
+    }))
+  }
+  
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault()
+    console.log('Registrazione:', formData)
+  }
+  
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        name="username"
+        value={formData.username}
+        onChange={handleChange}
+        placeholder="Username"
+      /&gt;
+      
+      &lt;input
+        name="email"
+        type="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="Email"
+      /&gt;
+      
+      &lt;input
+        name="password"
+        type="password"
+        value={formData.password}
+        onChange={handleChange}
+        placeholder="Password"
+      /&gt;
+      
+      &lt;input
+        name="age"
+        type="number"
+        value={formData.age}
+        onChange={handleChange}
+        placeholder="Età"
+      /&gt;
+      
+      &lt;select name="country" value={formData.country} onChange={handleChange}&gt;
+        &lt;option value="it"&gt;Italia&lt;/option&gt;
+        &lt;option value="fr"&gt;Francia&lt;/option&gt;
+        &lt;option value="de"&gt;Germania&lt;/option&gt;
+      &lt;/select&gt;
+      
+      &lt;button type="submit"&gt;Registrati&lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Checkbox e Radio Buttons</h2>
+            
+            <h3>Checkbox Singolo</h3>
+            <div class="codice">
+<pre>function TermsCheckbox() {
+  const [accepted, setAccepted] = useState(false)
+  
+  return (
+    &lt;label&gt;
+      &lt;input
+        type="checkbox"
+        checked={accepted}  // ⚠️ checked, non value!
+        onChange={(e) =&gt; setAccepted(e.target.checked)}
+      /&gt;
+      Accetto i termini e condizioni
+    &lt;/label&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Multiple Checkboxes</h3>
+            <div class="codice">
+<pre>function InterestsForm() {
+  const [interests, setInterests] = useState([])
+  
+  const handleCheckbox = (interest) =&gt; {
+    setInterests(prev =&gt;
+      prev.includes(interest)
+        ? prev.filter(i =&gt; i !== interest)  // Rimuovi
+        : [...prev, interest]               // Aggiungi
+    )
+  }
+  
+  return (
+    &lt;div&gt;
+      {['Sport', 'Musica', 'Lettura', 'Viaggi'].map(interest =&gt; (
+        &lt;label key={interest}&gt;
+          &lt;input
+            type="checkbox"
+            checked={interests.includes(interest)}
+            onChange={() =&gt; handleCheckbox(interest)}
+          /&gt;
+          {interest}
+        &lt;/label&gt;
+      ))}
+      
+      &lt;p&gt;Selezionati: {interests.join(', ')}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Radio Buttons</h3>
+            <div class="codice">
+<pre>function GenderSelect() {
+  const [gender, setGender] = useState('')
+  
+  return (
+    &lt;div&gt;
+      &lt;label&gt;
+        &lt;input
+          type="radio"
+          name="gender"  // Stesso name per grouping
+          value="male"
+          checked={gender === 'male'}
+          onChange={(e) =&gt; setGender(e.target.value)}
+        /&gt;
+        Maschio
+      &lt;/label&gt;
+      
+      &lt;label&gt;
+        &lt;input
+          type="radio"
+          name="gender"
+          value="female"
+          checked={gender === 'female'}
+          onChange={(e) =&gt; setGender(e.target.value)}
+        /&gt;
+        Femmina
+      &lt;/label&gt;
+      
+      &lt;label&gt;
+        &lt;input
+          type="radio"
+          name="gender"
+          value="other"
+          checked={gender === 'other'}
+          onChange={(e) =&gt; setGender(e.target.value)}
+        /&gt;
+        Altro
+      &lt;/label&gt;
+      
+      &lt;p&gt;Selezionato: {gender}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>Validazione Form</h2>
+            
+            <h3>Validazione Real-Time</h3>
+            <div class="codice">
+<pre>function ValidatedForm() {
+  const [email, setEmail] = useState('')
+  const [emailError, setEmailError] = useState('')
+  
+  const validateEmail = (value) =&gt; {
+    if (!value) {
+      setEmailError('Email obbligatoria')
+    } else if (!/\S+@\S+\.\S+/.test(value)) {
+      setEmailError('Email non valida')
+    } else {
+      setEmailError('')
+    }
+  }
+  
+  const handleEmailChange = (e) =&gt; {
+    const value = e.target.value
+    setEmail(value)
+    validateEmail(value)
+  }
+  
+  return (
+    &lt;div&gt;
+      &lt;input
+        type="email"
+        value={email}
+        onChange={handleEmailChange}
+        className={emailError ? 'input-error' : ''}
+      /&gt;
+      {emailError && &lt;span className="error"&gt;{emailError}&lt;/span&gt;}
+    &lt;/div&gt;
+  )
+}</pre>
+            </div>
+            
+            <h3>Validazione al Submit</h3>
+            <div class="codice">
+<pre>function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  })
+  const [errors, setErrors] = useState({})
+  const [submitted, setSubmitted] = useState(false)
+  
+  const validate = () =&gt; {
+    const newErrors = {}
+    
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Nome obbligatorio'
+    } else if (formData.name.length < 2) {
+      newErrors.name = 'Nome troppo corto'
+    }
+    
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email obbligatoria'
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email non valida'
+    }
+    
+    // Message validation
+    if (!formData.message.trim()) {
+      newErrors.message = 'Messaggio obbligatorio'
+    } else if (formData.message.length < 10) {
+      newErrors.message = 'Messaggio troppo corto (min 10 caratteri)'
+    }
+    
+    return newErrors
+  }
+  
+  const handleChange = (e) =&gt; {
+    const { name, value } = e.target
+    setFormData(prev =&gt; ({ ...prev, [name]: value }))
+    
+    // Rimuovi errore del campo quando l'utente lo modifica
+    if (errors[name]) {
+      setErrors(prev =&gt; ({ ...prev, [name]: '' }))
+    }
+  }
+  
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault()
+    
+    const newErrors = validate()
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+    
+    // Form valido
+    console.log('Invio:', formData)
+    setSubmitted(true)
+    
+    // Reset
+    setTimeout(() =&gt; {
+      setFormData({ name: '', email: '', message: '' })
+      setSubmitted(false)
+    }, 2000)
+  }
+  
+  if (submitted) {
+    return &lt;div className="success"&gt;✅ Messaggio inviato!&lt;/div&gt;
+  }
+  
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;div&gt;
+        &lt;input
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Nome"
+        /&gt;
+        {errors.name && &lt;span className="error"&gt;{errors.name}&lt;/span&gt;}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;input
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Email"
+        /&gt;
+        {errors.email && &lt;span className="error"&gt;{errors.email}&lt;/span&gt;}
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;textarea
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          placeholder="Messaggio"
+          rows={5}
+        /&gt;
+        {errors.message && &lt;span className="error"&gt;{errors.message}&lt;/span&gt;}
+      &lt;/div&gt;
+      
+      &lt;button type="submit"&gt;Invia&lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="teoria">
+            <h2>File Upload</h2>
+            
+            <div class="codice">
+<pre>function FileUpload() {
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [preview, setPreview] = useState(null)
+  
+  const handleFileChange = (e) =&gt; {
+    const file = e.target.files[0]
+    setSelectedFile(file)
+    
+    // Preview immagine
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader()
+      reader.onloadend = () =&gt; {
+        setPreview(reader.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+  
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault()
+    
+    if (!selectedFile) {
+      alert('Seleziona un file')
+      return
+    }
+    
+    // Crea FormData per upload
+    const formData = new FormData()
+    formData.append('file', selectedFile)
+    
+    // Invia al server
+    fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    })
+      .then(r =&gt; r.json())
+      .then(data =&gt; console.log('Uploaded:', data))
+  }
+  
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        type="file"
+        onChange={handleFileChange}
+        accept="image/*"
+      /&gt;
+      
+      {preview && (
+        &lt;div&gt;
+          &lt;h3&gt;Preview:&lt;/h3&gt;
+          &lt;img src={preview} alt="Preview" style={{ maxWidth: '300px' }} /&gt;
+        &lt;/div&gt;
+      )}
+      
+      {selectedFile && (
+        &lt;div&gt;
+          &lt;p&gt;File: {selectedFile.name}&lt;/p&gt;
+          &lt;p&gt;Dimensione: {(selectedFile.size / 1024).toFixed(2)} KB&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+      
+      &lt;button type="submit"&gt;Upload&lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</pre>
+            </div>
+        </div>
+        
+        <div class="best-practices">
+            <h2>🎯 Best Practices</h2>
+            <ul>
+                <li>✅ <strong>Controlled components:</strong> Sempre sincronizza value con state</li>
+                <li>✅ <strong>Handler unico:</strong> Per form con molti campi usa <code>name</code> attribute</li>
+                <li>✅ <strong>preventDefault:</strong> Sempre in onSubmit per evitare refresh</li>
+                <li>✅ <strong>Validazione:</strong> Real-time per UX migliore, submit per sicurezza</li>
+                <li>✅ <strong>Feedback errori:</strong> Mostra messaggi chiari e specifici</li>
+                <li>✅ <strong>Reset form:</strong> Dopo submit di successo</li>
+                <li>✅ <strong>Checkbox:</strong> Usa <code>checked</code> e <code>e.target.checked</code></li>
+                <li>✅ <strong>Loading state:</strong> Disabilita submit durante invio</li>
+                <li>❌ Non usare uncontrolled components (difficili da testare)</li>
+                <li>❌ Non dimenticare preventDefault in form submit</li>
+            </ul>
+        </div>
+        
+        <div class="navigazione">
+            <a href="lezione-7-6.html" class="btn-nav">← Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">📚 Indice</a>
+            <a href="lezione-7-8.html" class="btn-nav">Prossima Lezione →</a>
+            <a href="esempi/form-esempio.html" class="btn-nav">📝 Esempio Pratico</a>
+        </div>
+    </div>
+</body>
+</html>
