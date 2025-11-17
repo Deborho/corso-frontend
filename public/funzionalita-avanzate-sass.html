@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lezione 4.8 - SASS Avanzato e Best Practices</title>
+    <title>Funzionalità Avanzate SASS</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Lezione 4.8 - SASS Avanzato e Best Practices</h1>
+            <h1>Funzionalità Avanzate SASS</h1>
             <p>Tecniche avanzate e architettura per progetti scalabili</p>
         </div>
 
@@ -443,10 +443,10 @@ body {
         
         <div class="codice">
 <pre># Development: Con source maps
-sass --watch scss:css
+npx sass --watch scss:css
 
 # Production: Compressed, no source maps
-sass --style=compressed --no-source-map scss/main.scss css/main.min.css</pre>
+npx sass --style=compressed --no-source-map scss/main.scss css/main.min.css</pre>
         </div>
 
         <h2>7. Organizzazione Codice: Architettura ITCSS</h2>
@@ -546,9 +546,9 @@ sass --style=compressed --no-source-map scss/main.scss css/main.min.css</pre>
         <div class="codice">
 <pre>{
   "scripts": {
-    "sass:dev": "sass --watch scss:css",
-    "sass:build": "sass scss/main.scss css/main.css",
-    "sass:prod": "sass --style=compressed --no-source-map scss/main.scss css/main.min.css",
+    "sass:dev": "npx sass --watch scss:css",
+    "sass:build": "npx sass scss/main.scss css/main.css",
+    "sass:prod": "npx sass --style=compressed --no-source-map scss/main.scss css/main.min.css",
     "sass:lint": "stylelint 'scss/**/*.scss'",
     "build": "npm run sass:prod"
   },
@@ -663,10 +663,9 @@ $color-secondary: #2ecc71;
         </div>
 
         <div class="navigazione">
-            <a href="/lezione-4/lezione-4-7.html" class="btn-prev">← Lezione Precedente</a>
             <a href="/index.html" class="btn-home">Home</a>
             <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
-            <a href="/lezione-4/lezione-4-99.html" class="btn-next">Progetto Finale →</a>
+            <a href="/lezione-4/index.html" class="btn-next">Lezione 4 - SASS →</a>
         </div>
     </div>
 </body>

@@ -4,222 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demo Control Directives SASS</title>
-    <style>
-        /* Compiled from SCSS with @for, @each, @if loops */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            padding: 2rem;
-            background: #f8fafc;
-        }
-
-        h1 {
-            margin-bottom: 2rem;
-            color: #1e293b;
-        }
-
-        .section {
-            margin-bottom: 3rem;
-            background: white;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .section h2 {
-            margin-bottom: 1.5rem;
-            color: #334155;
-        }
-
-        /* Spacing utilities generated with @for */
-        .m-0 { margin: 0; }
-        .m-1 { margin: 0.25rem; }
-        .m-2 { margin: 0.5rem; }
-        .m-3 { margin: 0.75rem; }
-        .m-4 { margin: 1rem; }
-        .m-5 { margin: 1.25rem; }
-        .m-6 { margin: 1.5rem; }
-        .m-7 { margin: 1.75rem; }
-        .m-8 { margin: 2rem; }
-
-        .p-0 { padding: 0; }
-        .p-1 { padding: 0.25rem; }
-        .p-2 { padding: 0.5rem; }
-        .p-3 { padding: 0.75rem; }
-        .p-4 { padding: 1rem; }
-        .p-5 { padding: 1.25rem; }
-        .p-6 { padding: 1.5rem; }
-        .p-7 { padding: 1.75rem; }
-        .p-8 { padding: 2rem; }
-
-        /* Color utilities generated with @each */
-        .bg-primary { background: #3b82f6; }
-        .bg-secondary { background: #8b5cf6; }
-        .bg-success { background: #10b981; }
-        .bg-danger { background: #ef4444; }
-        .bg-warning { background: #f59e0b; }
-        .bg-info { background: #06b6d4; }
-
-        .text-primary { color: #3b82f6; }
-        .text-secondary { color: #8b5cf6; }
-        .text-success { color: #10b981; }
-        .text-danger { color: #ef4444; }
-        .text-warning { color: #f59e0b; }
-        .text-info { color: #06b6d4; }
-
-        /* Grid columns generated with @for */
-        .grid {
-            display: grid;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .col-1 { grid-template-columns: repeat(1, 1fr); }
-        .col-2 { grid-template-columns: repeat(2, 1fr); }
-        .col-3 { grid-template-columns: repeat(3, 1fr); }
-        .col-4 { grid-template-columns: repeat(4, 1fr); }
-        .col-5 { grid-template-columns: repeat(5, 1fr); }
-        .col-6 { grid-template-columns: repeat(6, 1fr); }
-
-        /* Opacity utilities generated with @for */
-        .opacity-0 { opacity: 0; }
-        .opacity-10 { opacity: 0.1; }
-        .opacity-20 { opacity: 0.2; }
-        .opacity-30 { opacity: 0.3; }
-        .opacity-40 { opacity: 0.4; }
-        .opacity-50 { opacity: 0.5; }
-        .opacity-60 { opacity: 0.6; }
-        .opacity-70 { opacity: 0.7; }
-        .opacity-80 { opacity: 0.8; }
-        .opacity-90 { opacity: 0.9; }
-        .opacity-100 { opacity: 1; }
-
-        /* Demo styling */
-        .box {
-            padding: 1rem;
-            border-radius: 0.375rem;
-            color: white;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .spacing-demo .box {
-            background: #64748b;
-            display: inline-block;
-        }
-
-        .grid-demo {
-            margin-bottom: 1rem;
-        }
-
-        .grid-demo .box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .color-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .opacity-demo {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .opacity-demo .box {
-            background: #3b82f6;
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.875rem;
-        }
-
-        .label {
-            color: #64748b;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="control-directives-demo.css">
 </head>
 <body>
-    <h1>Demo Control Directives SASS</h1>
+    <div style="padding: 2rem; background: #f8fafc;">
+        <h1>Demo Control Directives SASS</h1>
 
-    <div class="section">
-        <h2>Spacing Utilities (@for)</h2>
-        <p class="label">Classi .m-0 fino a .m-8 e .p-0 fino a .p-8</p>
-        <div class="spacing-demo">
-            <div class="box m-2">m-2</div>
-            <div class="box m-4">m-4</div>
-            <div class="box m-6">m-6</div>
-            <div class="box m-8">m-8</div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Color Utilities (@each)</h2>
-        <p class="label">Background e Text colors</p>
-        <div class="color-grid">
-            <div class="box bg-primary">Primary</div>
-            <div class="box bg-secondary">Secondary</div>
-            <div class="box bg-success">Success</div>
-            <div class="box bg-danger">Danger</div>
-            <div class="box bg-warning">Warning</div>
-            <div class="box bg-info">Info</div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Grid Columns (@for)</h2>
-        <p class="label">Classi .col-1 fino a .col-6</p>
-        
-        <div class="grid-demo">
-            <div class="grid col-2">
-                <div class="box">1</div>
-                <div class="box">2</div>
+        <div class="section">
+            <h2>Spacing Utilities (@for)</h2>
+            <p class="label">Classi .m-0 fino a .m-8 e .p-0 fino a .p-8</p>
+            <div class="spacing-demo">
+                <div class="box m-2">m-2</div>
+                <div class="box m-4">m-4</div>
+                <div class="box m-6">m-6</div>
+                <div class="box m-8">m-8</div>
             </div>
         </div>
 
-        <div class="grid-demo">
-            <div class="grid col-3">
-                <div class="box">1</div>
-                <div class="box">2</div>
-                <div class="box">3</div>
+        <div class="section">
+            <h2>Color Utilities (@each)</h2>
+            <p class="label">Background e Text colors</p>
+            <div class="color-grid">
+                <div class="box bg-primary">Primary</div>
+                <div class="box bg-secondary">Secondary</div>
+                <div class="box bg-success">Success</div>
+                <div class="box bg-danger">Danger</div>
+                <div class="box bg-warning">Warning</div>
+                <div class="box bg-info">Info</div>
             </div>
         </div>
 
-        <div class="grid-demo">
-            <div class="grid col-4">
-                <div class="box">1</div>
-                <div class="box">2</div>
-                <div class="box">3</div>
-                <div class="box">4</div>
+        <div class="section">
+            <h2>Grid Columns (@for)</h2>
+            <p class="label">Classi .col-1 fino a .col-6</p>
+            
+            <div class="grid-demo">
+                <div class="grid col-2">
+                    <div class="box">1</div>
+                    <div class="box">2</div>
+                </div>
+            </div>
+
+            <div class="grid-demo">
+                <div class="grid col-3">
+                    <div class="box">1</div>
+                    <div class="box">2</div>
+                    <div class="box">3</div>
+                </div>
+            </div>
+
+            <div class="grid-demo">
+                <div class="grid col-4">
+                    <div class="box">1</div>
+                    <div class="box">2</div>
+                    <div class="box">3</div>
+                    <div class="box">4</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="section">
-        <h2>Opacity Utilities (@for)</h2>
-        <p class="label">Classi .opacity-0 fino a .opacity-100</p>
-        <div class="opacity-demo">
-            <div class="box opacity-10">10%</div>
-            <div class="box opacity-20">20%</div>
-            <div class="box opacity-30">30%</div>
-            <div class="box opacity-40">40%</div>
-            <div class="box opacity-50">50%</div>
-            <div class="box opacity-60">60%</div>
-            <div class="box opacity-70">70%</div>
-            <div class="box opacity-80">80%</div>
-            <div class="box opacity-90">90%</div>
-            <div class="box opacity-100">100%</div>
+        <div class="section">
+            <h2>Opacity Utilities (@for)</h2>
+            <p class="label">Classi .opacity-0 fino a .opacity-100</p>
+            <div class="opacity-demo">
+                <div class="box opacity-10">10%</div>
+                <div class="box opacity-20">20%</div>
+                <div class="box opacity-30">30%</div>
+                <div class="box opacity-40">40%</div>
+                <div class="box opacity-50">50%</div>
+                <div class="box opacity-60">60%</div>
+                <div class="box opacity-70">70%</div>
+                <div class="box opacity-80">80%</div>
+                <div class="box opacity-90">90%</div>
+                <div class="box opacity-100">100%</div>
+            </div>
         </div>
     </div>
 </body>

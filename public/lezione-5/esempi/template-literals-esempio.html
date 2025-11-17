@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Template Literals</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - Template Literals</h1>
+            <p>Interpolazione stringhe, multi-linea, espressioni</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Generatore Email Personalizzata</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Nome Cliente:</label>
+                    <input type="text" id="nome-cliente" value="Mario Rossi" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Prodotto:</label>
+                    <select id="prodotto" style="padding: 10px; width: 320px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="laptop">Laptop Pro</option>
+                        <option value="smartphone">Smartphone X</option>
+                        <option value="tablet">Tablet Plus</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Prezzo (€):</label>
+                    <input type="number" id="prezzo" value="1299" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Sconto (%):</label>
+                    <input type="number" id="sconto" value="15" min="0" max="100" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <button id="genera" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Genera Email</button>
+                
+                <div id="email-output" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('genera').addEventListener('click', () => {
+                const nome = document.getElementById('nome-cliente').value;
+                const prodottoSelect = document.getElementById('prodotto');
+                const prodottoValue = prodottoSelect.value;
+                const prodottoNome = prodottoSelect.options[prodottoSelect.selectedIndex].text;
+                const prezzo = Number(document.getElementById('prezzo').value);
+                const sconto = Number(document.getElementById('sconto').value);
+                
+                // Calcoli
+                const scontoImporto = (prezzo * sconto) / 100;
+                const prezzoFinale = prezzo - scontoImporto;
+                
+                // Data formattata
+                const oggi = new Date();
+                const dataFormattata = `${oggi.getDate()}/${oggi.getMonth() + 1}/${oggi.getFullYear()}`;
+                
+                // Template literal multi-linea con espressioni
+                const emailHTML = `
+                    <div style="padding: 20px; background: white; border: 2px solid #007bff; border-radius: 8px;">
+                        <h3 style="color: #007bff; margin-top: 0;">Offerta Speciale per ${nome}!</h3>
+                        
+                        <p>Gentile ${nome.split(' ')[0]},</p>
+                        
+                        <p>Siamo lieti di informarti che il prodotto <strong>${prodottoNome}</strong> è in offerta esclusiva!</p>
+                        
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                            <p><strong>Prodotto:</strong> ${prodottoNome}</p>
+                            <p><strong>Prezzo originale:</strong> €${prezzo.toFixed(2)}</p>
+                            <p><strong>Sconto:</strong> ${sconto}% (-€${scontoImporto.toFixed(2)})</p>
+                            <p style="font-size: 1.5em; color: #28a745; margin: 10px 0;"><strong>Prezzo Finale: €${prezzoFinale.toFixed(2)}</strong></p>
+                            <p style="color: #666; font-size: 0.9em;">Risparmi €${scontoImporto.toFixed(2)}!</p>
+                        </div>
+                        
+                        <p>${sconto >= 20 ? '🎉 Sconto eccezionale! Non perdere questa occasione!' : 'Offerta a tempo limitato!'}</p>
+                        
+                        <p>L'offerta è valida fino al ${dataFormattata}.</p>
+                        
+                        <button style="padding: 12px 24px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.1em;">
+                            Acquista Ora
+                        </button>
+                        
+                        <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
+                            Cordiali saluti,<br>
+                            Il Team di ${prodottoNome}
+                        </p>
+                    </div>
+                `;
+                
+                document.getElementById('email-output').innerHTML = emailHTML;
+                
+                // Mostra anche il codice sorgente
+                const codeSorgente = `
+                    <div style="margin-top: 20px; padding: 15px; background: #282c34; color: #abb2bf; border-radius: 4px; overflow-x: auto;">
+                        <h4 style="margin-top: 0; color: #61dafb;">Template Literal usato:</h4>
+                        <pre style="margin: 0; white-space: pre-wrap;">${escapeHtml(`const email = \`
+    Gentile \${nome.split(' ')[0]},
+    
+    Il prodotto \${prodottoNome} è in offerta!
+    Prezzo: €\${prezzoFinale.toFixed(2)}
+    
+    \${sconto >= 20 ? 'Sconto eccezionale!' : 'Offerta limitata!'}
+\`;`)}</pre>
+                    </div>
+                `;
+                
+                document.getElementById('email-output').innerHTML += codeSorgente;
+            });
+            
+            // Helper per escape HTML
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+            
+            // Genera email iniziale
+            document.getElementById('genera').click();
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

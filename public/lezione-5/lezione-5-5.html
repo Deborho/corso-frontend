@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.5 - Cicli e Array Methods</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.5 - Cicli e Array Methods</h1>
+            <p>Iterazione su array con cicli e metodi funzionali moderni</p>
+        </div>
+
+        <h2>1. Array Basics</h2>
+        
+        <div class="codice">
+<pre>// Creazione array
+const numeri = [1, 2, 3, 4, 5];
+const nomi = ['Mario', 'Luigi', 'Peach'];
+const misto = [1, 'testo', true, null, {nome: 'Mario'}];
+
+// Accesso agli elementi (indice parte da 0)
+console.log(numeri[0]);   // 1
+console.log(nomi[1]);     // Luigi
+console.log(numeri[4]);   // 5
+
+// Lunghezza dell'array
+console.log(numeri.length);  // 5
+
+// Ultimo elemento
+console.log(numeri[numeri.length - 1]);  // 5
+
+// Modificare elementi
+numeri[0] = 10;
+console.log(numeri);  // [10, 2, 3, 4, 5]
+
+// Aggiungere elementi
+numeri.push(6);  // Aggiunge alla fine
+numeri.unshift(0);  // Aggiunge all'inizio</pre>
+        </div>
+
+        <h2>2. For Loop Tradizionale</h2>
+        
+        <div class="codice">
+<pre>// For loop classico
+const numeri = [1, 2, 3, 4, 5];
+
+for (let i = 0; i < numeri.length; i++) {
+    console.log(numeri[i]);
+}
+// Output: 1, 2, 3, 4, 5
+
+// Sommare tutti i numeri
+let somma = 0;
+for (let i = 0; i < numeri.length; i++) {
+    somma += numeri[i];
+}
+console.log(somma);  // 15
+
+// Iterare all'indietro
+for (let i = numeri.length - 1; i >= 0; i--) {
+    console.log(numeri[i]);
+}
+// Output: 5, 4, 3, 2, 1
+
+// Saltare elementi (solo numeri pari)
+for (let i = 0; i < numeri.length; i++) {
+    if (numeri[i] % 2 === 0) {
+        console.log(numeri[i]);
+    }
+}
+// Output: 2, 4</pre>
+        </div>
+
+        <h2>3. For...of Loop (Moderno)</h2>
+        
+        <div class="codice">
+<pre>// for...of - Itera direttamente sui valori (più leggibile)
+const nomi = ['Mario', 'Luigi', 'Peach'];
+
+for (const nome of nomi) {
+    console.log(nome);
+}
+// Output: Mario, Luigi, Peach
+
+// Esempio con operazioni
+const numeri = [1, 2, 3, 4, 5];
+let somma = 0;
+
+for (const numero of numeri) {
+    somma += numero;
+}
+console.log(somma);  // 15
+
+// for...of con oggetti in array
+const utenti = [
+    { nome: 'Mario', età: 25 },
+    { nome: 'Luigi', età: 30 },
+    { nome: 'Peach', età: 28 }
+];
+
+for (const utente of utenti) {
+    console.log(`${utente.nome} ha ${utente.età} anni`);
+}</pre>
+        </div>
+
+        <h2>4. While Loop</h2>
+        
+        <div class="codice">
+<pre>// While loop - Esegue finché la condizione è true
+let contatore = 0;
+
+while (contatore < 5) {
+    console.log(contatore);
+    contatore++;
+}
+// Output: 0, 1, 2, 3, 4
+
+// Esempio pratico
+const numeri = [1, 2, 3, 4, 5];
+let i = 0;
+let somma = 0;
+
+while (i < numeri.length) {
+    somma += numeri[i];
+    i++;
+}
+console.log(somma);  // 15
+
+// Do...while - Esegue almeno una volta
+let x = 10;
+do {
+    console.log(x);
+    x++;
+} while (x < 5);
+// Output: 10 (eseguito una volta anche se condizione è false)</pre>
+        </div>
+
+        <h2>5. Array.map() - Trasformare Array</h2>
+        
+        <div class="teoria">
+            <p><code>map()</code> crea un nuovo array applicando una funzione a ogni elemento. Non modifica l'array originale.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// map() - Trasforma ogni elemento
+const numeri = [1, 2, 3, 4, 5];
+
+// Raddoppiare ogni numero
+const doppi = numeri.map(n => n * 2);
+console.log(doppi);  // [2, 4, 6, 8, 10]
+console.log(numeri);  // [1, 2, 3, 4, 5] (originale non modificato)
+
+// Quadrato di ogni numero
+const quadrati = numeri.map(n => n ** 2);
+console.log(quadrati);  // [1, 4, 9, 16, 25]
+
+// Trasformare array di oggetti
+const utenti = [
+    { nome: 'Mario', cognome: 'Rossi' },
+    { nome: 'Luigi', cognome: 'Verdi' }
+];
+
+const nomiCompleti = utenti.map(u => `${u.nome} ${u.cognome}`);
+console.log(nomiCompleti);  // ['Mario Rossi', 'Luigi Verdi']
+
+// Estrarre solo una proprietà
+const soloNomi = utenti.map(u => u.nome);
+console.log(soloNomi);  // ['Mario', 'Luigi']
+
+// Con indice (parametro opzionale)
+const conIndice = numeri.map((n, index) => `${index}: ${n}`);
+console.log(conIndice);  // ['0: 1', '1: 2', '2: 3', '3: 4', '4: 5']</pre>
+        </div>
+
+        <h2>6. Array.filter() - Filtrare Array</h2>
+        
+        <div class="teoria">
+            <p><code>filter()</code> crea un nuovo array con solo gli elementi che soddisfano una condizione.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// filter() - Mantiene solo elementi che soddisfano condizione
+const numeri = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Solo numeri pari
+const pari = numeri.filter(n => n % 2 === 0);
+console.log(pari);  // [2, 4, 6, 8, 10]
+
+// Solo numeri maggiori di 5
+const maggioriDi5 = numeri.filter(n => n > 5);
+console.log(maggioriDi5);  // [6, 7, 8, 9, 10]
+
+// Filtrare array di oggetti
+const utenti = [
+    { nome: 'Mario', età: 25, attivo: true },
+    { nome: 'Luigi', età: 17, attivo: false },
+    { nome: 'Peach', età: 30, attivo: true }
+];
+
+// Solo utenti maggiorenni
+const maggiorenni = utenti.filter(u => u.età >= 18);
+console.log(maggiorenni);  // Mario e Peach
+
+// Solo utenti attivi
+const attivi = utenti.filter(u => u.attivo);
+console.log(attivi);  // Mario e Peach
+
+// Combinare più condizioni
+const maggiorenni Attivi = utenti.filter(u => u.età >= 18 && u.attivo);
+
+// Filtrare stringhe
+const parole = ['ciao', 'mondo', 'javascript', 'è', 'fantastico'];
+const lunghe = parole.filter(p => p.length > 5);
+console.log(lunghe);  // ['javascript', 'fantastico']</pre>
+        </div>
+
+        <h2>7. Array.find() - Trovare Elemento</h2>
+        
+        <div class="teoria">
+            <p><code>find()</code> restituisce il primo elemento che soddisfa la condizione, oppure <code>undefined</code>.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// find() - Trova primo elemento che soddisfa condizione
+const numeri = [1, 2, 3, 4, 5];
+
+const primoMaggioreDi3 = numeri.find(n => n > 3);
+console.log(primoMaggioreDi3);  // 4
+
+// Trova oggetto
+const utenti = [
+    { id: 1, nome: 'Mario' },
+    { id: 2, nome: 'Luigi' },
+    { id: 3, nome: 'Peach' }
+];
+
+const utente = utenti.find(u => u.id === 2);
+console.log(utente);  // { id: 2, nome: 'Luigi' }
+
+// Se non trova, restituisce undefined
+const nonTrovato = utenti.find(u => u.id === 999);
+console.log(nonTrovato);  // undefined
+
+// Uso pratico con controllo
+const userId = 2;
+const utentePerso = utenti.find(u => u.id === userId);
+
+if (utenteTrovato) {
+    console.log(`Trovato: ${utenteTrovato.nome}`);
+} else {
+    console.log('Utente non trovato');
+}
+
+// findIndex() - Trova l'indice invece dell'elemento
+const indice = utenti.findIndex(u => u.id === 2);
+console.log(indice);  // 1</pre>
+        </div>
+
+        <h2>8. Array.some() e Array.every()</h2>
+        
+        <div class="codice">
+<pre>// some() - Verifica se ALMENO UNO soddisfa la condizione
+const numeri = [1, 2, 3, 4, 5];
+
+const haNumeriPari = numeri.some(n => n % 2 === 0);
+console.log(haNumeriPari);  // true (ci sono 2, 4)
+
+const haMaggioreDi10 = numeri.some(n => n > 10);
+console.log(haMaggioreDi10);  // false
+
+// every() - Verifica se TUTTI soddisfano la condizione
+const tuttiPositivi = numeri.every(n => n > 0);
+console.log(tuttiPositivi);  // true
+
+const tuttiPari = numeri.every(n => n % 2 === 0);
+console.log(tuttiPari);  // false
+
+// Esempio con oggetti
+const utenti = [
+    { nome: 'Mario', età: 25, verificato: true },
+    { nome: 'Luigi', età: 30, verificato: true },
+    { nome: 'Peach', età: 28, verificato: false }
+];
+
+const almenoUnoVerificato = utenti.some(u => u.verificato);
+console.log(almenoUnoVerificato);  // true
+
+const tuttiVerificati = utenti.every(u => u.verificato);
+console.log(tuttiVerificati);  // false
+
+const tuttiMaggiorenni = utenti.every(u => u.età >= 18);
+console.log(tuttiMaggiorenni);  // true</pre>
+        </div>
+
+        <h2>9. Array.reduce() - Ridurre a Valore Singolo</h2>
+        
+        <div class="teoria">
+            <p><code>reduce()</code> riduce un array a un singolo valore applicando una funzione accumulatrice.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// reduce() - Riduce array a un singolo valore
+// Sintassi: array.reduce((accumulator, currentValue) => ..., initialValue)
+
+const numeri = [1, 2, 3, 4, 5];
+
+// Somma totale
+const somma = numeri.reduce((acc, n) => acc + n, 0);
+console.log(somma);  // 15
+
+// Come funziona step-by-step:
+// Iterazione 1: acc = 0, n = 1 → ritorna 0 + 1 = 1
+// Iterazione 2: acc = 1, n = 2 → ritorna 1 + 2 = 3
+// Iterazione 3: acc = 3, n = 3 → ritorna 3 + 3 = 6
+// Iterazione 4: acc = 6, n = 4 → ritorna 6 + 4 = 10
+// Iterazione 5: acc = 10, n = 5 → ritorna 10 + 5 = 15
+
+// Prodotto
+const prodotto = numeri.reduce((acc, n) => acc * n, 1);
+console.log(prodotto);  // 120
+
+// Trovare il massimo
+const max = numeri.reduce((acc, n) => n > acc ? n : acc, numeri[0]);
+console.log(max);  // 5
+
+// Contare occorrenze
+const frutti = ['mela', 'banana', 'mela', 'arancia', 'banana', 'mela'];
+const conteggio = frutti.reduce((acc, frutto) => {
+    acc[frutto] = (acc[frutto] || 0) + 1;
+    return acc;
+}, {});
+console.log(conteggio);  // { mela: 3, banana: 2, arancia: 1 }
+
+// Sommare proprietà di oggetti
+const ordini = [
+    { id: 1, totale: 100 },
+    { id: 2, totale: 200 },
+    { id: 3, totale: 150 }
+];
+
+const totaleOrdini = ordini.reduce((acc, ordine) => acc + ordine.totale, 0);
+console.log(totaleOrdini);  // 450</pre>
+        </div>
+
+        <h2>10. Concatenare Array Methods (Chaining)</h2>
+        
+        <div class="codice">
+<pre>// Concatenare più metodi array (pattern molto comune nello sviluppo moderno)
+const numeri = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Filtrare, trasformare e sommare in una catena
+const risultato = numeri
+    .filter(n => n % 2 === 0)      // [2, 4, 6, 8, 10]
+    .map(n => n * 2)               // [4, 8, 12, 16, 20]
+    .reduce((acc, n) => acc + n, 0);  // 60
+
+console.log(risultato);  // 60
+
+// Esempio con oggetti
+const utenti = [
+    { nome: 'Mario', età: 25, città: 'Roma' },
+    { nome: 'Luigi', età: 17, città: 'Milano' },
+    { nome: 'Peach', età: 30, città: 'Roma' },
+    { nome: 'Toad', età: 22, città: 'Napoli' }
+];
+
+// Trovare nomi di maggiorenni che vivono a Roma
+const nomiRoma = utenti
+    .filter(u => u.età >= 18)
+    .filter(u => u.città === 'Roma')
+    .map(u => u.nome);
+
+console.log(nomiRoma);  // ['Mario', 'Peach']
+
+// Calcolare età media dei maggiorenni
+const etàMedia = utenti
+    .filter(u => u.età >= 18)
+    .reduce((acc, u, i, array) => {
+        acc += u.età;
+        if (i === array.length - 1) {
+            return acc / array.length;
+        }
+        return acc;
+    }, 0);
+
+console.log(etàMedia);  // 25.67</pre>
+        </div>
+
+        <h2>11. Esempio Pratico Completo</h2>
+        
+        <div class="esempio">
+            <p>Sistema di gestione prodotti con array methods:</p>
+            
+            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
+                <div id="controlli-prodotti" style="margin-bottom: 15px;">
+                    <button id="btn-tutti" style="padding: 8px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Tutti</button>
+                    <button id="btn-disponibili" style="padding: 8px 15px; margin: 5px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Disponibili</button>
+                    <button id="btn-scontati" style="padding: 8px 15px; margin: 5px; background: #ffc107; color: white; border: none; border-radius: 4px; cursor: pointer;">Scontati</button>
+                </div>
+                <div id="lista-prodotti" style="background: white; padding: 15px; border-radius: 4px;"></div>
+                <div id="statistiche" style="margin-top: 15px; padding: 15px; background: #e9ecef; border-radius: 4px;"></div>
+            </div>
+            
+            <script>
+                const prodotti = [
+                    { id: 1, nome: 'Laptop', prezzo: 999, sconto: 10, disponibile: true },
+                    { id: 2, nome: 'Mouse', prezzo: 29, sconto: 0, disponibile: true },
+                    { id: 3, nome: 'Tastiera', prezzo: 79, sconto: 15, disponibile: false },
+                    { id: 4, nome: 'Monitor', prezzo: 299, sconto: 20, disponibile: true },
+                    { id: 5, nome: 'Webcam', prezzo: 89, sconto: 0, disponibile: true }
+                ];
+                
+                const listaProdotti = document.getElementById('lista-prodotti');
+                const statistiche = document.getElementById('statistiche');
+                
+                function mostraProdotti(prodottiFiltrati) {
+                    listaProdotti.innerHTML = prodottiFiltrati
+                        .map(p => {
+                            const prezzoFinale = p.prezzo * (1 - p.sconto / 100);
+                            return `
+                                <div style="border-bottom: 1px solid #ddd; padding: 10px 0;">
+                                    <strong>${p.nome}</strong> - €${prezzoFinale.toFixed(2)}
+                                    ${p.sconto > 0 ? `<span style="color: #dc3545;">(Sconto ${p.sconto}%)</span>` : ''}
+                                    ${!p.disponibile ? '<span style="color: #6c757d;">(Non disponibile)</span>' : ''}
+                                </div>
+                            `;
+                        })
+                        .join('');
+                    
+                    const totale = prodottiFiltrati.reduce((acc, p) => {
+                        return acc + p.prezzo * (1 - p.sconto / 100);
+                    }, 0);
+                    
+                    statistiche.innerHTML = `
+                        <strong>Prodotti mostrati:</strong> ${prodottiFiltrati.length}<br>
+                        <strong>Valore totale:</strong> €${totale.toFixed(2)}
+                    `;
+                }
+                
+                document.getElementById('btn-tutti').addEventListener('click', () => {
+                    mostraProdotti(prodotti);
+                });
+                
+                document.getElementById('btn-disponibili').addEventListener('click', () => {
+                    const disponibili = prodotti.filter(p => p.disponibile);
+                    mostraProdotti(disponibili);
+                });
+                
+                document.getElementById('btn-scontati').addEventListener('click', () => {
+                    const scontati = prodotti.filter(p => p.sconto > 0);
+                    mostraProdotti(scontati);
+                });
+                
+                mostraProdotti(prodotti);
+            </script>
+        </div>
+
+        <h2>12. Note Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Array methods non mutano:</strong> map(), filter(), find() non modificano l'array originale</li>
+                <li><strong>for...of vs forEach:</strong> for...of è preferibile (più leggibile e supporta break/continue)</li>
+                <li><strong>map() è essenziale:</strong> Trasforma array in nuovi formati</li>
+                <li><strong>Chaining:</strong> Concatenare metodi rende il codice dichiarativo e leggibile</li>
+                <li><strong>reduce() è potente:</strong> Può fare tutto ciò che fanno map/filter, ma è meno leggibile</li>
+                <li><strong>Performance:</strong> Per array molto grandi, considera cicli tradizionali</li>
+            </ul>
+        </div>
+
+        <h2>13. Programmazione Funzionale con Array</h2>
+        
+        <div class="teoria">
+            <p><strong>Perché array methods sono fondamentali nello sviluppo moderno:</strong></p>
+            <ul>
+                <li><strong>map() per trasformazioni:</strong> Converte dati da un formato all'altro</li>
+                <li><strong>filter() per selezioni:</strong> Estrae solo elementi che rispettano condizioni</li>
+                <li><strong>Immutabilità:</strong> Crea nuovi array senza modificare gli originali</li>
+                <li><strong>Programmazione funzionale:</strong> Approccio dichiarativo invece che imperativo</li>
+                <li><strong>Chaining:</strong> Compone operazioni complesse in modo leggibile</li>
+            </ul>
+            
+            <p>Esempio di codice funzionale moderno:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Pipeline di trasformazione dati
+function renderProductList(products) {
+    const container = document.getElementById('products');
+    
+    // Chain di operazioni funzionali
+    const html = products
+        .filter(p => p.disponibile)
+        .filter(p => p.prezzo < 500)
+        .map(p => `
+            <div class="product-card">
+                <h3>${p.nome}</h3>
+                <p>Prezzo: €${p.prezzo}</p>
+            </div>
+        `)
+        .join('');
+    
+    container.innerHTML = html;
+    );
+};</pre>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-4.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="lezione-5-6.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

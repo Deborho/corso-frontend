@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Arrow Functions</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - Arrow Functions</h1>
+            <p>Sintassi, implicit return, callbacks, higher-order functions</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Calcolatrice Funzionale</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px;">Numero 1:</label>
+                        <input type="number" id="num1" value="10" style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px;">Numero 2:</label>
+                        <input type="number" id="num2" value="5" style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
+                    <button onclick="calcolaOperazione(somma, '+')" style="padding: 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.2em;">+</button>
+                    <button onclick="calcolaOperazione(sottrai, '-')" style="padding: 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.2em;">-</button>
+                    <button onclick="calcolaOperazione(moltiplica, '×')" style="padding: 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.2em;">×</button>
+                    <button onclick="calcolaOperazione(dividi, '÷')" style="padding: 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.2em;">÷</button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px;">
+                    <button onclick="calcolaOperazione(potenza, '^')" style="padding: 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Potenza (^)</button>
+                    <button onclick="calcolaOperazione(modulo, '%')" style="padding: 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Modulo (%)</button>
+                </div>
+                
+                <div id="risultato-operazione" style="padding: 20px; background: white; border-radius: 4px; text-align: center; font-size: 1.5em; font-weight: bold;"></div>
+                
+                <div style="margin-top: 20px;">
+                    <h4>Operazioni Multiple</h4>
+                    <button onclick="applicaSequenza()" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">Applica: +10, ×2, -5</button>
+                    <button onclick="applicaComposizione()" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Composizione Funzioni</button>
+                    <div id="risultato-multiplo" style="margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 4px;"></div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h4>Array Operations con Arrow Functions</h4>
+                    <button onclick="arrayOperations()" style="padding: 10px 20px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer;">Elabora Array [1,2,3,4,5]</button>
+                    <div id="risultato-array" style="margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Arrow functions per operazioni base (implicit return)
+            const somma = (a, b) => a + b;
+            const sottrai = (a, b) => a - b;
+            const moltiplica = (a, b) => a * b;
+            const dividi = (a, b) => b !== 0 ? a / b : 'Errore: divisione per zero';
+            const potenza = (a, b) => Math.pow(a, b);
+            const modulo = (a, b) => a % b;
+            
+            // Higher-order function che accetta una funzione come parametro
+            const calcolaOperazione = (operazione, simbolo) => {
+                const num1 = Number(document.getElementById('num1').value);
+                const num2 = Number(document.getElementById('num2').value);
+                
+                const risultato = operazione(num1, num2);
+                
+                document.getElementById('risultato-operazione').innerHTML = `
+                    <div>${num1} ${simbolo} ${num2} = <span style="color: #007bff;">${risultato}</span></div>
+                `;
+            };
+            
+            // Composizione di funzioni (higher-order)
+            const compose = (...funzioni) => (valore) =>
+                funzioni.reduceRight((acc, fn) => fn(acc), valore);
+            
+            // Pipe (sequenza) di funzioni
+            const pipe = (...funzioni) => (valore) =>
+                funzioni.reduce((acc, fn) => fn(acc), valore);
+            
+            // Funzioni per trasformazioni
+            const aggiungi10 = (x) => x + 10;
+            const moltiplicaPer2 = (x) => x * 2;
+            const sottrai5 = (x) => x - 5;
+            const quadrato = (x) => x * x;
+            const radice = (x) => Math.sqrt(x);
+            
+            // Applica sequenza di operazioni
+            window.applicaSequenza = () => {
+                const num1 = Number(document.getElementById('num1').value);
+                
+                // Usa pipe per applicare funzioni in sequenza
+                const sequenza = pipe(
+                    aggiungi10,
+                    moltiplicaPer2,
+                    sottrai5
+                );
+                
+                const risultato = sequenza(num1);
+                
+                // Step by step
+                const step1 = aggiungi10(num1);
+                const step2 = moltiplicaPer2(step1);
+                const step3 = sottrai5(step2);
+                
+                document.getElementById('risultato-multiplo').innerHTML = `
+                    <p><strong>Valore iniziale:</strong> ${num1}</p>
+                    <p><strong>Step 1 (+10):</strong> ${step1}</p>
+                    <p><strong>Step 2 (×2):</strong> ${step2}</p>
+                    <p><strong>Step 3 (-5):</strong> ${step3}</p>
+                    <p style="font-size: 1.3em; color: #007bff; margin-top: 10px;"><strong>Risultato Finale:</strong> ${risultato}</p>
+                `;
+            };
+            
+            // Composizione di funzioni
+            window.applicaComposizione = () => {
+                const num1 = Number(document.getElementById('num1').value);
+                
+                // compose applica da destra a sinistra
+                const composizione = compose(
+                    radice,      // 3. prende radice
+                    moltiplicaPer2,  // 2. moltiplica per 2
+                    aggiungi10   // 1. prima aggiunge 10
+                );
+                
+                const risultato = composizione(num1);
+                
+                document.getElementById('risultato-multiplo').innerHTML = `
+                    <p><strong>Composizione (dx → sx):</strong> radice(×2(+10))</p>
+                    <p><strong>Valore:</strong> ${num1}</p>
+                    <p><strong>+10:</strong> ${aggiungi10(num1)}</p>
+                    <p><strong>×2:</strong> ${moltiplicaPer2(aggiungi10(num1))}</p>
+                    <p><strong>√:</strong> ${risultato}</p>
+                    <p style="font-size: 1.3em; color: #28a745; margin-top: 10px;"><strong>Risultato:</strong> ${risultato.toFixed(2)}</p>
+                `;
+            };
+            
+            // Array operations con arrow functions
+            window.arrayOperations = () => {
+                const array = [1, 2, 3, 4, 5];
+                
+                // Map con arrow function (implicit return)
+                const raddoppiati = array.map(x => x * 2);
+                
+                // Filter con arrow function
+                const pari = array.filter(x => x % 2 === 0);
+                
+                // Reduce con arrow function
+                const somma = array.reduce((acc, x) => acc + x, 0);
+                
+                // Find con arrow function
+                const primoMaggioreDi3 = array.find(x => x > 3);
+                
+                // Some ed Every
+                const tuttiPositivi = array.every(x => x > 0);
+                const qualcheGrande = array.some(x => x > 10);
+                
+                // Chaining con arrow functions
+                const risultatoChain = array
+                    .filter(x => x % 2 === 0)     // solo pari
+                    .map(x => x * 3)               // moltiplica per 3
+                    .reduce((acc, x) => acc + x, 0); // somma
+                
+                document.getElementById('risultato-array').innerHTML = `
+                    <p><strong>Array originale:</strong> [${array.join(', ')}]</p>
+                    <p><strong>Raddoppiati (map):</strong> [${raddoppiati.join(', ')}]</p>
+                    <p><strong>Solo pari (filter):</strong> [${pari.join(', ')}]</p>
+                    <p><strong>Somma (reduce):</strong> ${somma}</p>
+                    <p><strong>Primo > 3 (find):</strong> ${primoMaggioreDi3}</p>
+                    <p><strong>Tutti positivi? (every):</strong> ${tuttiPositivi}</p>
+                    <p><strong>Qualcuno > 10? (some):</strong> ${qualcheGrande}</p>
+                    <p style="margin-top: 10px; padding: 10px; background: #e7f3ff; border-radius: 4px;">
+                        <strong>Chain:</strong> filter(pari) → map(×3) → reduce(somma) = ${risultatoChain}
+                    </p>
+                    
+                    <div style="margin-top: 15px; padding: 10px; background: #282c34; color: #abb2bf; border-radius: 4px; font-family: monospace; font-size: 0.9em;">
+                        <pre style="margin: 0;">// Esempi di Arrow Functions usate:
+const raddoppiati = array.map(x => x * 2);
+const pari = array.filter(x => x % 2 === 0);
+const somma = array.reduce((acc, x) => acc + x, 0);
+const chain = array
+  .filter(x => x % 2 === 0)
+  .map(x => x * 3)
+  .reduce((acc, x) => acc + x, 0);</pre>
+                    </div>
+                `;
+            };
+            
+            // Calcola prima operazione automaticamente
+            calcolaOperazione(somma, '+');
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

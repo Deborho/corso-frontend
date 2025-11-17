@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.9 - DOM Manipulation</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.9 - DOM Manipulation</h1>
+            <p>Manipolare il Document Object Model con JavaScript</p>
+        </div>
+
+        <h2>1. Cos'è il DOM?</h2>
+        
+        <div class="teoria">
+            <p>Il <strong>DOM (Document Object Model)</strong> è la rappresentazione ad albero della struttura HTML. JavaScript può accedere e modificare ogni elemento della pagina tramite il DOM.</p>
+            
+            <p>Ogni elemento HTML diventa un <strong>nodo</strong> nell'albero DOM:</p>
+            <ul>
+                <li><strong>Document:</strong> La radice dell'albero, rappresenta l'intera pagina</li>
+                <li><strong>Elements:</strong> I tag HTML (&lt;div&gt;, &lt;p&gt;, &lt;button&gt;, etc.)</li>
+                <li><strong>Attributes:</strong> Gli attributi degli elementi (class, id, src, etc.)</li>
+                <li><strong>Text:</strong> Il contenuto testuale dentro gli elementi</li>
+            </ul>
+        </div>
+
+        <h2>2. Selezionare Elementi</h2>
+        
+        <div class="codice">
+<pre>// querySelector - Seleziona primo elemento che corrisponde al selettore
+const titolo = document.querySelector('h1');
+const primoParagrafo = document.querySelector('p');
+const bottone = document.querySelector('.btn');
+const form = document.querySelector('#login-form');
+
+// querySelectorAll - Seleziona tutti gli elementi (restituisce NodeList)
+const tuttiParagrafi = document.querySelectorAll('p');
+const tuttiBottoni = document.querySelectorAll('.btn');
+
+// NodeList è simile ad array ma non ha tutti i metodi
+console.log(tuttiParagrafi.length);  // Funziona
+tuttiParagrafi.forEach(p => console.log(p));  // Funziona
+
+// Per usare map/filter, converti in array
+const arrayParagrafi = Array.from(tuttiParagrafi);
+const testiParagrafi = arrayParagrafi.map(p => p.textContent);
+
+// Selettori CSS funzionano
+const elementoComplesso = document.querySelector('.container > .box:first-child');
+const linkAttivi = document.querySelectorAll('a.active[href^="http"]');
+
+// Metodi vecchi (ancora funzionano ma querySelector è preferito)
+const byId = document.getElementById('my-id');           // Stesso di querySelector('#my-id')
+const byClass = document.getElementsByClassName('btn');  // HTMLCollection, non NodeList
+const byTag = document.getElementsByTagName('p');        // HTMLCollection</pre>
+        </div>
+
+        <h2>3. Modificare Contenuto</h2>
+        
+        <div class="codice">
+<pre>const elemento = document.querySelector('#my-element');
+
+// textContent - Testo semplice (sicuro, no HTML)
+elemento.textContent = 'Nuovo testo';
+elemento.textContent = 'Testo con <strong>tag</strong>';  // Mostra letteralmente i tag
+
+// innerHTML - Può contenere HTML (attenzione: vulnerabile a XSS se usi input utente)
+elemento.innerHTML = 'Testo con <strong>tag</strong>';  // Renderizza HTML
+elemento.innerHTML = '<div class="box"><p>Paragrafo</p></div>';
+
+// Leggere contenuto
+const testo = elemento.textContent;
+const html = elemento.innerHTML;
+
+// innerText vs textContent
+// innerText: Considera stili CSS (display: none viene ignorato)
+// textContent: Prende tutto il testo, incluso quello nascosto (più veloce, preferito)
+
+// Esempio: Creare card utente
+const container = document.querySelector('#user-container');
+const utente = { nome: 'Mario', email: 'mario@test.com' };
+
+container.innerHTML = `
+    <div class="user-card">
+        <h3>${utente.nome}</h3>
+        <p>${utente.email}</p>
+    </div>
+`;</pre>
+        </div>
+
+        <h2>4. Modificare Attributi</h2>
+        
+        <div class="codice">
+<pre>const link = document.querySelector('a');
+const immagine = document.querySelector('img');
+
+// getAttribute e setAttribute
+const href = link.getAttribute('href');
+link.setAttribute('href', 'https://nuovo-url.com');
+link.setAttribute('target', '_blank');
+
+// Proprietà dirette (più comune)
+link.href = 'https://nuovo-url.com';
+link.target = '_blank';
+
+immagine.src = 'nuova-immagine.jpg';
+immagine.alt = 'Descrizione immagine';
+
+// hasAttribute e removeAttribute
+if (link.hasAttribute('target')) {
+    link.removeAttribute('target');
+}
+
+// Data attributes (data-*)
+const elemento = document.querySelector('#my-element');
+elemento.setAttribute('data-id', '123');
+elemento.setAttribute('data-user', 'mario');
+
+// Accesso con dataset (più comodo)
+elemento.dataset.id = '123';
+elemento.dataset.user = 'mario';
+console.log(elemento.dataset.id);    // '123'
+console.log(elemento.dataset.user);  // 'mario'</pre>
+        </div>
+
+        <h2>5. Modificare Classi CSS</h2>
+        
+        <div class="codice">
+<pre>const elemento = document.querySelector('.box');
+
+// classList - API moderna per gestire classi
+elemento.classList.add('active');           // Aggiunge classe
+elemento.classList.remove('hidden');        // Rimuove classe
+elemento.classList.toggle('visible');       // Toggle (aggiunge se non c'è, rimuove se c'è)
+elemento.classList.contains('active');      // Verifica se ha classe (true/false)
+
+// Aggiungere più classi
+elemento.classList.add('classe1', 'classe2', 'classe3');
+
+// Rimuovere più classi
+elemento.classList.remove('classe1', 'classe2');
+
+// Toggle con condizione
+const isActive = true;
+elemento.classList.toggle('active', isActive);  // Aggiunge se isActive è true
+
+// Sostituire classe
+elemento.classList.replace('old-class', 'new-class');
+
+// className (metodo vecchio, sovrascrive tutte le classi)
+elemento.className = 'nuova-classe';  // Rimuove tutte le classi precedenti
+elemento.className += ' altra-classe';  // Aggiunge (spazio importante!)
+
+// Esempio pratico: Toggle menu
+const menu = document.querySelector('.menu');
+const toggleBtn = document.querySelector('.menu-toggle');
+
+toggleBtn.addEventListener('click', () => {
+    menu.classList.toggle('open');
+});</pre>
+        </div>
+
+        <h2>6. Modificare Stili CSS</h2>
+        
+        <div class="codice">
+<pre>const elemento = document.querySelector('.box');
+
+// style - Modifica stili inline
+elemento.style.color = 'red';
+elemento.style.backgroundColor = 'blue';  // Nota: camelCase per proprietà CSS
+elemento.style.fontSize = '20px';
+elemento.style.display = 'none';
+
+// Leggere stili inline
+const colore = elemento.style.color;
+
+// getComputedStyle - Leggere stili calcolati (inclusi CSS esterni)
+const stiliCalcolati = window.getComputedStyle(elemento);
+const width = stiliCalcolati.width;
+const margin = stiliCalcolati.margin;
+
+// Rimuovere stile inline
+elemento.style.color = '';  // Rimuove proprietà color
+
+// Preferisci classList per cambiamenti complessi invece di modificare style
+// MEGLIO:
+elemento.classList.add('highlighted');
+
+// INVECE DI:
+elemento.style.backgroundColor = 'yellow';
+elemento.style.fontWeight = 'bold';
+elemento.style.padding = '10px';</pre>
+        </div>
+
+        <h2>7. Creare e Aggiungere Elementi</h2>
+        
+        <div class="codice">
+<pre>// Creare nuovo elemento
+const nuovoParagrafo = document.createElement('p');
+nuovoParagrafo.textContent = 'Nuovo paragrafo creato con JavaScript';
+nuovoParagrafo.classList.add('paragrafo');
+
+// Aggiungere al DOM
+const container = document.querySelector('#container');
+
+// appendChild - Aggiunge alla fine
+container.appendChild(nuovoParagrafo);
+
+// append - Più flessibile (ES6+)
+container.append(nuovoParagrafo);  // Accetta nodi
+container.append('Testo diretto');  // Accetta anche stringhe
+container.append(elemento1, elemento2, 'testo');  // Multipli argomenti
+
+// prepend - Aggiunge all'inizio
+container.prepend(nuovoParagrafo);
+
+// insertBefore - Inserire prima di un elemento specifico
+const elementoRiferimento = document.querySelector('.riferimento');
+container.insertBefore(nuovoParagrafo, elementoRiferimento);
+
+// Esempio completo: Creare card prodotto
+const creaProdottoCard = (prodotto) => {
+    const card = document.createElement('div');
+    card.classList.add('product-card');
+    
+    card.innerHTML = `
+        <img src="${prodotto.immagine}" alt="${prodotto.nome}">
+        <h3>${prodotto.nome}</h3>
+        <p class="prezzo">€${prodotto.prezzo}</p>
+        <button class="btn-aggiungi">Aggiungi al carrello</button>
+    `;
+    
+    return card;
+};
+
+const prodotto = {
+    nome: 'Laptop',
+    prezzo: 999,
+    immagine: 'laptop.jpg'
+};
+
+const cardProdotto = creaProdottoCard(prodotto);
+document.querySelector('#prodotti').appendChild(cardProdotto);</pre>
+        </div>
+
+        <h2>8. Event Listeners</h2>
+        
+        <div class="codice">
+<pre>// addEventListener - Ascolta eventi su elementi
+const bottone = document.querySelector('#my-button');
+
+bottone.addEventListener('click', function() {
+    console.log('Bottone cliccato!');
+});
+
+// Meglio con arrow function
+bottone.addEventListener('click', () => {
+    console.log('Bottone cliccato!');
+});
+
+// Event object contiene info sull'evento
+bottone.addEventListener('click', (event) => {
+    console.log(event.type);       // 'click'
+    console.log(event.target);     // Elemento cliccato
+    console.log(event.currentTarget);  // Elemento con listener
+});
+
+// Eventi comuni
+const input = document.querySelector('input');
+
+input.addEventListener('input', (e) => {
+    console.log('Valore corrente:', e.target.value);
+});
+
+input.addEventListener('change', (e) => {
+    console.log('Valore cambiato:', e.target.value);
+});
+
+input.addEventListener('focus', () => {
+    console.log('Input ha focus');
+});
+
+input.addEventListener('blur', () => {
+    console.log('Input ha perso focus');
+});
+
+// Form submit
+const form = document.querySelector('form');
+form.addEventListener('submit', (e) => {
+    e.preventDefault();  // Previene invio form e reload pagina
+    console.log('Form inviato');
+    // Gestisci dati form qui
+});
+
+// Rimuovere event listener
+const handleClick = () => console.log('Click');
+bottone.addEventListener('click', handleClick);
+bottone.removeEventListener('click', handleClick);</pre>
+        </div>
+
+        <h2>9. Event Delegation</h2>
+        
+        <div class="teoria">
+            <p><strong>Event delegation</strong> è una tecnica per gestire eventi su elementi multipli o elementi creati dinamicamente.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// INEFFICIENTE - Listener su ogni bottone
+const bottoni = document.querySelectorAll('.btn-delete');
+bottoni.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Gestisci click
+    });
+});
+
+// EFFICIENTE - Event delegation (un solo listener sul parent)
+const container = document.querySelector('#todo-list');
+
+container.addEventListener('click', (e) => {
+    // Verifica se elemento cliccato è bottone delete
+    if (e.target.classList.contains('btn-delete')) {
+        const todoId = e.target.dataset.id;
+        console.log('Elimina todo:', todoId);
+    }
+    
+    // Gestisci checkbox
+    if (e.target.type === 'checkbox') {
+        const todoId = e.target.dataset.id;
+        console.log('Toggle todo:', todoId);
+    }
+});
+
+// Vantaggi event delegation:
+// 1. Un solo listener invece di molti
+// 2. Funziona con elementi aggiunti dinamicamente
+// 3. Migliore performance con molti elementi</pre>
+        </div>
+
+        <h2>10. Esempio Pratico Completo</h2>
+        
+        <div class="esempio">
+            <p>Todo List interattiva con DOM manipulation:</p>
+            
+            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
+                <div style="margin-bottom: 15px;">
+                    <input type="text" id="todo-input" placeholder="Nuova task" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                    <button id="add-todo-btn" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">Aggiungi</button>
+                </div>
+                <div id="todos-container"></div>
+            </div>
+            
+            <script>
+                const todoInput = document.getElementById('todo-input');
+                const addBtn = document.getElementById('add-todo-btn');
+                const todosContainer = document.getElementById('todos-container');
+                
+                let todoId = 1;
+                
+                // Funzione per creare elemento todo
+                const createTodoElement = (text, id) => {
+                    const todoDiv = document.createElement('div');
+                    todoDiv.classList.add('todo-item');
+                    todoDiv.style.cssText = 'display: flex; align-items: center; padding: 10px; background: white; margin: 5px 0; border-radius: 4px; border: 1px solid #e0e0e0;';
+                    todoDiv.dataset.id = id;
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.style.marginRight = '10px';
+                    checkbox.dataset.id = id;
+                    
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = text;
+                    textSpan.style.flex = '1';
+                    textSpan.classList.add('todo-text');
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Elimina';
+                    deleteBtn.classList.add('btn-delete-todo');
+                    deleteBtn.style.cssText = 'padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;';
+                    deleteBtn.dataset.id = id;
+                    
+                    todoDiv.appendChild(checkbox);
+                    todoDiv.appendChild(textSpan);
+                    todoDiv.appendChild(deleteBtn);
+                    
+                    return todoDiv;
+                };
+                
+                // Aggiungere todo
+                const addTodo = () => {
+                    const text = todoInput.value.trim();
+                    if (!text) return;
+                    
+                    const todoElement = createTodoElement(text, todoId++);
+                    todosContainer.appendChild(todoElement);
+                    
+                    todoInput.value = '';
+                    todoInput.focus();
+                };
+                
+                // Event listener per bottone aggiungi
+                addBtn.addEventListener('click', addTodo);
+                
+                // Event listener per Enter nell'input
+                todoInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        addTodo();
+                    }
+                });
+                
+                // Event delegation per click su container
+                todosContainer.addEventListener('click', (e) => {
+                    // Gestisci checkbox toggle
+                    if (e.target.type === 'checkbox') {
+                        const todoItem = e.target.parentElement;
+                        const textSpan = todoItem.querySelector('.todo-text');
+                        
+                        if (e.target.checked) {
+                            textSpan.style.textDecoration = 'line-through';
+                            textSpan.style.color = '#999';
+                        } else {
+                            textSpan.style.textDecoration = 'none';
+                            textSpan.style.color = 'inherit';
+                        }
+                    }
+                    
+                    // Gestisci eliminazione
+                    if (e.target.classList.contains('btn-delete-todo')) {
+                        const todoItem = e.target.parentElement;
+                        todoItem.remove();
+                    }
+                });
+            </script>
+        </div>
+
+        <h2>11. Note Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>querySelector è preferito:</strong> Più flessibile di getElementById e getElementsByClassName</li>
+                <li><strong>textContent vs innerHTML:</strong> Usa textContent per sicurezza, innerHTML solo con dati fidati</li>
+                <li><strong>classList vs className:</strong> Sempre classList per gestire classi multiple</li>
+                <li><strong>addEventListener sempre:</strong> Non usare onclick inline nell'HTML</li>
+                <li><strong>preventDefault():</strong> Fondamentale per form e link</li>
+                <li><strong>Event delegation:</strong> Usa per liste dinamiche e molti elementi</li>
+                <li><strong>Performance:</strong> Minimizza manipolazioni DOM, sono costose</li>
+            </ul>
+        </div>
+
+        <h2>12. Importanza della DOM Manipulation</h2>
+        
+        <div class="teoria">
+            <p><strong>Perché la DOM manipulation è fondamentale:</strong></p>
+            <ul>
+                <li><strong>Base del web interattivo:</strong> Tutte le interazioni utente modificano il DOM</li>
+                <li><strong>Framework moderni:</strong> Molte librerie si basano su questi concetti</li>
+                <li><strong>Performance:</strong> Comprendere il DOM aiuta a scrivere codice più efficiente</li>
+                <li><strong>Rendering dinamico:</strong> Essenziale per applicazioni web moderne</li>
+                <li><strong>Event handling:</strong> Concetti universali in tutto lo sviluppo web</li>
+            </ul>
+            
+            <p>La manipolazione del DOM è importante per:</p>
+            <ul>
+                <li>Creare interfacce utente dinamiche</li>
+                <li>Gestire interazioni utente complesse</li>
+                <li>Debug e risoluzione problemi nelle applicazioni web</li>
+                <li>Integrazione con librerie e plugin JavaScript</li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-8.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="lezione-5-10.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Moduli ES6</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - Moduli ES6</h1>
+            <p>Import/Export, type="module", organizzazione codice</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Calcolatrice Modulare</h3>
+            
+            <div style="background: #f9f9fa; padding: 20px; border-radius: 8px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px;">Numero 1:</label>
+                        <input type="number" id="num1" value="10" style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px;">Numero 2:</label>
+                        <input type="number" id="num2" value="5" style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+                
+                <div id="risultato" style="padding: 20px; background: white; border-radius: 4px; text-align: center; font-size: 1.5em; font-weight: bold; margin-bottom: 20px;">
+                    Seleziona un'operazione
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                    <button data-op="add" style="padding: 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.3em;">+</button>
+                    <button data-op="subtract" style="padding: 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.3em;">-</button>
+                    <button data-op="multiply" style="padding: 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.3em;">×</button>
+                    <button data-op="divide" style="padding: 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.3em;">÷</button>
+                    <button data-op="power" style="padding: 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.3em;">x^y</button>
+                    <button data-op="sqrt" style="padding: 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.3em;">√</button>
+                    <button data-op="percent" style="padding: 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.3em;">%</button>
+                    <button data-op="factorial" style="padding: 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.3em;">n!</button>
+                </div>
+            </div>
+            
+            <div style="background: #f9f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                <h4 style="margin-top: 0;">Struttura Moduli</h4>
+                
+                <div style="background: white; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: #007bff;">📁 Struttura File:</p>
+                    <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 0;">moduli-esempio/
+├── index.html          (questo file, con type="module")
+├── main.js             (entry point, orchestratore)
+├── math.js             (operazioni matematiche - named exports)
+├── utils.js            (utilità - named exports)
+└── formatter.js        (formattazione - default export)</pre>
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: #28a745;">📄 math.js (Named Exports)</p>
+                    <pre style="background: #282c34; color: #abb2bf; padding: 15px; border-radius: 4px; margin: 0; overflow-x: auto; font-size: 0.9em;"><code>// Operazioni base
+export const add = (a, b) => a + b;
+export const subtract = (a, b) => a - b;
+export const multiply = (a, b) => a * b;
+export const divide = (a, b) => b !== 0 ? a / b : 'Errore';
+
+// Operazioni avanzate
+export const power = (a, b) => Math.pow(a, b);
+export const sqrt = (a) => Math.sqrt(a);
+export const factorial = (n) => {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+};</code></pre>
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: #ffc107;">📄 utils.js (Named Exports)</p>
+                    <pre style="background: #282c34; color: #abb2bf; padding: 15px; border-radius: 4px; margin: 0; overflow-x: auto; font-size: 0.9em;"><code>export const getNumbers = () => {
+    const num1 = Number(document.getElementById('num1').value);
+    const num2 = Number(document.getElementById('num2').value);
+    return { num1, num2 };
+};
+
+export const showResult = (result, operation) => {
+    const resultDiv = document.getElementById('risultato');
+    resultDiv.textContent = \`Risultato: \${result}\`;
+    resultDiv.style.color = typeof result === 'number' ? '#28a745' : '#dc3545';
+};
+
+export const log = (message) => {
+    console.log(\`[Calculator] \${message}\`);
+};</code></pre>
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: #dc3545;">📄 formatter.js (Default Export)</p>
+                    <pre style="background: #282c34; color: #abb2bf; padding: 15px; border-radius: 4px; margin: 0; overflow-x: auto; font-size: 0.9em;"><code>// Export default di una classe
+export default class Formatter {
+    static formatNumber(num) {
+        return new Intl.NumberFormat('it-IT', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 4
+        }).format(num);
+    }
+    
+    static formatOperation(op) {
+        const symbols = {
+            add: '+', subtract: '-',
+            multiply: '×', divide: '÷'
+        };
+        return symbols[op] || op;
+    }
+}</code></pre>
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 4px;">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: #17a2b8;">📄 main.js (Import & Orchestrazione)</p>
+                    <pre style="background: #282c34; color: #abb2bf; padding: 15px; border-radius: 4px; margin: 0; overflow-x: auto; font-size: 0.9em;"><code>// Import named exports
+import { add, subtract, multiply, divide, power, sqrt, factorial } from './math.js';
+import { getNumbers, showResult, log } from './utils.js';
+
+// Import default export
+import Formatter from './formatter.js';
+
+// Mappa operazioni
+const operations = {
+    add, subtract, multiply, divide, power, sqrt, factorial,
+    percent: (a, b) => (a * b) / 100
+};
+
+// Event listeners
+document.querySelectorAll('button[data-op]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const op = btn.dataset.op;
+        const { num1, num2 } = getNumbers();
+        const result = operations[op](num1, num2);
+        showResult(Formatter.formatNumber(result), op);
+        log(\`Operazione: \${op}, Risultato: \${result}\`);
+    });
+});</code></pre>
+                </div>
+            </div>
+            
+            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 4px; margin-top: 20px;">
+                <p style="margin: 0; color: #856404;"><strong>⚠️ Nota:</strong> Questo esempio mostra la struttura dei moduli. Per funzionare completamente, sono necessari i file separati (math.js, utils.js, formatter.js, main.js) e un server HTTP (i moduli non funzionano con file://).</p>
+            </div>
+        </div>
+
+        <!-- IMPORTANTE: type="module" per usare import/export -->
+        <script type="module">
+            // Implementazione inline per demo (normalmente in main.js)
+            
+            // Funzioni da math.js
+            const add = (a, b) => a + b;
+            const subtract = (a, b) => a - b;
+            const multiply = (a, b) => a * b;
+            const divide = (a, b) => b !== 0 ? a / b : 'Errore: divisione per zero';
+            const power = (a, b) => Math.pow(a, b);
+            const sqrt = (a) => Math.sqrt(a);
+            const factorial = (n) => {
+                if (n < 0) return 'Errore: numero negativo';
+                if (n <= 1) return 1;
+                return n * factorial(n - 1);
+            };
+            const percent = (a, b) => (a * b) / 100;
+            
+            // Funzioni da utils.js
+            const getNumbers = () => {
+                const num1 = Number(document.getElementById('num1').value);
+                const num2 = Number(document.getElementById('num2').value);
+                return { num1, num2 };
+            };
+            
+            const showResult = (result, operation) => {
+                const resultDiv = document.getElementById('risultato');
+                resultDiv.textContent = `Risultato: ${result}`;
+                resultDiv.style.color = typeof result === 'number' ? '#28a745' : '#dc3545';
+            };
+            
+            // Classe da formatter.js (default export)
+            class Formatter {
+                static formatNumber(num) {
+                    if (typeof num !== 'number') return num;
+                    return new Intl.NumberFormat('it-IT', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 4
+                    }).format(num);
+                }
+            }
+            
+            // Mappa operazioni
+            const operations = {
+                add, subtract, multiply, divide, power, sqrt, factorial, percent
+            };
+            
+            // Event listeners
+            document.querySelectorAll('button[data-op]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const op = btn.dataset.op;
+                    const { num1, num2 } = getNumbers();
+                    
+                    let result;
+                    if (op === 'sqrt' || op === 'factorial') {
+                        result = operations[op](num1);
+                    } else {
+                        result = operations[op](num1, num2);
+                    }
+                    
+                    showResult(Formatter.formatNumber(result), op);
+                    console.log(`✓ Operazione: ${op}, Risultato: ${result}`);
+                });
+            });
+            
+            console.log('%c📦 Moduli ES6 Demo', 'font-size: 16px; font-weight: bold; color: #007bff;');
+            console.log('Questo codice simula l\'uso di moduli ES6');
+            console.log('In produzione, sarebbe suddiviso in file separati con import/export');
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

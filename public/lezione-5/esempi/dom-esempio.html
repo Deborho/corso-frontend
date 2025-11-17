@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - DOM Manipulation</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - DOM Manipulation</h1>
+            <p>querySelector, createElement, classList, eventi</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Interactive Color Palette Generator</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: bold;">Genera Palette Casuale:</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button id="genera-palette" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">🎨 Genera Palette</button>
+                        <button id="aggiungi-colore" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">+ Aggiungi Colore</button>
+                        <button id="cancella-tutto" style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Cancella Tutto</button>
+                    </div>
+                </div>
+                
+                <div id="palette-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                    <!-- Colori generati dinamicamente -->
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 4px; margin-top: 20px;">
+                    <h4 style="margin-top: 0;">Colori Selezionati</h4>
+                    <div id="selezionati-lista" style="min-height: 50px;">
+                        <p style="color: #999;">Clicca su un colore per selezionarlo</p>
+                    </div>
+                    <button id="copia-selezionati" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">📋 Copia Codici</button>
+                </div>
+                
+                <div id="event-log" style="margin-top: 20px; padding: 15px; background: #282c34; color: #abb2bf; border-radius: 4px; max-height: 200px; overflow-y: auto;">
+                    <h4 style="margin-top: 0; color: #61dafb;">Event Log</h4>
+                    <div id="log-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const paletteContainer = document.getElementById('palette-container');
+            const selezionatiLista = document.getElementById('selezionati-lista');
+            const logContent = document.getElementById('log-content');
+            
+            let coloriSelezionati = new Set();
+            let eventCounter = 0;
+            
+            // Helper: genera colore casuale
+            const generaColoreRandom = () => {
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                return `rgb(${r}, ${g}, ${b})`;
+            };
+            
+            // Helper: converti RGB a HEX
+            const rgbToHex = (rgb) => {
+                const result = rgb.match(/\d+/g);
+                if (!result) return rgb;
+                const [r, g, b] = result.map(Number);
+                return '#' + [r, g, b].map(x => {
+                    const hex = x.toString(16);
+                    return hex.length === 1 ? '0' + hex : hex;
+                }).join('');
+            };
+            
+            // Helper: log eventi
+            const logEvent = (tipo, messaggio) => {
+                eventCounter++;
+                const timestamp = new Date().toLocaleTimeString();
+                
+                const logEntry = document.createElement('div');
+                logEntry.style.cssText = 'padding: 5px; margin-bottom: 5px; background: #3e4451; border-radius: 3px; font-family: monospace; font-size: 0.85em;';
+                logEntry.innerHTML = `
+                    <span style="color: #98c379;">[${eventCounter}]</span>
+                    <span style="color: #61dafb;">${timestamp}</span>
+                    <span style="color: #e5c07b;">${tipo}:</span>
+                    <span>${messaggio}</span>
+                `;
+                
+                // Inserisce all'inizio
+                logContent.insertBefore(logEntry, logContent.firstChild);
+                
+                // Mantieni solo ultimi 20 log
+                if (logContent.children.length > 20) {
+                    logContent.removeChild(logContent.lastChild);
+                }
+            };
+            
+            // Crea card colore
+            const creaCardColore = (colore) => {
+                // createElement: crea nuovo elemento
+                const card = document.createElement('div');
+                card.className = 'color-card';
+                card.style.cssText = `
+                    background: ${colore};
+                    height: 150px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    padding: 15px;
+                    transition: transform 0.2s, box-shadow 0.2s;
+                    position: relative;
+                `;
+                
+                // Crea info colore
+                const infoDiv = document.createElement('div');
+                infoDiv.style.cssText = 'background: rgba(255, 255, 255, 0.9); padding: 8px; border-radius: 4px;';
+                
+                const hexCode = rgbToHex(colore);
+                infoDiv.innerHTML = `
+                    <p style="margin: 0; font-size: 0.9em; font-weight: bold;">${hexCode}</p>
+                    <p style="margin: 5px 0 0 0; font-size: 0.8em; color: #666;">${colore}</p>
+                `;
+                
+                // Bottone rimuovi
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = '×';
+                removeBtn.style.cssText = `
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    background: rgba(220, 53, 69, 0.9);
+                    color: white;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 1.5em;
+                    display: none;
+                `;
+                
+                // appendChild: aggiungi elementi
+                card.appendChild(infoDiv);
+                card.appendChild(removeBtn);
+                
+                // Event listeners
+                
+                // Click su card: seleziona/deseleziona
+                card.addEventListener('click', (e) => {
+                    if (e.target === removeBtn) return;
+                    
+                    // classList.toggle: alterna classe
+                    if (coloriSelezionati.has(colore)) {
+                        coloriSelezionati.delete(colore);
+                        card.classList.remove('selezionato');
+                        card.style.transform = 'scale(1)';
+                        card.style.boxShadow = 'none';
+                        logEvent('Deselezionato', hexCode);
+                    } else {
+                        coloriSelezionati.add(colore);
+                        card.classList.add('selezionato');
+                        card.style.transform = 'scale(1.05)';
+                        card.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                        logEvent('Selezionato', hexCode);
+                    }
+                    
+                    aggiornaListaSelezionati();
+                });
+                
+                // Hover: mostra bottone rimuovi
+                card.addEventListener('mouseenter', () => {
+                    removeBtn.style.display = 'block';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    removeBtn.style.display = 'none';
+                });
+                
+                // Click su rimuovi
+                removeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    card.remove();  // Rimuovi dal DOM
+                    coloriSelezionati.delete(colore);
+                    aggiornaListaSelezionati();
+                    logEvent('Rimosso', hexCode);
+                });
+                
+                return card;
+            };
+            
+            // Aggiorna lista colori selezionati
+            const aggiornaListaSelezionati = () => {
+                if (coloriSelezionati.size === 0) {
+                    selezionatiLista.innerHTML = '<p style="color: #999;">Clicca su un colore per selezionarlo</p>';
+                    return;
+                }
+                
+                // Crea chip per ogni colore
+                selezionatiLista.innerHTML = Array.from(coloriSelezionati)
+                    .map(colore => {
+                        const hex = rgbToHex(colore);
+                        return `
+                            <div style="display: inline-block; margin: 5px; padding: 8px 12px; background: ${colore}; border-radius: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <span style="font-weight: bold; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">${hex}</span>
+                            </div>
+                        `;
+                    })
+                    .join('');
+            };
+            
+            // Genera palette
+            document.getElementById('genera-palette').addEventListener('click', () => {
+                // Rimuovi tutti i colori esistenti
+                paletteContainer.innerHTML = '';
+                coloriSelezionati.clear();
+                
+                // Genera 6 colori casuali
+                const numeroColori = 6;
+                for (let i = 0; i < numeroColori; i++) {
+                    const colore = generaColoreRandom();
+                    const card = creaCardColore(colore);
+                    paletteContainer.appendChild(card);
+                }
+                
+                aggiornaListaSelezionati();
+                logEvent('Palette Generata', `${numeroColori} colori creati`);
+            });
+            
+            // Aggiungi singolo colore
+            document.getElementById('aggiungi-colore').addEventListener('click', () => {
+                const colore = generaColoreRandom();
+                const card = creaCardColore(colore);
+                paletteContainer.appendChild(card);
+                logEvent('Colore Aggiunto', rgbToHex(colore));
+            });
+            
+            // Cancella tutto
+            document.getElementById('cancella-tutto').addEventListener('click', () => {
+                if (paletteContainer.children.length === 0) return;
+                
+                if (confirm('Sicuro di voler cancellare tutti i colori?')) {
+                    const numeroColori = paletteContainer.children.length;
+                    paletteContainer.innerHTML = '';
+                    coloriSelezionati.clear();
+                    aggiornaListaSelezionati();
+                    logEvent('Cancellati Tutti', `${numeroColori} colori rimossi`);
+                }
+            });
+            
+            // Copia codici selezionati
+            document.getElementById('copia-selezionati').addEventListener('click', () => {
+                if (coloriSelezionati.size === 0) {
+                    alert('Nessun colore selezionato!');
+                    return;
+                }
+                
+                const codici = Array.from(coloriSelezionati)
+                    .map(colore => rgbToHex(colore))
+                    .join(', ');
+                
+                // Copia negli appunti
+                navigator.clipboard.writeText(codici).then(() => {
+                    alert(`Copiati ${coloriSelezionati.size} codici:\n${codici}`);
+                    logEvent('Copiati Codici', codici);
+                });
+            });
+            
+            // Event delegation con keyboard
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'n' || e.key === 'N') {
+                    document.getElementById('genera-palette').click();
+                } else if (e.key === 'a' || e.key === 'A') {
+                    document.getElementById('aggiungi-colore').click();
+                } else if (e.key === 'c' || e.key === 'C') {
+                    if (coloriSelezionati.size > 0) {
+                        document.getElementById('copia-selezionati').click();
+                    }
+                }
+            });
+            
+            logEvent('Info', 'Shortcuts: N=genera, A=aggiungi, C=copia');
+            
+            // Genera palette iniziale
+            document.getElementById('genera-palette').click();
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

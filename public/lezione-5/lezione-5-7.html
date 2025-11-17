@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.7 - Oggetti e Destructuring</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.7 - Oggetti e Destructuring</h1>
+            <p>Object literals, proprietà e destructuring pattern</p>
+        </div>
+
+        <h2>1. Object Literals</h2>
+        
+        <div class="codice">
+<pre>// Creare un oggetto
+const persona = {
+    nome: 'Mario',
+    cognome: 'Rossi',
+    età: 25,
+    città: 'Roma'
+};
+
+// Accesso con dot notation
+console.log(persona.nome);      // Mario
+console.log(persona.età);       // 25
+
+// Accesso con bracket notation
+console.log(persona['cognome']);  // Rossi
+
+// Utile con variabili
+const proprietà = 'città';
+console.log(persona[proprietà]);  // Roma
+
+// Oggetti annidati
+const utente = {
+    nome: 'Mario',
+    contatti: {
+        email: 'mario@email.com',
+        telefono: '1234567890'
+    },
+    indirizzo: {
+        via: 'Via Roma 1',
+        città: 'Roma',
+        cap: '00100'
+    }
+};
+
+console.log(utente.contatti.email);          // mario@email.com
+console.log(utente.indirizzo.città);         // Roma</pre>
+        </div>
+
+        <h2>2. Aggiungere e Modificare Proprietà</h2>
+        
+        <div class="codice">
+<pre>const persona = {
+    nome: 'Mario',
+    età: 25
+};
+
+// Aggiungere proprietà
+persona.cognome = 'Rossi';
+persona.città = 'Roma';
+
+console.log(persona);
+// { nome: 'Mario', età: 25, cognome: 'Rossi', città: 'Roma' }
+
+// Modificare proprietà esistente
+persona.età = 26;
+console.log(persona.età);  // 26
+
+// Eliminare proprietà
+delete persona.città;
+console.log(persona);
+// { nome: 'Mario', età: 26, cognome: 'Rossi' }
+
+// Verificare se proprietà esiste
+console.log('nome' in persona);     // true
+console.log('telefono' in persona); // false</pre>
+        </div>
+
+        <h2>3. Object Shorthand Property</h2>
+        
+        <div class="codice">
+<pre>// Modo vecchio - Ripetitivo
+const nome = 'Mario';
+const età = 25;
+const città = 'Roma';
+
+const persona1 = {
+    nome: nome,
+    età: età,
+    città: città
+};
+
+// ES6 Shorthand - Quando nome proprietà = nome variabile
+const persona2 = {
+    nome,
+    età,
+    città
+};
+
+console.log(persona2);
+// { nome: 'Mario', età: 25, città: 'Roma' }
+
+// Misto
+const cognome = 'Rossi';
+const persona3 = {
+    nome,           // Shorthand
+    cognome,        // Shorthand
+    età: 30,        // Normale
+    paese: 'Italia' // Normale
+};
+
+// Molto usato con funzioni che restituiscono oggetti
+const creaUtente = (nome, email) => ({
+    nome,
+    email,
+    dataCreazione: new Date(),
+    attivo: true
+});</pre>
+        </div>
+
+        <h2>4. Metodi negli Oggetti</h2>
+        
+        <div class="codice">
+<pre>// Oggetti possono contenere funzioni (metodi)
+const persona = {
+    nome: 'Mario',
+    età: 25,
+    
+    // Metodo tradizionale
+    saluta: function() {
+        return `Ciao, sono ${this.nome}`;
+    },
+    
+    // ES6 method shorthand
+    salutaModerno() {
+        return `Ciao, sono ${this.nome}`;
+    },
+    
+    // Arrow function (NON ha accesso a this dell'oggetto!)
+    salutaArrow: () => {
+        // this qui non funziona come ci aspetteremmo
+        return `Ciao!`;
+    },
+    
+    compiannoAnno() {
+        this.età++;
+        return `Ora ho ${this.età} anni`;
+    }
+};
+
+console.log(persona.saluta());         // Ciao, sono Mario
+console.log(persona.salutaModerno());  // Ciao, sono Mario
+console.log(persona.salutaArrow());    // Ciao! (non può usare this.nome)
+console.log(persona.compiannoAnno());  // Ora ho 26 anni</pre>
+        </div>
+
+        <h2>5. Object Destructuring</h2>
+        
+        <div class="teoria">
+            <p>Il <strong>destructuring</strong> permette di estrarre proprietà da oggetti in variabili separate.</p>
+        </div>
+        
+        <div class="codice">
+<pre>const persona = {
+    nome: 'Mario',
+    cognome: 'Rossi',
+    età: 25,
+    città: 'Roma'
+};
+
+// Senza destructuring
+const nome = persona.nome;
+const età = persona.età;
+
+// Con destructuring - Molto più compatto!
+const { nome, età } = persona;
+console.log(nome);  // Mario
+console.log(età);   // 25
+
+// Estrarre solo proprietà necessarie
+const { città } = persona;
+console.log(città);  // Roma
+
+// Estrarre proprietà multiple
+const { nome, cognome, età, città } = persona;
+
+// Destructuring con proprietà inesistente = undefined
+const { telefono } = persona;
+console.log(telefono);  // undefined</pre>
+        </div>
+
+        <h2>6. Destructuring con Alias</h2>
+        
+        <div class="codice">
+<pre>const persona = {
+    nome: 'Mario',
+    età: 25
+};
+
+// Rinominare durante destructuring
+const { nome: nomePersona, età: etàPersona } = persona;
+
+console.log(nomePersona);  // Mario
+console.log(etàPersona);   // 25
+
+// Utile per evitare conflitti di nomi
+const studente = { nome: 'Luigi', età: 20 };
+const insegnante = { nome: 'Prof. Rossi', età: 45 };
+
+const { nome: nomeStudente } = studente;
+const { nome: nomeInsegnante } = insegnante;
+
+console.log(nomeStudente);    // Luigi
+console.log(nomeInsegnante);  // Prof. Rossi</pre>
+        </div>
+
+        <h2>7. Destructuring con Valori Default</h2>
+        
+        <div class="codice">
+<pre>const persona = {
+    nome: 'Mario',
+    età: 25
+};
+
+// Valori di default se proprietà non esiste
+const { nome, età, città = 'Non specificata' } = persona;
+
+console.log(nome);   // Mario
+console.log(città);  // Non specificata (usato default)
+
+// Combinare alias e default
+const { telefono: tel = '000000' } = persona;
+console.log(tel);  // 000000
+
+// Esempio pratico
+function mostraUtente(utente) {
+    const { 
+        nome, 
+        email, 
+        ruolo = 'Utente',
+        attivo = true 
+    } = utente;
+    
+    return `${nome} (${email}) - Ruolo: ${ruolo} - Attivo: ${attivo}`;
+}
+
+console.log(mostraUtente({ nome: 'Mario', email: 'mario@test.com' }));
+// Mario (mario@test.com) - Ruolo: Utente - Attivo: true</pre>
+        </div>
+
+        <h2>8. Nested Destructuring</h2>
+        
+        <div class="codice">
+<pre>const utente = {
+    nome: 'Mario',
+    età: 25,
+    indirizzo: {
+        via: 'Via Roma 1',
+        città: 'Roma',
+        cap: '00100'
+    },
+    contatti: {
+        email: 'mario@email.com',
+        telefono: '1234567890'
+    }
+};
+
+// Destructuring annidato
+const {
+    nome,
+    indirizzo: { città, cap },
+    contatti: { email }
+} = utente;
+
+console.log(nome);   // Mario
+console.log(città);  // Roma
+console.log(cap);    // 00100
+console.log(email);  // mario@email.com
+
+// Nota: 'indirizzo' e 'contatti' non sono variabili create
+// console.log(indirizzo);  // ERRORE: indirizzo is not defined
+
+// Per avere anche l'oggetto completo
+const {
+    indirizzo,
+    indirizzo: { città: cittàUtente }
+} = utente;
+
+console.log(indirizzo);      // { via: 'Via Roma 1', città: 'Roma', cap: '00100' }
+console.log(cittàUtente);    // Roma</pre>
+        </div>
+
+        <h2>9. Destructuring nei Parametri di Funzione</h2>
+        
+        <div class="teoria">
+            <p>Pattern molto comune per estrarre dati da oggetti:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Senza destructuring
+function salutaSenzaDestruct(persona) {
+    return `Ciao ${persona.nome}, hai ${persona.età} anni`;
+}
+
+// Con destructuring nei parametri (PATTERN MODERNO)
+function salutaConDestruct({ nome, età }) {
+    return `Ciao ${nome}, hai ${età} anni`;
+}
+
+const persona = { nome: 'Mario', età: 25, città: 'Roma' };
+
+console.log(salutaConDestruct(persona));
+// Ciao Mario, hai 25 anni
+
+// Con valori default nei parametri
+function creaProfilo({ nome, età, ruolo = 'Utente', attivo = true }) {
+    return { nome, età, ruolo, attivo };
+}
+
+console.log(creaProfilo({ nome: 'Luigi', età: 30 }));
+// { nome: 'Luigi', età: 30, ruolo: 'Utente', attivo: true }
+
+// Arrow function con destructuring
+const mostraInfo = ({ nome, email, città = 'Non specificata' }) => 
+    `${nome} - ${email} - ${città}`;
+
+console.log(mostraInfo({ 
+    nome: 'Mario', 
+    email: 'mario@test.com' 
+}));
+// Mario - mario@test.com - Non specificata</pre>
+        </div>
+
+        <h2>10. Rest in Object Destructuring</h2>
+        
+        <div class="codice">
+<pre>const persona = {
+    nome: 'Mario',
+    cognome: 'Rossi',
+    età: 25,
+    città: 'Roma',
+    email: 'mario@email.com'
+};
+
+// Estrarre alcune proprietà, il resto in un oggetto
+const { nome, età, ...altreInfo } = persona;
+
+console.log(nome);      // Mario
+console.log(età);       // 25
+console.log(altreInfo); 
+// { cognome: 'Rossi', città: 'Roma', email: 'mario@email.com' }
+
+// Utile per separare dati
+const utente = {
+    id: 1,
+    username: 'mario_rossi',
+    password: 'secret123',
+    nome: 'Mario',
+    email: 'mario@email.com'
+};
+
+const { password, ...datiSicuri } = utente;
+console.log(datiSicuri);
+// { id: 1, username: 'mario_rossi', nome: 'Mario', email: 'mario@email.com' }
+// password non è inclusa!</pre>
+        </div>
+
+        <h2>11. Esempio Pratico Completo</h2>
+        
+        <div class="esempio">
+            <p>Sistema di gestione utenti con destructuring:</p>
+            
+            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
+                <div style="margin-bottom: 15px;">
+                    <input type="text" id="user-nome" placeholder="Nome" style="padding: 8px; width: 150px; margin: 5px;">
+                    <input type="email" id="user-email" placeholder="Email" style="padding: 8px; width: 200px; margin: 5px;">
+                    <input type="text" id="user-citta" placeholder="Città" style="padding: 8px; width: 150px; margin: 5px;">
+                </div>
+                <button id="btn-aggiungi-user" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Aggiungi Utente</button>
+                <div id="lista-utenti" style="margin-top: 15px;"></div>
+            </div>
+            
+            <script>
+                const utenti = [];
+                
+                // Funzione con destructuring nei parametri
+                const creaCardUtente = ({ nome, email, città = 'Non specificata', id }) => `
+                    <div style="border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 4px; background: white;">
+                        <strong>Nome:</strong> ${nome}<br>
+                        <strong>Email:</strong> ${email}<br>
+                        <strong>Città:</strong> ${città}<br>
+                        <small>ID: ${id}</small>
+                    </div>
+                `;
+                
+                const mostraUtenti = () => {
+                    const container = document.getElementById('lista-utenti');
+                    container.innerHTML = utenti.map(creaCardUtente).join('');
+                };
+                
+                document.getElementById('btn-aggiungi-user').addEventListener('click', () => {
+                    // Destructuring degli input
+                    const nome = document.getElementById('user-nome').value;
+                    const email = document.getElementById('user-email').value;
+                    const città = document.getElementById('user-citta').value;
+                    
+                    if (!nome || !email) {
+                        alert('Nome ed email sono obbligatori');
+                        return;
+                    }
+                    
+                    // Object shorthand
+                    const nuovoUtente = {
+                        id: Date.now(),
+                        nome,
+                        email,
+                        città: città || undefined
+                    };
+                    
+                    utenti.push(nuovoUtente);
+                    mostraUtenti();
+                    
+                    // Reset form
+                    document.getElementById('user-nome').value = '';
+                    document.getElementById('user-email').value = '';
+                    document.getElementById('user-citta').value = '';
+                });
+            </script>
+        </div>
+
+        <h2>12. Note Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Destructuring ovunque:</strong> Usa destructuring per estrarre proprietà in modo pulito</li>
+                <li><strong>Object shorthand:</strong> Elimina ripetizioni quando nome variabile = nome proprietà</li>
+                <li><strong>Default values:</strong> Sempre una buona idea per evitare undefined</li>
+                <li><strong>Arrow functions e this:</strong> Non usare arrow functions per metodi oggetto</li>
+                <li><strong>Nested destructuring:</strong> Non esagerare con profondità, diventa illeggibile</li>
+                <li><strong>Rest operator:</strong> Utile per separare proprietà da resto oggetto</li>
+                <li><strong>Parametri funzione:</strong> Destructuring nei parametri è un pattern moderno</li>
+            </ul>
+        </div>
+
+        <h2>13. Best Practices con Destructuring</h2>
+        
+        <div class="teoria">
+            <p><strong>Perché destructuring è fondamentale nello sviluppo moderno:</strong></p>
+            <ul>
+                <li><strong>Codice pulito:</strong> Riduce ripetizioni e verbosità</li>
+                <li><strong>Parametri chiari:</strong> Documenta esplicitamente cosa viene usato</li>
+                <li><strong>Default values:</strong> Valori predefiniti integrati nella sintassi</li>
+                <li><strong>API moderne:</strong> Pattern standard nelle librerie moderne</li>
+                <li><strong>Leggibilità:</strong> Codice più dichiarativo e comprensibile</li>
+            </ul>
+            
+            <p>Esempio di API moderna:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Sistema di rendering con destructuring
+// Senza destructuring (ripetitivo)
+function renderUserCard1(user) {
+    return `
+        <div class="user-card">
+            <h2>${user.nome}</h2>
+            <p>${user.email}</p>
+            <p>${user.città}</p>
+        </div>
+    `;
+}
+
+// Con destructuring (moderno e pulito)
+function renderUserCard2({ nome, email, città = 'Non specificata' }) {
+    return `
+        <div class="user-card">
+            <h2>${nome}</h2>
+            <p>${email}</p>
+            <p>${città}</p>
+        </div>
+    `;
+}
+
+// API che restituiscono array da destructure
+const [error, data] = fetchData();
+const [isValid, message] = validateForm(formData);</pre>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-6.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="lezione-5-8.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

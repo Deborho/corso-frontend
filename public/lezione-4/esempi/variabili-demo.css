@@ -1,0 +1,142 @@
+:root {
+  --primary: #2563eb;
+  --secondary: #8b5cf6;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --spacing-1: 0.5rem;
+  --spacing-2: 1rem;
+  --spacing-3: 1.5rem;
+  --spacing-4: 2rem;
+  --radius: 0.5rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+h1 {
+  margin-bottom: 2rem;
+  color: #1e293b;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+.section h2 {
+  margin-bottom: 1rem;
+  color: #334155;
+  font-size: 1.25rem;
+}
+
+.colors {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.color-box {
+  width: 120px;
+  height: 120px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.color-box.color-primary {
+  background: #2563eb;
+}
+.color-box.color-secondary {
+  background: #8b5cf6;
+}
+.color-box.color-success {
+  background: #10b981;
+}
+.color-box.color-danger {
+  background: #ef4444;
+}
+.color-box.color-warning {
+  background: #f59e0b;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.btn-primary {
+  background: #2563eb;
+}
+.btn-secondary {
+  background: #8b5cf6;
+}
+.btn-success {
+  background: #10b981;
+}
+.btn-danger {
+  background: #ef4444;
+}
+.btn-warning {
+  background: #f59e0b;
+}
+
+.spacing-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.spacing-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spacing-box {
+  background: #2563eb;
+  height: 40px;
+}
+.spacing-box.spacing-1 {
+  width: 0.5rem;
+}
+.spacing-box.spacing-2 {
+  width: 1rem;
+}
+.spacing-box.spacing-3 {
+  width: 1.5rem;
+}
+.spacing-box.spacing-4 {
+  width: 2rem;
+}
+
+.label {
+  color: #64748b;
+  font-family: monospace;
+}
+
+/*# sourceMappingURL=variabili-demo.css.map */

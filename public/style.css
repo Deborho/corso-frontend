@@ -223,6 +223,12 @@ code {
     margin: 0;
 }
 
+.codice code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+}
+
 /* === MEDIA QUERY PER LA STAMPA === */
 @media print {
     /* Resetta gli stili per la stampa */

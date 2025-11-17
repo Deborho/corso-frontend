@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Spread Operator</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - Spread Operator</h1>
+            <p>Spread per array/object, immutabilità, rest operator</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Task Manager Immutabile</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="margin-bottom: 15px;">
+                    <input type="text" id="task-input" placeholder="Nuova task..." style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px;">
+                    <button onclick="aggiungiTask()" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">+ Aggiungi</button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px;">
+                    <button onclick="copiaArray()" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Copia Array</button>
+                    <button onclick="mergeArrays()" style="padding: 10px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer;">Merge Arrays</button>
+                    <button onclick="aggiungiPriorita()" style="padding: 10px; background: #ffc107; color: white; border: none; border-radius: 4px; cursor: pointer;">Aggiungi Priorità</button>
+                    <button onclick="rimuoviPrima()" style="padding: 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Rimuovi Prima</button>
+                </div>
+                
+                <div id="tasks-display" style="background: white; padding: 15px; border-radius: 4px; min-height: 100px;"></div>
+                
+                <div id="operations-log" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; max-height: 300px; overflow-y: auto;"></div>
+            </div>
+        </script>
+
+        <script>
+            let tasks = [
+                { id: 1, text: 'Studiare JavaScript', completed: false },
+                { id: 2, text: 'Fare esercizi', completed: true },
+                { id: 3, text: 'Progetto finale', completed: false }
+            ];
+            
+            let operationLog = [];
+            
+            const renderTasks = () => {
+                const container = document.getElementById('tasks-display');
+                
+                if (tasks.length === 0) {
+                    container.innerHTML = '<p style="color: #999; text-align: center;">Nessuna task</p>';
+                    return;
+                }
+                
+                container.innerHTML = tasks.map(task => `
+                    <div style="padding: 10px; background: #f8f9fa; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="text-decoration: ${task.completed ? 'line-through' : 'none'}; color: ${task.completed ? '#999' : 'inherit'};">
+                                ${task.text}
+                            </span>
+                            ${task.priority ? `<span style="margin-left: 10px; padding: 2px 8px; background: #dc3545; color: white; font-size: 0.8em; border-radius: 3px;">Alta</span>` : ''}
+                        </div>
+                        <div>
+                            <button onclick="toggleTask(${task.id})" style="padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px;">Toggle</button>
+                            <button onclick="eliminaTask(${task.id})" style="padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Elimina</button>
+                        </div>
+                    </div>
+                `).join('');
+            };
+            
+            const logOperation = (operazione, codice, descrizione) => {
+                operationLog.unshift({
+                    timestamp: new Date().toLocaleTimeString(),
+                    operazione,
+                    codice,
+                    descrizione
+                });
+                
+                if (operationLog.length > 10) operationLog.pop();
+                
+                const container = document.getElementById('operations-log');
+                container.innerHTML = `
+                    <h4 style="margin-top: 0;">Log Operazioni (Immutabili)</h4>
+                    ${operationLog.map(log => `
+                        <div style="padding: 10px; background: white; margin-bottom: 10px; border-radius: 4px; border-left: 3px solid #007bff;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong>${log.operazione}</strong>
+                                <span style="color: #666; font-size: 0.9em;">${log.timestamp}</span>
+                            </div>
+                            <pre style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin: 5px 0; overflow-x: auto; font-size: 0.85em;">${log.codice}</pre>
+                            <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">${log.descrizione}</p>
+                        </div>
+                    `).join('')}
+                `;
+            };
+            
+            // 1. Aggiungere task (spread per aggiungere)
+            window.aggiungiTask = () => {
+                const input = document.getElementById('task-input');
+                const text = input.value.trim();
+                
+                if (!text) return;
+                
+                const newTask = {
+                    id: Date.now(),
+                    text,
+                    completed: false
+                };
+                
+                // IMMUTABLE: Crea nuovo array con spread
+                tasks = [...tasks, newTask];
+                
+                logOperation(
+                    'Aggiungi Task',
+                    'tasks = [...tasks, newTask]',
+                    'Spread operator crea nuovo array, l\'originale non è modificato'
+                );
+                
+                input.value = '';
+                renderTasks();
+            };
+            
+            // 2. Toggle task (spread per aggiornare)
+            window.toggleTask = (id) => {
+                // IMMUTABLE: map crea nuovo array, spread crea nuovo oggetto
+                tasks = tasks.map(task =>
+                    task.id === id
+                        ? { ...task, completed: !task.completed }
+                        : task
+                );
+                
+                logOperation(
+                    'Toggle Task',
+                    `tasks = tasks.map(task =>
+    task.id === id
+        ? { ...task, completed: !task.completed }
+        : task
+)`,
+                    'Spread operator {...task} crea copia dell\'oggetto con proprietà modificata'
+                );
+                
+                renderTasks();
+            };
+            
+            // 3. Eliminare task (filter per rimuovere)
+            window.eliminaTask = (id) => {
+                // IMMUTABLE: filter crea nuovo array
+                tasks = tasks.filter(task => task.id !== id);
+                
+                logOperation(
+                    'Elimina Task',
+                    'tasks = tasks.filter(task => task.id !== id)',
+                    'Filter crea nuovo array escludendo l\'elemento'
+                );
+                
+                renderTasks();
+            };
+            
+            // 4. Copiare array
+            window.copiaArray = () => {
+                const tasksCopia = [...tasks];
+                
+                logOperation(
+                    'Copia Array',
+                    'const tasksCopia = [...tasks]',
+                    `Shallow copy creata. Array originale: ${tasks.length} elementi, Copia: ${tasksCopia.length} elementi`
+                );
+                
+                renderTasks();
+            };
+            
+            // 5. Merge arrays
+            window.mergeArrays = () => {
+                const nuoveTasks = [
+                    { id: Date.now(), text: 'Task da merge 1', completed: false },
+                    { id: Date.now() + 1, text: 'Task da merge 2', completed: false }
+                ];
+                
+                // IMMUTABLE: merge con spread
+                tasks = [...tasks, ...nuoveTasks];
+                
+                logOperation(
+                    'Merge Arrays',
+                    'tasks = [...tasks, ...nuoveTasks]',
+                    `Aggiunte ${nuoveTasks.length} nuove tasks tramite merge con spread`
+                );
+                
+                renderTasks();
+            };
+            
+            // 6. Aggiungere proprietà a tutti gli oggetti
+            window.aggiungiPriorita = () => {
+                // IMMUTABLE: map + spread per aggiungere proprietà
+                tasks = tasks.map(task => ({
+                    ...task,
+                    priority: task.completed ? false : true
+                }));
+                
+                logOperation(
+                    'Aggiungi Proprietà',
+                    `tasks = tasks.map(task => ({
+    ...task,
+    priority: task.completed ? false : true
+}))`,
+                    'Spread operator aggiunge la proprietà "priority" a ogni task'
+                );
+                
+                renderTasks();
+            };
+            
+            // 7. Rimuovere prima task (destructuring + rest)
+            window.rimuoviPrima = () => {
+                if (tasks.length === 0) return;
+                
+                // IMMUTABLE: destructuring con rest
+                const [prima, ...resto] = tasks;
+                tasks = resto;
+                
+                logOperation(
+                    'Rimuovi Prima Task',
+                    'const [prima, ...resto] = tasks;\ntasks = resto;',
+                    `Rimossa "${prima?.text}". Rest operator raccoglie elementi rimanenti`
+                );
+                
+                renderTasks();
+            };
+            
+            // Esempi extra con oggetti
+            const mostraEsempiOggetti = () => {
+                const utente = {
+                    nome: 'Mario',
+                    email: 'mario@test.com',
+                    età: 30
+                };
+                
+                // Spread per copiare oggetto
+                const utenteCopiato = { ...utente };
+                
+                // Spread per aggiungere proprietà
+                const utenteConCitta = { ...utente, città: 'Roma' };
+                
+                // Spread per sovrascrivere proprietà
+                const utenteAggiornato = { ...utente, età: 31 };
+                
+                // Merge oggetti
+                const info = { telefono: '333-1234567', paese: 'Italia' };
+                const utenteCompleto = { ...utente, ...info };
+                
+                logOperation(
+                    'Esempi Spread con Oggetti',
+                    `// Copia
+const copia = { ...utente };
+
+// Aggiungi proprietà
+const conCitta = { ...utente, città: 'Roma' };
+
+// Sovrascrivi
+const aggiornato = { ...utente, età: 31 };
+
+// Merge
+const completo = { ...utente, ...info };`,
+                    'Spread operator è fondamentale per l\'immutabilità nella programmazione funzionale!'
+                );
+            };
+            
+            // Render iniziale
+            renderTasks();
+            mostraEsempiOggetti();
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.6 - Funzioni e Arrow Functions</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.6 - Funzioni e Arrow Functions</h1>
+            <p>Funzioni tradizionali, arrow functions e pattern funzionali</p>
+        </div>
+
+        <h2>1. Function Declaration</h2>
+        
+        <div class="codice">
+<pre>// Dichiarazione funzione (function declaration)
+function saluta(nome) {
+    return `Ciao ${nome}!`;
+}
+
+console.log(saluta('Mario'));  // Ciao Mario!
+
+// Funzione senza parametri
+function benvenuto() {
+    return 'Benvenuto!';
+}
+
+// Funzione senza return (restituisce undefined)
+function stampaMessaggio(testo) {
+    console.log(testo);
+    // Non c'è return, quindi restituisce undefined
+}
+
+// Parametri multipli
+function somma(a, b) {
+    return a + b;
+}
+
+console.log(somma(5, 3));  // 8
+
+// Parametri default (ES6)
+function salutaConDefault(nome = 'Ospite') {
+    return `Ciao ${nome}!`;
+}
+
+console.log(salutaConDefault());         // Ciao Ospite!
+console.log(salutaConDefault('Mario'));  // Ciao Mario!</pre>
+        </div>
+
+        <h2>2. Function Expression</h2>
+        
+        <div class="codice">
+<pre>// Function expression - Funzione assegnata a variabile
+const saluta = function(nome) {
+    return `Ciao ${nome}!`;
+};
+
+console.log(saluta('Luigi'));  // Ciao Luigi!
+
+// Differenza con function declaration: hoisting
+// Function declaration può essere chiamata prima della dichiarazione
+console.log(funzioneA());  // Funziona!
+
+function funzioneA() {
+    return 'Funziona';
+}
+
+// Function expression NON viene hoisted
+// console.log(funzioneB());  // ERRORE: funzioneB is not defined
+
+const funzioneB = function() {
+    return 'Non funziona prima della dichiarazione';
+};</pre>
+        </div>
+
+        <h2>3. Arrow Functions (Funzioni Freccia)</h2>
+        
+        <div class="teoria">
+            <p>Le <strong>arrow functions</strong> sono la sintassi moderna per scrivere funzioni in JavaScript. Più concise e con comportamento del <code>this</code> diverso.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Sintassi arrow function base
+const saluta = (nome) => {
+    return `Ciao ${nome}!`;
+};
+
+// Se un solo parametro, le parentesi sono opzionali
+const saluta2 = nome => {
+    return `Ciao ${nome}!`;
+};
+
+// Return implicito (senza graffe)
+const saluta3 = nome => `Ciao ${nome}!`;
+
+// Più parametri: parentesi obbligatorie
+const somma = (a, b) => a + b;
+
+// Nessun parametro: parentesi vuote
+const benvenuto = () => 'Benvenuto!';
+
+// Esempi pratici
+const raddoppia = n => n * 2;
+const quadrato = n => n ** 2;
+const isPositivo = n => n > 0;
+const isMaggiorenne = età => età >= 18;
+
+console.log(raddoppia(5));      // 10
+console.log(quadrato(4));       // 16
+console.log(isPositivo(-3));    // false
+console.log(isMaggiorenne(20)); // true</pre>
+        </div>
+
+        <h2>4. Return Implicito vs Esplicito</h2>
+        
+        <div class="codice">
+<pre>// Return esplicito (con graffe)
+const sommaEsplicita = (a, b) => {
+    return a + b;
+};
+
+// Return implicito (senza graffe)
+const sommaImplicita = (a, b) => a + b;
+
+// Return implicito di oggetto (servono parentesi!)
+const creaUtente = (nome, età) => ({
+    nome: nome,
+    età: età
+});
+
+// Senza parentesi, JavaScript pensa che {} siano blocco di codice
+// const creaUtente = (nome, età) => { nome: nome, età: età };  // ERRORE!
+
+console.log(creaUtente('Mario', 25));  // { nome: 'Mario', età: 25 }
+
+// Return esplicito per logica complessa
+const calcolaSconto = (prezzo, percentuale) => {
+    if (prezzo > 100) {
+        return prezzo * (1 - percentuale / 100);
+    } else {
+        return prezzo;
+    }
+};
+
+// Ternary operator con return implicito
+const calcolaScontoCompatto = (prezzo, percentuale) => 
+    prezzo > 100 ? prezzo * (1 - percentuale / 100) : prezzo;</pre>
+        </div>
+
+        <h2>5. Callback Functions</h2>
+        
+        <div class="teoria">
+            <p>Una <strong>callback</strong> è una funzione passata come argomento a un'altra funzione.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Callback con arrow function
+const numeri = [1, 2, 3, 4, 5];
+
+// map con callback
+const doppi = numeri.map(n => n * 2);
+
+// filter con callback
+const pari = numeri.filter(n => n % 2 === 0);
+
+// forEach con callback
+numeri.forEach(n => console.log(n));
+
+// Funzione che accetta callback
+function elaboraDati(dati, callback) {
+    const risultato = callback(dati);
+    return risultato;
+}
+
+// Uso con diverse callback
+const numeri2 = [1, 2, 3];
+console.log(elaboraDati(numeri2, arr => arr.length));           // 3
+console.log(elaboraDati(numeri2, arr => arr.reduce((a,b) => a+b))); // 6
+console.log(elaboraDati(numeri2, arr => arr.map(n => n * 2)));  // [2, 4, 6]
+
+// Event listener con callback
+const button = document.querySelector('button');
+button.addEventListener('click', () => {
+    console.log('Bottone cliccato!');
+});
+
+// setTimeout con callback
+setTimeout(() => {
+    console.log('Eseguito dopo 2 secondi');
+}, 2000);</pre>
+        </div>
+
+        <h2>6. Higher-Order Functions</h2>
+        
+        <div class="teoria">
+            <p>Una <strong>higher-order function</strong> è una funzione che accetta funzioni come parametri o restituisce funzioni.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Funzione che restituisce funzione
+const creaMultiplicatore = fattore => {
+    return numero => numero * fattore;
+};
+
+const raddoppia = creaMultiplicatore(2);
+const triplica = creaMultiplicatore(3);
+
+console.log(raddoppia(5));  // 10
+console.log(triplica(5));   // 15
+
+// Versione ancora più compatta
+const creaMoltiplicatore = fattore => numero => numero * fattore;
+
+// Funzione che accetta funzione
+const applicaOperazione = (a, b, operazione) => operazione(a, b);
+
+console.log(applicaOperazione(5, 3, (a, b) => a + b));  // 8
+console.log(applicaOperazione(5, 3, (a, b) => a * b));  // 15
+
+// Creare saluti personalizzati
+const creaSaluto = saluto => nome => `${saluto}, ${nome}!`;
+
+const salutaItaliano = creaSaluto('Ciao');
+const salutaInglese = creaSaluto('Hello');
+const salutaSpagnolo = creaSaluto('Hola');
+
+console.log(salutaItaliano('Mario'));    // Ciao, Mario!
+console.log(salutaInglese('Mario'));     // Hello, Mario!
+console.log(salutaSpagnolo('Mario'));    // Hola, Mario!</pre>
+        </div>
+
+        <h2>7. Array Methods con Arrow Functions</h2>
+        
+        <div class="codice">
+<pre>const utenti = [
+    { nome: 'Mario', età: 25, città: 'Roma' },
+    { nome: 'Luigi', età: 30, città: 'Milano' },
+    { nome: 'Peach', età: 28, città: 'Roma' }
+];
+
+// map con arrow function
+const nomi = utenti.map(u => u.nome);
+console.log(nomi);  // ['Mario', 'Luigi', 'Peach']
+
+// filter con arrow function
+const maggiorenni = utenti.filter(u => u.età >= 18);
+const diRoma = utenti.filter(u => u.città === 'Roma');
+
+// find con arrow function
+const mario = utenti.find(u => u.nome === 'Mario');
+
+// some e every
+const tuttiMaggiorenni = utenti.every(u => u.età >= 18);
+const qualcunoDiRoma = utenti.some(u => u.città === 'Roma');
+
+// reduce con arrow function
+const etàTotale = utenti.reduce((acc, u) => acc + u.età, 0);
+const etàMedia = etàTotale / utenti.length;
+
+// Chaining complesso
+const risultato = utenti
+    .filter(u => u.città === 'Roma')
+    .map(u => u.nome)
+    .join(', ');
+
+console.log(risultato);  // Mario, Peach</pre>
+        </div>
+
+        <h2>8. Parametri Rest (...args)</h2>
+        
+        <div class="codice">
+<pre>// Rest parameter - Raccoglie parametri in array
+const somma = (...numeri) => {
+    return numeri.reduce((acc, n) => acc + n, 0);
+};
+
+console.log(somma(1, 2, 3));        // 6
+console.log(somma(1, 2, 3, 4, 5));  // 15
+
+// Combinare parametri normali e rest
+const salutaTutti = (saluto, ...nomi) => {
+    return nomi.map(nome => `${saluto}, ${nome}!`);
+};
+
+console.log(salutaTutti('Ciao', 'Mario', 'Luigi', 'Peach'));
+// ['Ciao, Mario!', 'Ciao, Luigi!', 'Ciao, Peach!']
+
+// Trovare massimo
+const max = (...numeri) => Math.max(...numeri);
+console.log(max(5, 2, 9, 1, 7));  // 9
+
+// Unire array
+const unisci = (...arrays) => [].concat(...arrays);
+console.log(unisci([1, 2], [3, 4], [5, 6]));  // [1, 2, 3, 4, 5, 6]</pre>
+        </div>
+
+        <h2>9. Scope e Closure</h2>
+        
+        <div class="codice">
+<pre>// Closure - Funzione interna accede a variabili funzione esterna
+const creaContatore = () => {
+    let contatore = 0;
+    
+    return {
+        incrementa: () => ++contatore,
+        decrementa: () => --contatore,
+        valore: () => contatore
+    };
+};
+
+const cont1 = creaContatore();
+console.log(cont1.incrementa());  // 1
+console.log(cont1.incrementa());  // 2
+console.log(cont1.valore());      // 2
+
+const cont2 = creaContatore();
+console.log(cont2.valore());      // 0 (nuovo contatore indipendente)
+
+// Esempio pratico: Creare funzioni di validazione
+const creaValidatore = limiteMin => valore => valore.length >= limiteMin;
+
+const validaPassword = creaValidatore(8);
+const validaUsername = creaValidatore(3);
+
+console.log(validaPassword('abc'));       // false
+console.log(validaPassword('abcd1234'));  // true
+console.log(validaUsername('ab'));        // false
+console.log(validaUsername('abc'));       // true</pre>
+        </div>
+
+        <h2>10. Esempio Pratico Completo</h2>
+        
+        <div class="esempio">
+            <p>Sistema di gestione operazioni matematiche con arrow functions:</p>
+            
+            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
+                <input type="number" id="num-a" placeholder="Numero 1" style="padding: 8px; width: 100px; margin: 5px;">
+                <input type="number" id="num-b" placeholder="Numero 2" style="padding: 8px; width: 100px; margin: 5px;">
+                <div style="margin: 15px 0;">
+                    <button id="btn-somma" style="padding: 8px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">+</button>
+                    <button id="btn-sottrai" style="padding: 8px 15px; margin: 5px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">-</button>
+                    <button id="btn-moltiplica" style="padding: 8px 15px; margin: 5px; background: #ffc107; color: white; border: none; border-radius: 4px; cursor: pointer;">×</button>
+                    <button id="btn-dividi" style="padding: 8px 15px; margin: 5px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">÷</button>
+                </div>
+                <div id="risultato-funzioni" style="padding: 15px; background: #e9ecef; border-radius: 4px; font-size: 1.2em; font-weight: bold;"></div>
+            </div>
+            
+            <script>
+                // Arrow functions per operazioni
+                const somma = (a, b) => a + b;
+                const sottrai = (a, b) => a - b;
+                const moltiplica = (a, b) => a * b;
+                const dividi = (a, b) => b !== 0 ? a / b : 'Errore: divisione per zero';
+                
+                // Higher-order function che gestisce l'operazione
+                const eseguiOperazione = operazione => {
+                    const a = parseFloat(document.getElementById('num-a').value);
+                    const b = parseFloat(document.getElementById('num-b').value);
+                    const risultatoDiv = document.getElementById('risultato-funzioni');
+                    
+                    if (isNaN(a) || isNaN(b)) {
+                        risultatoDiv.textContent = 'Inserisci numeri validi';
+                        return;
+                    }
+                    
+                    const risultato = operazione(a, b);
+                    risultatoDiv.textContent = `Risultato: ${risultato}`;
+                };
+                
+                // Event listeners con arrow functions
+                document.getElementById('btn-somma').addEventListener('click', () => eseguiOperazione(somma));
+                document.getElementById('btn-sottrai').addEventListener('click', () => eseguiOperazione(sottrai));
+                document.getElementById('btn-moltiplica').addEventListener('click', () => eseguiOperazione(moltiplica));
+                document.getElementById('btn-dividi').addEventListener('click', () => eseguiOperazione(dividi));
+            </script>
+        </div>
+
+        <h2>11. Note Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Arrow functions sempre:</strong> Usa arrow functions per callback e funzioni brevi</li>
+                <li><strong>Return implicito:</strong> Ottimo per funzioni con una sola espressione</li>
+                <li><strong>Parentesi per oggetti:</strong> () necessarie per return implicito di oggetti</li>
+                <li><strong>this diverso:</strong> Arrow functions non hanno proprio this (usano this esterno)</li>
+                <li><strong>Callback inline:</strong> Arrow functions perfette per map, filter, reduce</li>
+                <li><strong>Hoisting:</strong> Function declarations vengono hoisted, expressions no</li>
+                <li><strong>Leggibilità:</strong> Non abusare di arrow functions multi-linea complesse</li>
+            </ul>
+        </div>
+
+        <h2>12. Vantaggi delle Arrow Functions</h2>
+        
+        <div class="teoria">
+            <p><strong>Perché le arrow functions sono fondamentali nello sviluppo moderno:</strong></p>
+            <ul>
+                <li><strong>Sintassi concisa:</strong> Codice più pulito e leggibile</li>
+                <li><strong>Lexical this:</strong> Non crea un nuovo contesto this</li>
+                <li><strong>Callbacks eleganti:</strong> Perfette per funzioni di ordine superiore</li>
+                <li><strong>Array methods:</strong> Sintassi ideale con map/filter/reduce</li>
+                <li><strong>Event handlers:</strong> Semplificano la gestione degli eventi</li>
+            </ul>
+            
+            <p>Esempio di utilizzo professionale:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Sistema di gestione Todo con arrow functions
+class TodoManager {
+    constructor() {
+        this.todos = [];
+        this.filter = 'all';
+    }
+    
+    // Arrow function mantiene il contesto this
+    getFiltrati = () => {
+        return this.todos.filter(todo => {
+            if (this.filter === 'completed') return todo.completed;
+            if (this.filter === 'active') return !todo.completed;
+            return true;
+        });
+    }
+    
+    render = () => {
+        const container = document.getElementById('todos');
+        const html = this.getFiltrati()
+            .map(todo => `
+                <div class="todo-item">
+                    <input type="checkbox" ${todo.completed ? 'checked' : ''}>
+                    <span>${todo.text}</span>
+                </div>
+            `)
+            .join('');
+        container.innerHTML = html;
+                    onToggle={() => handleToggle(todo.id)}
+                /&gt;
+            ))}
+        &lt;/div&gt;
+    );
+};</pre>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-5.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="lezione-5-7.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

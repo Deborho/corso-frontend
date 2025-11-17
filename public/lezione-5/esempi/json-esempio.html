@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - JSON e localStorage</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - JSON e localStorage</h1>
+            <p>JSON.stringify/parse, localStorage persistence</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Note Manager con Persistenza</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="margin-bottom: 20px;">
+                    <input type="text" id="nota-titolo" placeholder="Titolo nota..." style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px;">
+                    <textarea id="nota-contenuto" placeholder="Contenuto della nota..." style="padding: 10px; width: 100%; min-height: 100px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px; font-family: inherit;"></textarea>
+                    
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <select id="nota-categoria" style="padding: 10px; flex: 1; border: 1px solid #ddd; border-radius: 4px;">
+                            <option value="personale">Personale</option>
+                            <option value="lavoro">Lavoro</option>
+                            <option value="studio">Studio</option>
+                            <option value="idee">Idee</option>
+                        </select>
+                        
+                        <label style="display: flex; align-items: center; padding: 0 10px;">
+                            <input type="checkbox" id="nota-importante" style="margin-right: 8px;">
+                            Importante
+                        </label>
+                    </div>
+                    
+                    <button id="salva-nota" style="padding: 12px 24px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 1.1em;">💾 Salva Nota</button>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button onclick="filtraNote('tutte')" class="filtro-btn" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Tutte</button>
+                    <button onclick="filtraNote('personale')" class="filtro-btn" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Personale</button>
+                    <button onclick="filtraNote('lavoro')" class="filtro-btn" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Lavoro</button>
+                    <button onclick="filtraNote('studio')" class="filtro-btn" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Studio</button>
+                    <button onclick="filtraNote('idee')" class="filtro-btn" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Idee</button>
+                    <button onclick="esportaJSON()" style="padding: 8px 16px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer;">📥 Esporta JSON</button>
+                    <button onclick="cancellaNote()" style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Cancella Tutte</button>
+                </div>
+                
+                <div id="note-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                    <!-- Note generate dinamicamente -->
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 4px;">
+                    <h4 style="margin-top: 0;">Statistiche localStorage</h4>
+                    <div id="stats-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const STORAGE_KEY = 'note_app';
+            let note = [];
+            let filtroCorrente = 'tutte';
+            
+            // Helper per localStorage (con JSON)
+            const StorageHelper = {
+                // Salva oggetto in localStorage
+                save(key, data) {
+                    try {
+                        const jsonString = JSON.stringify(data);
+                        localStorage.setItem(key, jsonString);
+                        console.log('✓ Salvato in localStorage:', key);
+                        return true;
+                    } catch (error) {
+                        console.error('✗ Errore salvataggio:', error);
+                        alert('Errore nel salvataggio! Storage potrebbe essere pieno.');
+                        return false;
+                    }
+                },
+                
+                // Carica oggetto da localStorage
+                load(key) {
+                    try {
+                        const jsonString = localStorage.getItem(key);
+                        if (!jsonString) return null;
+                        
+                        const data = JSON.parse(jsonString);
+                        console.log('✓ Caricato da localStorage:', key);
+                        return data;
+                    } catch (error) {
+                        console.error('✗ Errore parsing JSON:', error);
+                        return null;
+                    }
+                },
+                
+                // Rimuovi da localStorage
+                remove(key) {
+                    localStorage.removeItem(key);
+                    console.log('✓ Rimosso da localStorage:', key);
+                },
+                
+                // Cancella tutto
+                clear() {
+                    localStorage.clear();
+                    console.log('✓ localStorage cancellato completamente');
+                },
+                
+                // Info storage
+                getInfo() {
+                    let totalSize = 0;
+                    for (let key in localStorage) {
+                        if (localStorage.hasOwnProperty(key)) {
+                            totalSize += localStorage[key].length + key.length;
+                        }
+                    }
+                    
+                    return {
+                        keys: localStorage.length,
+                        sizeKB: (totalSize / 1024).toFixed(2),
+                        sizeMB: (totalSize / 1024 / 1024).toFixed(4)
+                    };
+                }
+            };
+            
+            // Carica note all'avvio
+            const caricaNote = () => {
+                const noteSalvate = StorageHelper.load(STORAGE_KEY);
+                note = noteSalvate || [];
+                console.log(`📚 Caricate ${note.length} note da localStorage`);
+            };
+            
+            // Salva note in localStorage
+            const salvaNote = () => {
+                StorageHelper.save(STORAGE_KEY, note);
+                aggiornaStatistiche();
+            };
+            
+            // Render note
+            const renderNote = () => {
+                const container = document.getElementById('note-container');
+                
+                const noteFiltrate = filtroCorrente === 'tutte'
+                    ? note
+                    : note.filter(n => n.categoria === filtroCorrente);
+                
+                if (noteFiltrate.length === 0) {
+                    container.innerHTML = '<p style="color: #999; text-align: center; grid-column: 1/-1;">Nessuna nota. Crea la prima!</p>';
+                    return;
+                }
+                
+                container.innerHTML = noteFiltrate.map(nota => {
+                    const data = new Date(nota.timestamp).toLocaleString('it-IT');
+                    const colorCategoria = {
+                        personale: '#007bff',
+                        lavoro: '#dc3545',
+                        studio: '#28a745',
+                        idee: '#ffc107'
+                    }[nota.categoria];
+                    
+                    return `
+                        <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid ${colorCategoria}; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <h4 style="margin: 0; flex: 1;">
+                                    ${nota.titolo}
+                                    ${nota.importante ? '<span style="color: #dc3545; margin-left: 5px;">⭐</span>' : ''}
+                                </h4>
+                                <button onclick="eliminaNota(${nota.id})" style="background: #dc3545; color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer;">×</button>
+                            </div>
+                            
+                            <p style="margin: 10px 0; color: #666; line-height: 1.5;">${nota.contenuto}</p>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                                <span style="display: inline-block; padding: 3px 10px; background: ${colorCategoria}; color: white; border-radius: 12px; font-size: 0.85em; text-transform: uppercase;">
+                                    ${nota.categoria}
+                                </span>
+                                <span style="color: #999; font-size: 0.85em;">${data}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            };
+            
+            // Salva nuova nota
+            document.getElementById('salva-nota').addEventListener('click', () => {
+                const titolo = document.getElementById('nota-titolo').value.trim();
+                const contenuto = document.getElementById('nota-contenuto').value.trim();
+                const categoria = document.getElementById('nota-categoria').value;
+                const importante = document.getElementById('nota-importante').checked;
+                
+                if (!titolo || !contenuto) {
+                    alert('Titolo e contenuto sono obbligatori!');
+                    return;
+                }
+                
+                const nuovaNota = {
+                    id: Date.now(),
+                    titolo,
+                    contenuto,
+                    categoria,
+                    importante,
+                    timestamp: new Date().toISOString()
+                };
+                
+                note.unshift(nuovaNota);  // Aggiungi all'inizio
+                salvaNote();
+                renderNote();
+                
+                // Reset form
+                document.getElementById('nota-titolo').value = '';
+                document.getElementById('nota-contenuto').value = '';
+                document.getElementById('nota-importante').checked = false;
+                
+                console.log('✓ Nota salvata:', nuovaNota);
+            });
+            
+            // Elimina nota
+            window.eliminaNota = (id) => {
+                if (!confirm('Eliminare questa nota?')) return;
+                
+                note = note.filter(n => n.id !== id);
+                salvaNote();
+                renderNote();
+                console.log('✓ Nota eliminata:', id);
+            };
+            
+            // Filtra note
+            window.filtraNote = (categoria) => {
+                filtroCorrente = categoria;
+                
+                // Aggiorna stile bottoni
+                document.querySelectorAll('.filtro-btn').forEach(btn => {
+                    btn.style.background = '#6c757d';
+                });
+                event.target.style.background = '#007bff';
+                
+                renderNote();
+            };
+            
+            // Esporta JSON
+            window.esportaJSON = () => {
+                if (note.length === 0) {
+                    alert('Nessuna nota da esportare!');
+                    return;
+                }
+                
+                // Converti in JSON formattato
+                const jsonString = JSON.stringify(note, null, 2);
+                
+                // Crea blob e download
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `note-backup-${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                console.log('✓ JSON esportato:', note.length, 'note');
+                alert(`Esportate ${note.length} note in formato JSON`);
+            };
+            
+            // Cancella tutte le note
+            window.cancellaNote = () => {
+                if (!confirm('Cancellare TUTTE le note? Azione irreversibile!')) return;
+                
+                note = [];
+                salvaNote();
+                renderNote();
+                console.log('✓ Tutte le note cancellate');
+            };
+            
+            // Aggiorna statistiche
+            const aggiornaStatistiche = () => {
+                const info = StorageHelper.getInfo();
+                const noteJson = JSON.stringify(note);
+                const sizeNoteKB = (noteJson.length / 1024).toFixed(2);
+                
+                document.getElementById('stats-container').innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                        <div>
+                            <p style="margin: 0; color: #666; font-size: 0.9em;">Numero Note</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold; color: #007bff;">${note.length}</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; color: #666; font-size: 0.9em;">Dimensione Note</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold; color: #28a745;">${sizeNoteKB} KB</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; color: #666; font-size: 0.9em;">Chiavi localStorage</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold; color: #ffc107;">${info.keys}</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; color: #666; font-size: 0.9em;">Storage Totale</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold; color: #dc3545;">${info.sizeKB} KB</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                        <p style="margin: 0; font-size: 0.9em; color: #666;">
+                            <strong>JSON.stringify():</strong> ${noteJson.substring(0, 100)}...
+                        </p>
+                    </div>
+                `;
+            };
+            
+            // Inizializza
+            caricaNote();
+            renderNote();
+            aggiornaStatistiche();
+            
+            // Log info iniziale
+            console.log('%c📝 Note Manager con localStorage', 'font-size: 16px; font-weight: bold; color: #007bff;');
+            console.log('Dati salvati come JSON in localStorage');
+            console.log('Storage Key:', STORAGE_KEY);
+            console.log('Note caricate:', note.length);
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

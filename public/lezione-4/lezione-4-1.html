@@ -209,7 +209,7 @@ npm --version
 npm install -g sass
 
 # Verifica installazione
-sass --version
+npx sass --version
 # Output esempio: 1.69.5 compiled with dart2js 3.2.0</pre>
         </div>
 
@@ -326,10 +326,10 @@ body {
         
         <div class="codice">
 <pre># Sintassi base
-sass input.scss output.css
+npx sass input.scss output.css
 
 # Esempio concreto
-sass scss/style.scss css/style.css
+npx sass scss/style.scss css/style.css
 
 # Output nel terminale:
 # Compiled scss/style.scss to css/style.css.</pre>
@@ -386,7 +386,7 @@ body {
 
         <div class="codice">
 <pre># Attiva watch mode
-sass --watch scss/style.scss css/style.css
+npx sass --watch scss/style.scss css/style.css
 
 # Output:
 # Sass is watching for changes. Press Ctrl-C to stop.
@@ -399,7 +399,7 @@ sass --watch scss/style.scss css/style.css
         
         <div class="codice">
 <pre># Watch su cartella intera
-sass --watch scss:css
+npx sass --watch scss:css
 
 # Monitora tutti i file .scss nella cartella scss/
 # e li compila nella cartella css/</pre>
@@ -413,13 +413,13 @@ sass --watch scss:css
 
         <div class="codice">
 <pre># Compilazione con source map (default)
-sass scss/style.scss css/style.css
+npx sass scss/style.scss css/style.css
 
 # Disabilita source map
-sass --no-source-map scss/style.scss css/style.css
+npx sass --no-source-map scss/style.scss css/style.css
 
 # Con watch e source map
-sass --watch scss:css</pre>
+npx sass --watch scss:css</pre>
         </div>
 
         <p>Con source maps abilitato, nel browser vedrai:</p>
@@ -456,10 +456,10 @@ style.scss:15  ← file e riga originali!</pre>
 
         <div class="codice">
 <pre># Stile expanded (default) - leggibile
-sass scss/style.scss css/style.css
+npx sass scss/style.scss css/style.css
 
 # Stile compressed - minificato per produzione
-sass --style=compressed scss/style.scss css/style.min.css
+npx sass --style=compressed scss/style.scss css/style.min.css
 
 # Risultato compressed:
 # *{margin:0;padding:0;box-sizing:border-box}body{font-family:"Helvetica Neue",Arial,sans-serif;background:#f5f5f5}...</pre>
@@ -484,7 +484,7 @@ sass --style=compressed scss/style.scss css/style.min.css
             </tr>
             <tr>
                 <td><code>sass: command not found</code></td>
-                <td>SASS non installato. Esegui <code>npm install -g sass</code></td>
+                <td>SASS non installato. Esegui <code>npm install sass</code></td>
             </tr>
             <tr>
                 <td><code>Error: Can't find stylesheet to import</code></td>
@@ -506,9 +506,9 @@ sass --style=compressed scss/style.scss css/style.min.css
             <ul>
                 <li>SASS è un preprocessore che estende CSS con funzionalità di programmazione</li>
                 <li>SCSS è la sintassi raccomandata (compatibile con CSS)</li>
-                <li>Installazione: <code>npm install -g sass</code></li>
-                <li>Compilazione: <code>sass input.scss output.css</code></li>
-                <li>Watch mode: <code>sass --watch scss:css</code></li>
+                <li>Installazione: <code>npm install sass</code></li>
+                <li>Compilazione: <code>npx sass input.scss output.css</code></li>
+                <li>Watch mode: <code>npx sass --watch scss:css</code></li>
                 <li>Source maps per debugging nei DevTools</li>
                 <li>Stile compressed per produzione</li>
             </ul>

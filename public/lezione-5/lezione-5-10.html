@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.10 - Moduli ES6 e JSON</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.10 - Moduli ES6 e JSON</h1>
+            <p>Organizzare codice con moduli ES6, JSON e localStorage</p>
+        </div>
+
+        <h2>1. Cosa Sono i Moduli ES6?</h2>
+        
+        <div class="teoria">
+            <p>I <strong>moduli ES6</strong> permettono di organizzare il codice JavaScript in file separati, ognuno con il proprio scope. Ogni modulo può esportare funzioni, oggetti o variabili e importarli in altri file.</p>
+            
+            <p><strong>Vantaggi dei moduli:</strong></p>
+            <ul>
+                <li><strong>Organizzazione:</strong> Codice suddiviso in file logici e riutilizzabili</li>
+                <li><strong>Scope isolato:</strong> Ogni modulo ha il proprio scope, niente variabili globali</li>
+                <li><strong>Dipendenze esplicite:</strong> import chiarisce quali moduli servono</li>
+                <li><strong>Riutilizzo:</strong> Funzioni e componenti possono essere usati in più posti</li>
+                <li><strong>Manutenibilità:</strong> Più facile trovare e modificare codice specifico</li>
+            </ul>
+        </div>
+
+        <h2>2. Export Named (Esportazioni Nominate)</h2>
+        
+        <div class="codice">
+<pre>// File: utils.js
+
+// Export inline
+export const PI = 3.14159;
+export const E = 2.71828;
+
+export function somma(a, b) {
+    return a + b;
+}
+
+export const moltiplica = (a, b) => a * b;
+
+export class Calcolatrice {
+    somma(a, b) {
+        return a + b;
+    }
+    
+    sottrai(a, b) {
+        return a - b;
+    }
+}
+
+// Oppure export alla fine del file
+const MAX_VALUE = 100;
+const MIN_VALUE = 0;
+
+function isInRange(value) {
+    return value >= MIN_VALUE && value <= MAX_VALUE;
+}
+
+export { MAX_VALUE, MIN_VALUE, isInRange };</pre>
+        </div>
+
+        <h2>3. Export Default (Esportazione Default)</h2>
+        
+        <div class="teoria">
+            <p>Ogni modulo può avere <strong>un solo export default</strong>. Utile per esportare la cosa "principale" del modulo.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// File: Utente.js
+
+// Export default di una classe
+export default class Utente {
+    constructor(nome, email) {
+        this.nome = nome;
+        this.email = email;
+    }
+    
+    saluta() {
+        return `Ciao, sono ${this.nome}`;
+    }
+}
+
+// File: config.js
+
+// Export default di un oggetto
+export default {
+    apiUrl: 'https://api.example.com',
+    timeout: 5000,
+    apiKey: 'abc123'
+};
+
+// File: logger.js
+
+// Export default di una funzione
+export default function log(messaggio) {
+    console.log(`[${new Date().toISOString()}] ${messaggio}`);
+}
+
+// Puoi anche combinare default e named exports
+export default function principale() {
+    return 'Funzione principale';
+}
+
+export const helper1 = () => 'Helper 1';
+export const helper2 = () => 'Helper 2';</pre>
+        </div>
+
+        <h2>4. Import Named</h2>
+        
+        <div class="codice">
+<pre>// File: main.js
+
+// Import named exports
+import { PI, somma, moltiplica } from './utils.js';
+
+console.log(PI);  // 3.14159
+console.log(somma(5, 3));  // 8
+console.log(moltiplica(4, 2));  // 8
+
+// Import con alias
+import { somma as add, moltiplica as multiply } from './utils.js';
+
+console.log(add(5, 3));       // 8
+console.log(multiply(4, 2));  // 8
+
+// Import tutto con namespace
+import * as Utils from './utils.js';
+
+console.log(Utils.PI);  // 3.14159
+console.log(Utils.somma(5, 3));  // 8
+console.log(Utils.moltiplica(4, 2));  // 8
+
+// Import multipli
+import { 
+    PI, 
+    E, 
+    somma, 
+    moltiplica, 
+    Calcolatrice 
+} from './utils.js';
+
+const calc = new Calcolatrice();
+console.log(calc.somma(10, 5));  // 15</pre>
+        </div>
+
+        <h2>5. Import Default</h2>
+        
+        <div class="codice">
+<pre>// Import default (puoi scegliere qualsiasi nome)
+import Utente from './Utente.js';
+import configurazione from './config.js';
+import scrivi from './logger.js';
+
+const utente = new Utente('Mario', 'mario@test.com');
+console.log(utente.saluta());  // Ciao, sono Mario
+
+console.log(configurazione.apiUrl);  // https://api.example.com
+
+scrivi('Applicazione avviata');  // [timestamp] Applicazione avviata
+
+// Combinare import default e named
+import principale, { helper1, helper2 } from './modulo.js';
+
+principale();
+helper1();
+helper2();</pre>
+        </div>
+
+        <h2>6. Type="module" nel Tag Script</h2>
+        
+        <div class="codice">
+<pre>&lt;!-- File: index.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Esempio Moduli ES6&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Applicazione con Moduli&lt;/h1&gt;
+    
+    &lt;!-- IMPORTANTE: type="module" è necessario per usare import/export --&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+        
+        <div class="teoria">
+            <p><strong>Note sui moduli:</strong></p>
+            <ul>
+                <li>Usare <code>type="module"</code> nel tag script</li>
+                <li>Path relativi devono includere <code>./</code> o <code>../</code></li>
+                <li>Estensione <code>.js</code> è obbligatoria nel browser</li>
+                <li>Moduli sono in strict mode automaticamente</li>
+                <li>Moduli sono "deferred" (caricano in modo asincrono)</li>
+                <li>CORS: Servono un server web (file:// non funziona)</li>
+            </ul>
+        </div>
+
+        <h2>7. JSON (JavaScript Object Notation)</h2>
+        
+        <div class="teoria">
+            <p><strong>JSON</strong> è un formato testuale per rappresentare dati strutturati. È il formato standard per lo scambio di dati tra client e server.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Oggetto JavaScript
+const utente = {
+    nome: 'Mario',
+    cognome: 'Rossi',
+    età: 25,
+    email: 'mario@test.com',
+    attivo: true,
+    hobby: ['calcio', 'lettura', 'cinema']
+};
+
+// Convertire oggetto in stringa JSON
+const jsonString = JSON.stringify(utente);
+console.log(jsonString);
+// '{"nome":"Mario","cognome":"Rossi","età":25,"email":"mario@test.com","attivo":true,"hobby":["calcio","lettura","cinema"]}'
+
+// JSON.stringify con formattazione (per leggibilità)
+const jsonFormattato = JSON.stringify(utente, null, 2);
+console.log(jsonFormattato);
+/*
+{
+  "nome": "Mario",
+  "cognome": "Rossi",
+  "età": 25,
+  "email": "mario@test.com",
+  "attivo": true,
+  "hobby": [
+    "calcio",
+    "lettura",
+    "cinema"
+  ]
+}
+*/
+
+// Convertire JSON string in oggetto JavaScript
+const jsonDalServer = '{"nome":"Luigi","età":30}';
+const oggettoJS = JSON.parse(jsonDalServer);
+console.log(oggetto JS.nome);  // Luigi
+console.log(oggettoJS.età);   // 30
+
+// Gestire errori parsing
+try {
+    const oggettoInvalido = JSON.parse('{ nome: "Mario" }');  // JSON invalido
+} catch (error) {
+    console.error('JSON non valido:', error);
+}</pre>
+        </div>
+
+        <h2>8. localStorage - Persistenza Dati</h2>
+        
+        <div class="teoria">
+            <p><strong>localStorage</strong> permette di salvare dati nel browser che persistono anche dopo la chiusura della pagina. Perfetto per preferenze utente, dati temporanei, cache.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Salvare dati (solo stringhe!)
+localStorage.setItem('username', 'mario_rossi');
+localStorage.setItem('theme', 'dark');
+localStorage.setItem('fontSize', '16');
+
+// Leggere dati
+const username = localStorage.getItem('username');
+console.log(username);  // 'mario_rossi'
+
+// Se chiave non esiste, restituisce null
+const inesistente = localStorage.getItem('nonesiste');
+console.log(inesistente);  // null
+
+// Rimuovere un item
+localStorage.removeItem('theme');
+
+// Rimuovere tutto
+localStorage.clear();
+
+// Numero di item salvati
+const numeroItem = localStorage.length;
+
+// Ottenere chiave per indice
+const primaChiave = localStorage.key(0);</pre>
+        </div>
+
+        <h2>9. localStorage con Oggetti (usando JSON)</h2>
+        
+        <div class="codice">
+<pre>// localStorage salva solo stringhe, quindi usiamo JSON per oggetti
+
+const utente = {
+    nome: 'Mario',
+    email: 'mario@test.com',
+    preferenze: {
+        theme: 'dark',
+        notifiche: true
+    }
+};
+
+// Salvare oggetto (convertirlo in JSON string)
+localStorage.setItem('utente', JSON.stringify(utente));
+
+// Leggere oggetto (convertire JSON string in oggetto)
+const utenteString = localStorage.getItem('utente');
+const utenteOggetto = JSON.parse(utenteString);
+
+console.log(utenteOggetto.nome);  // Mario
+console.log(utenteOggetto.preferenze.theme);  // dark
+
+// Aggiornare oggetto in localStorage
+utenteOggetto.età = 26;
+localStorage.setItem('utente', JSON.stringify(utenteOggetto));
+
+// Helper function per semplificare
+const storage = {
+    set(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    },
+    
+    get(key) {
+        const item = localStorage.getItem(key);
+        try {
+            return item ? JSON.parse(item) : null;
+        } catch {
+            return item;
+        }
+    },
+    
+    remove(key) {
+        localStorage.removeItem(key);
+    },
+    
+    clear() {
+        localStorage.clear();
+    }
+};
+
+// Uso delle helper
+storage.set('utente', { nome: 'Mario', età: 25 });
+const utente = storage.get('utente');
+console.log(utente.nome);  // Mario</pre>
+        </div>
+
+        <h2>10. Esempio Pratico: Todo App con localStorage</h2>
+        
+        <div class="esempio">
+            <p>Todo list con persistenza localStorage:</p>
+            
+            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
+                <input type="text" id="todo-input-local" placeholder="Nuova task" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px;">
+                <button id="add-todo-local" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Aggiungi</button>
+                <button id="clear-todos-local" style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">Cancella Tutti</button>
+                <div id="todos-list-local" style="margin-top: 15px;"></div>
+                <p style="margin-top: 10px; color: #666; font-size: 0.9em;">I todo sono salvati nel browser e persistono dopo refresh</p>
+            </div>
+            
+            <script>
+                // Helper per localStorage
+                const TodoStorage = {
+                    KEY: 'todos_list',
+                    
+                    load() {
+                        const todos = localStorage.getItem(this.KEY);
+                        return todos ? JSON.parse(todos) : [];
+                    },
+                    
+                    save(todos) {
+                        localStorage.setItem(this.KEY, JSON.stringify(todos));
+                    },
+                    
+                    clear() {
+                        localStorage.removeItem(this.KEY);
+                    }
+                };
+                
+                // Stato dell'applicazione
+                let todos = TodoStorage.load();
+                
+                // Render todos
+                const renderTodos = () => {
+                    const container = document.getElementById('todos-list-local');
+                    
+                    if (todos.length === 0) {
+                        container.innerHTML = '<p style="color: #999;">Nessun todo. Aggiungi il primo!</p>';
+                        return;
+                    }
+                    
+                    container.innerHTML = todos.map(todo => `
+                        <div style="display: flex; align-items: center; padding: 10px; background: white; margin: 5px 0; border-radius: 4px;">
+                            <input 
+                                type="checkbox" 
+                                ${todo.completed ? 'checked' : ''}
+                                onchange="toggleTodoLocal(${todo.id})"
+                                style="margin-right: 10px;"
+                            >
+                            <span style="flex: 1; text-decoration: ${todo.completed ? 'line-through' : 'none'}; color: ${todo.completed ? '#999' : 'inherit'};">
+                                ${todo.text}
+                            </span>
+                            <button 
+                                onclick="deleteTodoLocal(${todo.id})"
+                                style="padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                            >
+                                Elimina
+                            </button>
+                        </div>
+                    `).join('');
+                };
+                
+                // Aggiungere todo
+                window.addTodoLocal = () => {
+                    const input = document.getElementById('todo-input-local');
+                    const text = input.value.trim();
+                    
+                    if (!text) return;
+                    
+                    const newTodo = {
+                        id: Date.now(),
+                        text,
+                        completed: false
+                    };
+                    
+                    todos = [...todos, newTodo];
+                    TodoStorage.save(todos);
+                    renderTodos();
+                    
+                    input.value = '';
+                    input.focus();
+                };
+                
+                // Toggle completed
+                window.toggleTodoLocal = (id) => {
+                    todos = todos.map(todo =>
+                        todo.id === id
+                            ? { ...todo, completed: !todo.completed }
+                            : todo
+                    );
+                    TodoStorage.save(todos);
+                    renderTodos();
+                };
+                
+                // Eliminare todo
+                window.deleteTodoLocal = (id) => {
+                    todos = todos.filter(todo => todo.id !== id);
+                    TodoStorage.save(todos);
+                    renderTodos();
+                };
+                
+                // Cancellare tutti
+                window.clearAllTodosLocal = () => {
+                    if (confirm('Sicuro di voler cancellare tutti i todo?')) {
+                        todos = [];
+                        TodoStorage.clear();
+                        renderTodos();
+                    }
+                };
+                
+                // Event listeners
+                document.getElementById('add-todo-local').addEventListener('click', addTodoLocal);
+                
+                document.getElementById('todo-input-local').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') addTodoLocal();
+                });
+                
+                document.getElementById('clear-todos-local').addEventListener('click', clearAllTodosLocal);
+                
+                // Render iniziale
+                renderTodos();
+            </script>
+        </div>
+
+        <h2>11. Note Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>type="module" obbligatorio:</strong> Senza non funzionano import/export</li>
+                <li><strong>Path relativi:</strong> Usa sempre ./ o ../ per import</li>
+                <li><strong>Estensione .js:</strong> Necessaria nel browser (non in Node.js/bundler)</li>
+                <li><strong>CORS:</strong> Moduli richiedono server HTTP (non file://)</li>
+                <li><strong>localStorage limiti:</strong> ~5-10MB per dominio, solo stringhe</li>
+                <li><strong>JSON.parse può fallire:</strong> Usa sempre try/catch</li>
+                <li><strong>sessionStorage vs localStorage:</strong> sessionStorage si cancella chiudendo tab</li>
+            </ul>
+        </div>
+
+        <h2>12. Importanza dei Moduli ES6</h2>
+        
+        <div class="teoria">
+            <p><strong>Perché moduli ES6 sono fondamentali nello sviluppo moderno:</strong></p>
+            <ul>
+                <li><strong>Organizzazione codice:</strong> Separa logica in file manutenibili</li>
+                <li><strong>Riusabilità:</strong> Importa funzionalità dove servono</li>
+                <li><strong>Named vs Default exports:</strong> Flessibilità nell'esportazione</li>
+                <li><strong>Tree shaking:</strong> I bundler moderni rimuovono codice non usato</li>
+                <li><strong>Architettura scalabile:</strong> Fondamentale per applicazioni grandi</li>
+                <li><strong>Persistenza dati:</strong> localStorage combinato con moduli per storage</li>
+            </ul>
+            
+            <p>Esempio di architettura modulare completa:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// File: components/todoItem.js
+export function createTodoItem(todo, handlers) {
+    const div = document.createElement('div');
+    div.className = 'todo-item';
+    div.innerHTML = `
+        <input type="checkbox" ${todo.completed ? 'checked' : ''}>
+        <span>${todo.text}</span>
+        <button class="delete-btn">Elimina</button>
+    `;
+    
+    div.querySelector('input').addEventListener('change', () => {
+        handlers.onToggle(todo.id);
+    });
+    
+    div.querySelector('.delete-btn').addEventListener('click', () => {
+        handlers.onDelete(todo.id);
+    });
+    
+    return div;
+}
+
+// File: utils/storage.js
+export const saveTodos = (todos) => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+};
+
+export const loadTodos = () => {
+    const todos = localStorage.getItem('todos');
+    return todos ? JSON.parse(todos) : [];
+};
+
+// File: app.js
+import { createTodoItem } from './components/todoItem.js';
+import { saveTodos, loadTodos } from './utils/storage.js';
+
+class TodoApp {
+    constructor() {
+        this.todos = loadTodos();
+    }
+    
+    render() {
+        saveTodos(this.todos);
+        // ... rendering logic
+    }
+}</pre>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-9.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="lezione-5-99.html" class="btn-nav">Progetto Finale</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Operatore Ternario</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - Operatore Ternario</h1>
+            <p>Condizioni concise, nested ternary, truthy/falsy</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Sistema di Valutazione Studenti</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Nome Studente:</label>
+                    <input type="text" id="nome-studente" value="Mario Rossi" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Voto (0-100):</label>
+                    <input type="number" id="voto" value="85" min="0" max="100" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Presenze (%):</label>
+                    <input type="number" id="presenze" value="92" min="0" max="100" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: flex; align-items: center;">
+                        <input type="checkbox" id="compiti-consegnati" checked style="margin-right: 10px;">
+                        Tutti i compiti consegnati
+                    </label>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: flex; align-items: center;">
+                        <input type="checkbox" id="progetto-extra" style="margin-right: 10px;">
+                        Progetto extra completato (+5 punti)
+                    </label>
+                </div>
+                
+                <button id="valuta" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Valuta Studente</button>
+                
+                <div id="risultato-valutazione" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('valuta').addEventListener('click', () => {
+                const nome = document.getElementById('nome-studente').value.trim();
+                const voto = Number(document.getElementById('voto').value);
+                const presenze = Number(document.getElementById('presenze').value);
+                const compitiConsegnati = document.getElementById('compiti-consegnati').checked;
+                const progettoExtra = document.getElementById('progetto-extra').checked;
+                
+                // Validazione con ternary
+                const nomeValido = nome ? nome : 'Studente Sconosciuto';
+                
+                // Calcolo voto finale con bonus
+                const bonusProgetto = progettoExtra ? 5 : 0;
+                const bonusPresenze = presenze >= 90 ? 3 : 0;
+                const bonusCompiti = compitiConsegnati ? 2 : 0;
+                const votoFinale = Math.min(100, voto + bonusProgetto + bonusPresenze + bonusCompiti);
+                
+                // Nested ternary per giudizio
+                const giudizio = votoFinale >= 90 ? 'Eccellente' :
+                                votoFinale >= 80 ? 'Ottimo' :
+                                votoFinale >= 70 ? 'Buono' :
+                                votoFinale >= 60 ? 'Sufficiente' :
+                                'Insufficiente';
+                
+                // Ternary per colore badge
+                const coloreGiudizio = votoFinale >= 90 ? '#28a745' :
+                                      votoFinale >= 80 ? '#007bff' :
+                                      votoFinale >= 70 ? '#17a2b8' :
+                                      votoFinale >= 60 ? '#ffc107' :
+                                      '#dc3545';
+                
+                // Ternary per messaggio superamento
+                const superato = votoFinale >= 60 ? 'PROMOSSO' : 'NON PROMOSSO';
+                const messaggioSuperamento = votoFinale >= 60 
+                    ? 'Congratulazioni! Hai superato il corso.'
+                    : 'Mi dispiace, non hai raggiunto la sufficienza.';
+                
+                // Ternary per consigli
+                const consigli = !compitiConsegnati ? 'Consegna tutti i compiti per migliorare.' :
+                                presenze < 80 ? 'Migliora la frequenza alle lezioni.' :
+                                votoFinale < 70 ? 'Studia di più per ottenere risultati migliori.' :
+                                votoFinale < 90 && !progettoExtra ? 'Considera di fare il progetto extra!' :
+                                'Ottimo lavoro! Continua così!';
+                
+                // Render risultato
+                const risultatoHTML = `
+                    <div style="padding: 20px; background: white; border: 2px solid ${coloreGiudizio}; border-radius: 8px;">
+                        <h3 style="margin-top: 0; color: ${coloreGiudizio};">${nomeValido}</h3>
+                        
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                            <p><strong>Voto Base:</strong> ${voto}/100</p>
+                            <p><strong>Bonus:</strong></p>
+                            <ul style="margin: 5px 0;">
+                                <li>Progetto Extra: ${progettoExtra ? '+5' : '0'} punti</li>
+                                <li>Presenze (${presenze}%): ${bonusPresenze ? '+3' : '0'} punti</li>
+                                <li>Compiti Consegnati: ${bonusCompiti ? '+2' : '0'} punti</li>
+                            </ul>
+                            <p style="font-size: 1.3em; margin: 10px 0;"><strong>Voto Finale: ${votoFinale}/100</strong></p>
+                        </div>
+                        
+                        <div style="text-align: center; margin: 20px 0;">
+                            <span style="display: inline-block; padding: 15px 30px; background: ${coloreGiudizio}; color: white; font-size: 1.5em; border-radius: 8px; font-weight: bold;">
+                                ${giudizio}
+                            </span>
+                        </div>
+                        
+                        <div style="padding: 15px; background: ${votoFinale >= 60 ? '#d4edda' : '#f8d7da'}; border-radius: 4px; margin: 15px 0;">
+                            <p style="margin: 0; color: ${votoFinale >= 60 ? '#155724' : '#721c24'}; font-weight: bold;">
+                                ${superato}
+                            </p>
+                            <p style="margin: 10px 0 0 0; color: ${votoFinale >= 60 ? '#155724' : '#721c24'};">
+                                ${messaggioSuperamento}
+                            </p>
+                        </div>
+                        
+                        <div style="padding: 15px; background: #fff3cd; border-radius: 4px; border-left: 4px solid #ffc107;">
+                            <p style="margin: 0; color: #856404;"><strong>Consiglio:</strong> ${consigli}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: #282c34; color: #abb2bf; border-radius: 4px;">
+                        <h4 style="margin-top: 0; color: #61dafb;">Esempi di Ternary usati:</h4>
+                        <pre style="margin: 0;">// Nested ternary per giudizio
+const giudizio = votoFinale >= 90 ? 'Eccellente' :
+                votoFinale >= 80 ? 'Ottimo' :
+                votoFinale >= 70 ? 'Buono' :
+                votoFinale >= 60 ? 'Sufficiente' :
+                'Insufficiente';
+
+// Ternary semplice
+const superato = votoFinale >= 60 ? 'PROMOSSO' : 'NON PROMOSSO';
+
+// Ternary con espressioni
+const bonusProgetto = progettoExtra ? 5 : 0;</pre>
+                    </div>
+                `;
+                
+                document.getElementById('risultato-valutazione').innerHTML = risultatoHTML;
+            });
+            
+            // Valuta automaticamente all'avvio
+            document.getElementById('valuta').click();
+            
+            // Ricalcola al cambio degli input
+            ['voto', 'presenze', 'compiti-consegnati', 'progetto-extra'].forEach(id => {
+                const elemento = document.getElementById(id);
+                const evento = elemento.type === 'checkbox' ? 'change' : 'input';
+                elemento.addEventListener(evento, () => {
+                    document.getElementById('valuta').click();
+                });
+            });
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

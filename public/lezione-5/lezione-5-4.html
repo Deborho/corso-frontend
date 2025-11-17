@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.4 - Strutture di Controllo e Ternary Operator</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.4 - Strutture di Controllo e Ternary Operator</h1>
+            <p>Condizioni, switch statement e operatore ternario</p>
+        </div>
+
+        <h2>1. If Statement</h2>
+        
+        <div class="codice">
+<pre>// If base
+const età = 20;
+
+if (età >= 18) {
+    console.log('Sei maggiorenne');
+}
+
+// If con blocco di codice
+if (età >= 18) {
+    console.log('Sei maggiorenne');
+    console.log('Puoi votare');
+}
+
+// Se c'è una sola istruzione, le graffe sono opzionali (ma sconsigliate)
+if (età >= 18) console.log('Maggiorenne');  // Sconsigliato
+
+// Sempre meglio usare le graffe per leggibilità
+if (età >= 18) {
+    console.log('Maggiorenne');  // Consigliato
+}</pre>
+        </div>
+
+        <h2>2. If-Else</h2>
+        
+        <div class="codice">
+<pre>const età = 16;
+
+if (età >= 18) {
+    console.log('Sei maggiorenne');
+} else {
+    console.log('Sei minorenne');
+}
+
+// Esempio con variabile
+let status;
+if (età >= 18) {
+    status = 'adulto';
+} else {
+    status = 'minore';
+}
+console.log(status);  // minore</pre>
+        </div>
+
+        <h2>3. If-Else If-Else</h2>
+        
+        <div class="codice">
+<pre>const voto = 85;
+
+if (voto >= 90) {
+    console.log('Ottimo!');
+} else if (voto >= 75) {
+    console.log('Buono');
+} else if (voto >= 60) {
+    console.log('Sufficiente');
+} else {
+    console.log('Insufficiente');
+}
+
+// Esempio con più condizioni
+const temperatura = 25;
+const piove = false;
+
+if (temperatura > 30 && !piove) {
+    console.log('Ottima giornata per la spiaggia');
+} else if (temperatura > 20 && !piove) {
+    console.log('Buona giornata per una passeggiata');
+} else if (piove) {
+    console.log('Meglio restare a casa');
+} else {
+    console.log('Fa freddo');
+}</pre>
+        </div>
+
+        <h2>4. Switch Statement</h2>
+        
+        <div class="teoria">
+            <p>Lo <strong>switch</strong> è utile quando si deve confrontare una variabile con molti valori diversi.</p>
+        </div>
+        
+        <div class="codice">
+<pre>const giorno = 'lunedì';
+
+switch(giorno) {
+    case 'lunedì':
+        console.log('Inizio settimana');
+        break;
+    case 'venerdì':
+        console.log('Quasi weekend!');
+        break;
+    case 'sabato':
+    case 'domenica':
+        console.log('Weekend!');
+        break;
+    default:
+        console.log('Giorno feriale');
+}
+
+// IMPORTANTE: Usa break per uscire dallo switch
+// Senza break, l'esecuzione continua nei case successivi
+
+// Esempio con numeri
+const mese = 3;
+let stagione;
+
+switch(mese) {
+    case 12:
+    case 1:
+    case 2:
+        stagione = 'Inverno';
+        break;
+    case 3:
+    case 4:
+    case 5:
+        stagione = 'Primavera';
+        break;
+    case 6:
+    case 7:
+    case 8:
+        stagione = 'Estate';
+        break;
+    case 9:
+    case 10:
+    case 11:
+        stagione = 'Autunno';
+        break;
+    default:
+        stagione = 'Mese non valido';
+}
+
+console.log(stagione);  // Primavera</pre>
+        </div>
+
+        <h2>5. Ternary Operator (Operatore Condizionale)</h2>
+        
+        <div class="teoria">
+            <p>L'<strong>operatore ternario</strong> è una forma compatta di if-else che restituisce un valore.</p>
+            <p>Sintassi: <code>condizione ? valoreSeTrue : valoreSeFalse</code></p>
+        </div>
+        
+        <div class="codice">
+<pre>// If-else tradizionale
+const età = 20;
+let status;
+if (età >= 18) {
+    status = 'maggiorenne';
+} else {
+    status = 'minorenne';
+}
+
+// Ternary operator (stesso risultato, più compatto)
+const status2 = età >= 18 ? 'maggiorenne' : 'minorenne';
+
+console.log(status2);  // maggiorenne
+
+// Altri esempi
+const prezzo = 100;
+const sconto = prezzo > 50 ? 20 : 10;
+console.log(sconto);  // 20
+
+const isLogged = true;
+const messaggio = isLogged ? 'Benvenuto!' : 'Effettua il login';
+
+// Ternary in assegnamento
+const punti = 85;
+const risultato = punti >= 60 ? 'Promosso' : 'Bocciato';
+
+// Ternary in template literal
+const nome = 'Mario';
+const saluto = `Ciao ${nome}, sei ${età >= 18 ? 'maggiorenne' : 'minorenne'}`;
+
+// Ternary in return (vedremo con le funzioni)
+function getStatus(età) {
+    return età >= 18 ? 'adulto' : 'minore';
+}</pre>
+        </div>
+
+        <h2>6. Ternary Annidati</h2>
+        
+        <div class="codice">
+<pre>// Ternary annidati (usare con cautela - può diventare difficile da leggere)
+const voto = 85;
+const giudizio = voto >= 90 ? 'Ottimo' 
+               : voto >= 75 ? 'Buono'
+               : voto >= 60 ? 'Sufficiente'
+               : 'Insufficiente';
+
+console.log(giudizio);  // Buono
+
+// Meglio formattare su più righe per leggibilità
+const temperatura = 25;
+const consiglio = temperatura > 30 ? 'Molto caldo' 
+                : temperatura > 20 ? 'Caldo'
+                : temperatura > 10 ? 'Fresco'
+                : 'Freddo';
+
+// Alternativa più leggibile con if-else per casi complessi
+let consiglio2;
+if (temperatura > 30) {
+    consiglio2 = 'Molto caldo';
+} else if (temperatura > 20) {
+    consiglio2 = 'Caldo';
+} else if (temperatura > 10) {
+    consiglio2 = 'Fresco';
+} else {
+    consiglio2 = 'Freddo';
+}</pre>
+        </div>
+
+        <h2>7. Truthy e Falsy Values</h2>
+        
+        <div class="teoria">
+            <p>In JavaScript, alcuni valori sono considerati <strong>falsy</strong> (equivalgono a false in contesti booleani), tutti gli altri sono <strong>truthy</strong>.</p>
+            
+            <p><strong>Valori Falsy (solo questi 6):</strong></p>
+            <ul>
+                <li><code>false</code></li>
+                <li><code>0</code></li>
+                <li><code>''</code> (stringa vuota)</li>
+                <li><code>null</code></li>
+                <li><code>undefined</code></li>
+                <li><code>NaN</code></li>
+            </ul>
+            
+            <p><strong>Tutto il resto è truthy</strong>, inclusi:</p>
+            <ul>
+                <li><code>'0'</code> (stringa con zero)</li>
+                <li><code>'false'</code> (stringa con false)</li>
+                <li><code>[]</code> (array vuoto)</li>
+                <li><code>{}</code> (oggetto vuoto)</li>
+                <li>Qualsiasi numero diverso da 0</li>
+            </ul>
+        </div>
+        
+        <div class="codice">
+<pre>// Valori falsy
+if (false) console.log('Non viene eseguito');
+if (0) console.log('Non viene eseguito');
+if ('') console.log('Non viene eseguito');
+if (null) console.log('Non viene eseguito');
+if (undefined) console.log('Non viene eseguito');
+if (NaN) console.log('Non viene eseguito');
+
+// Valori truthy
+if (true) console.log('Viene eseguito');
+if (1) console.log('Viene eseguito');
+if ('ciao') console.log('Viene eseguito');
+if ([]) console.log('Viene eseguito');  // Array vuoto è truthy!
+if ({}) console.log('Viene eseguito');  // Oggetto vuoto è truthy!
+if ('0') console.log('Viene eseguito');  // Stringa '0' è truthy!
+
+// Uso pratico
+const username = '';
+if (username) {
+    console.log(`Benvenuto ${username}`);
+} else {
+    console.log('Benvenuto Ospite');  // Eseguito perché '' è falsy
+}</pre>
+        </div>
+
+        <h2>8. Short-Circuit Evaluation</h2>
+        
+        <div class="teoria">
+            <p><strong>Short-circuit evaluation</strong> è una tecnica che sfrutta come JavaScript valuta operatori logici.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Operatore && (AND) - Restituisce il primo valore falsy o l'ultimo valore
+const a = true && 'ciao';     // 'ciao'
+const b = false && 'ciao';    // false
+const c = 'hello' && 'world'; // 'world'
+const d = null && 'ciao';     // null
+
+// Operatore || (OR) - Restituisce il primo valore truthy o l'ultimo valore
+const e = false || 'default';    // 'default'
+const f = 'valore' || 'default'; // 'valore'
+const g = null || undefined || 'default'; // 'default'
+
+// Uso pratico con &&
+const utente = { nome: 'Mario', email: 'mario@email.com' };
+utente.email && console.log('Email:', utente.email);  // Esegue solo se email esiste
+
+// Equivalente a:
+if (utente.email) {
+    console.log('Email:', utente.email);
+}
+
+// Uso pratico con || (valori di default)
+const username = null;
+const displayName = username || 'Ospite';
+console.log(displayName);  // 'Ospite'
+
+// Attenzione: || considera tutti i falsy
+const count = 0;
+const display = count || 'Nessun elemento';  // 'Nessun elemento' (0 è falsy!)
+
+// Meglio usare ?? per null/undefined
+const display2 = count ?? 'Nessun elemento';  // 0 (0 non è null/undefined)</pre>
+        </div>
+
+        <h2>9. Esempio Pratico Completo</h2>
+        
+        <div class="esempio">
+            <p>Sistema di valutazione con diverse condizioni:</p>
+            
+            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
+                <input type="number" id="input-voto" placeholder="Inserisci voto (0-100)" style="padding: 8px; width: 200px; margin-bottom: 10px;">
+                <br>
+                <label style="display: block; margin-bottom: 10px;">
+                    <input type="checkbox" id="checkbox-bonus"> Bonus (+5 punti)
+                </label>
+                <button id="btn-valuta" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Valuta</button>
+                <div id="risultato-valutazione" style="margin-top: 15px; padding: 15px; background: #e9ecef; border-radius: 4px; display: none;"></div>
+            </div>
+            
+            <div class="codice">
+<pre>&lt;script&gt;
+    const inputVoto = document.getElementById('input-voto');
+    const checkboxBonus = document.getElementById('checkbox-bonus');
+    const btnValuta = document.getElementById('btn-valuta');
+    const risultatoDiv = document.getElementById('risultato-valutazione');
+    
+    btnValuta.addEventListener('click', function() {
+        let voto = parseInt(inputVoto.value);
+        const hasBonus = checkboxBonus.checked;
+        
+        // Validazione input
+        if (isNaN(voto) || voto < 0 || voto > 100) {
+            risultatoDiv.textContent = 'Inserisci un voto valido tra 0 e 100';
+            risultatoDiv.style.display = 'block';
+            return;
+        }
+        
+        // Applica bonus
+        if (hasBonus) {
+            voto += 5;
+            voto = Math.min(voto, 100);  // Massimo 100
+        }
+        
+        // Determina giudizio con ternary operator
+        const giudizio = voto >= 90 ? 'Ottimo' 
+                       : voto >= 75 ? 'Buono'
+                       : voto >= 60 ? 'Sufficiente'
+                       : 'Insufficiente';
+        
+        // Determina esito
+        const esito = voto >= 60 ? 'Promosso' : 'Bocciato';
+        
+        // Determina colore
+        let colore;
+        if (voto >= 90) {
+            colore = '#28a745';  // Verde
+        } else if (voto >= 75) {
+            colore = '#17a2b8';  // Azzurro
+        } else if (voto >= 60) {
+            colore = '#ffc107';  // Giallo
+        } else {
+            colore = '#dc3545';  // Rosso
+        }
+        
+        // Mostra risultato
+        risultatoDiv.innerHTML = `
+            &lt;div style="color: ${colore}; font-weight: bold; font-size: 1.2em;"&gt;
+                ${giudizio} - ${esito}
+            &lt;/div&gt;
+            &lt;p&gt;Voto finale: ${voto}/100${hasBonus ? ' (con bonus)' : ''}&lt;/p&gt;
+        `;
+        risultatoDiv.style.display = 'block';
+    });
+&lt;/script&gt;</pre>
+            </div>
+            
+            <script>
+                const inputVoto = document.getElementById('input-voto');
+                const checkboxBonus = document.getElementById('checkbox-bonus');
+                const btnValuta = document.getElementById('btn-valuta');
+                const risultatoDiv = document.getElementById('risultato-valutazione');
+                
+                btnValuta.addEventListener('click', function() {
+                    let voto = parseInt(inputVoto.value);
+                    const hasBonus = checkboxBonus.checked;
+                    
+                    if (isNaN(voto) || voto < 0 || voto > 100) {
+                        risultatoDiv.textContent = 'Inserisci un voto valido tra 0 e 100';
+                        risultatoDiv.style.display = 'block';
+                        return;
+                    }
+                    
+                    if (hasBonus) {
+                        voto += 5;
+                        voto = Math.min(voto, 100);
+                    }
+                    
+                    const giudizio = voto >= 90 ? 'Ottimo' 
+                                   : voto >= 75 ? 'Buono'
+                                   : voto >= 60 ? 'Sufficiente'
+                                   : 'Insufficiente';
+                    
+                    const esito = voto >= 60 ? 'Promosso' : 'Bocciato';
+                    
+                    let colore;
+                    if (voto >= 90) {
+                        colore = '#28a745';
+                    } else if (voto >= 75) {
+                        colore = '#17a2b8';
+                    } else if (voto >= 60) {
+                        colore = '#ffc107';
+                    } else {
+                        colore = '#dc3545';
+                    }
+                    
+                    risultatoDiv.innerHTML = `
+                        <div style="color: ${colore}; font-weight: bold; font-size: 1.2em;">
+                            ${giudizio} - ${esito}
+                        </div>
+                        <p>Voto finale: ${voto}/100${hasBonus ? ' (con bonus)' : ''}</p>
+                    `;
+                    risultatoDiv.style.display = 'block';
+                });
+            </script>
+        </div>
+
+        <h2>10. Note Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Usa sempre graffe:</strong> Anche per if con una sola istruzione</li>
+                <li><strong>Switch needs break:</strong> Senza break, l'esecuzione continua nei case successivi</li>
+                <li><strong>Ternary per assegnamenti:</strong> Perfetto per assegnare valori in base a condizioni</li>
+                <li><strong>Evita ternary troppo annidati:</strong> Usa if-else se diventa difficile da leggere</li>
+                <li><strong>Array/oggetti vuoti sono truthy:</strong> [] e {} valutano true in condizioni</li>
+                <li><strong>Short-circuit:</strong> Utile ma può confondere, usa con moderazione</li>
+                <li><strong>?? vs ||:</strong> ?? controlla solo null/undefined, || tutti i falsy</li>
+            </ul>
+        </div>
+
+        <h2>11. Vantaggi dell'Operatore Ternario</h2>
+        
+        <div class="teoria">
+            <p><strong>Perché l'operatore ternario è importante nello sviluppo moderno:</strong></p>
+            <ul>
+                <li><strong>Codice conciso:</strong> Condizioni compatte e leggibili</li>
+                <li><strong>Espressioni:</strong> Restituisce un valore, utile per assegnazioni</li>
+                <li><strong>Short-circuit:</strong> Combinato con && e || per logica complessa</li>
+                <li><strong>Funzionale:</strong> Si integra bene con programmazione funzionale</li>
+                <li><strong>Inline:</strong> Può essere usato dentro altre espressioni</li>
+            </ul>
+            
+            <p>Esempio di utilizzo professionale:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Rendering condizionale con il DOM
+function mostraSaluto(isLoggedIn, userName) {
+    const container = document.getElementById('greeting');
+    
+    container.innerHTML = isLoggedIn
+        ? `<h2>Benvenuto, ${userName}!</h2>`
+        : `<h2>Effettua il login</h2>`;
+    
+    // Short-circuit per elementi opzionali
+    const badge = isLoggedIn && `<span class="badge">Online</span>`;
+    if (badge) container.innerHTML += badge;
+
+            {/* Short-circuit con && */}
+            {isLoggedIn && &lt;p&gt;Hai {5} nuovi messaggi&lt;/p&gt;}
+            
+            {/* Classe dinamica */}
+            &lt;button className={isLoggedIn ? 'btn-logout' : 'btn-login'}&gt;
+                {isLoggedIn ? 'Logout' : 'Login'}
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+};</pre>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-3.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="lezione-5-5.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

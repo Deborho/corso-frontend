@@ -3,130 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esempio - Primo File SCSS</title>
-    <style>
-        /* CSS compilato da SCSS */
-        /* Variabili: $primary-color: #3498db; $secondary-color: #95a5a6; */
-        /* Nesting utilizzato per .header e .button */
-        /* Funzione darken() per colori hover */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #2c3e50;
-            margin: 20px 0 10px;
-        }
-
-        h3 {
-            color: #3498db;
-            margin-bottom: 10px;
-        }
-
-        .header {
-            background: #3498db;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            margin: 0 0 10px 0;
-            color: white;
-        }
-        .header p {
-            margin: 0;
-            opacity: 0.9;
-        }
-
-        .button {
-            background: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-        }
-        .button:hover {
-            background: #2475a8;
-        }
-        .button.secondary {
-            background: #95a5a6;
-        }
-        .button.secondary:hover {
-            background: #798d8f;
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 8px;
-            background: #f9f9f9;
-        }
-        .card h3 {
-            color: #3498db;
-            margin-bottom: 10px;
-        }
-        .card p {
-            margin: 0;
-            line-height: 1.6;
-        }
-
-    </style>
+    <title>Primo File SCSS</title>
+    <link rel="stylesheet" href="primo-file-scss.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Primo File SCSS</h1>
-            <p>Compilazione SASS con variabili, nesting e funzioni</p>
-        </div>
-
-        <div class="card">
-            <h3>Buttons</h3>
-            <button class="button">Primary Button</button>
-            <button class="button secondary">Secondary Button</button>
-        </div>
-
-        <div class="card">
-            <h3>Variabili SCSS</h3>
-            <p>I colori sono definiti come variabili: $primary-color e $secondary-color</p>
-        </div>
-
-        <div class="card">
-            <h3>Nesting</h3>
-            <p>Gli stili .header h1 e .header p sono scritti con nesting SCSS</p>
-        </div>
-
-        <div class="card">
-            <h3>Funzioni Built-in</h3>
-            <p>La funzione darken() calcola automaticamente il colore più scuro per :hover</p>
-        </div>
-
-        <div class="card">
-            <h3>Parent Selector (&)</h3>
-            <p>Il simbolo & è utilizzato per :hover e per i modificatori (.secondary)</p>
+    <div style="padding: 2rem; background: #f8fafc;">
+        <h1>Primo File SCSS</h1>
+        <div class="cards">
+            <div class="card card--primary">
+                <h3>Variabili</h3>
+                <p>I colori e spacing sono definiti come variabili SCSS riutilizzabili.</p>
+            </div>
+            <div class="card card--secondary">
+                <h3>Nesting</h3>
+                <p>Il codice è organizzato con nesting gerarchico per migliore leggibilità.</p>
+            </div>
+            <div class="card card--success">
+                <h3>Parent Selector</h3>
+                <p>Il simbolo & permette di riferirsi al selettore genitore per hover e modificatori.</p>
+            </div>
+            <div class="card">
+                <h3>Functions</h3>
+                <p>Le funzioni SASS permettono calcoli dinamici come spacing().</p>
+            </div>
         </div>
     </div>
 </body>

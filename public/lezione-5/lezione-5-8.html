@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.8 - Array Avanzati e Spread Operator</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.8 - Array Avanzati e Spread Operator</h1>
+            <p>Spread operator, rest parameter e immutabilità degli array</p>
+        </div>
+
+        <h2>1. Spread Operator per Array</h2>
+        
+        <div class="teoria">
+            <p>Lo <strong>spread operator (...)</strong> "espande" gli elementi di un array. Fondamentale per l'immutabilità nello sviluppo moderno.</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Copiare array (importante: crea nuova copia!)
+const numeriOriginali = [1, 2, 3];
+const numeriCopia = [...numeriOriginali];
+
+console.log(numeriCopia);  // [1, 2, 3]
+console.log(numeriOriginali === numeriCopia);  // false (array diversi)
+
+// Modificare copia non influenza originale
+numeriCopia.push(4);
+console.log(numeriOriginali);  // [1, 2, 3] (non modificato)
+console.log(numeriCopia);      // [1, 2, 3, 4]
+
+// Concatenare array
+const array1 = [1, 2, 3];
+const array2 = [4, 5, 6];
+const concatenato = [...array1, ...array2];
+console.log(concatenato);  // [1, 2, 3, 4, 5, 6]
+
+// Aggiungere elementi all'inizio, in mezzo o alla fine
+const numeri = [3, 4, 5];
+const conInizio = [1, 2, ...numeri];           // [1, 2, 3, 4, 5]
+const conFine = [...numeri, 6, 7];             // [3, 4, 5, 6, 7]
+const conMezzo = [1, 2, ...numeri, 6, 7];      // [1, 2, 3, 4, 5, 6, 7]</pre>
+        </div>
+
+        <h2>2. Immutabilità con Array (Pattern Moderno)</h2>
+
+        <div class="teoria">
+            <p>La programmazione funzionale moderna richiede di non mutare array direttamente. Usa spread per creare nuovi array.</p>
+        </div>
+        
+        <div class="codice">
+<pre>const todos = [
+    { id: 1, text: 'Studiare JavaScript', completed: false },
+    { id: 2, text: 'Fare esercizi', completed: false }
+];
+
+// SBAGLIATO - Muta array originale (evitare nella programmazione funzionale)
+todos.push({ id: 3, text: 'Nuovo todo', completed: false });
+
+// CORRETTO - Crea nuovo array
+const nuoviTodos = [...todos, { id: 3, text: 'Nuovo todo', completed: false }];
+
+// Rimuovere elemento (filter crea nuovo array)
+const todosFiltrati = todos.filter(todo => todo.id !== 2);
+
+// Aggiornare elemento (map crea nuovo array)
+const todosAggiornati = todos.map(todo =>
+    todo.id === 1 
+        ? { ...todo, completed: true }  // Spread anche per oggetto!
+        : todo
+);
+
+console.log(todosAggiornati);
+// [
+//   { id: 1, text: 'Studiare JavaScript', completed: true },
+//   { id: 2, text: 'Fare esercizi', completed: false }
+// ]</pre>
+        </div>
+
+        <h2>3. Spread Operator per Oggetti</h2>
+        
+        <div class="codice">
+<pre>// Copiare oggetto
+const persona = { nome: 'Mario', età: 25 };
+const copia = { ...persona };
+
+console.log(copia);  // { nome: 'Mario', età: 25 }
+console.log(persona === copia);  // false
+
+// Aggiungere proprietà
+const personaCompleta = {
+    ...persona,
+    città: 'Roma',
+    email: 'mario@email.com'
+};
+console.log(personaCompleta);
+// { nome: 'Mario', età: 25, città: 'Roma', email: 'mario@email.com' }
+
+// Aggiornare proprietà (sovrascrive)
+const personaAggiornata = {
+    ...persona,
+    età: 26  // Sovrascrive età originale
+};
+console.log(personaAggiornata);  // { nome: 'Mario', età: 26 }
+
+// Combinare oggetti
+const contatti = { email: 'mario@email.com', telefono: '123' };
+const indirizzo = { città: 'Roma', via: 'Via Roma 1' };
+
+const utente = {
+    ...persona,
+    ...contatti,
+    ...indirizzo
+};
+console.log(utente);
+// { nome: 'Mario', età: 25, email: 'mario@email.com', telefono: '123', città: 'Roma', via: 'Via Roma 1' }</pre>
+        </div>
+
+        <h2>4. Aggiornamenti Immutabili Nested</h2>
+        
+        <div class="codice">
+<pre>const utente = {
+    nome: 'Mario',
+    età: 25,
+    indirizzo: {
+        città: 'Roma',
+        cap: '00100'
+    }
+};
+
+// Aggiornare proprietà annidata in modo immutabile
+const utenteAggiornato = {
+    ...utente,
+    indirizzo: {
+        ...utente.indirizzo,
+        cap: '00200'  // Solo cap cambia
+    }
+};
+
+console.log(utenteAggiornato);
+// {
+//   nome: 'Mario',
+//   età: 25,
+//   indirizzo: { città: 'Roma', cap: '00200' }
+// }
+
+console.log(utente.indirizzo.cap);  // '00100' (originale non modificato)</pre>
+        </div>
+
+        <h2>5. Array Destructuring</h2>
+        
+        <div class="codice">
+<pre>// Destructuring posizionale per array
+const colori = ['rosso', 'verde', 'blu'];
+
+const [primo, secondo, terzo] = colori;
+console.log(primo);   // rosso
+console.log(secondo); // verde
+console.log(terzo);   // blu
+
+// Saltare elementi
+const [primario, , terziario] = colori;
+console.log(primario);  // rosso
+console.log(terziario); // blu (saltato verde)
+
+// Valori default
+const [a, b, c, d = 'giallo'] = colori;
+console.log(d);  // giallo (default perché non c'è 4° elemento)
+
+// Scambiare variabili
+let x = 1;
+let y = 2;
+[x, y] = [y, x];
+console.log(x, y);  // 2, 1
+
+// Funzione che restituisce array
+const getCoordinate = () => [10, 20];
+const [x, y] = getCoordinate();
+console.log(x, y);  // 10, 20</pre>
+        </div>
+
+        <h2>6. Rest in Array Destructuring</h2>
+        
+        <div class="codice">
+<pre>const numeri = [1, 2, 3, 4, 5];
+
+// Rest operator per raccogliere elementi rimanenti
+const [primo, secondo, ...resto] = numeri;
+
+console.log(primo);   // 1
+console.log(secondo); // 2
+console.log(resto);   // [3, 4, 5]
+
+// Esempio pratico: separare head e tail
+const [head, ...tail] = numeri;
+console.log(head);  // 1
+console.log(tail);  // [2, 3, 4, 5]
+
+// Con funzioni
+const sommaNumeri = (primo, ...altriNumeri) => {
+    const sommaAltri = altriNumeri.reduce((acc, n) => acc + n, 0);
+    return primo + sommaAltri;
+};
+
+console.log(sommaNumeri(1, 2, 3, 4, 5));  // 15</pre>
+        </div>
+
+        <h2>7. Operazioni Array Comuni Immutabili</h2>
+        
+        <div class="codice">
+<pre>const lista = [1, 2, 3, 4, 5];
+
+// Aggiungere alla fine
+const aggiungiFinale = [...lista, 6];  // [1, 2, 3, 4, 5, 6]
+
+// Aggiungere all'inizio
+const aggiungiInizio = [0, ...lista];  // [0, 1, 2, 3, 4, 5]
+
+// Rimuovere elemento per indice
+const indice = 2;
+const rimosso = [
+    ...lista.slice(0, indice),
+    ...lista.slice(indice + 1)
+];  // [1, 2, 4, 5]
+
+// Sostituire elemento per indice
+const sostituito = [
+    ...lista.slice(0, indice),
+    99,
+    ...lista.slice(indice + 1)
+];  // [1, 2, 99, 4, 5]
+
+// Inserire elemento in posizione specifica
+const inserito = [
+    ...lista.slice(0, indice),
+    99,
+    ...lista.slice(indice)
+];  // [1, 2, 99, 3, 4, 5]</pre>
+        </div>
+
+        <h2>8. Pattern Array Comuni nello Sviluppo Moderno</h2>
+
+        <div class="codice">
+<pre>// Operazioni immutabili comuni
+let todos = [
+    { id: 1, text: 'Task 1', completed: false },
+    { id: 2, text: 'Task 2', completed: false },
+    { id: 3, text: 'Task 3', completed: false }
+];
+
+// Aggiungere todo
+const nuovoTodo = { id: 4, text: 'Task 4', completed: false };
+todos = [...todos, nuovoTodo];
+
+// Rimuovere todo per id
+const idDaRimuovere = 2;
+todos = todos.filter(todo => todo.id !== idDaRimuovere);
+
+// Toggle completed
+const idDaTogglare = 1;
+todos = todos.map(todo =>
+    todo.id === idDaTogglare
+        ? { ...todo, completed: !todo.completed }
+        : todo
+);
+
+// Aggiornare text di un todo
+const idDaAggiornare = 3;
+const nuovoText = 'Task 3 aggiornato';
+todos = todos.map(todo =>
+    todo.id === idDaAggiornare
+        ? { ...todo, text: nuovoText }
+        : todo
+);
+
+console.log(todos);</pre>
+        </div>
+
+        <h2>9. Esempio Pratico Completo</h2>
+        
+        <div class="esempio">
+            <p>Gestione lista con operazioni immutabili:</p>
+            
+            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
+                <input type="text" id="input-task" placeholder="Nuova task" style="padding: 8px; width: 250px; margin-right: 10px;">
+                <button id="btn-add-task" style="padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Aggiungi</button>
+                <div id="task-list" style="margin-top: 15px;"></div>
+            </div>
+            
+            <script>
+                let tasks = [
+                    { id: 1, text: 'Studiare JavaScript', completed: false },
+                    { id: 2, text: 'Fare esercizi', completed: false }
+                ];
+                
+                const renderTasks = () => {
+                    const container = document.getElementById('task-list');
+                    container.innerHTML = tasks.map(task => `
+                        <div style="display: flex; align-items: center; padding: 10px; background: white; margin: 5px 0; border-radius: 4px;">
+                            <input 
+                                type="checkbox" 
+                                ${task.completed ? 'checked' : ''} 
+                                onchange="toggleTask(${task.id})"
+                                style="margin-right: 10px;"
+                            >
+                            <span style="flex: 1; text-decoration: ${task.completed ? 'line-through' : 'none'};">
+                                ${task.text}
+                            </span>
+                            <button 
+                                onclick="deleteTask(${task.id})"
+                                style="padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                            >
+                                Elimina
+                            </button>
+                        </div>
+                    `).join('');
+                };
+                
+                // Aggiungere task (immutabile)
+                window.addTask = (text) => {
+                    const newTask = {
+                        id: Date.now(),
+                        text,
+                        completed: false
+                    };
+                    tasks = [...tasks, newTask];  // Spread operator
+                    renderTasks();
+                };
+                
+                // Toggle task (immutabile)
+                window.toggleTask = (id) => {
+                    tasks = tasks.map(task =>
+                        task.id === id
+                            ? { ...task, completed: !task.completed }  // Spread per oggetto
+                            : task
+                    );
+                    renderTasks();
+                };
+                
+                // Eliminare task (immutabile)
+                window.deleteTask = (id) => {
+                    tasks = tasks.filter(task => task.id !== id);
+                    renderTasks();
+                };
+                
+                document.getElementById('btn-add-task').addEventListener('click', () => {
+                    const input = document.getElementById('input-task');
+                    if (input.value.trim()) {
+                        addTask(input.value);
+                        input.value = '';
+                    }
+                });
+                
+                renderTasks();
+            </script>
+        </div>
+
+        <h2>10. Note Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>Spread crea shallow copy:</strong> Copia solo il primo livello, oggetti annidati sono referenze</li>
+                <li><strong>Immutabilità è fondamentale:</strong> Crea nuovi array/oggetti invece di modificare gli esistenti</li>
+                <li><strong>Performance:</strong> Spread è efficiente per array piccoli/medi, considera alternative per array enormi</li>
+                <li><strong>Ordine spread:</strong> L'ultimo valore sovrascrive i precedenti negli oggetti</li>
+                <li><strong>Rest deve essere ultimo:</strong> ...rest deve sempre essere l'ultimo parametro</li>
+                <li><strong>Array methods:</strong> map, filter, reduce già creano nuovi array (sono immutabili)</li>
+            </ul>
+        </div>
+
+        <h2>11. Preparazione per React</h2>
+        
+        <div class="teoria">
+            <p><strong>Perché spread operator è fondamentale per React:</strong></p>
+            <ul>
+                <li><strong>State updates:</strong> React richiede nuovi array/oggetti invece di mutazioni</li>
+                <li><strong>Immutabilità:</strong> React confronta referenze per ottimizzare re-rendering</li>
+                <li><strong>Pattern standard:</strong> Spread è il modo standard per aggiornare state in React</li>
+                <li><strong>Props spread:</strong> Passare tutte props a componente child: {...props}</li>
+                <li><strong>Shallow copy:</strong> Sufficiente per la maggior parte dei casi in React</li>
+            </ul>
+            
+            <p>Esempio futuro in React:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Esempio React (vedrai nella Lezione 7)
+const [todos, setTodos] = useState([]);
+
+// Aggiungere todo
+const addTodo = (text) => {
+    const newTodo = { id: Date.now(), text, completed: false };
+    setTodos([...todos, newTodo]);
+};
+
+// Toggle completed
+const toggleTodo = (id) => {
+    setTodos(todos.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ));
+};
+
+// Rimuovere todo
+const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+};</pre>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-7.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="lezione-5-9.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

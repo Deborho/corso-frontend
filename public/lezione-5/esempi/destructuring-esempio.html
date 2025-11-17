@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Destructuring</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - Destructuring</h1>
+            <p>Object/Array destructuring, alias, default values, nested</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Sistema di Gestione Utenti</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <button onclick="esempiDestructuring()" style="padding: 12px 24px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.1em;">Esegui Esempi Destructuring</button>
+                
+                <div id="output-destructuring" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <script>
+            window.esempiDestructuring = () => {
+                let output = '';
+                
+                // 1. Object Destructuring Base
+                const utente = {
+                    nome: 'Mario',
+                    cognome: 'Rossi',
+                    età: 30,
+                    email: 'mario@test.com',
+                    città: 'Roma'
+                };
+                
+                const { nome, cognome, email } = utente;
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #007bff;">
+                        <h4 style="margin-top: 0;">1. Object Destructuring Base</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px;">const { nome, cognome, email } = utente;</pre>
+                        <p><strong>Nome:</strong> ${nome}</p>
+                        <p><strong>Cognome:</strong> ${cognome}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                    </div>
+                `;
+                
+                // 2. Destructuring con Alias
+                const { nome: nomeUtente, email: emailUtente } = utente;
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #28a745;">
+                        <h4 style="margin-top: 0;">2. Destructuring con Alias</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px;">const { nome: nomeUtente, email: emailUtente } = utente;</pre>
+                        <p><strong>nomeUtente:</strong> ${nomeUtente}</p>
+                        <p><strong>emailUtente:</strong> ${emailUtente}</p>
+                    </div>
+                `;
+                
+                // 3. Default Values
+                const { nome: n, telefono = 'Non specificato', paese = 'Italia' } = utente;
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #ffc107;">
+                        <h4 style="margin-top: 0;">3. Destructuring con Default Values</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px;">const { nome, telefono = 'Non specificato', paese = 'Italia' } = utente;</pre>
+                        <p><strong>Nome:</strong> ${n}</p>
+                        <p><strong>Telefono:</strong> ${telefono} <em style="color: #666;">(default)</em></p>
+                        <p><strong>Paese:</strong> ${paese} <em style="color: #666;">(default)</em></p>
+                    </div>
+                `;
+                
+                // 4. Nested Destructuring
+                const utenteCompleto = {
+                    id: 1,
+                    info: {
+                        nome: 'Luigi',
+                        cognome: 'Verdi',
+                        contatti: {
+                            email: 'luigi@test.com',
+                            telefono: '333-1234567'
+                        }
+                    },
+                    settings: {
+                        theme: 'dark',
+                        notifications: true
+                    }
+                };
+                
+                const {
+                    info: {
+                        nome: nomeLuigi,
+                        contatti: { email: emailLuigi, telefono }
+                    },
+                    settings: { theme, notifications }
+                } = utenteCompleto;
+                
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #dc3545;">
+                        <h4 style="margin-top: 0;">4. Nested Destructuring</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 0.85em;">const {
+  info: { 
+    nome, 
+    contatti: { email, telefono } 
+  },
+  settings: { theme, notifications }
+} = utenteCompleto;</pre>
+                        <p><strong>Nome:</strong> ${nomeLuigi}</p>
+                        <p><strong>Email:</strong> ${emailLuigi}</p>
+                        <p><strong>Telefono:</strong> ${telefono}</p>
+                        <p><strong>Theme:</strong> ${theme}</p>
+                        <p><strong>Notifications:</strong> ${notifications}</p>
+                    </div>
+                `;
+                
+                // 5. Array Destructuring
+                const colori = ['rosso', 'verde', 'blu', 'giallo', 'viola'];
+                const [primo, secondo, ...altriColori] = colori;
+                
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #17a2b8;">
+                        <h4 style="margin-top: 0;">5. Array Destructuring con Rest</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px;">const [primo, secondo, ...altriColori] = colori;</pre>
+                        <p><strong>Array:</strong> [${colori.join(', ')}]</p>
+                        <p><strong>Primo:</strong> ${primo}</p>
+                        <p><strong>Secondo:</strong> ${secondo}</p>
+                        <p><strong>Altri:</strong> [${altriColori.join(', ')}]</p>
+                    </div>
+                `;
+                
+                // 6. Skip elementi in array
+                const numeri = [1, 2, 3, 4, 5];
+                const [a, , c, , e] = numeri;
+                
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #6610f2;">
+                        <h4 style="margin-top: 0;">6. Skip Elementi in Array</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px;">const [a, , c, , e] = numeri;  // skip 2° e 4° elemento</pre>
+                        <p><strong>Array:</strong> [${numeri.join(', ')}]</p>
+                        <p><strong>a (1°):</strong> ${a}</p>
+                        <p><strong>c (3°):</strong> ${c}</p>
+                        <p><strong>e (5°):</strong> ${e}</p>
+                    </div>
+                `;
+                
+                // 7. Destructuring nei parametri di funzione
+                const stampaProfilo = ({ nome, email, età = 'N/A' }) => {
+                    return `${nome} (${età}) - ${email}`;
+                };
+                
+                const profilo1 = stampaProfilo({ nome: 'Anna', email: 'anna@test.com', età: 28 });
+                const profilo2 = stampaProfilo({ nome: 'Paolo', email: 'paolo@test.com' });
+                
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #fd7e14;">
+                        <h4 style="margin-top: 0;">7. Destructuring nei Parametri di Funzione</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px;">const stampaProfilo = ({ nome, email, età = 'N/A' }) => {
+  return \`\${nome} (\${età}) - \${email}\`;
+};</pre>
+                        <p><strong>Profilo 1:</strong> ${profilo1}</p>
+                        <p><strong>Profilo 2:</strong> ${profilo2}</p>
+                    </div>
+                `;
+                
+                // 8. Swap variabili con destructuring
+                let x = 10;
+                let y = 20;
+                [x, y] = [y, x];
+                
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #20c997;">
+                        <h4 style="margin-top: 0;">8. Swap Variabili</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px;">let x = 10, y = 20;
+[x, y] = [y, x];  // swap!</pre>
+                        <p><strong>x dopo swap:</strong> ${x} (era 10)</p>
+                        <p><strong>y dopo swap:</strong> ${y} (era 20)</p>
+                    </div>
+                `;
+                
+                // 9. Destructuring con funzioni che ritornano oggetti
+                const getUtenteAPI = () => ({
+                    success: true,
+                    data: {
+                        id: 42,
+                        username: 'dev_mario',
+                        profile: {
+                            avatar: 'avatar.jpg',
+                            bio: 'Web Developer'
+                        }
+                    },
+                    timestamp: Date.now()
+                });
+                
+                const {
+                    success,
+                    data: { username, profile: { avatar, bio } }
+                } = getUtenteAPI();
+                
+                output += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 4px; border-left: 4px solid #e83e8c;">
+                        <h4 style="margin-top: 0;">9. Destructuring da Return di Funzione</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 0.85em;">const {
+  success,
+  data: { username, profile: { avatar, bio } }
+} = getUtenteAPI();</pre>
+                        <p><strong>Success:</strong> ${success}</p>
+                        <p><strong>Username:</strong> ${username}</p>
+                        <p><strong>Avatar:</strong> ${avatar}</p>
+                        <p><strong>Bio:</strong> ${bio}</p>
+                    </div>
+                `;
+                
+                // 10. Esempio Pratico: Gestione Form con Destructuring
+                const formData = {
+                    name: 'Maria Bianchi',
+                    email: 'maria@test.com',
+                    age: 32,
+                    address: {
+                        street: 'Via Roma 123',
+                        city: 'Milano',
+                        zip: '20100'
+                    },
+                    preferences: {
+                        newsletter: true,
+                        notifications: false
+                    }
+                };
+                
+                // Funzione che valida form usando destructuring
+                const validaForm = ({
+                    name,
+                    email,
+                    age,
+                    address: { city, zip },
+                    preferences: { newsletter = false } = {}
+                }) => {
+                    const errori = [];
+                    
+                    if (!name || name.length < 3) errori.push('Nome troppo corto');
+                    if (!email.includes('@')) errori.push('Email non valida');
+                    if (age < 18) errori.push('Devi essere maggiorenne');
+                    if (!city) errori.push('Città mancante');
+                    
+                    return {
+                        valido: errori.length === 0,
+                        errori,
+                        dati: { name, email, age, city, zip, newsletter }
+                    };
+                };
+                
+                const { valido, errori, dati } = validaForm(formData);
+                
+                output += `
+                    <div style="background: white; padding: 15px; border-radius: 4px; border-left: 4px solid #6f42c1;">
+                        <h4 style="margin-top: 0;">10. Caso Pratico: Validazione Form</h4>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 0.8em;">const validaForm = ({
+  name,
+  email,
+  age,
+  address: { city, zip },
+  preferences: { newsletter = false } = {}
+}) => { /* validazione */ };</pre>
+                        <div style="padding: 15px; background: ${valido ? '#d4edda' : '#f8d7da'}; border-radius: 4px; margin-top: 10px;">
+                            <p style="margin: 0; font-weight: bold; color: ${valido ? '#155724' : '#721c24'};">
+                                ${valido ? '✓ Form Valido' : '✗ Errori di Validazione'}
+                            </p>
+                            ${errori.length > 0 ? `<ul style="margin: 10px 0 0 0;">${errori.map(e => `<li>${e}</li>`).join('')}</ul>` : ''}
+                            <div style="margin-top: 10px;">
+                                <p style="margin: 5px 0;"><strong>Nome:</strong> ${dati.name}</p>
+                                <p style="margin: 5px 0;"><strong>Email:</strong> ${dati.email}</p>
+                                <p style="margin: 5px 0;"><strong>Età:</strong> ${dati.age}</p>
+                                <p style="margin: 5px 0;"><strong>Città:</strong> ${dati.city}</p>
+                                <p style="margin: 5px 0;"><strong>Newsletter:</strong> ${dati.newsletter ? 'Sì' : 'No'}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('output-destructuring').innerHTML = output;
+            };
+            
+            // Esegui automaticamente
+            esempiDestructuring();
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

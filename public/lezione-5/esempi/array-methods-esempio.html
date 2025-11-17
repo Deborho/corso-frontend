@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Array Methods</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - Array Methods</h1>
+            <p>map, filter, reduce, find, chaining</p>
+        </div>
+
+        <div class="esempio">
+            <h3>E-commerce Product Manager</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button id="mostra-tutti" style="padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Tutti</button>
+                    <button id="filtra-elettronica" style="padding: 10px 15px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Elettronica</button>
+                    <button id="filtra-abbigliamento" style="padding: 10px 15px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Abbigliamento</button>
+                    <button id="filtra-libri" style="padding: 10px 15px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Libri</button>
+                    <button id="filtra-disponibili" style="padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Solo Disponibili</button>
+                    <button id="filtra-scontati" style="padding: 10px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">In Sconto</button>
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+                    <h4 style="margin-top: 0;">Statistiche</h4>
+                    <div id="statistiche"></div>
+                </div>
+                
+                <div id="prodotti-lista"></div>
+            </div>
+        </div>
+
+        <script>
+            // Database prodotti
+            const prodotti = [
+                { id: 1, nome: 'Laptop Pro', categoria: 'elettronica', prezzo: 1299, sconto: 15, disponibile: true, quantita: 5 },
+                { id: 2, nome: 'Smartphone X', categoria: 'elettronica', prezzo: 899, sconto: 0, disponibile: true, quantita: 12 },
+                { id: 3, nome: 'Tablet Plus', categoria: 'elettronica', prezzo: 599, sconto: 10, disponibile: false, quantita: 0 },
+                { id: 4, nome: 'T-Shirt Basic', categoria: 'abbigliamento', prezzo: 29, sconto: 20, disponibile: true, quantita: 50 },
+                { id: 5, nome: 'Jeans Casual', categoria: 'abbigliamento', prezzo: 79, sconto: 0, disponibile: true, quantita: 30 },
+                { id: 6, nome: 'Giacca Invernale', categoria: 'abbigliamento', prezzo: 159, sconto: 25, disponibile: true, quantita: 8 },
+                { id: 7, nome: 'JavaScript Guide', categoria: 'libri', prezzo: 45, sconto: 0, disponibile: true, quantita: 15 },
+                { id: 8, nome: 'JavaScript Handbook', categoria: 'libri', prezzo: 39, sconto: 15, disponibile: false, quantita: 0 },
+                { id: 9, nome: 'CSS Mastery', categoria: 'libri', prezzo: 42, sconto: 0, disponibile: true, quantita: 20 }
+            ];
+            
+            let filtroCorrente = 'tutti';
+            
+            // Render prodotti
+            const renderProdotti = (prodottiFiltrati) => {
+                const container = document.getElementById('prodotti-lista');
+                
+                if (prodottiFiltrati.length === 0) {
+                    container.innerHTML = '<p style="color: #999; text-align: center;">Nessun prodotto trovato</p>';
+                    return;
+                }
+                
+                // map per trasformare array in HTML
+                const prodottiHTML = prodottiFiltrati.map(prodotto => {
+                    const prezzoScontato = prodotto.prezzo * (1 - prodotto.sconto / 100);
+                    
+                    return `
+                        <div style="background: white; padding: 15px; border-radius: 4px; margin-bottom: 10px; border-left: 4px solid ${prodotto.disponibile ? '#28a745' : '#dc3545'};">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div style="flex: 1;">
+                                    <h4 style="margin: 0 0 5px 0;">${prodotto.nome}</h4>
+                                    <p style="margin: 0; color: #666; font-size: 0.9em; text-transform: uppercase;">${prodotto.categoria}</p>
+                                    <p style="margin: 5px 0 0 0; color: ${prodotto.disponibile ? '#28a745' : '#dc3545'}; font-weight: bold;">
+                                        ${prodotto.disponibile ? `In Stock (${prodotto.quantita})` : 'Esaurito'}
+                                    </p>
+                                </div>
+                                <div style="text-align: right;">
+                                    ${prodotto.sconto > 0 ? `
+                                        <p style="margin: 0; text-decoration: line-through; color: #999;">€${prodotto.prezzo.toFixed(2)}</p>
+                                        <p style="margin: 5px 0; font-size: 1.5em; color: #dc3545; font-weight: bold;">€${prezzoScontato.toFixed(2)}</p>
+                                        <span style="background: #dc3545; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">-${prodotto.sconto}%</span>
+                                    ` : `
+                                        <p style="margin: 0; font-size: 1.5em; font-weight: bold;">€${prodotto.prezzo.toFixed(2)}</p>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                container.innerHTML = prodottiHTML;
+            };
+            
+            // Calcola e mostra statistiche
+            const aggiornaStatistiche = (prodottiFiltrati) => {
+                const container = document.getElementById('statistiche');
+                
+                // reduce per somma totale
+                const valoreTotale = prodottiFiltrati.reduce((totale, prodotto) => {
+                    const prezzoScontato = prodotto.prezzo * (1 - prodotto.sconto / 100);
+                    return totale + (prezzoScontato * prodotto.quantita);
+                }, 0);
+                
+                // filter per disponibili
+                const disponibili = prodottiFiltrati.filter(p => p.disponibile);
+                
+                // filter per scontati
+                const scontati = prodottiFiltrati.filter(p => p.sconto > 0);
+                
+                // reduce per sconto medio
+                const scontoMedio = scontati.length > 0
+                    ? scontati.reduce((tot, p) => tot + p.sconto, 0) / scontati.length
+                    : 0;
+                
+                // find per prodotto più costoso
+                const piuCostoso = prodottiFiltrati.reduce((max, p) => 
+                    p.prezzo > max.prezzo ? p : max
+                , prodottiFiltrati[0]);
+                
+                // find per prodotto più economico
+                const piuEconomico = prodottiFiltrati.reduce((min, p) => 
+                    p.prezzo < min.prezzo ? p : min
+                , prodottiFiltrati[0]);
+                
+                container.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div>
+                            <p style="margin: 0; color: #666; font-size: 0.9em;">Totale Prodotti</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold;">${prodottiFiltrati.length}</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; color: #666; font-size: 0.9em;">Valore Inventario</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold; color: #28a745;">€${valoreTotale.toFixed(2)}</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; color: #666; font-size: 0.9em;">Disponibili</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold; color: #007bff;">${disponibili.length}</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; color: #666; font-size: 0.9em;">In Sconto</p>
+                            <p style="margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold; color: #dc3545;">${scontati.length} (${scontoMedio.toFixed(1)}%)</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+                        <p style="margin: 0; color: #666; font-size: 0.9em;"><strong>Più costoso:</strong> ${piuCostoso?.nome} (€${piuCostoso?.prezzo})</p>
+                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;"><strong>Più economico:</strong> ${piuEconomico?.nome} (€${piuEconomico?.prezzo})</p>
+                    </div>
+                `;
+            };
+            
+            // Applica filtro
+            const applicaFiltro = (tipo) => {
+                filtroCorrente = tipo;
+                
+                // Usa array methods con chaining
+                let prodottiFiltrati = prodotti;
+                
+                switch(tipo) {
+                    case 'elettronica':
+                    case 'abbigliamento':
+                    case 'libri':
+                        prodottiFiltrati = prodotti.filter(p => p.categoria === tipo);
+                        break;
+                    case 'disponibili':
+                        prodottiFiltrati = prodotti.filter(p => p.disponibile);
+                        break;
+                    case 'scontati':
+                        prodottiFiltrati = prodotti.filter(p => p.sconto > 0);
+                        break;
+                }
+                
+                // Ordina per prezzo (con sconto applicato)
+                prodottiFiltrati = prodottiFiltrati
+                    .map(p => ({
+                        ...p,
+                        prezzoFinale: p.prezzo * (1 - p.sconto / 100)
+                    }))
+                    .sort((a, b) => b.prezzoFinale - a.prezzoFinale);
+                
+                renderProdotti(prodottiFiltrati);
+                aggiornaStatistiche(prodottiFiltrati);
+                
+                // Aggiorna stile pulsanti
+                document.querySelectorAll('button[id^="mostra-"], button[id^="filtra-"]').forEach(btn => {
+                    btn.style.background = '#6c757d';
+                });
+                document.getElementById(`${tipo === 'tutti' ? 'mostra' : 'filtra'}-${tipo}`).style.background = '#007bff';
+            };
+            
+            // Event listeners
+            document.getElementById('mostra-tutti').addEventListener('click', () => applicaFiltro('tutti'));
+            document.getElementById('filtra-elettronica').addEventListener('click', () => applicaFiltro('elettronica'));
+            document.getElementById('filtra-abbigliamento').addEventListener('click', () => applicaFiltro('abbigliamento'));
+            document.getElementById('filtra-libri').addEventListener('click', () => applicaFiltro('libri'));
+            document.getElementById('filtra-disponibili').addEventListener('click', () => applicaFiltro('disponibili'));
+            document.getElementById('filtra-scontati').addEventListener('click', () => applicaFiltro('scontati'));
+            
+            // Render iniziale
+            applicaFiltro('tutti');
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

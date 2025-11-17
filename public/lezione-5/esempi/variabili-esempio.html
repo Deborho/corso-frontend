@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio - Variabili e Tipi di Dato</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Esempio Pratico - Variabili e Tipi di Dato</h1>
+            <p>const vs let, tipi primitivi, typeof</p>
+        </div>
+
+        <div class="esempio">
+            <h3>Validatore di Dati Utente</h3>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Nome:</label>
+                    <input type="text" id="nome" placeholder="Mario" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Età:</label>
+                    <input type="text" id="eta" placeholder="25" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Email:</label>
+                    <input type="text" id="email" placeholder="mario@test.com" style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: flex; align-items: center;">
+                        <input type="checkbox" id="attivo" style="margin-right: 10px;">
+                        Account attivo
+                    </label>
+                </div>
+                
+                <button id="valida" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Valida Dati</button>
+                
+                <div id="risultato" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('valida').addEventListener('click', () => {
+                // const per valori che non cambiano
+                const risultatoDiv = document.getElementById('risultato');
+                
+                // let per valori che possono cambiare
+                let nome = document.getElementById('nome').value;
+                let etaInput = document.getElementById('eta').value;
+                let email = document.getElementById('email').value;
+                let attivo = document.getElementById('attivo').checked;
+                
+                // Array per errori
+                let errori = [];
+                
+                // Validazione nome (string)
+                if (typeof nome !== 'string' || nome.trim() === '') {
+                    errori.push('Nome è obbligatorio');
+                }
+                
+                // Validazione età (number)
+                const eta = Number(etaInput);
+                if (isNaN(eta) || eta < 0 || eta > 150) {
+                    errori.push('Età deve essere un numero tra 0 e 150');
+                }
+                
+                // Validazione email (string con @)
+                if (typeof email !== 'string' || !email.includes('@')) {
+                    errori.push('Email non valida');
+                }
+                
+                // Mostra risultati con typeof
+                if (errori.length === 0) {
+                    risultatoDiv.innerHTML = `
+                        <div style="padding: 15px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
+                            <h4 style="margin-top: 0;">✓ Dati Validi</h4>
+                            <p><strong>Nome:</strong> ${nome} (tipo: ${typeof nome})</p>
+                            <p><strong>Età:</strong> ${eta} (tipo: ${typeof eta})</p>
+                            <p><strong>Email:</strong> ${email} (tipo: ${typeof email})</p>
+                            <p><strong>Attivo:</strong> ${attivo} (tipo: ${typeof attivo})</p>
+                            <p><strong>Errori:</strong> ${errori.length === 0 ? undefined : errori} (tipo: ${typeof undefined})</p>
+                        </div>
+                    `;
+                } else {
+                    risultatoDiv.innerHTML = `
+                        <div style="padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
+                            <h4 style="margin-top: 0;">✗ Errori di Validazione</h4>
+                            ${errori.map(err => `<p>• ${err}</p>`).join('')}
+                        </div>
+                    `;
+                }
+            });
+        </script>
+
+        <div class="navigazione" style="margin-top: 30px;">
+            <a href="../index.html" class="btn-nav">Torna alla Lezione 5</a>
+        </div>
+    </div>
+</body>
+</html>

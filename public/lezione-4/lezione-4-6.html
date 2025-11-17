@@ -315,7 +315,7 @@
                         <li>Stili identici condivisi</li>
                         <li>Non servono parametri</li>
                         <li>Vuoi output CSS compatto</li>
-                        <li>Relazione "è un tipo di" (is-a)</li>
+                        <li>Relazione "è un tipo di"</li>
                     </ul>
                 </td>
                 <td>
@@ -323,7 +323,6 @@
                         <li>Stili con variazioni (parametri)</li>
                         <li>Logica condizionale</li>
                         <li>Blocchi @content</li>
-                        <li>Vendor prefixes</li>
                     </ul>
                 </td>
             </tr>
@@ -355,19 +354,7 @@
 }
 
 .alert-success { @include alert(#d5f4e6, #27ae60, #2ecc71); }
-.alert-error { @include alert(#fadbd8, #c0392b, #e74c3c); }
-
-
-// ❌ EXTEND - Cattivo
-// Non usare extend per vendor prefixes!
-.box { 
-  @extend %border-radius; // ❌ NO
-}
-
-// MIXIN - Giusto
-.box {
-  @include border-radius(8px); // SÌ
-}</pre>
+.alert-error { @include alert(#fadbd8, #c0392b, #e74c3c); }</pre>
         </div>
 
         <h2>6. Problemi Comuni con @extend</h2>
@@ -440,7 +427,6 @@
             <ul>
                 <li>Extend attraverso media queries (usa mixin)</li>
                 <li>Extend chaining profondo (max 2-3 livelli)</li>
-                <li>Extend di classi esterne/vendor</li>
                 <li>Extend quando servono parametri (usa mixin)</li>
                 <li>Troppi extend dello stesso selettore</li>
             </ul>
@@ -572,15 +558,7 @@
 }
 
 
-// Domanda 3: Vendor prefixes?
-// SÌ → Mixin
-@mixin transform($value) {
-  -webkit-transform: $value;
-  transform: $value;
-}
-
-
-// Domanda 4: Relazione is-a e stili identici?
+// Domanda 3: Relazione is-a e stili identici?
 // SÌ → Placeholder
 %message { padding: 15px; }
 .success { @extend %message; }  // success "è un" message</pre>
