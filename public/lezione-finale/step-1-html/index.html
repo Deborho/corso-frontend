@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1 - HTML Base | Task Manager</title>
+    
+    <!--
+    ========================================
+    STEP 1: HTML BASE
+    ========================================
+    
+    In questo step creiamo SOLO la struttura HTML semantica.
+    
+    Caratteristiche:
+    - Nessun CSS (styling zero)
+    - Nessun JavaScript
+    - Solo markup HTML5 semantico
+    - Struttura minimalista
+    
+    Tag semantici utilizzati:
+    - <header>: intestazione della pagina
+    - <main>: contenuto principale
+    - <section>: sezioni tematiche
+    - <form>: modulo di input
+    - <ul> / <li>: lista non ordinata
+    - <footer>: piè di pagina
+    
+    ========================================
+    -->
+</head>
+<body>
+    <!-- Intestazione principale dell'applicazione -->
+    <header>
+        <h1>Task Manager</h1>
+        <p>Gestisci le tue attività</p>
+    </header>
+
+    <!-- Contenitore principale -->
+    <main>
+        <!-- Sezione per aggiungere un nuovo task -->
+        <section>
+            <h2>Aggiungi nuovo task</h2>
+            <form>
+                <input 
+                    type="text" 
+                    name="taskInput"
+                    placeholder="Inserisci il tuo task..."
+                >
+                <button type="submit">Aggiungi</button>
+            </form>
+        </section>
+
+        <!-- Sezione lista dei task -->
+        <section>
+            <h2>I tuoi task</h2>
+            <ul>
+                <li>
+                    <input type="checkbox" id="task1">
+                    <label for="task1">Completare il corso di React</label>
+                    <button>Elimina</button>
+                </li>
+                <li>
+                    <input type="checkbox" id="task2">
+                    <label for="task2">Studiare HTML e CSS</label>
+                    <button>Elimina</button>
+                </li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

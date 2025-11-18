@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 3a - React Setup | Task Manager</title>
+    
+    <!--
+    ========================================
+    STEP 3A: REACT SETUP
+    ========================================
+    
+    In questo step aggiungiamo React alla nostra applicazione usando CDN.
+    
+    Cosa aggiungiamo:
+    1. React e ReactDOM via CDN
+    2. Babel per supportare JSX nel browser
+    3. Trasformiamo l'HTML statico in componenti React
+    
+    Componenti creati:
+    - App: componente principale
+    - Header: intestazione
+    - TaskForm: form per aggiungere task
+    - TaskList: lista dei task
+    - TaskItem: singolo task
+    - Footer: piè di pagina
+    
+    IMPORTANTE:
+    - I dati sono ancora STATICI (hardcoded)
+    - Non c'è ancora interattività
+    - Solo rendering dei componenti
+    
+    ========================================
+    -->
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+    <!-- Root element dove React renderizzerà l'app -->
+    <div id="root"></div>
+
+    <!-- 
+    ========================================
+    LIBRERIE REACT via CDN
+    ========================================
+    -->
+    
+    <!-- React: libreria principale -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    
+    <!-- ReactDOM: per renderizzare nel DOM -->
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel: trasforma JSX in JavaScript nel browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- 
+    ========================================
+    CODICE REACT
+    ========================================
+    type="text/babel" permette a Babel di trasformare JSX
+    -->
+    <script type="text/babel">
+        // ==========================================
+        // COMPONENTE HEADER
+        // ==========================================
+        function Header() {
+            return (
+                <header className="bg-white p-4 rounded-top shadow-sm">
+                    <h1 className="text-primary">Task Manager</h1>
+                    <p className="text-muted mb-0">Gestisci le tue attività</p>
+                </header>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE FORM
+        // ==========================================
+        function TaskForm() {
+            return (
+                <section className="mb-4">
+                    <h2 className="h4 mb-3">Aggiungi nuovo task</h2>
+                    <form className="row g-2">
+                        <div className="col-md-9">
+                            <input 
+                                type="text" 
+                                name="taskInput"
+                                className="form-control"
+                                placeholder="Inserisci il tuo task..."
+                            />
+                        </div>
+                        <div className="col-md-3">
+                            <button type="submit" className="btn btn-primary w-100">
+                                <i className="bi bi-plus-circle me-1"></i>
+                                Aggiungi
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE SINGOLO TASK
+        // ==========================================
+        function TaskItem({ task }) {
+            return (
+                <li className="list-group-item">
+                    <div className="d-flex align-items-center">
+                        <input 
+                            type="checkbox" 
+                            id={`task-${task.id}`}
+                            className="form-check-input me-2"
+                            checked={task.completed}
+                            readOnly
+                        />
+                        <label 
+                            htmlFor={`task-${task.id}`}
+                            className="flex-grow-1"
+                        >
+                            {task.text}
+                        </label>
+                        <button className="btn btn-outline-danger btn-sm">
+                            <i className="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </li>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE LISTA TASK
+        // ==========================================
+        function TaskList() {
+            // Dati statici di esempio
+            const tasks = [
+                { id: 1, text: "Completare il corso di React", completed: false },
+                { id: 2, text: "Studiare HTML e CSS", completed: false }
+            ];
+
+            return (
+                <section>
+                    <h2 className="h4 mb-3">I tuoi task</h2>
+                    <ul className="list-group">
+                        {tasks.map(task => (
+                            <TaskItem key={task.id} task={task} />
+                        ))}
+                    </ul>
+                </section>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE PRINCIPALE APP
+        // ==========================================
+        function App() {
+            return (
+                <div className="container py-5">
+                    <Header />
+                    <main className="bg-white p-4">
+                        <TaskForm />
+                        <TaskList />
+                    </main>
+                </div>
+            );
+        }
+
+        // ==========================================
+        // RENDER DELL'APPLICAZIONE
+        // ==========================================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

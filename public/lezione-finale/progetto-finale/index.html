@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Progetto Finale</title>
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS compilato da SASS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- React e ReactDOM da CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel per JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const STORAGE_KEY = 'taskManagerTasks';
+
+        // ==========================================
+        // COMPONENTE HEADER
+        // ==========================================
+        function Header() {
+            return (
+                <div className="header-section">
+                    <div className="header-content">
+                        <div className="header-icon">
+                            <i className="bi bi-check2-square"></i>
+                        </div>
+                        <div>
+                            <h1 className="header-title">Task Manager</h1>
+                            <p className="header-subtitle">Gestisci le tue attività in modo efficiente e professionale</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE FORM
+        // ==========================================
+        function TaskForm({ onAddTask }) {
+            const [inputValue, setInputValue] = useState('');
+            const [error, setError] = useState('');
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                
+                // Validazione: campo vuoto
+                if (inputValue.trim() === '') {
+                    setError('Inserisci un task valido');
+                    return;
+                }
+
+                // Validazione: lunghezza minima
+                if (inputValue.trim().length < 3) {
+                    setError('Il task deve contenere almeno 3 caratteri');
+                    return;
+                }
+
+                // Task valido - aggiungi
+                onAddTask(inputValue);
+                
+                // Reset form
+                setInputValue('');
+                setError('');
+            };
+
+            const handleInputChange = (e) => {
+                setInputValue(e.target.value);
+                // Rimuovi errore durante la digitazione
+                if (error) {
+                    setError('');
+                }
+            };
+
+            return (
+                <div className="task-form-section">
+                    <h3 className="section-title">Aggiungi nuovo task</h3>
+                    <form className="task-form" onSubmit={handleSubmit}>
+                        <div className="input-group">
+                            <input 
+                                type="text" 
+                                className={`custom-input ${error ? 'input-error' : ''}`}
+                                placeholder="Inserisci il tuo task..."
+                                value={inputValue}
+                                onChange={handleInputChange}
+                            />
+                            {error && <div className="error-message">{error}</div>}
+                        </div>
+                        <button type="submit" className="btn-custom btn-primary">
+                            <i className="bi bi-plus-circle"></i>
+                            <span>Aggiungi</span>
+                        </button>
+                    </form>
+                </div>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE STATISTICHE
+        // ==========================================
+        function Stats({ tasks }) {
+            const activeCount = tasks.filter(task => !task.completed).length;
+            const completedCount = tasks.filter(task => task.completed).length;
+            const totalCount = tasks.length;
+            const completionPercentage = totalCount > 0 
+                ? Math.round((completedCount / totalCount) * 100) 
+                : 0;
+
+            return (
+                <div className="stats-container">
+                    <div className="stat-card stat-primary">
+                        <div className="stat-icon-wrapper">
+                            <i className="bi bi-list-task"></i>
+                        </div>
+                        <div className="stat-content">
+                            <div className="stat-label">Task attivi</div>
+                            <div className="stat-value">{activeCount}</div>
+                        </div>
+                    </div>
+                    <div className="stat-card stat-success">
+                        <div className="stat-icon-wrapper">
+                            <i className="bi bi-check-circle"></i>
+                        </div>
+                        <div className="stat-content">
+                            <div className="stat-label">Task completati</div>
+                            <div className="stat-value">{completedCount}</div>
+                        </div>
+                    </div>
+                    <div className="stat-card stat-info">
+                        <div className="stat-icon-wrapper">
+                            <i className="bi bi-graph-up"></i>
+                        </div>
+                        <div className="stat-content">
+                            <div className="stat-label">Completamento</div>
+                            <div className="stat-value">{completionPercentage}%</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE SINGOLO TASK
+        // ==========================================
+        function TaskItem({ task, onToggle, onDelete }) {
+            return (
+                <div className={`task-card ${task.completed ? 'task-completed' : ''}`}>
+                    <div className="task-checkbox-wrapper">
+                        <input 
+                            className="custom-checkbox" 
+                            type="checkbox" 
+                            id={`task-${task.id}`}
+                            checked={task.completed}
+                            onChange={() => onToggle(task.id)}
+                        />
+                        <label htmlFor={`task-${task.id}`}></label>
+                    </div>
+                    <div className="task-text">
+                        {task.text}
+                    </div>
+                    <button 
+                        className="btn-custom btn-delete"
+                        onClick={() => onDelete(task.id)}
+                        title="Elimina task"
+                    >
+                        <i className="bi bi-trash"></i>
+                    </button>
+                </div>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE LISTA TASK
+        // ==========================================
+        function TaskList({ tasks, onToggle, onDelete, filter }) {
+            // Filtra i task in base al filtro selezionato
+            const filteredTasks = tasks.filter(task => {
+                if (filter === 'active') return !task.completed;
+                if (filter === 'completed') return task.completed;
+                return true; // 'all'
+            });
+
+            if (filteredTasks.length === 0) {
+                return (
+                    <div className="task-list-section">
+                        <h3 className="section-title">I tuoi task</h3>
+                        <div className="empty-state">
+                            <i className="bi bi-inbox"></i>
+                            <p>Nessun task presente</p>
+                            <small>
+                                {filter === 'all' && 'Aggiungi il tuo primo task per iniziare'}
+                                {filter === 'active' && 'Nessun task attivo al momento'}
+                                {filter === 'completed' && 'Nessun task completato ancora'}
+                            </small>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="task-list-section">
+                    <h3 className="section-title">
+                        I tuoi task 
+                        <span className="task-count"> ({filteredTasks.length})</span>
+                    </h3>
+                    <div className="task-list">
+                        {filteredTasks.map(task => (
+                            <TaskItem 
+                                key={task.id} 
+                                task={task}
+                                onToggle={onToggle}
+                                onDelete={onDelete}
+                            />
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE FILTRI
+        // ==========================================
+        function FilterButtons({ currentFilter, onFilterChange }) {
+            return (
+                <div className="filter-section">
+                    <button 
+                        className={`filter-btn ${currentFilter === 'all' ? 'active' : ''}`}
+                        onClick={() => onFilterChange('all')}
+                    >
+                        <i className="bi bi-list"></i>
+                        Tutti
+                    </button>
+                    <button 
+                        className={`filter-btn ${currentFilter === 'active' ? 'active' : ''}`}
+                        onClick={() => onFilterChange('active')}
+                    >
+                        <i className="bi bi-circle"></i>
+                        Attivi
+                    </button>
+                    <button 
+                        className={`filter-btn ${currentFilter === 'completed' ? 'active' : ''}`}
+                        onClick={() => onFilterChange('completed')}
+                    >
+                        <i className="bi bi-check-circle"></i>
+                        Completati
+                    </button>
+                </div>
+            );
+        }
+
+        // ==========================================
+        // COMPONENTE PRINCIPALE APP
+        // ==========================================
+        function App() {
+            // Carica task da localStorage
+            const loadTasksFromStorage = () => {
+                try {
+                    const savedTasks = localStorage.getItem(STORAGE_KEY);
+                    if (savedTasks) {
+                        return JSON.parse(savedTasks);
+                    }
+                } catch (error) {
+                    console.error('Errore nel caricamento dei task:', error);
+                }
+                // Task di esempio se non ci sono dati salvati
+                return [
+                    { id: 1, text: "Completare il corso di React", completed: false },
+                    { id: 2, text: "Studiare HTML e CSS", completed: true },
+                    { id: 3, text: "Implementare il design responsive", completed: false }
+                ];
+            };
+
+            // State
+            const [tasks, setTasks] = useState(loadTasksFromStorage);
+            const [filter, setFilter] = useState('all');
+
+            // Salva task in localStorage quando cambiano
+            useEffect(() => {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+                } catch (error) {
+                    console.error('Errore nel salvataggio dei task:', error);
+                }
+            }, [tasks]);
+
+            // Funzione per aggiungere un task
+            const addTask = (text) => {
+                const newTask = {
+                    id: Date.now(),
+                    text: text,
+                    completed: false
+                };
+                setTasks([...tasks, newTask]);
+            };
+
+            // Funzione per toggleare lo stato di completamento
+            const toggleTask = (id) => {
+                setTasks(tasks.map(task => 
+                    task.id === id 
+                        ? { ...task, completed: !task.completed }
+                        : task
+                ));
+            };
+
+            // Funzione per eliminare un task
+            const deleteTask = (id) => {
+                setTasks(tasks.filter(task => task.id !== id));
+            };
+
+            // Funzione per cancellare tutti i task
+            const clearAllTasks = () => {
+                if (window.confirm('Sei sicuro di voler eliminare tutti i task?')) {
+                    setTasks([]);
+                }
+            };
+
+            // Funzione per eliminare solo i task completati
+            const clearCompletedTasks = () => {
+                const completedCount = tasks.filter(t => t.completed).length;
+                if (completedCount > 0) {
+                    if (window.confirm(`Eliminare ${completedCount} task completati?`)) {
+                        setTasks(tasks.filter(task => !task.completed));
+                    }
+                }
+            };
+
+            return (
+                <div className="app-container">
+                    <div className="main-container">
+                        <Header />
+                        <div className="content-section">
+                            <div className="info-banner">
+                                <i className="bi bi-stars"></i>
+                                <span>Progetto finale completo - React, SASS, Bootstrap e localStorage!</span>
+                            </div>
+                            
+                            <TaskForm onAddTask={addTask} />
+                            <Stats tasks={tasks} />
+                            
+                            <FilterButtons 
+                                currentFilter={filter}
+                                onFilterChange={setFilter}
+                            />
+                            
+                            <TaskList 
+                                tasks={tasks}
+                                onToggle={toggleTask}
+                                onDelete={deleteTask}
+                                filter={filter}
+                            />
+                            
+                            {tasks.length > 0 && (
+                                <div className="actions-section">
+                                    <button 
+                                        className="btn-custom btn-secondary"
+                                        onClick={clearCompletedTasks}
+                                        disabled={tasks.filter(t => t.completed).length === 0}
+                                    >
+                                        <i className="bi bi-check-all"></i>
+                                        <span>Elimina completati</span>
+                                    </button>
+                                    <button 
+                                        className="btn-custom btn-danger"
+                                        onClick={clearAllTasks}
+                                    >
+                                        <i className="bi bi-trash"></i>
+                                        <span>Cancella tutto</span>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Render dell'applicazione
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
