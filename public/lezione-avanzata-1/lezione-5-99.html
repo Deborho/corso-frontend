@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progetto Finale - Todo List Modulare</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="lezione-5-99.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Progetto Finale - Todo List Modulare</h1>
+            <p>Applicazione completa con ES6 Modules, localStorage e best practices</p>
+        </div>
+
+        <div class="project-info">
+            <h2>Caratteristiche del Progetto</h2>
+            <ul>
+                <li><strong>Architettura MVC:</strong> Model, View, Controller separati in moduli ES6</li>
+                <li><strong>Persistenza:</strong> Salvataggio automatico in localStorage con JSON</li>
+                <li><strong>Immutabilità:</strong> Operazioni immutabili sugli array (map, filter)</li>
+                <li><strong>Event Delegation:</strong> Gestione efficiente degli eventi</li>
+                <li><strong>Destructuring & Spread:</strong> Sintassi moderna ES6+</li>
+                <li><strong>Arrow Functions:</strong> Funzioni concise e moderne</li>
+                <li><strong>Template Literals:</strong> Stringhe interpolate per HTML</li>
+            </ul>
+        </div>
+
+        <div class="project-structure">
+            <h3>📁 Struttura Moduli</h3>
+            <div class="file-tree">
+                <pre>lezione-5/
+├── lezione-5-99.html        (questa pagina)
+├── lezione-5-99.css         (stili)
+├── lezione-5-99.js          (entry point)
+└── modules/
+    ├── todoModel.js         (gestione dati + localStorage)
+    ├── todoView.js          (rendering interfaccia)
+    └── todoController.js    (coordinamento + eventi)</pre>
+            </div>
+        </div>
+
+        <div class="todo-app">
+            <div class="todo-header">
+                <h2>📝 My Todos</h2>
+                <div id="stats-container" class="stats-container"></div>
+            </div>
+
+            <div class="todo-input-container">
+                <input 
+                    type="text" 
+                    id="todo-input" 
+                    class="todo-input" 
+                    placeholder="Cosa devi fare oggi?"
+                    maxlength="200"
+                >
+                <button id="add-btn" class="btn-add">
+                    <span>+ Aggiungi</span>
+                </button>
+            </div>
+
+            <div class="todo-filters">
+                <button class="filter-btn active" data-filter="all">Tutti</button>
+                <button class="filter-btn" data-filter="active">Attivi</button>
+                <button class="filter-btn" data-filter="completed">Completati</button>
+                <button id="clear-completed" class="btn-clear">🗑️ Cancella Completati</button>
+            </div>
+
+            <div id="todo-list" class="todo-list">
+                <!-- Popolato dinamicamente da todoView.js -->
+            </div>
+        </div>
+
+        <div class="code-explanation">
+            <h3>💡 Concetti ES6+ Utilizzati</h3>
+            
+            <div class="concept-card">
+                <h4>1. ES6 Modules (Import/Export)</h4>
+                <div class="code-block">
+<pre>// todoModel.js
+export class TodoModel { /* ... */ }
+
+// todoController.js
+import { TodoModel } from './todoModel.js';
+import { TodoView } from './todoView.js';
+
+// lezione-5-99.js (entry point)
+import { initTodoApp } from './modules/todoController.js';</pre>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <h4>2. Class Syntax & Constructor</h4>
+                <div class="code-block">
+<pre>export class TodoModel {
+    constructor() {
+        this.STORAGE_KEY = 'todos_modular_app';
+        this.todos = this.loadFromStorage();
+    }
+    
+    getTodos() {
+        return this.todos;
+    }
+}</pre>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <h4>3. Arrow Functions & Array Methods</h4>
+                <div class="code-block">
+<pre>// find con arrow function
+const todo = this.todos.find(t => t.id === id);
+
+// filter per rimuovere
+this.todos = this.todos.filter(t => t.id !== id);
+
+// map per update immutabile
+this.todos = this.todos.map(t =>
+    t.id === id ? { ...t, completed: !t.completed } : t
+);</pre>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <h4>4. Destructuring & Spread Operator</h4>
+                <div class="code-block">
+<pre>// Destructuring in parametri
+const { success, todo } = this.model.addTodo(text);
+
+// Spread per immutabilità
+const newTodo = { ...todo, completed: !todo.completed };
+
+// Destructuring con alias
+const { num1, num2 } = getNumbers();</pre>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <h4>5. Template Literals & Interpolazione</h4>
+                <div class="code-block">
+<pre>// Multi-linea con espressioni
+this.todoList.innerHTML = todos.map(todo => `
+    &lt;div class="todo-item ${todo.completed ? 'completed' : ''}"&gt;
+        &lt;span&gt;${this.escapeHtml(todo.text)}&lt;/span&gt;
+    &lt;/div&gt;
+`).join('');</pre>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <h4>6. localStorage con JSON</h4>
+                <div class="code-block">
+<pre>// Salva
+saveToStorage() {
+    const jsonString = JSON.stringify(this.todos);
+    localStorage.setItem(this.STORAGE_KEY, jsonString);
+}
+
+// Carica
+loadFromStorage() {
+    const jsonString = localStorage.getItem(this.STORAGE_KEY);
+    return jsonString ? JSON.parse(jsonString) : [];
+}</pre>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <h4>7. Event Delegation</h4>
+                <div class="code-block">
+<pre>// Un solo listener per tutti i todo
+this.view.todoList.addEventListener('click', (e) => {
+    const target = e.target;
+    const id = parseInt(target.dataset.id);
+    
+    if (target.classList.contains('btn-delete')) {
+        this.handleDeleteTodo(id);
+    }
+});</pre>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <h4>8. Async/Await & Promises</h4>
+                <div class="code-block">
+<pre>// Handler asincrono
+async handleEditTodo(id) {
+    const todo = this.model.getTodos().find(t => t.id === id);
+    
+    // await per modal con Promise
+    const result = await this.view.showEditModal(todo);
+    
+    if (result.action === 'save') {
+        this.model.updateTodo(id, result.text);
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="architecture-info">
+            <h3>🎯 Architettura Moderna</h3>
+            <p>Questa architettura segue i principi dello sviluppo moderno:</p>
+            <ul>
+                <li><strong>TodoModel</strong> → Gestione dati e persistenza (Data Layer)</li>
+                <li><strong>TodoView</strong> → Rendering UI e presentazione (Presentation Layer)</li>
+                <li><strong>TodoController</strong> → Coordinamento e logica business (Logic Layer)</li>
+                <li><strong>Immutabilità</strong> → Previene side effects e semplifica debugging</li>
+                <li><strong>Moduli ES6</strong> → Separazione delle responsabilità (Separation of Concerns)</li>
+            </ul>
+            
+            <div class="code-block">
+<pre>// Struttura modulare del progetto:
+// │
+// ├── lezione-5-99.js (Entry point)
+// │   └── Inizializza l'applicazione
+// │
+// ├── modules/todoModel.js (Data)
+// │   ├── CRUD operations
+// │   ├── localStorage persistence
+// │   └── Data validation
+// │
+// ├── modules/todoView.js (UI)
+// │   ├── DOM manipulation
+// │   ├── Template rendering
+// │   └── User feedback
+// │
+// └── modules/todoController.js (Logic)
+//     ├── Event handling
+//     ├── Model-View coordination
+//     └── Business logic
+
+// Principi applicati:
+// - Single Responsibility Principle
+// - Immutable data structures
+// - Event-driven architecture
+// - Modular code organization
+            {todos.map(todo => (
+                &lt;TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} /&gt;
+            ))}
+        &lt;/div&gt;
+    );
+}</pre>
+            </div>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-10.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="/index.html" class="btn-nav">Home Corso</a>
+        </div>
+    </div>
+
+    <!-- IMPORTANTE: type="module" per import/export -->
+    <script type="module" src="lezione-5-99.js"></script>
+</body>
+</html>

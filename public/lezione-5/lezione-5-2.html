@@ -3,464 +3,554 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lezione 5.2 - Variabili e Tipi di Dato</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>5.2 - TypeScript</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Lezione 5.2 - Variabili e Tipi di Dato</h1>
-            <p>Dichiarazione variabili e tipi primitivi in JavaScript</p>
+            <h1>5.2 - TypeScript</h1>
+            <p>JavaScript con type safety per progetti scalabili</p>
         </div>
 
-        <h2>1. Dichiarazione di Variabili</h2>
+        <div class="teoria">
+            <h2>Obiettivi</h2>
+            <p>Comprendere come TypeScript aggiunge type safety a JavaScript e perché è fondamentale per progetti React scalabili.</p>
+        </div>
+
+        <h2>1. Cos'è TypeScript?</h2>
         
         <div class="teoria">
-            <p>In JavaScript esistono tre modi per dichiarare variabili: <code>var</code>, <code>let</code> e <code>const</code>.</p>
+            <p>TypeScript = JavaScript + Tipi</p>
             
-            <p><strong>Regola moderna:</strong> Usa sempre <code>const</code> per default. Usa <code>let</code> solo se il valore deve cambiare. Non usare mai <code>var</code>.</p>
-        </div>
-
-        <h3>1.1 const (Costante)</h3>
-        
-        <div class="codice">
-<pre>// const - Il valore non può essere riassegnato
-const nome = 'Mario';
-const età = 25;
-const PI = 3.14159;
-
-console.log(nome);  // Mario
-
-// ERRORE: Non puoi riassegnare una const
-// nome = 'Luigi';  // TypeError: Assignment to constant variable
-
-// ATTENZIONE: const non rende l'oggetto immutabile
-const persona = { nome: 'Mario', età: 25 };
-persona.età = 26;  // OK: Modifichi la proprietà
-console.log(persona.età);  // 26
-
-// ERRORE: Non puoi riassegnare l'oggetto
-// persona = { nome: 'Luigi' };  // TypeError</pre>
-        </div>
-        
-        <div class="teoria">
-            <p><strong>Quando usare const:</strong></p>
+            <h3>Vantaggi</h3>
             <ul>
-                <li>Valori che non cambiano mai</li>
-                <li>Riferimenti a oggetti e array (anche se le proprietà cambiano)</li>
-                <li>Funzioni e classi</li>
-                <li>Default per tutte le dichiarazioni (usa const finché non serve let)</li>
+                <li>✅ Errori rilevati <strong>prima</strong> dell'esecuzione</li>
+                <li>✅ Autocompletamento migliore nell'editor</li>
+                <li>✅ Refactoring sicuro</li>
+                <li>✅ Documentazione automatica del codice</li>
             </ul>
-        </div>
 
-        <h3>1.2 let (Variabile)</h3>
-        
-        <div class="codice">
-<pre>// let - Il valore può essere riassegnato
-let contatore = 0;
-contatore = 1;
-contatore = 2;
-console.log(contatore);  // 2
-
-let messaggio = 'Ciao';
-messaggio = 'Buongiorno';
-console.log(messaggio);  // Buongiorno
-
-// let può essere dichiarato senza valore iniziale
-let risultato;
-console.log(risultato);  // undefined
-risultato = 42;
-console.log(risultato);  // 42</pre>
-        </div>
-        
-        <div class="teoria">
-            <p><strong>Quando usare let:</strong></p>
-            <ul>
-                <li>Contatori in cicli (for, while)</li>
-                <li>Variabili che cambiano valore nel tempo</li>
-                <li>Valori che vengono riassegnati condizionalmente</li>
-            </ul>
-        </div>
-
-        <h3>1.3 var (Deprecato)</h3>
-        
-        <div class="codice">
-<pre>// var - Vecchia sintassi, NON USARE
-var vecchioStile = 'Non usare var';
-
-// Problemi con var:
-// 1. Function scope invece di block scope
-// 2. Può essere ridichiarato
-// 3. Viene "hoisted" in modo confuso
-
-// NON USARE VAR - Usa sempre const o let</pre>
-        </div>
-
-        <h2>2. Differenze tra let e const</h2>
-        
-        <table>
-            <tr>
-                <th>Caratteristica</th>
-                <th>const</th>
-                <th>let</th>
-            </tr>
-            <tr>
-                <td><strong>Riassegnazione</strong></td>
-                <td>No</td>
-                <td>Sì</td>
-            </tr>
-            <tr>
-                <td><strong>Dichiarazione senza valore</strong></td>
-                <td>No (errore)</td>
-                <td>Sì (undefined)</td>
-            </tr>
-            <tr>
-                <td><strong>Block Scope</strong></td>
-                <td>Sì</td>
-                <td>Sì</td>
-            </tr>
-            <tr>
-                <td><strong>Quando usare</strong></td>
-                <td>Default (90% dei casi)</td>
-                <td>Solo se serve riassegnare</td>
-            </tr>
-        </table>
-
-        <h2>3. Tipi di Dato Primitivi</h2>
-        
-        <div class="teoria">
-            <p>JavaScript ha 7 tipi di dato primitivi:</p>
-        </div>
-
-        <h3>3.1 String (Stringa)</h3>
-        
-        <div class="codice">
-<pre>// String - Testo tra apici singoli, doppi o backticks
-const nome = 'Mario';
-const cognome = "Rossi";
-const saluto = `Ciao ${nome}`;  // Template literal
-
-// Proprietà e metodi comuni
-console.log(nome.length);        // 5
-console.log(nome.toUpperCase()); // MARIO
-console.log(nome.toLowerCase()); // mario
-
-// Concatenazione
-const nomeCompleto = nome + ' ' + cognome;  // Mario Rossi
-const nomeCompleto2 = `${nome} ${cognome}`; // Mario Rossi (preferito)</pre>
-        </div>
-
-        <h3>3.2 Number (Numero)</h3>
-        
-        <div class="codice">
-<pre>// Number - Tutti i numeri in JavaScript (interi e decimali)
-const età = 25;
-const prezzo = 19.99;
-const negativo = -10;
-const grande = 1e6;  // 1000000 (notazione scientifica)
-
-// Operazioni matematiche
-const somma = 10 + 5;        // 15
-const differenza = 10 - 5;   // 5
-const prodotto = 10 * 5;     // 50
-const divisione = 10 / 5;    // 2
-const resto = 10 % 3;        // 1 (modulo)
-const potenza = 2 ** 3;      // 8 (2³)
-
-// Valori speciali
-const infinito = Infinity;
-const nonNumero = NaN;  // Not a Number
-console.log(typeof NaN);  // "number" (stranamente!)</pre>
-        </div>
-
-        <h3>3.3 Boolean (Booleano)</h3>
-        
-        <div class="codice">
-<pre>// Boolean - true o false
-const isAttivo = true;
-const isCompletato = false;
-const haEmail = true;
-
-// Risultato di confronti
-const maggiorenne = età >= 18;  // true o false
-const uguale = 5 === 5;         // true
-const diverso = 5 !== 10;       // true
-
-// Usati in condizioni
-if (isAttivo) {
-    console.log('Attivo!');
-}</pre>
-        </div>
-
-        <h3>3.4 undefined</h3>
-        
-        <div class="codice">
-<pre>// undefined - Variabile dichiarata ma non inizializzata
-let variabileNonInizializzata;
-console.log(variabileNonInizializzata);  // undefined
-
-// Funzione senza return
-function nessunReturn() {
-    // Non ha return
+            <pre><code>// JavaScript - errore scoperto a runtime
+function somma(a, b) {
+    return a + b;
 }
-const risultato = nessunReturn();
-console.log(risultato);  // undefined
+somma(5, "10");  // "510" 😱
 
-// Proprietà inesistente
-const persona = { nome: 'Mario' };
-console.log(persona.cognome);  // undefined</pre>
+// TypeScript - errore rilevato subito
+function somma(a: number, b: number): number {
+    return a + b;
+}
+somma(5, "10");  // ❌ Errore: "10" non è un number</code></pre>
         </div>
 
-        <h3>3.5 null</h3>
-        
-        <div class="codice">
-<pre>// null - Assenza intenzionale di valore
-let utente = null;  // Nessun utente al momento
+        <h2>2. Tipi Primitivi (5 min)</h2>
 
-// Differenza tra null e undefined
-let nonInizializzato;      // undefined (non ancora valorizzato)
-let esplicitamenteVuoto = null;  // null (intenzionalmente vuoto)
-
-// null è spesso usato per "resettare" variabili
-let elementoSelezionato = document.querySelector('.elemento');
-elementoSelezionato = null;  // Nessun elemento selezionato</pre>
-        </div>
-
-        <h3>3.6 Symbol e BigInt</h3>
-        
-        <div class="codice">
-<pre>// Symbol - Identificatore unico (avanzato, raramente usato)
-const id = Symbol('id');
-
-// BigInt - Numeri interi molto grandi (ES2020)
-const numeroGrande = 9007199254740991n;
-
-// Non approfondiremo questi tipi in questo corso</pre>
-        </div>
-
-        <h2>4. Operatore typeof</h2>
-        
-        <div class="codice">
-<pre>// typeof - Restituisce il tipo di una variabile
-console.log(typeof 'Mario');      // "string"
-console.log(typeof 42);           // "number"
-console.log(typeof true);         // "boolean"
-console.log(typeof undefined);    // "undefined"
-console.log(typeof null);         // "object" (bug storico di JavaScript!)
-console.log(typeof {});           // "object"
-console.log(typeof []);           // "object"
-console.log(typeof function(){}); // "function"
-
-// Uso pratico
-const valore = 42;
-if (typeof valore === 'number') {
-    console.log('È un numero!');
-}</pre>
-        </div>
-
-        <h2>5. Naming Conventions</h2>
-        
-        <div class="codice">
-<pre>// camelCase per variabili (standard JavaScript)
-const nomeUtente = 'Mario';
-const numeroDiTelefono = '1234567890';
-const isAttivo = true;
-
-// Nomi descrittivi
-const btn = document.querySelector('button');  // OK (abbreviazione chiara)
-const b = document.querySelector('button');    // MALE (troppo corto)
-
-// Boolean: inizia con is, has, can
-const isLoading = true;
-const hasPermission = false;
-const canEdit = true;
-
-// Costanti globali: SCREAMING_SNAKE_CASE
-const MAX_ATTEMPTS = 3;
-const API_URL = 'https://api.example.com';
-
-// Nomi plurali per array
-const utenti = ['Mario', 'Luigi', 'Peach'];
-const numeri = [1, 2, 3, 4, 5];</pre>
-        </div>
-
-        <h2>6. Block Scope</h2>
-        
         <div class="teoria">
-            <p><strong>Block scope</strong> significa che le variabili dichiarate con <code>let</code> e <code>const</code> sono accessibili solo nel blocco <code>{}</code> in cui sono dichiarate.</p>
-        </div>
-        
-        <div class="codice">
-<pre>// Variabile globale
-const globale = 'Accessibile ovunque';
+            <pre><code>// Tipi base
+let nome: string = "Mario";
+let eta: number = 25;
+let attivo: boolean = true;
 
-if (true) {
-    // Variabile locale al blocco if
-    const locale = 'Solo qui dentro';
-    console.log(globale);  // Funziona
-    console.log(locale);   // Funziona
+// Type inference (TypeScript indovina il tipo)
+let cognome = "Rossi";  // TypeScript sa che è string
+// cognome = 123;       // ❌ Errore
+
+// any: evita il type checking (usalo raramente!)
+let qualcosa: any = "testo";
+qualcosa = 123;  // ✅ OK ma perdiamo i benefici di TS
+
+// unknown: versione sicura di any
+let incognito: unknown = "dati";
+// console.log(incognito.toUpperCase());  // ❌ Errore
+if (typeof incognito === "string") {
+    console.log(incognito.toUpperCase());  // ✅ OK dopo il check
 }
 
-// console.log(locale);  // ERRORE: locale is not defined
+// void: per funzioni che non ritornano nulla
+function log(messaggio: string): void {
+    console.log(messaggio);
+}
 
-// Scope annidati
-function esterna() {
-    const varEsterna = 'Esterna';
-    
-    function interna() {
-        const varInterna = 'Interna';
-        console.log(varEsterna);  // Funziona (accede a scope esterno)
-        console.log(varInterna);  // Funziona
+// null e undefined
+let nullo: null = null;
+let indefinito: undefined = undefined;</code></pre>
+        </div>
+
+        <h2>3. Array e Tuple (4 min)</h2>
+
+        <div class="teoria">
+            <pre><code>// Array
+let numeri: number[] = [1, 2, 3];
+let nomi: Array&lt;string&gt; = ["Anna", "Luca"];
+
+// Array di oggetti
+let utenti: { nome: string; eta: number }[] = [
+    { nome: "Mario", eta: 25 },
+    { nome: "Laura", eta: 30 }
+];
+
+// Tuple: array con lunghezza e tipi fissi
+let coordinate: [number, number] = [10, 20];
+let persona: [string, number] = ["Mario", 25];
+
+// Tuple con elementi opzionali e rest
+let dati: [string, number, ...boolean[]] = ["test", 1, true, false];
+
+// ❌ Errori comuni con tuple
+coordinate = [10, 20, 30];  // Errore: troppi elementi
+coordinate = [10, "20"];    // Errore: tipo sbagliato</code></pre>
+        </div>
+
+        <h2>4. Oggetti e Interfacce (8 min)</h2>
+
+        <div class="teoria">
+            <h3>Type Annotations per Oggetti</h3>
+            <pre><code>// Oggetto con tipo inline
+let utente: { nome: string; eta: number } = {
+    nome: "Mario",
+    eta: 25
+};
+
+// Proprietà opzionali con ?
+let config: { host: string; port?: number } = {
+    host: "localhost"
+    // port è opzionale
+};
+
+// Proprietà readonly
+let punto: { readonly x: number; readonly y: number } = {
+    x: 10,
+    y: 20
+};
+// punto.x = 30;  // ❌ Errore: readonly</code></pre>
+
+            <h3>Interfacce</h3>
+            <pre><code>// Definire interfacce riutilizzabili
+interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+    eta?: number;  // opzionale
+}
+
+const utente1: Utente = {
+    id: 1,
+    nome: "Mario",
+    email: "mario@example.com"
+};
+
+// Estendere interfacce
+interface Admin extends Utente {
+    ruolo: string;
+    permessi: string[];
+}
+
+const admin: Admin = {
+    id: 2,
+    nome: "Laura",
+    email: "laura@example.com",
+    ruolo: "superadmin",
+    permessi: ["read", "write", "delete"]
+};
+
+// Index signatures (chiavi dinamiche)
+interface Dizionario {
+    [chiave: string]: number;
+}
+
+const punteggi: Dizionario = {
+    mario: 100,
+    laura: 95,
+    luca: 88
+};</code></pre>
+        </div>
+
+        <h2>5. Union e Intersection Types (5 min)</h2>
+
+        <div class="teoria">
+            <h3>Union Types (OR)</h3>
+            <pre><code>// Può essere uno O l'altro
+let id: number | string;
+id = 123;      // ✅ OK
+id = "abc";    // ✅ OK
+// id = true;  // ❌ Errore
+
+// Funzione con union types
+function stampa(valore: string | number) {
+    if (typeof valore === "string") {
+        console.log(valore.toUpperCase());
+    } else {
+        console.log(valore.toFixed(2));
     }
-    
-    interna();
-    // console.log(varInterna);  // ERRORE: non accessibile qui
 }
 
-// Cicli for
-for (let i = 0; i < 3; i++) {
-    console.log(i);  // 0, 1, 2
+// Union di literal types
+type Direzione = "su" | "giu" | "sinistra" | "destra";
+let direzione: Direzione = "su";  // ✅ OK
+// direzione = "diagonale";       // ❌ Errore
+
+// Union di interfacce
+interface Cane {
+    tipo: "cane";
+    abbaia: () => void;
 }
-// console.log(i);  // ERRORE: i non è definito fuori dal ciclo</pre>
+
+interface Gatto {
+    tipo: "gatto";
+    miagola: () => void;
+}
+
+type Animale = Cane | Gatto;
+
+function faiVerso(animale: Animale) {
+    if (animale.tipo === "cane") {
+        animale.abbaia();  // TypeScript sa che è un Cane
+    } else {
+        animale.miagola(); // TypeScript sa che è un Gatto
+    }
+}</code></pre>
+
+            <h3>Intersection Types (AND)</h3>
+            <pre><code>// Combina più tipi insieme
+interface HasName {
+    nome: string;
+}
+
+interface HasAge {
+    eta: number;
+}
+
+type Persona = HasName & HasAge;
+
+const persona: Persona = {
+    nome: "Mario",
+    eta: 25
+    // Deve avere ENTRAMBE le proprietà
+};</code></pre>
         </div>
 
-        <h2>7. Esempio Pratico Completo</h2>
-        
-        <div class="esempio">
-            <p>Esempio interattivo con variabili e tipi di dato:</p>
-            
-            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
-                <input type="text" id="input-nome" placeholder="Inserisci nome" style="padding: 8px; margin-bottom: 10px; width: 200px;">
-                <input type="number" id="input-eta" placeholder="Inserisci età" style="padding: 8px; margin-bottom: 10px; width: 200px;">
-                <button id="btn-mostra" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; display: block; margin-top: 10px;">Mostra Informazioni</button>
-                <div id="risultato" style="margin-top: 15px; padding: 15px; background: #e9ecef; border-radius: 4px; display: none;"></div>
-            </div>
-            
-            <div class="codice">
-<pre>&lt;input type="text" id="input-nome" placeholder="Inserisci nome"&gt;
-&lt;input type="number" id="input-eta" placeholder="Inserisci età"&gt;
-&lt;button id="btn-mostra"&gt;Mostra Informazioni&lt;/button&gt;
-&lt;div id="risultato"&gt;&lt;/div&gt;
+        <h2>6. Type Aliases (3 min)</h2>
 
-&lt;script&gt;
-    const inputNome = document.getElementById('input-nome');
-    const inputEta = document.getElementById('input-eta');
-    const btnMostra = document.getElementById('btn-mostra');
-    const risultato = document.getElementById('risultato');
-    
-    btnMostra.addEventListener('click', function() {
-        // Leggi valori dagli input
-        const nome = inputNome.value;
-        const età = parseInt(inputEta.value);
-        
-        // Controlla se i dati sono validi
-        if (!nome || isNaN(età)) {
-            risultato.textContent = 'Inserisci nome ed età validi!';
-            risultato.style.display = 'block';
-            return;
-        }
-        
-        // Determina se maggiorenne
-        const isMaggiorenne = età >= 18;
-        const statusEtà = isMaggiorenne ? 'maggiorenne' : 'minorenne';
-        
-        // Mostra risultato
-        risultato.innerHTML = `
-            &lt;strong&gt;Nome:&lt;/strong&gt; ${nome} (tipo: ${typeof nome})&lt;br&gt;
-            &lt;strong&gt;Età:&lt;/strong&gt; ${età} (tipo: ${typeof età})&lt;br&gt;
-            &lt;strong&gt;Status:&lt;/strong&gt; ${statusEtà} (tipo: ${typeof isMaggiorenne})
-        `;
-        risultato.style.display = 'block';
-        
-        console.log('Nome:', nome);
-        console.log('Età:', età);
-        console.log('Maggiorenne:', isMaggiorenne);
-    });
-&lt;/script&gt;</pre>
-            </div>
-            
-            <script>
-                const inputNome = document.getElementById('input-nome');
-                const inputEta = document.getElementById('input-eta');
-                const btnMostra = document.getElementById('btn-mostra');
-                const risultato = document.getElementById('risultato');
-                
-                btnMostra.addEventListener('click', function() {
-                    const nome = inputNome.value;
-                    const età = parseInt(inputEta.value);
-                    
-                    if (!nome || isNaN(età)) {
-                        risultato.textContent = 'Inserisci nome ed età validi!';
-                        risultato.style.display = 'block';
-                        return;
-                    }
-                    
-                    const isMaggiorenne = età >= 18;
-                    const statusEtà = isMaggiorenne ? 'maggiorenne' : 'minorenne';
-                    
-                    risultato.innerHTML = `
-                        <strong>Nome:</strong> ${nome} (tipo: ${typeof nome})<br>
-                        <strong>Età:</strong> ${età} (tipo: ${typeof età})<br>
-                        <strong>Status:</strong> ${statusEtà} (tipo: ${typeof isMaggiorenne})
-                    `;
-                    risultato.style.display = 'block';
-                    
-                    console.log('Nome:', nome);
-                    console.log('Età:', età);
-                    console.log('Maggiorenne:', isMaggiorenne);
-                });
-            </script>
-        </div>
-
-        <h2>8. Note Importanti</h2>
-        
         <div class="teoria">
+            <pre><code>// Creare alias per tipi complessi
+type ID = number | string;
+type Callback = (data: string) => void;
+
+// Riutilizzare i tipi
+let userId: ID = 123;
+let productId: ID = "abc-456";
+
+function fetchData(id: ID, callback: Callback) {
+    // ...
+}
+
+// Type alias vs Interface
+// Preferisci interface per oggetti, type per union/primitive
+
+// ✅ Interface per oggetti
+interface Utente {
+    nome: string;
+}
+
+// ✅ Type per union
+type Status = "loading" | "success" | "error";
+
+// ✅ Type per funzioni
+type Operation = (a: number, b: number) => number;</code></pre>
+        </div>
+
+        <h2>7. Funzioni in TypeScript (6 min)</h2>
+
+        <div class="teoria">
+            <pre><code>// Tipizzare parametri e return
+function somma(a: number, b: number): number {
+    return a + b;
+}
+
+// Parametri opzionali
+function saluta(nome: string, titolo?: string): string {
+    return titolo ? `${titolo} ${nome}` : nome;
+}
+
+// Parametri con default
+function creaUtente(nome: string, ruolo: string = "user") {
+    return { nome, ruolo };
+}
+
+// Rest parameters
+function sommaMultipla(...numeri: number[]): number {
+    return numeri.reduce((tot, n) => tot + n, 0);
+}
+
+// Function type
+type MathOperation = (a: number, b: number) => number;
+
+const moltiplica: MathOperation = (a, b) => a * b;
+const dividi: MathOperation = (a, b) => a / b;
+
+// Overloading (firme multiple)
+function elabora(input: string): string;
+function elabora(input: number): number;
+function elabora(input: string | number): string | number {
+    if (typeof input === "string") {
+        return input.toUpperCase();
+    }
+    return input * 2;
+}</code></pre>
+        </div>
+
+        <h2>8. Generics (6 min)</h2>
+
+        <div class="teoria">
+            <p>I generics permettono di creare componenti riutilizzabili che funzionano con diversi tipi.</p>
+
+            <pre><code>// Senza generics (duplicazione)
+function primoElementoString(arr: string[]): string {
+    return arr[0];
+}
+
+function primoElementoNumber(arr: number[]): number {
+    return arr[0];
+}
+
+// ✅ Con generics (riutilizzabile)
+function primoElemento&lt;T&gt;(arr: T[]): T {
+    return arr[0];
+}
+
+const primo = primoElemento([1, 2, 3]);        // number
+const secondo = primoElemento(["a", "b"]);     // string
+
+// Generics con interfacce
+interface Risposta&lt;T&gt; {
+    data: T;
+    status: number;
+    message: string;
+}
+
+const utenti: Risposta&lt;Utente[]&gt; = {
+    data: [{ id: 1, nome: "Mario", email: "mario@example.com" }],
+    status: 200,
+    message: "OK"
+};
+
+// Constraints (vincoli)
+interface HasLength {
+    length: number;
+}
+
+function logLength&lt;T extends HasLength&gt;(item: T): void {
+    console.log(item.length);
+}
+
+logLength("hello");      // ✅ string ha length
+logLength([1, 2, 3]);    // ✅ array ha length
+// logLength(123);       // ❌ number non ha length
+
+// Esempio pratico: wrapper per Promise
+async function fetchJSON&lt;T&gt;(url: string): Promise&lt;T&gt; {
+    const response = await fetch(url);
+    return response.json();
+}
+
+// TypeScript sa esattamente che tipo ritorna!
+interface User {
+    id: number;
+    name: string;
+}
+
+const utente = await fetchJSON&lt;User&gt;("/api/user/1");
+console.log(utente.name);  // ✅ Autocompletamento!</code></pre>
+        </div>
+
+        <h2>9. Type Guards (3 min)</h2>
+
+        <div class="teoria">
+            <pre><code>// typeof guard
+function elabora(input: string | number) {
+    if (typeof input === "string") {
+        return input.toUpperCase();  // TS sa che è string
+    }
+    return input * 2;  // TS sa che è number
+}
+
+// instanceof guard
+class Cane {
+    abbaia() { console.log("Bau!"); }
+}
+
+class Gatto {
+    miagola() { console.log("Miao!"); }
+}
+
+function faiVerso(animale: Cane | Gatto) {
+    if (animale instanceof Cane) {
+        animale.abbaia();
+    } else {
+        animale.miagola();
+    }
+}
+
+// Custom type guard
+function isString(value: unknown): value is string {
+    return typeof value === "string";
+}
+
+function stampa(input: unknown) {
+    if (isString(input)) {
+        console.log(input.toUpperCase());  // TS sa che è string
+    }
+}
+
+// in operator
+type Pesce = { nuota: () => void };
+type Uccello = { vola: () => void };
+
+function muovi(animale: Pesce | Uccello) {
+    if ("nuota" in animale) {
+        animale.nuota();
+    } else {
+        animale.vola();
+    }
+}</code></pre>
+        </div>
+
+        <h2>10. Utility Types (React-Relevant) (3 min)</h2>
+
+        <div class="teoria">
+            <pre><code>interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+    password: string;
+}
+
+// Partial: rende tutte le proprietà opzionali
+type UpdateUtente = Partial&lt;Utente&gt;;
+const aggiorna: UpdateUtente = {
+    nome: "Nuovo nome"  // Solo ciò che vogliamo aggiornare
+};
+
+// Pick: seleziona solo alcune proprietà
+type UtentePublic = Pick&lt;Utente, "id" | "nome" | "email"&gt;;
+// { id: number; nome: string; email: string; }
+
+// Omit: esclude alcune proprietà
+type UtenteSenzaPassword = Omit&lt;Utente, "password"&gt;;
+// { id: number; nome: string; email: string; }
+
+// Readonly: rende tutto readonly
+type UtenteImmutabile = Readonly&lt;Utente&gt;;
+const utente: UtenteImmutabile = {
+    id: 1,
+    nome: "Mario",
+    email: "mario@example.com",
+    password: "secret"
+};
+// utente.nome = "Luigi";  // ❌ Errore
+
+// Record: oggetto con chiavi specifiche
+type Ruoli = "admin" | "user" | "guest";
+type Permessi = Record&lt;Ruoli, string[]&gt;;
+
+const permessi: Permessi = {
+    admin: ["read", "write", "delete"],
+    user: ["read", "write"],
+    guest: ["read"]
+};
+
+// ReturnType: estrae il tipo di ritorno
+function creaUtente() {
+    return { id: 1, nome: "Mario" };
+}
+
+type Utente = ReturnType&lt;typeof creaUtente&gt;;
+// { id: number; nome: string; }</code></pre>
+        </div>
+
+        <h2>11. Setup TypeScript (4 min)</h2>
+
+        <div class="teoria">
+            <pre><code>// Installazione
+npm install -D typescript
+
+// Creare tsconfig.json
+npx tsc --init
+
+// tsconfig.json essenziale
+{
+    "compilerOptions": {
+        "target": "ES2020",           // JavaScript target
+        "module": "ESNext",           // Sistema moduli
+        "lib": ["ES2020", "DOM"],     // Librerie disponibili
+        "jsx": "react-jsx",           // Per React
+        "strict": true,               // Tutti i check strict
+        "esModuleInterop": true,      // Import compatibili
+        "skipLibCheck": true,         // Skip check node_modules
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,    // Import JSON
+        "isolatedModules": true,      // Per bundler
+        "noEmit": true                // Non generare .js (usa bundler)
+    },
+    "include": ["src"]
+}
+
+// Compilare
+npx tsc                    // Compila tutto
+npx tsc --watch            // Watch mode</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h2>Riepilogo TypeScript</h2>
+            <table>
+                <tr>
+                    <th>Concetto</th>
+                    <th>Uso in React</th>
+                </tr>
+                <tr>
+                    <td>Tipi primitivi</td>
+                    <td>Props e state base</td>
+                </tr>
+                <tr>
+                    <td>Interfacce</td>
+                    <td>Tipizzare props dei componenti</td>
+                </tr>
+                <tr>
+                    <td>Union types</td>
+                    <td>Props con valori multipli</td>
+                </tr>
+                <tr>
+                    <td>Generics</td>
+                    <td>Componenti riutilizzabili, hooks custom</td>
+                </tr>
+                <tr>
+                    <td>Utility types</td>
+                    <td>Manipolare tipi di props</td>
+                </tr>
+                <tr>
+                    <td>Type guards</td>
+                    <td>Gestire props opzionali</td>
+                </tr>
+            </table>
+
+            <h3>Regole d'Oro per TypeScript con React</h3>
             <ul>
-                <li><strong>Usa sempre const:</strong> Come default, passa a let solo se necessario</li>
-                <li><strong>Mai var:</strong> È sintassi obsoleta con problemi di scope</li>
-                <li><strong>typeof null:</strong> Restituisce "object" per un bug storico di JavaScript</li>
-                <li><strong>NaN è di tipo number:</strong> Anche se significa "Not a Number"</li>
-                <li><strong>undefined vs null:</strong> undefined = non valorizzato, null = intenzionalmente vuoto</li>
-                <li><strong>Block scope:</strong> Le variabili esistono solo nel loro blocco {}</li>
-                <li><strong>Nomi descrittivi:</strong> Il codice si legge più di quanto si scrive</li>
+                <li>Tipizza sempre le props dei componenti</li>
+                <li>Usa interfacce per props complesse</li>
+                <li>Sfrutta type inference dove possibile</li>
+                <li>Evita <code>any</code> (usa <code>unknown</code> se necessario)</li>
+                <li>Usa utility types per DRY (Don't Repeat Yourself)</li>
             </ul>
         </div>
 
-        <h2>9. Best Practices Moderne</h2>
-        
         <div class="teoria">
-            <p><strong>Perché const/let sono fondamentali nello sviluppo moderno:</strong></p>
+            <h2>Navigazione</h2>
             <ul>
-                <li><strong>Immutabilità:</strong> const previene riassegnazioni accidentali</li>
-                <li><strong>Chiarezza del codice:</strong> Indica chiaramente l'intento del programmatore</li>
-                <li><strong>Block scope:</strong> let limita la visibilità delle variabili</li>
-                <li><strong>Prevenzione errori:</strong> Il compilatore segnala tentativi di riassegnazione</li>
-                <li><strong>Standard moderno:</strong> Usato in tutto il codice JavaScript ES6+</li>
+                <li><a href="lezione-5-1.html">← 5.1 - JavaScript ES6+</a></li>
+                <li><a href="index.html">Torna all'Indice Lezione 5</a></li>
+                <li><a href="lezione-5-3.html">5.3 - React Fondamentale →</a></li>
             </ul>
-            
-            <p>Esempio di codice moderno:</p>
-        </div>
-        
-        <div class="codice">
-<pre>// Esempio JavaScript moderno
-function saluta({ nome, età }) {
-    const messaggio = `Ciao ${nome}, hai ${età} anni`;
-    const isMaggiorenne = età >= 18;
-    
-    const elemento = document.createElement('div');
-    elemento.innerHTML = `
-        <p>${messaggio}</p>
-        <p>${isMaggiorenne ? 'Maggiorenne' : 'Minorenne'}</p>
-    `;
-    
-    return elemento;
-};</pre>
-        </div>
-
-        <div class="navigazione">
-            <a href="lezione-5-1.html" class="btn-nav">Lezione Precedente</a>
-            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
-            <a href="lezione-5-3.html" class="btn-nav">Lezione Successiva</a>
         </div>
     </div>
 </body>

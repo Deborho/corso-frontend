@@ -3,443 +3,780 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lezione 5.3 - Operatori e Template Literals</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>5.3 - React</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Lezione 5.3 - Operatori e Template Literals</h1>
-            <p>Operatori matematici, di confronto, logici e string interpolation</p>
-        </div>
-
-        <h2>1. Operatori Aritmetici</h2>
-        
-        <div class="codice">
-<pre>// Operatori aritmetici base
-const a = 10;
-const b = 3;
-
-const somma = a + b;          // 13
-const differenza = a - b;     // 7
-const prodotto = a * b;       // 30
-const divisione = a / b;      // 3.333...
-const resto = a % b;          // 1 (modulo - resto della divisione)
-const potenza = a ** b;       // 1000 (10³)
-
-console.log('10 + 3 =', somma);
-console.log('10 - 3 =', differenza);
-console.log('10 * 3 =', prodotto);
-console.log('10 / 3 =', divisione);
-console.log('10 % 3 =', resto);
-console.log('10 ** 3 =', potenza);
-
-// Operatore unario
-const numero = 5;
-const negativo = -numero;     // -5
-const positivo = +numero;     // 5</pre>
-        </div>
-
-        <h2>2. Operatori di Assegnamento</h2>
-        
-        <div class="codice">
-<pre>// Assegnamento base
-let x = 10;
-
-// Assegnamento con operazione
-x += 5;   // x = x + 5;  → 15
-x -= 3;   // x = x - 3;  → 12
-x *= 2;   // x = x * 2;  → 24
-x /= 4;   // x = x / 4;  → 6
-x %=  5;  // x = x % 5;  → 1
-x **= 3;  // x = x ** 3; → 1
-
-console.log(x);  // 1
-
-// Incremento e decremento
-let contatore = 0;
-contatore++;  // contatore = contatore + 1; → 1
-contatore--;  // contatore = contatore - 1; → 0
-
-// Pre-incremento vs Post-incremento
-let n = 5;
-let risultato1 = n++;  // risultato1 = 5, poi n = 6 (post-incremento)
-let m = 5;
-let risultato2 = ++m;  // m = 6, poi risultato2 = 6 (pre-incremento)</pre>
-        </div>
-
-        <h2>3. Operatori di Confronto</h2>
-        
-        <div class="codice">
-<pre>// Uguaglianza e disuguaglianza
-const uguale = 5 == 5;          // true
-const diverso = 5 != 3;         // true
-
-// Uguaglianza stretta (controlla anche il tipo)
-const ugualeStretto = 5 === 5;  // true
-const ugualeStretto2 = 5 === '5';  // false (numero vs stringa)
-
-// IMPORTANTE: Usa sempre === e !== invece di == e !=
-console.log(5 == '5');   // true (converte la stringa!)
-console.log(5 === '5');  // false (tipi diversi)
-
-console.log(null == undefined);   // true
-console.log(null === undefined);  // false
-
-// Operatori relazionali
-const maggiore = 10 > 5;           // true
-const minore = 10 < 5;             // false
-const maggioreUguale = 10 >= 10;   // true
-const minoreUguale = 5 <= 10;      // true
-
-// Confronto tra stringhe (ordine alfabetico)
-console.log('a' < 'b');      // true
-console.log('Mario' < 'Luigi');  // false (M viene dopo L)</pre>
+            <h1>5.3 - React</h1>
+            <p>Costruire interfacce utente con componenti riutilizzabili</p>
         </div>
 
         <div class="teoria">
-            <p><strong>Regola d'oro:</strong> Usa sempre <code>===</code> e <code>!==</code> per evitare conversioni implicite di tipo.</p>
+            <h2>Obiettivi</h2>
+            <p>Costruire interfacce utente interattive con React applicando JavaScript ES6+ e TypeScript.</p>
         </div>
 
-        <h2>4. Operatori Logici</h2>
-        
-        <div class="codice">
-<pre>// AND logico (&&) - true solo se entrambi true
-const tuttiTrue = true && true;      // true
-const almenoUnoFalse = true && false;  // false
-
-// OR logico (||) - true se almeno uno è true
-const almenoUnoTrue = true || false;   // true
-const tuttiFalse = false || false;     // false
-
-// NOT logico (!) - inverte il valore
-const nonTrue = !true;    // false
-const nonFalse = !false;  // true
-
-// Esempi pratici
-const età = 25;
-const haPatente = true;
-
-const puòGuidare = età >= 18 && haPatente;  // true
-const èMinorenne = età < 18;  // false
-const nonPuòGuidare = !puòGuidare;  // false
-
-// Combinazioni complesse
-const adultoConPatente = (età >= 18 && età < 65) && haPatente;
-const accessoNegato = età < 18 || !haPatente;</pre>
-        </div>
-
-        <h2>5. Template Literals (Backticks)</h2>
+        <h2>1. Cos'è React?</h2>
         
         <div class="teoria">
-            <p>I <strong>template literals</strong> usano backticks <code>`</code> invece di apici normali e permettono:</p>
+            <p>React è una libreria JavaScript per costruire interfacce utente basata su <strong>componenti</strong>.</p>
+
+            <h3>Concetti Chiave</h3>
             <ul>
-                <li>String interpolation con <code>${}</code></li>
-                <li>Stringhe multi-linea</li>
-                <li>Espressioni JavaScript dentro le stringhe</li>
+                <li>✅ <strong>Componenti</strong>: Blocchi riutilizzabili di UI</li>
+                <li>✅ <strong>JSX</strong>: Sintassi HTML-like in JavaScript</li>
+                <li>✅ <strong>State</strong>: Dati che cambiano nel tempo</li>
+                <li>✅ <strong>Props</strong>: Dati passati da genitore a figlio</li>
+                <li>✅ <strong>Virtual DOM</strong>: Aggiornamenti efficienti</li>
             </ul>
-        </div>
-        
-        <div class="codice">
-<pre>// Stringa normale vs Template Literal
-const nome = 'Mario';
-const età = 25;
 
-// Modo vecchio (concatenazione)
-const saluto1 = 'Ciao, mi chiamo ' + nome + ' e ho ' + età + ' anni.';
-
-// Modo moderno (template literal)
-const saluto2 = `Ciao, mi chiamo ${nome} e ho ${età} anni.`;
-
-console.log(saluto2);  // Ciao, mi chiamo Mario e ho 25 anni.
-
-// Espressioni dentro ${}
-const prezzo = 100;
-const sconto = 20;
-const prezzoFinale = `Prezzo finale: ${prezzo - sconto}€`;
-console.log(prezzoFinale);  // Prezzo finale: 80€
-
-// Operazioni complesse
-const x = 10;
-const y = 5;
-const calcolo = `${x} + ${y} = ${x + y}`;
-console.log(calcolo);  // 10 + 5 = 15
-
-// Chiamate a funzioni
-const cognome = 'Rossi';
-const nomeCompleto = `${nome.toUpperCase()} ${cognome.toUpperCase()}`;
-console.log(nomeCompleto);  // MARIO ROSSI</pre>
-        </div>
-
-        <h2>6. Multi-line Strings</h2>
-        
-        <div class="codice">
-<pre>// Stringa su più righe - Modo vecchio
-const testoVecchio = 'Prima riga\n' +
-                     'Seconda riga\n' +
-                     'Terza riga';
-
-// Template literal - Multi-line (MOLTO PIÙ LEGGIBILE)
-const testoNuovo = `Prima riga
-Seconda riga
-Terza riga`;
-
-console.log(testoNuovo);
-/* Output:
-Prima riga
-Seconda riga
-Terza riga
-*/
-
-// Utile per HTML
-const html = `
-    <div class="card">
-        <h2>${nome}</h2>
-        <p>Età: ${età}</p>
-    </div>
-`;
-
-// Utile per messaggi lunghi
-const email = `
-Gentile ${nome},
-
-La tua richiesta è stata processata.
-Il tuo codice di riferimento è: ${Math.random().toString(36).substr(2, 9)}
-
-Cordiali saluti,
-Il Team
-`;</pre>
-        </div>
-
-        <h2>7. Espressioni Complesse nei Template Literals</h2>
-        
-        <div class="codice">
-<pre>const utente = {
-    nome: 'Mario',
-    cognome: 'Rossi',
-    età: 25,
-    città: 'Roma'
-};
-
-// Espressioni ternary
-const messaggio = `${utente.nome} è ${utente.età >= 18 ? 'maggiorenne' : 'minorenne'}`;
-
-// Operazioni matematiche
-const annoProssimo = `L'anno prossimo ${utente.nome} avrà ${utente.età + 1} anni`;
-
-// Chiamate a funzioni
-const presentazione = `Mi chiamo ${utente.nome.toUpperCase()} ${utente.cognome.toUpperCase()}`;
-
-// Oggetti annidati
-const completo = `${utente.nome} ${utente.cognome} di ${utente.città}`;
-
-console.log(messaggio);
-console.log(annoProssimo);
-console.log(presentazione);
-console.log(completo);</pre>
-        </div>
-
-        <h2>8. Operatore di Coalescenza Nullish (??)</h2>
-        
-        <div class="codice">
-<pre>// Operatore ?? (ES2020) - Restituisce il valore di destra se quello di sinistra è null o undefined
-const valore1 = null ?? 'default';        // 'default'
-const valore2 = undefined ?? 'default';   // 'default'
-const valore3 = 0 ?? 'default';           // 0 (0 non è null/undefined)
-const valore4 = '' ?? 'default';          // '' (stringa vuota non è null/undefined)
-
-// Differenza con || (che considera tutti i falsy values)
-const nome1 = '' || 'Anonimo';    // 'Anonimo' (stringa vuota è falsy)
-const nome2 = '' ?? 'Anonimo';    // '' (stringa vuota non è null/undefined)
-
-// Uso pratico
-const username = null;
-const displayName = username ?? 'Ospite';
-console.log(displayName);  // 'Ospite'</pre>
-        </div>
-
-        <h2>9. Optional Chaining (?.)</h2>
-        
-        <div class="codice">
-<pre>// Optional chaining - Accesso sicuro a proprietà annidate
-const utente = {
-    nome: 'Mario',
-    indirizzo: {
-        città: 'Roma',
-        cap: '00100'
-    }
-};
-
-// Senza optional chaining (può generare errore)
-// const paese = utente.indirizzo.paese.nome;  // ERRORE: paese is undefined
-
-// Con optional chaining (ritorna undefined invece di errore)
-const paese = utente?.indirizzo?.paese?.nome;  // undefined (nessun errore)
-
-// Utile con array
-const primoUtente = utenti?.[0]?.nome;
-
-// Utile con funzioni
-const risultato = oggetto?.metodo?.();  // Chiama metodo solo se esiste</pre>
-        </div>
-
-        <h2>10. Esempio Pratico Completo</h2>
-        
-        <div class="esempio">
-            <p>Calcolatrice interattiva con template literals:</p>
-            
-            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
-                <div style="margin-bottom: 15px;">
-                    <input type="number" id="num1" placeholder="Primo numero" style="padding: 8px; width: 120px;">
-                    <select id="operatore" style="padding: 8px; margin: 0 10px;">
-                        <option value="+">+</option>
-                        <option value="-">-</option>
-                        <option value="*">*</option>
-                        <option value="/">/</option>
-                        <option value="%">%</option>
-                        <option value="**">**</option>
-                    </select>
-                    <input type="number" id="num2" placeholder="Secondo numero" style="padding: 8px; width: 120px;">
-                </div>
-                <button id="btn-calcola" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Calcola</button>
-                <div id="risultato-calc" style="margin-top: 15px; padding: 15px; background: #e9ecef; border-radius: 4px; display: none;"></div>
-            </div>
-            
-            <div class="codice">
-<pre>&lt;input type="number" id="num1" placeholder="Primo numero"&gt;
-&lt;select id="operatore"&gt;
-    &lt;option value="+"&gt;+&lt;/option&gt;
-    &lt;option value="-"&gt;-&lt;/option&gt;
-    &lt;option value="*"&gt;*&lt;/option&gt;
-    &lt;option value="/"&gt;/&lt;/option&gt;
-    &lt;option value="%"&gt;%&lt;/option&gt;
-    &lt;option value="**"&gt;**&lt;/option&gt;
-&lt;/select&gt;
-&lt;input type="number" id="num2" placeholder="Secondo numero"&gt;
-&lt;button id="btn-calcola"&gt;Calcola&lt;/button&gt;
-&lt;div id="risultato"&gt;&lt;/div&gt;
-
-&lt;script&gt;
-    const num1Input = document.getElementById('num1');
-    const num2Input = document.getElementById('num2');
-    const operatoreSelect = document.getElementById('operatore');
-    const btnCalcola = document.getElementById('btn-calcola');
-    const risultatoDiv = document.getElementById('risultato');
-    
-    btnCalcola.addEventListener('click', function() {
-        const a = parseFloat(num1Input.value);
-        const b = parseFloat(num2Input.value);
-        const op = operatoreSelect.value;
-        
-        if (isNaN(a) || isNaN(b)) {
-            risultatoDiv.textContent = 'Inserisci numeri validi!';
-            risultatoDiv.style.display = 'block';
-            return;
-        }
-        
-        let risultato;
-        switch(op) {
-            case '+': risultato = a + b; break;
-            case '-': risultato = a - b; break;
-            case '*': risultato = a * b; break;
-            case '/': risultato = a / b; break;
-            case '%': risultato = a % b; break;
-            case '**': risultato = a ** b; break;
-        }
-        
-        // Template literal per mostrare il risultato
-        risultatoDiv.innerHTML = `
-            &lt;strong&gt;Operazione:&lt;/strong&gt; ${a} ${op} ${b} = ${risultato}&lt;br&gt;
-            &lt;strong&gt;Tipo risultato:&lt;/strong&gt; ${typeof risultato}&lt;br&gt;
-            &lt;strong&gt;Risultato arrotondato:&lt;/strong&gt; ${Math.round(risultato * 100) / 100}
-        `;
-        risultatoDiv.style.display = 'block';
-    });
-&lt;/script&gt;</pre>
-            </div>
-            
-            <script>
-                const num1Input = document.getElementById('num1');
-                const num2Input = document.getElementById('num2');
-                const operatoreSelect = document.getElementById('operatore');
-                const btnCalcola = document.getElementById('btn-calcola');
-                const risultatoDiv = document.getElementById('risultato-calc');
-                
-                btnCalcola.addEventListener('click', function() {
-                    const a = parseFloat(num1Input.value);
-                    const b = parseFloat(num2Input.value);
-                    const op = operatoreSelect.value;
-                    
-                    if (isNaN(a) || isNaN(b)) {
-                        risultatoDiv.textContent = 'Inserisci numeri validi!';
-                        risultatoDiv.style.display = 'block';
-                        return;
-                    }
-                    
-                    let risultato;
-                    switch(op) {
-                        case '+': risultato = a + b; break;
-                        case '-': risultato = a - b; break;
-                        case '*': risultato = a * b; break;
-                        case '/': risultato = a / b; break;
-                        case '%': risultato = a % b; break;
-                        case '**': risultato = a ** b; break;
-                    }
-                    
-                    risultatoDiv.innerHTML = `
-                        <strong>Operazione:</strong> ${a} ${op} ${b} = ${risultato}<br>
-                        <strong>Tipo risultato:</strong> ${typeof risultato}<br>
-                        <strong>Risultato arrotondato:</strong> ${Math.round(risultato * 100) / 100}
-                    `;
-                    risultatoDiv.style.display = 'block';
-                });
-            </script>
-        </div>
-
-        <h2>11. Note Importanti</h2>
-        
-        <div class="teoria">
-            <ul>
-                <li><strong>=== vs ==:</strong> Usa sempre === per evitare conversioni di tipo inaspettate</li>
-                <li><strong>Template literals:</strong> Usa sempre backticks invece di concatenazione con +</li>
-                <li><strong>Divisione per zero:</strong> In JavaScript è Infinity, non errore</li>
-                <li><strong>Modulo (%):</strong> Utile per capire se un numero è pari/dispari (n % 2 === 0)</li>
-                <li><strong>Operatori logici:</strong> && ha precedenza su ||</li>
-                <li><strong>String interpolation:</strong> Puoi mettere qualsiasi espressione JavaScript in ${}</li>
-            </ul>
-        </div>
-
-        <h2>12. Vantaggi dei Template Literals</h2>
-        
-        <div class="teoria">
-            <p><strong>Perché template literals sono essenziali nello sviluppo moderno:</strong></p>
-            <ul>
-                <li><strong>Sintassi pulita:</strong> ${} per espressioni JavaScript inline</li>
-                <li><strong>Classi dinamiche:</strong> Costruire classi CSS condizionali</li>
-                <li><strong>Generazione HTML:</strong> Creare markup dinamicamente</li>
-                <li><strong>Concatenazione elegante:</strong> Più leggibile di multipli +</li>
-                <li><strong>Manutenibilità:</strong> Codice più facile da leggere e modificare</li>
-            </ul>
-            
-            <p>Esempio di utilizzo professionale:</p>
-        </div>
-        
-        <div class="codice">
-<pre>// Generazione dinamica di elementi
-function creaButton(testo, isAttivo) {
-    const classe = `btn ${isAttivo ? 'btn-primary' : 'btn-secondary'}`;
-    return `<button class="${classe}">${testo}</button>`;
+            <pre><code>// Componente React semplice
+function Saluto() {
+    return &lt;h1&gt;Ciao, mondo!&lt;/h1&gt;;
 }
 
-// Utilizzo
-const html = creaButton('Salva', true);
-document.body.innerHTML += html;</pre>
+// Rendering
+import ReactDOM from 'react-dom/client';
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(&lt;Saluto /&gt;);</code></pre>
         </div>
 
-        <div class="navigazione">
-            <a href="lezione-5-2.html" class="btn-nav">Lezione Precedente</a>
-            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
-            <a href="lezione-5-4.html" class="btn-nav">Lezione Successiva</a>
+        <h2>2. Setup Progetto React (4 min)</h2>
+
+        <div class="teoria">
+            <pre><code>// Con Vite (raccomandato - veloce!)
+npm create vite@latest my-app -- --template react-ts
+cd my-app
+npm install
+npm run dev
+
+// Struttura progetto
+my-app/
+├── src/
+│   ├── App.tsx          # Componente principale
+│   ├── main.tsx         # Entry point
+│   └── App.css
+├── index.html
+├── package.json
+└── tsconfig.json</code></pre>
+
+            <h3>File main.tsx</h3>
+            <pre><code>import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+    &lt;React.StrictMode&gt;
+        &lt;App /&gt;
+    &lt;/React.StrictMode&gt;
+);</code></pre>
+        </div>
+
+        <h2>3. JSX (5 min)</h2>
+
+        <div class="teoria">
+            <p>JSX = JavaScript + XML. Permette di scrivere HTML dentro JavaScript.</p>
+
+            <pre><code>// JSX base
+const elemento = &lt;h1&gt;Ciao!&lt;/h1&gt;;
+
+// Espressioni JavaScript in JSX (dentro {})
+const nome = "Mario";
+const saluto = &lt;h1&gt;Ciao, {nome}!&lt;/h1&gt;;
+
+// Operazioni
+const eta = 25;
+const maggiorenne = &lt;p&gt;{eta &gt;= 18 ? "Maggiorenne" : "Minorenne"}&lt;/p&gt;;
+
+// Attributi (usare camelCase)
+const immagine = (
+    &lt;img 
+        src="foto.jpg" 
+        alt="Descrizione"
+        className="avatar"     // non "class"
+        onClick={handleClick}  // non "onclick"
+    /&gt;
+);
+
+// Style inline (oggetto JavaScript)
+const box = (
+    &lt;div style={{
+        backgroundColor: 'blue',  // camelCase
+        fontSize: '20px',
+        padding: '10px'
+    }}&gt;
+        Contenuto
+    &lt;/div&gt;
+);
+
+// Elementi multipli (wrapper necessario)
+// ❌ Errore: due elementi root
+function Componente() {
+    return (
+        &lt;h1&gt;Titolo&lt;/h1&gt;
+        &lt;p&gt;Paragrafo&lt;/p&gt;
+    );
+}
+
+// ✅ Con wrapper
+function Componente() {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;Titolo&lt;/h1&gt;
+            &lt;p&gt;Paragrafo&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}
+
+// ✅ Con Fragment (no elemento DOM extra)
+function Componente() {
+    return (
+        &lt;&gt;
+            &lt;h1&gt;Titolo&lt;/h1&gt;
+            &lt;p&gt;Paragrafo&lt;/p&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+        </div>
+
+        <h2>4. Componenti (6 min)</h2>
+
+        <div class="teoria">
+            <h3>Componenti Funzionali</h3>
+            <pre><code>// Componente semplice
+function Benvenuto() {
+    return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
+}
+
+// Con TypeScript
+function Benvenuto(): JSX.Element {
+    return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
+}
+
+// Usare il componente
+function App() {
+    return (
+        &lt;div&gt;
+            &lt;Benvenuto /&gt;
+            &lt;Benvenuto /&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+
+            <h3>Props (Proprietà)</h3>
+            <pre><code>// Passare dati ai componenti
+interface SalutoProps {
+    nome: string;
+    eta?: number;  // opzionale
+}
+
+function Saluto({ nome, eta }: SalutoProps) {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;Ciao, {nome}!&lt;/h1&gt;
+            {eta && &lt;p&gt;Hai {eta} anni&lt;/p&gt;}
+        &lt;/div&gt;
+    );
+}
+
+// Uso
+function App() {
+    return (
+        &lt;&gt;
+            &lt;Saluto nome="Mario" eta={25} /&gt;
+            &lt;Saluto nome="Laura" /&gt;
+        &lt;/&gt;
+    );
+}
+
+// Props children
+interface CardProps {
+    titolo: string;
+    children: React.ReactNode;
+}
+
+function Card({ titolo, children }: CardProps) {
+    return (
+        &lt;div className="card"&gt;
+            &lt;h2&gt;{titolo}&lt;/h2&gt;
+            {children}
+        &lt;/div&gt;
+    );
+}
+
+// Uso
+&lt;Card titolo="Il mio contenuto"&gt;
+    &lt;p&gt;Paragrafo dentro la card&lt;/p&gt;
+    &lt;button&gt;Clicca&lt;/button&gt;
+&lt;/Card&gt;</code></pre>
+        </div>
+
+        <h2>5. State con useState (8 min)</h2>
+
+        <div class="teoria">
+            <p>State = dati che possono cambiare nel tempo. Quando lo state cambia, React ri-renderizza il componente.</p>
+
+            <pre><code>import { useState } from 'react';
+
+// Contatore base
+function Contatore() {
+    // [valore corrente, funzione per modificarlo]
+    const [count, setCount] = useState(0);
+    
+    return (
+        &lt;div&gt;
+            &lt;p&gt;Conteggio: {count}&lt;/p&gt;
+            &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+                Incrementa
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; setCount(count - 1)}&gt;
+                Decrementa
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; setCount(0)}&gt;
+                Reset
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Con TypeScript
+function Contatore() {
+    const [count, setCount] = useState&lt;number&gt;(0);
+    // ...
+}
+
+// State con oggetti
+interface Utente {
+    nome: string;
+    eta: number;
+}
+
+function ProfiloUtente() {
+    const [utente, setUtente] = useState&lt;Utente&gt;({
+        nome: "Mario",
+        eta: 25
+    });
+    
+    const aggiornaNome = (nuovoNome: string) =&gt; {
+        // ✅ Creare nuovo oggetto (immutabilità)
+        setUtente({
+            ...utente,
+            nome: nuovoNome
+        });
+        
+        // ❌ NON modificare direttamente
+        // utente.nome = nuovoNome;  // NON fare così!
+    };
+    
+    return (
+        &lt;div&gt;
+            &lt;p&gt;{utente.nome} - {utente.eta} anni&lt;/p&gt;
+            &lt;button onClick={() =&gt; aggiornaNome("Luigi")}&gt;
+                Cambia Nome
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// State con array
+function ListaTodo() {
+    const [todos, setTodos] = useState&lt;string[]&gt;([]);
+    const [input, setInput] = useState("");
+    
+    const aggiungiTodo = () =&gt; {
+        // ✅ Nuovo array con spread
+        setTodos([...todos, input]);
+        setInput("");
+    };
+    
+    const rimuoviTodo = (index: number) =&gt; {
+        // ✅ Filtrare per creare nuovo array
+        setTodos(todos.filter((_, i) =&gt; i !== index));
+    };
+    
+    return (
+        &lt;div&gt;
+            &lt;input
+                value={input}
+                onChange={(e) =&gt; setInput(e.target.value)}
+                placeholder="Nuovo todo"
+            /&gt;
+            &lt;button onClick={aggiungiTodo}&gt;Aggiungi&lt;/button&gt;
+            
+            &lt;ul&gt;
+                {todos.map((todo, index) =&gt; (
+                    &lt;li key={index}&gt;
+                        {todo}
+                        &lt;button onClick={() =&gt; rimuoviTodo(index)}&gt;
+                            Elimina
+                        &lt;/button&gt;
+                    &lt;/li&gt;
+                ))}
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+
+            <h3>Regole dello State</h3>
+            <ul>
+                <li>✅ Sempre immutabile (non modificare direttamente)</li>
+                <li>✅ Usa spread operator per oggetti/array</li>
+                <li>✅ setCount(prev => prev + 1) per aggiornamenti basati su valore precedente</li>
+                <li>❌ Non chiamare useState in condizioni o loop</li>
+            </ul>
+        </div>
+
+        <h2>6. Event Handling (4 min)</h2>
+
+        <div class="teoria">
+            <pre><code>function EventiEsempio() {
+    const [messaggio, setMessaggio] = useState("");
+    
+    // Click
+    const handleClick = () =&gt; {
+        alert("Bottone cliccato!");
+    };
+    
+    // Input change
+    const handleChange = (e: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+        setMessaggio(e.target.value);
+    };
+    
+    // Form submit
+    const handleSubmit = (e: React.FormEvent) =&gt; {
+        e.preventDefault();  // Previeni reload della pagina
+        console.log("Form inviato:", messaggio);
+    };
+    
+    // Keyboard
+    const handleKeyDown = (e: React.KeyboardEvent) =&gt; {
+        if (e.key === 'Enter') {
+            console.log("Enter premuto!");
+        }
+    };
+    
+    return (
+        &lt;form onSubmit={handleSubmit}&gt;
+            &lt;input
+                type="text"
+                value={messaggio}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Scrivi qualcosa"
+            /&gt;
+            &lt;button type="submit"&gt;Invia&lt;/button&gt;
+            &lt;button type="button" onClick={handleClick}&gt;
+                Click Me
+            &lt;/button&gt;
+        &lt;/form&gt;
+    );
+}
+
+// Passare argomenti agli event handler
+function Lista() {
+    const handleClick = (id: number) =&gt; {
+        console.log("Cliccato item:", id);
+    };
+    
+    return (
+        &lt;div&gt;
+            {[1, 2, 3].map(id =&gt; (
+                &lt;button 
+                    key={id}
+                    onClick={() =&gt; handleClick(id)}  // Arrow function!
+                &gt;
+                    Item {id}
+                &lt;/button&gt;
+            ))}
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <h2>7. Rendering Liste (4 min)</h2>
+
+        <div class="teoria">
+            <pre><code>interface Prodotto {
+    id: number;
+    nome: string;
+    prezzo: number;
+}
+
+function ListaProdotti() {
+    const prodotti: Prodotto[] = [
+        { id: 1, nome: "Laptop", prezzo: 1000 },
+        { id: 2, nome: "Mouse", prezzo: 25 },
+        { id: 3, nome: "Tastiera", prezzo: 75 }
+    ];
+    
+    return (
+        &lt;div&gt;
+            &lt;h2&gt;Prodotti&lt;/h2&gt;
+            &lt;ul&gt;
+                {prodotti.map(prodotto =&gt; (
+                    &lt;li key={prodotto.id}&gt;  {/* key obbligatoria! */}
+                        {prodotto.nome} - €{prodotto.prezzo}
+                    &lt;/li&gt;
+                ))}
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Componente separato per item
+interface ProdottoItemProps {
+    prodotto: Prodotto;
+    onDelete: (id: number) =&gt; void;
+}
+
+function ProdottoItem({ prodotto, onDelete }: ProdottoItemProps) {
+    return (
+        &lt;div className="prodotto-item"&gt;
+            &lt;h3&gt;{prodotto.nome}&lt;/h3&gt;
+            &lt;p&gt;€{prodotto.prezzo}&lt;/p&gt;
+            &lt;button onClick={() =&gt; onDelete(prodotto.id)}&gt;
+                Elimina
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Uso
+function Catalogo() {
+    const [prodotti, setProdotti] = useState&lt;Prodotto[]&gt;([...]);
+    
+    const eliminaProdotto = (id: number) =&gt; {
+        setProdotti(prodotti.filter(p =&gt; p.id !== id));
+    };
+    
+    return (
+        &lt;div&gt;
+            {prodotti.map(prodotto =&gt; (
+                &lt;ProdottoItem
+                    key={prodotto.id}
+                    prodotto={prodotto}
+                    onDelete={eliminaProdotto}
+                /&gt;
+            ))}
+        &lt;/div&gt;
+    );
+}
+
+// Key: DEVE essere unica e stabile
+// Usa ID dal database
+// NON usare index (problemi con riordino/eliminazione)</code></pre>
+        </div>
+
+        <h2>8. Rendering Condizionale (3 min)</h2>
+
+        <div class="teoria">
+            <pre><code>function Dashboard({ isLoggedIn }: { isLoggedIn: boolean }) {
+    // if/else
+    if (isLoggedIn) {
+        return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
+    }
+    return &lt;h1&gt;Per favore accedi&lt;/h1&gt;;
+}
+
+// Operatore ternario
+function Status({ isOnline }: { isOnline: boolean }) {
+    return (
+        &lt;div&gt;
+            Stato: {isOnline ? "Online" : "Offline"}
+        &lt;/div&gt;
+    );
+}
+
+// && operator (render condizionale)
+function Notifiche({ count }: { count: number }) {
+    return (
+        &lt;div&gt;
+            &lt;h2&gt;Notifiche&lt;/h2&gt;
+            {count &gt; 0 && (
+                &lt;span className="badge"&gt;{count}&lt;/span&gt;
+            )}
+        &lt;/div&gt;
+    );
+}
+
+// Rendering di nulla
+function Avviso({ mostra }: { mostra: boolean }) {
+    if (!mostra) return null;
+    
+    return &lt;div className="alert"&gt;Attenzione!&lt;/div&gt;;
+}
+
+// Switch case con componenti
+type View = "home" | "profile" | "settings";
+
+function App({ currentView }: { currentView: View }) {
+    const renderView = () =&gt; {
+        switch (currentView) {
+            case "home":
+                return &lt;Home /&gt;;
+            case "profile":
+                return &lt;Profile /&gt;;
+            case "settings":
+                return &lt;Settings /&gt;;
+            default:
+                return &lt;NotFound /&gt;;
+        }
+    };
+    
+    return &lt;div&gt;{renderView()}&lt;/div&gt;;
+}</code></pre>
+        </div>
+
+        <h2>9. useEffect Hook (5 min)</h2>
+
+        <div class="teoria">
+            <p>useEffect esegue side effects (chiamate API, timer, subscriptions) dopo il render.</p>
+
+            <pre><code>import { useState, useEffect } from 'react';
+
+// Esegui dopo ogni render
+function Esempio1() {
+    const [count, setCount] = useState(0);
+    
+    useEffect(() =&gt; {
+        console.log("Componente renderizzato");
+        document.title = `Conteggio: ${count}`;
+    });
+    
+    return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}
+
+// Esegui solo al mount (una volta)
+function Esempio2() {
+    useEffect(() =&gt; {
+        console.log("Componente montato");
+        
+        // Cleanup al unmount
+        return () =&gt; {
+            console.log("Componente smontato");
+        };
+    }, []);  // Array vuoto = solo al mount
+    
+    return &lt;div&gt;Contenuto&lt;/div&gt;;
+}
+
+// Esegui quando dipendenze cambiano
+function Esempio3() {
+    const [userId, setUserId] = useState(1);
+    const [userData, setUserData] = useState(null);
+    
+    useEffect(() =&gt; {
+        // Fetch dati quando userId cambia
+        fetch(`/api/users/${userId}`)
+            .then(res =&gt; res.json())
+            .then(data =&gt; setUserData(data));
+    }, [userId]);  // Re-esegui quando userId cambia
+    
+    return &lt;div&gt;{/* ... */}&lt;/div&gt;;
+}
+
+// Esempio completo: fetch con loading e errori
+interface User {
+    id: number;
+    name: string;
+}
+
+function UserProfile({ userId }: { userId: number }) {
+    const [user, setUser] = useState&lt;User | null&gt;(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState&lt;string | null&gt;(null);
+    
+    useEffect(() =&gt; {
+        setLoading(true);
+        setError(null);
+        
+        fetch(`/api/users/${userId}`)
+            .then(res =&gt; {
+                if (!res.ok) throw new Error("Errore nel caricamento");
+                return res.json();
+            })
+            .then(data =&gt; {
+                setUser(data);
+                setLoading(false);
+            })
+            .catch(err =&gt; {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, [userId]);
+    
+    if (loading) return &lt;p&gt;Caricamento...&lt;/p&gt;;
+    if (error) return &lt;p&gt;Errore: {error}&lt;/p&gt;;
+    if (!user) return null;
+    
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;{user.name}&lt;/h1&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Timer con cleanup
+function Timer() {
+    const [seconds, setSeconds] = useState(0);
+    
+    useEffect(() =&gt; {
+        const interval = setInterval(() =&gt; {
+            setSeconds(prev =&gt; prev + 1);
+        }, 1000);
+        
+        // Cleanup: pulisci timer quando componente si smonta
+        return () =&gt; clearInterval(interval);
+    }, []);
+    
+    return &lt;div&gt;Secondi: {seconds}&lt;/div&gt;;
+}</code></pre>
+
+            <h3>Regole useEffect</h3>
+            <ul>
+                <li>✅ Array dipendenze vuoto [] = esegui solo al mount</li>
+                <li>✅ Includi tutte le dipendenze usate dentro useEffect</li>
+                <li>✅ Return function per cleanup (timer, subscriptions)</li>
+                <li>❌ Non fare setState sincrono senza dipendenze (loop infinito)</li>
+            </ul>
+        </div>
+
+        <h2>10. Composizione Componenti (3 min)</h2>
+
+        <div class="teoria">
+            <pre><code>// Costruire UI complesse con componenti piccoli
+
+// Componenti atomici
+function Button({ children, onClick }: { 
+    children: React.ReactNode; 
+    onClick: () =&gt; void 
+}) {
+    return (
+        &lt;button className="btn" onClick={onClick}&gt;
+            {children}
+        &lt;/button&gt;
+    );
+}
+
+function Input({ value, onChange, placeholder }: {
+    value: string;
+    onChange: (value: string) =&gt; void;
+    placeholder?: string;
+}) {
+    return (
+        &lt;input
+            className="input"
+            value={value}
+            onChange={(e) =&gt; onChange(e.target.value)}
+            placeholder={placeholder}
+        /&gt;
+    );
+}
+
+// Comporre insieme
+function SearchBar({ onSearch }: { onSearch: (query: string) =&gt; void }) {
+    const [query, setQuery] = useState("");
+    
+    const handleSearch = () =&gt; {
+        onSearch(query);
+        setQuery("");
+    };
+    
+    return (
+        &lt;div className="search-bar"&gt;
+            &lt;Input
+                value={query}
+                onChange={setQuery}
+                placeholder="Cerca..."
+            /&gt;
+            &lt;Button onClick={handleSearch}&gt;
+                Cerca
+            &lt;/Button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Container component
+function App() {
+    const [risultati, setRisultati] = useState([]);
+    
+    const handleSearch = (query: string) =&gt; {
+        // Logica di ricerca
+        console.log("Cercando:", query);
+    };
+    
+    return (
+        &lt;div className="app"&gt;
+            &lt;SearchBar onSearch={handleSearch} /&gt;
+            {/* Altri componenti */}
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h2>Riepilogo React</h2>
+            <table>
+                <tr>
+                    <th>Concetto</th>
+                    <th>Key Point</th>
+                </tr>
+                <tr>
+                    <td>JSX</td>
+                    <td>HTML in JavaScript con {}</td>
+                </tr>
+                <tr>
+                    <td>Componenti</td>
+                    <td>Funzioni che ritornano JSX</td>
+                </tr>
+                <tr>
+                    <td>Props</td>
+                    <td>Dati da genitore a figlio (read-only)</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>Dati che cambiano (useState)</td>
+                </tr>
+                <tr>
+                    <td>Eventi</td>
+                    <td>onClick, onChange, onSubmit</td>
+                </tr>
+                <tr>
+                    <td>Liste</td>
+                    <td>map() con key unica</td>
+                </tr>
+                <tr>
+                    <td>Condizionale</td>
+                    <td>&&, ternario, if/return</td>
+                </tr>
+                <tr>
+                    <td>useEffect</td>
+                    <td>Side effects + cleanup</td>
+                </tr>
+            </table>
+
+            <h3>Best Practices React</h3>
+            <ul>
+                <li>Un componente = una responsabilità</li>
+                <li>Props immutabili, state gestito con useState</li>
+                <li>Key uniche nelle liste (no index se riordini)</li>
+                <li>useEffect con array dipendenze corretto</li>
+                <li>TypeScript per props type-safe</li>
+                <li>Nomi componenti PascalCase</li>
+                <li>Decomposizione per riutilizzo</li>
+            </ul>
+        </div>
+
+        <div class="teoria">
+            <h2>Navigazione</h2>
+            <ul>
+                <li><a href="lezione-5-2.html">← 5.2 - TypeScript Essenziale</a></li>
+                <li><a href="index.html">Torna all'Indice Lezione 5</a></li>
+                <li><a href="lezione-5-99.html">5.99 - Progetto Finale →</a></li>
+            </ul>
         </div>
     </div>
 </body>

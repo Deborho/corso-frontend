@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.3 - Operatori e Template Literals</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.3 - Operatori e Template Literals</h1>
+            <p>Operatori matematici, di confronto, logici e string interpolation</p>
+        </div>
+
+        <h2>1. Operatori Aritmetici</h2>
+        
+        <div class="codice">
+<pre>// Operatori aritmetici base
+const a = 10;
+const b = 3;
+
+const somma = a + b;          // 13
+const differenza = a - b;     // 7
+const prodotto = a * b;       // 30
+const divisione = a / b;      // 3.333...
+const resto = a % b;          // 1 (modulo - resto della divisione)
+const potenza = a ** b;       // 1000 (10³)
+
+console.log('10 + 3 =', somma);
+console.log('10 - 3 =', differenza);
+console.log('10 * 3 =', prodotto);
+console.log('10 / 3 =', divisione);
+console.log('10 % 3 =', resto);
+console.log('10 ** 3 =', potenza);
+
+// Operatore unario
+const numero = 5;
+const negativo = -numero;     // -5
+const positivo = +numero;     // 5</pre>
+        </div>
+
+        <h2>2. Operatori di Assegnamento</h2>
+        
+        <div class="codice">
+<pre>// Assegnamento base
+let x = 10;
+
+// Assegnamento con operazione
+x += 5;   // x = x + 5;  → 15
+x -= 3;   // x = x - 3;  → 12
+x *= 2;   // x = x * 2;  → 24
+x /= 4;   // x = x / 4;  → 6
+x %=  5;  // x = x % 5;  → 1
+x **= 3;  // x = x ** 3; → 1
+
+console.log(x);  // 1
+
+// Incremento e decremento
+let contatore = 0;
+contatore++;  // contatore = contatore + 1; → 1
+contatore--;  // contatore = contatore - 1; → 0
+
+// Pre-incremento vs Post-incremento
+let n = 5;
+let risultato1 = n++;  // risultato1 = 5, poi n = 6 (post-incremento)
+let m = 5;
+let risultato2 = ++m;  // m = 6, poi risultato2 = 6 (pre-incremento)</pre>
+        </div>
+
+        <h2>3. Operatori di Confronto</h2>
+        
+        <div class="codice">
+<pre>// Uguaglianza e disuguaglianza
+const uguale = 5 == 5;          // true
+const diverso = 5 != 3;         // true
+
+// Uguaglianza stretta (controlla anche il tipo)
+const ugualeStretto = 5 === 5;  // true
+const ugualeStretto2 = 5 === '5';  // false (numero vs stringa)
+
+// IMPORTANTE: Usa sempre === e !== invece di == e !=
+console.log(5 == '5');   // true (converte la stringa!)
+console.log(5 === '5');  // false (tipi diversi)
+
+console.log(null == undefined);   // true
+console.log(null === undefined);  // false
+
+// Operatori relazionali
+const maggiore = 10 > 5;           // true
+const minore = 10 < 5;             // false
+const maggioreUguale = 10 >= 10;   // true
+const minoreUguale = 5 <= 10;      // true
+
+// Confronto tra stringhe (ordine alfabetico)
+console.log('a' < 'b');      // true
+console.log('Mario' < 'Luigi');  // false (M viene dopo L)</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Regola d'oro:</strong> Usa sempre <code>===</code> e <code>!==</code> per evitare conversioni implicite di tipo.</p>
+        </div>
+
+        <h2>4. Operatori Logici</h2>
+        
+        <div class="codice">
+<pre>// AND logico (&&) - true solo se entrambi true
+const tuttiTrue = true && true;      // true
+const almenoUnoFalse = true && false;  // false
+
+// OR logico (||) - true se almeno uno è true
+const almenoUnoTrue = true || false;   // true
+const tuttiFalse = false || false;     // false
+
+// NOT logico (!) - inverte il valore
+const nonTrue = !true;    // false
+const nonFalse = !false;  // true
+
+// Esempi pratici
+const età = 25;
+const haPatente = true;
+
+const puòGuidare = età >= 18 && haPatente;  // true
+const èMinorenne = età < 18;  // false
+const nonPuòGuidare = !puòGuidare;  // false
+
+// Combinazioni complesse
+const adultoConPatente = (età >= 18 && età < 65) && haPatente;
+const accessoNegato = età < 18 || !haPatente;</pre>
+        </div>
+
+        <h2>5. Template Literals (Backticks)</h2>
+        
+        <div class="teoria">
+            <p>I <strong>template literals</strong> usano backticks <code>`</code> invece di apici normali e permettono:</p>
+            <ul>
+                <li>String interpolation con <code>${}</code></li>
+                <li>Stringhe multi-linea</li>
+                <li>Espressioni JavaScript dentro le stringhe</li>
+            </ul>
+        </div>
+        
+        <div class="codice">
+<pre>// Stringa normale vs Template Literal
+const nome = 'Mario';
+const età = 25;
+
+// Modo vecchio (concatenazione)
+const saluto1 = 'Ciao, mi chiamo ' + nome + ' e ho ' + età + ' anni.';
+
+// Modo moderno (template literal)
+const saluto2 = `Ciao, mi chiamo ${nome} e ho ${età} anni.`;
+
+console.log(saluto2);  // Ciao, mi chiamo Mario e ho 25 anni.
+
+// Espressioni dentro ${}
+const prezzo = 100;
+const sconto = 20;
+const prezzoFinale = `Prezzo finale: ${prezzo - sconto}€`;
+console.log(prezzoFinale);  // Prezzo finale: 80€
+
+// Operazioni complesse
+const x = 10;
+const y = 5;
+const calcolo = `${x} + ${y} = ${x + y}`;
+console.log(calcolo);  // 10 + 5 = 15
+
+// Chiamate a funzioni
+const cognome = 'Rossi';
+const nomeCompleto = `${nome.toUpperCase()} ${cognome.toUpperCase()}`;
+console.log(nomeCompleto);  // MARIO ROSSI</pre>
+        </div>
+
+        <h2>6. Multi-line Strings</h2>
+        
+        <div class="codice">
+<pre>// Stringa su più righe - Modo vecchio
+const testoVecchio = 'Prima riga\n' +
+                     'Seconda riga\n' +
+                     'Terza riga';
+
+// Template literal - Multi-line (MOLTO PIÙ LEGGIBILE)
+const testoNuovo = `Prima riga
+Seconda riga
+Terza riga`;
+
+console.log(testoNuovo);
+/* Output:
+Prima riga
+Seconda riga
+Terza riga
+*/
+
+// Utile per HTML
+const html = `
+    <div class="card">
+        <h2>${nome}</h2>
+        <p>Età: ${età}</p>
+    </div>
+`;
+
+// Utile per messaggi lunghi
+const email = `
+Gentile ${nome},
+
+La tua richiesta è stata processata.
+Il tuo codice di riferimento è: ${Math.random().toString(36).substr(2, 9)}
+
+Cordiali saluti,
+Il Team
+`;</pre>
+        </div>
+
+        <h2>7. Espressioni Complesse nei Template Literals</h2>
+        
+        <div class="codice">
+<pre>const utente = {
+    nome: 'Mario',
+    cognome: 'Rossi',
+    età: 25,
+    città: 'Roma'
+};
+
+// Espressioni ternary
+const messaggio = `${utente.nome} è ${utente.età >= 18 ? 'maggiorenne' : 'minorenne'}`;
+
+// Operazioni matematiche
+const annoProssimo = `L'anno prossimo ${utente.nome} avrà ${utente.età + 1} anni`;
+
+// Chiamate a funzioni
+const presentazione = `Mi chiamo ${utente.nome.toUpperCase()} ${utente.cognome.toUpperCase()}`;
+
+// Oggetti annidati
+const completo = `${utente.nome} ${utente.cognome} di ${utente.città}`;
+
+console.log(messaggio);
+console.log(annoProssimo);
+console.log(presentazione);
+console.log(completo);</pre>
+        </div>
+
+        <h2>8. Operatore di Coalescenza Nullish (??)</h2>
+        
+        <div class="codice">
+<pre>// Operatore ?? (ES2020) - Restituisce il valore di destra se quello di sinistra è null o undefined
+const valore1 = null ?? 'default';        // 'default'
+const valore2 = undefined ?? 'default';   // 'default'
+const valore3 = 0 ?? 'default';           // 0 (0 non è null/undefined)
+const valore4 = '' ?? 'default';          // '' (stringa vuota non è null/undefined)
+
+// Differenza con || (che considera tutti i falsy values)
+const nome1 = '' || 'Anonimo';    // 'Anonimo' (stringa vuota è falsy)
+const nome2 = '' ?? 'Anonimo';    // '' (stringa vuota non è null/undefined)
+
+// Uso pratico
+const username = null;
+const displayName = username ?? 'Ospite';
+console.log(displayName);  // 'Ospite'</pre>
+        </div>
+
+        <h2>9. Optional Chaining (?.)</h2>
+        
+        <div class="codice">
+<pre>// Optional chaining - Accesso sicuro a proprietà annidate
+const utente = {
+    nome: 'Mario',
+    indirizzo: {
+        città: 'Roma',
+        cap: '00100'
+    }
+};
+
+// Senza optional chaining (può generare errore)
+// const paese = utente.indirizzo.paese.nome;  // ERRORE: paese is undefined
+
+// Con optional chaining (ritorna undefined invece di errore)
+const paese = utente?.indirizzo?.paese?.nome;  // undefined (nessun errore)
+
+// Utile con array
+const primoUtente = utenti?.[0]?.nome;
+
+// Utile con funzioni
+const risultato = oggetto?.metodo?.();  // Chiama metodo solo se esiste</pre>
+        </div>
+
+        <h2>10. Esempio Pratico Completo</h2>
+        
+        <div class="esempio">
+            <p>Calcolatrice interattiva con template literals:</p>
+            
+            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
+                <div style="margin-bottom: 15px;">
+                    <input type="number" id="num1" placeholder="Primo numero" style="padding: 8px; width: 120px;">
+                    <select id="operatore" style="padding: 8px; margin: 0 10px;">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                        <option value="*">*</option>
+                        <option value="/">/</option>
+                        <option value="%">%</option>
+                        <option value="**">**</option>
+                    </select>
+                    <input type="number" id="num2" placeholder="Secondo numero" style="padding: 8px; width: 120px;">
+                </div>
+                <button id="btn-calcola" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Calcola</button>
+                <div id="risultato-calc" style="margin-top: 15px; padding: 15px; background: #e9ecef; border-radius: 4px; display: none;"></div>
+            </div>
+            
+            <div class="codice">
+<pre>&lt;input type="number" id="num1" placeholder="Primo numero"&gt;
+&lt;select id="operatore"&gt;
+    &lt;option value="+"&gt;+&lt;/option&gt;
+    &lt;option value="-"&gt;-&lt;/option&gt;
+    &lt;option value="*"&gt;*&lt;/option&gt;
+    &lt;option value="/"&gt;/&lt;/option&gt;
+    &lt;option value="%"&gt;%&lt;/option&gt;
+    &lt;option value="**"&gt;**&lt;/option&gt;
+&lt;/select&gt;
+&lt;input type="number" id="num2" placeholder="Secondo numero"&gt;
+&lt;button id="btn-calcola"&gt;Calcola&lt;/button&gt;
+&lt;div id="risultato"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+    const num1Input = document.getElementById('num1');
+    const num2Input = document.getElementById('num2');
+    const operatoreSelect = document.getElementById('operatore');
+    const btnCalcola = document.getElementById('btn-calcola');
+    const risultatoDiv = document.getElementById('risultato');
+    
+    btnCalcola.addEventListener('click', function() {
+        const a = parseFloat(num1Input.value);
+        const b = parseFloat(num2Input.value);
+        const op = operatoreSelect.value;
+        
+        if (isNaN(a) || isNaN(b)) {
+            risultatoDiv.textContent = 'Inserisci numeri validi!';
+            risultatoDiv.style.display = 'block';
+            return;
+        }
+        
+        let risultato;
+        switch(op) {
+            case '+': risultato = a + b; break;
+            case '-': risultato = a - b; break;
+            case '*': risultato = a * b; break;
+            case '/': risultato = a / b; break;
+            case '%': risultato = a % b; break;
+            case '**': risultato = a ** b; break;
+        }
+        
+        // Template literal per mostrare il risultato
+        risultatoDiv.innerHTML = `
+            &lt;strong&gt;Operazione:&lt;/strong&gt; ${a} ${op} ${b} = ${risultato}&lt;br&gt;
+            &lt;strong&gt;Tipo risultato:&lt;/strong&gt; ${typeof risultato}&lt;br&gt;
+            &lt;strong&gt;Risultato arrotondato:&lt;/strong&gt; ${Math.round(risultato * 100) / 100}
+        `;
+        risultatoDiv.style.display = 'block';
+    });
+&lt;/script&gt;</pre>
+            </div>
+            
+            <script>
+                const num1Input = document.getElementById('num1');
+                const num2Input = document.getElementById('num2');
+                const operatoreSelect = document.getElementById('operatore');
+                const btnCalcola = document.getElementById('btn-calcola');
+                const risultatoDiv = document.getElementById('risultato-calc');
+                
+                btnCalcola.addEventListener('click', function() {
+                    const a = parseFloat(num1Input.value);
+                    const b = parseFloat(num2Input.value);
+                    const op = operatoreSelect.value;
+                    
+                    if (isNaN(a) || isNaN(b)) {
+                        risultatoDiv.textContent = 'Inserisci numeri validi!';
+                        risultatoDiv.style.display = 'block';
+                        return;
+                    }
+                    
+                    let risultato;
+                    switch(op) {
+                        case '+': risultato = a + b; break;
+                        case '-': risultato = a - b; break;
+                        case '*': risultato = a * b; break;
+                        case '/': risultato = a / b; break;
+                        case '%': risultato = a % b; break;
+                        case '**': risultato = a ** b; break;
+                    }
+                    
+                    risultatoDiv.innerHTML = `
+                        <strong>Operazione:</strong> ${a} ${op} ${b} = ${risultato}<br>
+                        <strong>Tipo risultato:</strong> ${typeof risultato}<br>
+                        <strong>Risultato arrotondato:</strong> ${Math.round(risultato * 100) / 100}
+                    `;
+                    risultatoDiv.style.display = 'block';
+                });
+            </script>
+        </div>
+
+        <h2>11. Note Importanti</h2>
+        
+        <div class="teoria">
+            <ul>
+                <li><strong>=== vs ==:</strong> Usa sempre === per evitare conversioni di tipo inaspettate</li>
+                <li><strong>Template literals:</strong> Usa sempre backticks invece di concatenazione con +</li>
+                <li><strong>Divisione per zero:</strong> In JavaScript è Infinity, non errore</li>
+                <li><strong>Modulo (%):</strong> Utile per capire se un numero è pari/dispari (n % 2 === 0)</li>
+                <li><strong>Operatori logici:</strong> && ha precedenza su ||</li>
+                <li><strong>String interpolation:</strong> Puoi mettere qualsiasi espressione JavaScript in ${}</li>
+            </ul>
+        </div>
+
+        <h2>12. Vantaggi dei Template Literals</h2>
+        
+        <div class="teoria">
+            <p><strong>Perché template literals sono essenziali nello sviluppo moderno:</strong></p>
+            <ul>
+                <li><strong>Sintassi pulita:</strong> ${} per espressioni JavaScript inline</li>
+                <li><strong>Classi dinamiche:</strong> Costruire classi CSS condizionali</li>
+                <li><strong>Generazione HTML:</strong> Creare markup dinamicamente</li>
+                <li><strong>Concatenazione elegante:</strong> Più leggibile di multipli +</li>
+                <li><strong>Manutenibilità:</strong> Codice più facile da leggere e modificare</li>
+            </ul>
+            
+            <p>Esempio di utilizzo professionale:</p>
+        </div>
+        
+        <div class="codice">
+<pre>// Generazione dinamica di elementi
+function creaButton(testo, isAttivo) {
+    const classe = `btn ${isAttivo ? 'btn-primary' : 'btn-secondary'}`;
+    return `<button class="${classe}">${testo}</button>`;
+}
+
+// Utilizzo
+const html = creaButton('Salva', true);
+document.body.innerHTML += html;</pre>
+        </div>
+
+        <div class="navigazione">
+            <a href="lezione-5-2.html" class="btn-nav">Lezione Precedente</a>
+            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
+            <a href="lezione-5-4.html" class="btn-nav">Lezione Successiva</a>
+        </div>
+    </div>
+</body>
+</html>

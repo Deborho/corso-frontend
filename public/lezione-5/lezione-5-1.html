@@ -3,426 +3,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lezione 5.1 - Introduzione e Setup JavaScript</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>5.1 - JavaScript ES6+</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Lezione 5.1 - Introduzione e Setup JavaScript</h1>
-            <p>Cos'è JavaScript e come integrarlo nelle pagine web</p>
+            <h1>5.1 - JavaScript ES6+</h1>
+            <p>Funzionalità moderne di JavaScript per lo sviluppo web</p>
         </div>
 
-        <h2>1. Cos'è JavaScript?</h2>
+        <div class="teoria">
+            <h2>Obiettivi</h2>
+            <p>Padroneggiare le funzionalità moderne di JavaScript necessarie per lavorare con TypeScript e React.</p>
+        </div>
+
+        <h2>1. Let e Const</h2>
         
         <div class="teoria">
-            <p><strong>JavaScript</strong> è un linguaggio di programmazione interpretato che permette di rendere le pagine web interattive e dinamiche. È l'unico linguaggio di programmazione che può essere eseguito nativamente nei browser web.</p>
-            
-            <p><strong>A cosa serve JavaScript:</strong></p>
+            <h3>Perché Non Usare var</h3>
+            <pre><code>// ❌ Vecchio modo con var (problemi di scope)
+var nome = "Mario";
+if (true) {
+    var nome = "Luigi";  // Sovrascrive la variabile esterna!
+}
+console.log(nome);  // "Luigi"
+
+// ✅ Modo moderno con let
+let cognome = "Rossi";
+if (true) {
+    let cognome = "Bianchi";  // Variabile diversa (block scope)
+}
+console.log(cognome);  // "Rossi"
+
+// ✅ const per valori immutabili
+const PI = 3.14159;
+// PI = 3.14;  // ❌ Errore: non puoi riassegnare const
+
+// ⚠️ Ma puoi modificare oggetti e array!
+const utente = { nome: "Marco" };
+utente.nome = "Paolo";  // ✅ OK
+utente.eta = 25;        // ✅ OK
+// utente = {};         // ❌ Errore: non puoi riassegnare</code></pre>
+
+            <h3>Regola Pratica</h3>
             <ul>
-                <li><strong>Interattività:</strong> Rispondere a click, input utente, scroll, etc.</li>
-                <li><strong>Manipolazione DOM:</strong> Modificare contenuto e struttura della pagina</li>
-                <li><strong>Validazione Form:</strong> Controllare dati prima dell'invio</li>
-                <li><strong>Animazioni:</strong> Creare effetti visivi e transizioni</li>
-                <li><strong>Comunicazione Server:</strong> Inviare e ricevere dati (AJAX)</li>
-                <li><strong>Single Page Applications:</strong> Applicazioni web complesse e dinamiche</li>
-            </ul>
-            
-            <p><strong>JavaScript oggi:</strong></p>
-            <ul>
-                <li><strong>Nel Browser:</strong> Manipola pagine web, gestisce eventi utente</li>
-                <li><strong>Nel Server:</strong> Node.js permette di usare JavaScript lato server</li>
-                <li><strong>Mobile:</strong> Applicazioni mobili ibride</li>
-                <li><strong>Desktop:</strong> Electron per applicazioni desktop</li>
-            </ul>
-        </div>
-
-        <h2>2. JavaScript nel Browser vs Node.js</h2>
-        
-        <table>
-            <tr>
-                <th>JavaScript nel Browser</th>
-                <th>JavaScript con Node.js</th>
-            </tr>
-            <tr>
-                <td>
-                    <ul style="margin: 10px 0 0 20px;">
-                        <li>Eseguito nel browser (Chrome, Firefox, etc.)</li>
-                        <li>Accede al DOM (Document Object Model)</li>
-                        <li>Gestisce eventi utente (click, input, etc.)</li>
-                        <li>Interagisce con API del browser (localStorage, fetch)</li>
-                        <li>Limitato per sicurezza (no accesso file system)</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul style="margin: 10px 0 0 20px;">
-                        <li>Eseguito sul server</li>
-                        <li>Accede a file system e database</li>
-                        <li>Gestisce richieste HTTP</li>
-                        <li>Può creare server web</li>
-                        <li>Nessuna limitazione di sicurezza browser</li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
-        
-        <div class="teoria">
-            <p>In questa lezione ci concentreremo su <strong>JavaScript nel browser</strong>, che è fondamentale per lo sviluppo frontend.</p>
-        </div>
-
-        <h2>3. Come Includere JavaScript</h2>
-        
-        <div class="teoria">
-            <p>Esistono tre modi per includere JavaScript in una pagina HTML:</p>
-        </div>
-
-        <h3>3.1 Inline JavaScript</h3>
-        
-        <div class="codice">
-<pre>&lt;button onclick="alert('Cliccato!')"&gt;Clicca qui&lt;/button&gt;</pre>
-        </div>
-        
-        <div class="teoria">
-            <p><strong>Quando usarlo:</strong> Mai in produzione. Solo per test rapidi.</p>
-            <p><strong>Svantaggi:</strong> Mescola HTML e JavaScript, difficile da mantenere, non scalabile.</p>
-        </div>
-
-        <h3>3.2 Internal JavaScript</h3>
-        
-        <div class="codice">
-<pre>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;Pagina con JavaScript&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;h1 id="titolo"&gt;Titolo Iniziale&lt;/h1&gt;
-    &lt;button id="btn"&gt;Cambia Titolo&lt;/button&gt;
-    
-    &lt;script&gt;
-        // JavaScript interno
-        const btn = document.getElementById('btn');
-        const titolo = document.getElementById('titolo');
-        
-        btn.addEventListener('click', function() {
-            titolo.textContent = 'Titolo Cambiato!';
-        });
-    &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</pre>
-        </div>
-        
-        <div class="teoria">
-            <p><strong>Quando usarlo:</strong> Per piccole pagine o demo. JavaScript specifico per quella pagina.</p>
-            <p><strong>Vantaggi:</strong> Tutto in un file, facile da visualizzare.</p>
-            <p><strong>Svantaggi:</strong> Non riutilizzabile, file HTML diventa grande.</p>
-        </div>
-
-        <h3>3.3 External JavaScript (Consigliato)</h3>
-        
-        <div class="codice">
-<pre>&lt;!-- File: index.html --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;Pagina con JavaScript&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;h1 id="titolo"&gt;Titolo Iniziale&lt;/h1&gt;
-    &lt;button id="btn"&gt;Cambia Titolo&lt;/button&gt;
-    
-    &lt;!-- Script esterno caricato alla fine del body --&gt;
-    &lt;script src="script.js"&gt;&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</pre>
-        </div>
-        
-        <div class="codice">
-<pre>// File: script.js
-const btn = document.getElementById('btn');
-const titolo = document.getElementById('titolo');
-
-btn.addEventListener('click', function() {
-    titolo.textContent = 'Titolo Cambiato!';
-});</pre>
-        </div>
-        
-        <div class="teoria">
-            <p><strong>Quando usarlo:</strong> Sempre in progetti reali.</p>
-            <p><strong>Vantaggi:</strong></p>
-            <ul>
-                <li>Separa HTML e JavaScript (separation of concerns)</li>
-                <li>Codice riutilizzabile su più pagine</li>
-                <li>Migliore organizzazione del progetto</li>
-                <li>File JavaScript può essere cachato dal browser</li>
-            </ul>
-            
-            <p><strong>Dove posizionare il tag script:</strong></p>
-            <ul>
-                <li><strong>Alla fine del body (consigliato):</strong> Il DOM è già caricato quando JavaScript viene eseguito</li>
-                <li><strong>Nell'head con defer:</strong> <code>&lt;script src="script.js" defer&gt;&lt;/script&gt;</code> - Scarica in parallelo ma esegue dopo il DOM</li>
-                <li><strong>Nell'head con async:</strong> <code>&lt;script src="script.js" async&gt;&lt;/script&gt;</code> - Per script che non dipendono dal DOM</li>
+                <li>Usa <strong>const</strong> di default (99% dei casi)</li>
+                <li>Usa <strong>let</strong> solo se devi riassegnare la variabile</li>
+                <li>Non usare mai <strong>var</strong></li>
             </ul>
         </div>
 
-        <h2>4. Console del Browser</h2>
-        
+        <h2>2. Arrow Functions (5 min)</h2>
+
         <div class="teoria">
-            <p>La <strong>console</strong> è lo strumento principale per sviluppare e debuggare JavaScript. Permette di eseguire codice JavaScript e visualizzare output, errori e messaggi di log.</p>
-            
-            <p><strong>Come aprire la console:</strong></p>
-            <ul>
-                <li><strong>Chrome/Edge:</strong> F12 o Ctrl+Shift+J (Windows/Linux), Cmd+Option+J (Mac)</li>
-                <li><strong>Firefox:</strong> F12 o Ctrl+Shift+K (Windows/Linux), Cmd+Option+K (Mac)</li>
-                <li><strong>Safari:</strong> Cmd+Option+C (Mac)</li>
-            </ul>
-        </div>
-
-        <h3>4.1 console.log()</h3>
-        
-        <div class="codice">
-<pre>// Stampare messaggi nella console
-console.log('Ciao JavaScript!');
-
-// Stampare variabili
-const nome = 'Mario';
-console.log(nome);  // Output: Mario
-
-// Stampare più valori
-const età = 25;
-console.log('Nome:', nome, 'Età:', età);  // Output: Nome: Mario Età: 25
-
-// Stampare oggetti
-const persona = { nome: 'Mario', età: 25 };
-console.log(persona);  // Output: {nome: "Mario", età: 25}</pre>
-        </div>
-
-        <h3>4.2 Altri Metodi Console Utili</h3>
-        
-        <div class="codice">
-<pre>// console.error() - Mostra errori in rosso
-console.error('Questo è un errore!');
-
-// console.warn() - Mostra avvisi in giallo
-console.warn('Questo è un avviso!');
-
-// console.table() - Mostra array/oggetti come tabella
-const utenti = [
-    { nome: 'Mario', età: 25 },
-    { nome: 'Luigi', età: 30 }
-];
-console.table(utenti);
-
-// console.clear() - Pulisce la console
-console.clear();</pre>
-        </div>
-
-        <h2>5. Commenti in JavaScript</h2>
-        
-        <div class="codice">
-<pre>// Questo è un commento su singola riga
-// I commenti non vengono eseguiti
-
-/* 
-   Questo è un commento
-   su più righe
-   utile per spiegazioni lunghe
-*/
-
-const nome = 'Mario';  // Commento alla fine della riga
-
-/*
- * Commento di documentazione
- * @param {string} nome - Il nome dell'utente
- * @returns {string} - Il messaggio di saluto
- */
-function saluta(nome) {
-    return `Ciao ${nome}!`;
-}</pre>
-        </div>
-
-        <h2>6. Statement e Punto e Virgola</h2>
-        
-        <div class="teoria">
-            <p>In JavaScript, ogni istruzione (statement) può terminare con un punto e virgola <code>;</code></p>
-            
-            <p><strong>Il punto e virgola è opzionale</strong> grazie all'Automatic Semicolon Insertion (ASI), ma è considerata best practice usarlo sempre per evitare bug.</p>
-        </div>
-        
-        <div class="codice">
-<pre>// Con punto e virgola (consigliato)
-const nome = 'Mario';
-const età = 25;
-console.log(nome);
-
-// Senza punto e virgola (funziona ma sconsigliato)
-const nome = 'Mario'
-const età = 25
-console.log(nome)
-
-// Casi dove il punto e virgola è necessario
-const a = 1; const b = 2;  // Due statement sulla stessa riga
-
-// Caso problematico senza punto e virgola
-const saluto = 'Ciao'
-[1, 2, 3].forEach(n => console.log(n))
-// JavaScript interpreta come: const saluto = 'Ciao'[1, 2, 3].forEach(...)</pre>
-        </div>
-
-        <h2>7. Case Sensitivity</h2>
-        
-        <div class="teoria">
-            <p>JavaScript è <strong>case-sensitive</strong>: distingue tra maiuscole e minuscole.</p>
-        </div>
-        
-        <div class="codice">
-<pre>// Queste sono variabili diverse
-const nome = 'Mario';
-const Nome = 'Luigi';
-const NOME = 'Giovanna';
-
-console.log(nome);  // Mario
-console.log(Nome);  // Luigi
-console.log(NOME);  // Giovanna
-
-// I nomi delle funzioni sono case-sensitive
-console.log('test');  // Funziona
-Console.log('test');  // ERRORE: Console is not defined</pre>
-        </div>
-
-        <h2>8. Convenzioni di Naming</h2>
-        
-        <div class="teoria">
-            <p><strong>camelCase</strong> è la convenzione standard per JavaScript:</p>
-        </div>
-        
-        <div class="codice">
-<pre>// camelCase per variabili e funzioni (consigliato)
-const nomeUtente = 'Mario';
-const numeroTelefono = '1234567890';
-const isAttivo = true;
-
-function calcolaSomma(a, b) {
+            <h3>Sintassi Concisa</h3>
+            <pre><code>// Funzione tradizionale
+function somma(a, b) {
     return a + b;
 }
 
-// PascalCase per classi e costruttori
-class PersonaUtente {
-    constructor(nome, cognome) {
-        this.nome = nome;
-        this.cognome = cognome;
+// ✅ Arrow function
+const somma = (a, b) => {
+    return a + b;
+};
+
+// ✅ Versione ultra-concisa (return implicito)
+const somma = (a, b) => a + b;
+
+// Con un solo parametro puoi omettere le parentesi
+const doppio = x => x * 2;
+
+// Senza parametri
+const saluta = () => console.log("Ciao!");</code></pre>
+
+            <h3>This Binding Automatico</h3>
+            <pre><code>// Problema con funzioni tradizionali
+const persona = {
+    nome: "Maria",
+    amici: ["Anna", "Luca"],
+    stampaAmici: function() {
+        this.amici.forEach(function(amico) {
+            // ❌ this qui è undefined!
+            console.log(this.nome + " è amica di " + amico);
+        });
+    }
+};
+
+// ✅ Soluzione con arrow function
+const persona = {
+    nome: "Maria",
+    amici: ["Anna", "Luca"],
+    stampaAmici: function() {
+        this.amici.forEach(amico => {
+            // ✅ this è automaticamente quello dell'oggetto persona
+            console.log(this.nome + " è amica di " + amico);
+        });
+    }
+};</code></pre>
+        </div>
+
+        <h2>3. Template Literals (3 min)</h2>
+
+        <div class="teoria">
+            <pre><code>// ❌ Concatenazione vecchio stile
+const nome = "Carlo";
+const eta = 30;
+const messaggio = "Mi chiamo " + nome + " e ho " + eta + " anni";
+
+// ✅ Template literals con backtick `
+const messaggio = `Mi chiamo ${nome} e ho ${eta} anni`;
+
+// Espressioni dentro ${}
+const prezzo = 100;
+console.log(`Totale con IVA: ${prezzo * 1.22}€`);
+
+// Multilinea senza \n
+const html = `
+    <div>
+        <h1>${nome}</h1>
+        <p>Età: ${eta}</p>
+    </div>
+`;</code></pre>
+        </div>
+
+        <h2>4. Destructuring (5 min)</h2>
+
+        <div class="teoria">
+            <h3>Destrutturazione di Array</h3>
+            <pre><code>const colori = ["rosso", "verde", "blu"];
+
+// ❌ Modo vecchio
+const primo = colori[0];
+const secondo = colori[1];
+
+// ✅ Destructuring
+const [primo, secondo] = colori;
+console.log(primo);   // "rosso"
+console.log(secondo); // "verde"
+
+// Saltare elementi
+const [, , terzo] = colori;
+console.log(terzo);  // "blu"
+
+// Valori di default
+const [a, b, c, d = "giallo"] = colori;
+console.log(d);  // "giallo"</code></pre>
+
+            <h3>Destrutturazione di Oggetti</h3>
+            <pre><code>const utente = {
+    nome: "Laura",
+    eta: 28,
+    citta: "Roma"
+};
+
+// ✅ Destructuring
+const { nome, eta } = utente;
+console.log(nome);  // "Laura"
+console.log(eta);   // 28
+
+// Rinominare variabili
+const { nome: nomeUtente, eta: etaUtente } = utente;
+
+// Valori di default
+const { nome, professione = "Sviluppatore" } = utente;
+
+// Destructuring nei parametri di funzione
+function saluta({ nome, citta }) {
+    console.log(`Ciao ${nome} da ${citta}`);
+}
+saluta(utente);  // "Ciao Laura da Roma"</code></pre>
+        </div>
+
+        <h2>5. Spread e Rest Operator (7 min)</h2>
+
+        <div class="teoria">
+            <h3>Spread Operator (...)</h3>
+            <pre><code>// Copiare array
+const numeri = [1, 2, 3];
+const copia = [...numeri];
+
+// Concatenare array
+const arr1 = [1, 2];
+const arr2 = [3, 4];
+const uniti = [...arr1, ...arr2];  // [1, 2, 3, 4]
+
+// Copiare oggetti
+const persona = { nome: "Luca", eta: 25 };
+const copia = { ...persona };
+
+// Unire oggetti (merge)
+const datiBase = { nome: "Luca" };
+const datiExtra = { eta: 25, citta: "Milano" };
+const completo = { ...datiBase, ...datiExtra };
+
+// Sovrascrivere proprietà
+const aggiornato = { ...persona, eta: 26 };  // eta diventa 26</code></pre>
+
+            <h3>Rest Parameter (...)</h3>
+            <pre><code>// Raccogliere argomenti in un array
+function somma(...numeri) {
+    return numeri.reduce((tot, n) => tot + n, 0);
+}
+console.log(somma(1, 2, 3, 4));  // 10
+
+// Combinare con parametri normali
+function presenta(saluto, ...nomi) {
+    return `${saluto} ${nomi.join(", ")}!`;
+}
+presenta("Ciao", "Anna", "Marco", "Luigi");  // "Ciao Anna, Marco, Luigi!"
+
+// Destructuring con rest
+const [primo, secondo, ...altri] = [1, 2, 3, 4, 5];
+console.log(altri);  // [3, 4, 5]
+
+const { nome, ...resto } = { nome: "Mario", eta: 30, citta: "Roma" };
+console.log(resto);  // { eta: 30, citta: "Roma" }</code></pre>
+        </div>
+
+        <h2>6. Array Methods (7 min)</h2>
+
+        <div class="teoria">
+            <pre><code>const numeri = [1, 2, 3, 4, 5];
+
+// map: trasforma ogni elemento
+const doppi = numeri.map(n => n * 2);
+// [2, 4, 6, 8, 10]
+
+// filter: filtra elementi
+const pari = numeri.filter(n => n % 2 === 0);
+// [2, 4]
+
+// reduce: riduce ad un singolo valore
+const somma = numeri.reduce((totale, n) => totale + n, 0);
+// 15
+
+// find: trova primo elemento che soddisfa condizione
+const maggioreDi3 = numeri.find(n => n > 3);
+// 4
+
+// some: verifica se almeno uno soddisfa condizione
+const haPari = numeri.some(n => n % 2 === 0);
+// true
+
+// every: verifica se tutti soddisfano condizione
+const tuttiPositivi = numeri.every(n => n > 0);
+// true</code></pre>
+
+            <h3>Esempio Reale: Elaborare Dati</h3>
+            <pre><code>const prodotti = [
+    { nome: "Laptop", prezzo: 1000, categoria: "tech" },
+    { nome: "Mouse", prezzo: 25, categoria: "tech" },
+    { nome: "Libro", prezzo: 15, categoria: "libri" }
+];
+
+// Filtra prodotti tech e calcola totale
+const totaleTech = prodotti
+    .filter(p => p.categoria === "tech")
+    .reduce((tot, p) => tot + p.prezzo, 0);
+// 1025
+
+// Aumenta prezzi del 10%
+const conAumento = prodotti.map(p => ({
+    ...p,
+    prezzo: p.prezzo * 1.1
+}));</code></pre>
+        </div>
+
+        <h2>7. Promises e Async/Await (8 min)</h2>
+
+        <div class="teoria">
+            <h3>Promises</h3>
+            <pre><code>// Promise: operazione asincrona che può avere successo o fallire
+function caricaDati() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const successo = true;
+            if (successo) {
+                resolve({ id: 1, nome: "Dati caricati" });
+            } else {
+                reject("Errore nel caricamento");
+            }
+        }, 1000);
+    });
+}
+
+// Usare la promise con .then() e .catch()
+caricaDati()
+    .then(dati => {
+        console.log(dati);
+        return dati.id;
+    })
+    .then(id => {
+        console.log("ID:", id);
+    })
+    .catch(errore => {
+        console.error(errore);
+    });</code></pre>
+
+            <h3>Async/Await (Sintassi Moderna)</h3>
+            <pre><code>// ✅ Molto più leggibile!
+async function mostraDati() {
+    try {
+        const dati = await caricaDati();
+        console.log(dati);
+        
+        const altriDati = await caricaAltriDati(dati.id);
+        console.log(altriDati);
+        
+    } catch (errore) {
+        console.error("Errore:", errore);
     }
 }
 
-// SCREAMING_SNAKE_CASE per costanti globali
-const MAX_UTENTI = 100;
-const API_BASE_URL = 'https://api.example.com';
+// Esempio con fetch API
+async function getUtenti() {
+    try {
+        const response = await fetch('https://api.example.com/users');
+        const utenti = await response.json();
+        return utenti;
+    } catch (errore) {
+        console.error("Errore API:", errore);
+    }
+}
 
-// Nomi descrittivi
-const btn = document.querySelector('button');  // Abbreviazione OK se chiaro
-const pulsanteInvio = document.querySelector('button');  // Più descrittivo</pre>
+// Eseguire più promise in parallelo
+async function caricaTutto() {
+    const [utenti, prodotti, ordini] = await Promise.all([
+        fetch('/api/users').then(r => r.json()),
+        fetch('/api/products').then(r => r.json()),
+        fetch('/api/orders').then(r => r.json())
+    ]);
+    
+    return { utenti, prodotti, ordini };
+}</code></pre>
         </div>
 
-        <h2>9. Esempio Pratico Completo</h2>
-        
-        <div class="esempio">
-            <p>Esempio di una semplice pagina con JavaScript:</p>
-            
-            <div class="demo" style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9;">
-                <h3 id="demo-titolo">Titolo Originale</h3>
-                <p id="demo-paragrafo">Questo è un paragrafo.</p>
-                <button id="demo-btn" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Cambia Contenuto</button>
-                <button id="demo-reset" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">Reset</button>
-            </div>
-            
-            <div class="codice">
-<pre>&lt;h3 id="titolo"&gt;Titolo Originale&lt;/h3&gt;
-&lt;p id="paragrafo"&gt;Questo è un paragrafo.&lt;/p&gt;
-&lt;button id="btn-cambia"&gt;Cambia Contenuto&lt;/button&gt;
-&lt;button id="btn-reset"&gt;Reset&lt;/button&gt;
+        <h2>8. Moduli ES6 (3 min)</h2>
 
-&lt;script&gt;
-    // Seleziona elementi dal DOM
-    const titolo = document.getElementById('titolo');
-    const paragrafo = document.getElementById('paragrafo');
-    const btnCambia = document.getElementById('btn-cambia');
-    const btnReset = document.getElementById('btn-reset');
-    
-    // Memorizza contenuto originale
-    const titoloOriginale = titolo.textContent;
-    const paragrafoOriginale = paragrafo.textContent;
-    
-    // Aggiungi event listener al bottone
-    btnCambia.addEventListener('click', function() {
-        console.log('Bottone cliccato!');
-        titolo.textContent = 'Nuovo Titolo!';
-        paragrafo.textContent = 'Il contenuto è stato modificato con JavaScript.';
-    });
-    
-    // Reset contenuto
-    btnReset.addEventListener('click', function() {
-        console.log('Reset cliccato!');
-        titolo.textContent = titoloOriginale;
-        paragrafo.textContent = paragrafoOriginale;
-    });
-&lt;/script&gt;</pre>
-            </div>
-            
-            <script>
-                // Codice JavaScript per l'esempio
-                const demoTitolo = document.getElementById('demo-titolo');
-                const demoParagrafo = document.getElementById('demo-paragrafo');
-                const demoBtn = document.getElementById('demo-btn');
-                const demoReset = document.getElementById('demo-reset');
-                
-                const titoloOriginale = demoTitolo.textContent;
-                const paragrafoOriginale = demoParagrafo.textContent;
-                
-                demoBtn.addEventListener('click', function() {
-                    console.log('Bottone cliccato!');
-                    demoTitolo.textContent = 'Nuovo Titolo!';
-                    demoParagrafo.textContent = 'Il contenuto è stato modificato con JavaScript.';
-                });
-                
-                demoReset.addEventListener('click', function() {
-                    console.log('Reset cliccato!');
-                    demoTitolo.textContent = titoloOriginale;
-                    demoParagrafo.textContent = paragrafoOriginale;
-                });
-            </script>
-        </div>
-
-        <h2>10. Note Importanti</h2>
-        
         <div class="teoria">
-            <ul>
-                <li><strong>JavaScript è interpretato:</strong> Non serve compilazione, il browser esegue il codice direttamente</li>
-                <li><strong>Usa sempre const/let:</strong> Non usare var nelle versioni moderne di JavaScript</li>
-                <li><strong>Semicolons:</strong> Usa sempre il punto e virgola per evitare bug</li>
-                <li><strong>Console:</strong> Usa console.log() costantemente per debuggare</li>
-                <li><strong>DevTools:</strong> Impara a usare gli strumenti di sviluppo del browser</li>
-                <li><strong>Errori:</strong> Leggi sempre gli errori nella console, indicano il problema e la riga</li>
-            </ul>
+            <pre><code>// file: utils.js
+export const PI = 3.14159;
+
+export function somma(a, b) {
+    return a + b;
+}
+
+export class Calcolatrice {
+    moltiplica(a, b) {
+        return a * b;
+    }
+}
+
+// Export default (uno per file)
+export default function principale() {
+    console.log("Funzione principale");
+}
+
+// =====================================
+
+// file: main.js
+// Import named exports
+import { PI, somma, Calcolatrice } from './utils.js';
+
+// Import default
+import principale from './utils.js';
+
+// Import tutto
+import * as Utils from './utils.js';
+
+// Import con alias
+import { somma as add } from './utils.js';</code></pre>
         </div>
 
-        <h2>11. Best Practices per lo Sviluppo Moderno</h2>
-        
+        <h2>9. Optional Chaining e Nullish Coalescing (2 min)</h2>
+
         <div class="teoria">
-            <p><strong>Perché iniziare con setup corretto è importante:</strong></p>
-            <ul>
-                <li><strong>Moduli ES6:</strong> Organizzare codice con import/export per progetti scalabili</li>
-                <li><strong>DevTools:</strong> Browser moderni offrono strumenti potenti per debugging</li>
-                <li><strong>Console:</strong> Fondamentale per testare e debuggare codice JavaScript</li>
-                <li><strong>Linter:</strong> Strumenti come ESLint aiutano a mantenere codice pulito</li>
-                <li><strong>Version Control:</strong> Git per tracciare modifiche e collaborare</li>
-            </ul>
-            
-            <p>Padroneggiare questi concetti base rende molto più semplice l'apprendimento di framework e librerie moderne.</p>
+            <pre><code>// Optional Chaining (?.)
+const utente = {
+    nome: "Mario",
+    indirizzo: {
+        citta: "Roma"
+    }
+};
+
+// ❌ Vecchio modo
+const cap = utente && utente.indirizzo && utente.indirizzo.cap;
+
+// ✅ Nuovo modo
+const cap = utente?.indirizzo?.cap;  // undefined (senza errori)
+
+// Con funzioni
+utente.saluta?.();  // Chiama solo se esiste
+
+// Con array
+const primo = array?.[0];
+
+// =====================================
+
+// Nullish Coalescing (??)
+const valore = null;
+const risultato = valore ?? "default";  // "default"
+
+// Differenza con ||
+const zero = 0;
+console.log(zero || 100);   // 100 (perché 0 è falsy)
+console.log(zero ?? 100);   // 0 (perché 0 non è null/undefined)
+
+const testo = "";
+console.log(testo || "default");   // "default"
+console.log(testo ?? "default");   // "" (stringa vuota è valida)</code></pre>
         </div>
 
-        <div class="navigazione">
-            <a href="index.html" class="btn-nav">Indice Lezione 5</a>
-            <a href="lezione-5-2.html" class="btn-nav">Lezione Successiva</a>
+        <div class="teoria">
+            <h2>Riepilogo JavaScript ES6+</h2>
+            <table>
+                <tr>
+                    <th>Concetto</th>
+                    <th>Quando Usarlo</th>
+                </tr>
+                <tr>
+                    <td>const/let</td>
+                    <td>Sempre (const di default)</td>
+                </tr>
+                <tr>
+                    <td>Arrow functions</td>
+                    <td>Callback, array methods</td>
+                </tr>
+                <tr>
+                    <td>Template literals</td>
+                    <td>Stringhe con variabili</td>
+                </tr>
+                <tr>
+                    <td>Destructuring</td>
+                    <td>Estrarre dati da oggetti/array</td>
+                </tr>
+                <tr>
+                    <td>Spread/Rest</td>
+                    <td>Copiare, unire, raccogliere</td>
+                </tr>
+                <tr>
+                    <td>map/filter/reduce</td>
+                    <td>Trasformare array</td>
+                </tr>
+                <tr>
+                    <td>async/await</td>
+                    <td>Operazioni asincrone</td>
+                </tr>
+                <tr>
+                    <td>Optional chaining</td>
+                    <td>Accesso sicuro a proprietà</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="teoria">
+            <h2>Navigazione</h2>
+            <ul>
+                <li><a href="index.html">← Torna all'Indice Lezione 5</a></li>
+                <li><a href="lezione-5-2.html">5.2 - TypeScript Essenziale →</a></li>
+            </ul>
         </div>
     </div>
 </body>
