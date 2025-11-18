@@ -221,12 +221,13 @@ code {
 
 .codice pre {
     margin: 0;
+    color: #f8f8f2;
 }
 
 .codice code {
     background: transparent;
     padding: 0;
-    color: inherit;
+    color: #f8f8f2;
 }
 
 /* === MEDIA QUERY PER LA STAMPA === */
