@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 1 - HTML Base | Task Manager</title>
+    <title>Step 1 - HTML Base | Todo List</title>
     
     <!--
     ========================================
@@ -28,11 +28,41 @@
     
     ========================================
     -->
+    <style>
+        nav {
+            background-color: #f8f9fa;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        nav .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        footer {
+            background-color: #f8f9fa;
+            padding: 1rem 0;
+            margin-top: 2rem;
+            text-align: center;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <strong><a href="/">🏠 Home</a></strong>
+            <a href="#tasks">✅ Task</a>
+        </div>
+    </nav>
+
     <!-- Intestazione principale dell'applicazione -->
     <header>
-        <h1>Task Manager</h1>
+        <h1>Todo List</h1>
         <p>Gestisci le tue attività</p>
     </header>
 
@@ -52,21 +82,26 @@
         </section>
 
         <!-- Sezione lista dei task -->
-        <section>
+        <section id="tasks">
             <h2>I tuoi task</h2>
             <ul>
                 <li>
                     <input type="checkbox" id="task1">
-                    <label for="task1">Completare il corso di React</label>
+                    <label for="task1">Cosa da fare 1</label>
                     <button>Elimina</button>
                 </li>
                 <li>
                     <input type="checkbox" id="task2">
-                    <label for="task2">Studiare HTML e CSS</label>
+                    <label for="task2">Cosa da fare 2</label>
                     <button>Elimina</button>
                 </li>
             </ul>
         </section>
     </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Lezione Finale - Corso Frontend</p>
+    </footer>
 </body>
 </html>

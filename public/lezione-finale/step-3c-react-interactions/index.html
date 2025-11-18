@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 3c - React Interactions | Task Manager</title>
+    <title>Step 3c - React Interactions | Todo List</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +33,28 @@
     -->
 </head>
 <body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-house-door me-2"></i>Home
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="#tasks">
+                    <i class="bi bi-check2-square me-1"></i>Task
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <div id="root"></div>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-sm mt-5 py-3">
+        <div class="container text-center text-muted">
+            <p class="mb-0">Lezione Finale - Corso Frontend</p>
+        </div>
+    </footer>
 
     <!-- React e ReactDOM da CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -45,7 +66,10 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script type="text/babel">
+    <!-- App JS -->
+    <script type="text/babel" src="app.js"></script>
+</body>
+</html>
         // ==========================================
         // IMPORT REACT HOOKS
         // ==========================================
@@ -57,7 +81,7 @@
         function Header() {
             return (
                 <header className="bg-white p-4 rounded-top shadow-sm">
-                    <h1 className="text-primary">Task Manager</h1>
+                    <h1 className="text-primary">Todo List</h1>
                     <p className="text-muted mb-0">Gestisci le tue attività</p>
                 </header>
             );
@@ -209,7 +233,7 @@
             }
 
             return (
-                <section>
+                <section id="tasks">
                     <h2 className="h4 mb-3">I tuoi task</h2>
                     <ul className="list-group">
                         {tasks.map(task => (
@@ -230,8 +254,8 @@
         // ==========================================
         function App() {
             const [tasks, setTasks] = useState([
-                { id: 1, text: "Completare il corso di React", completed: false },
-                { id: 2, text: "Studiare HTML e CSS", completed: false }
+                { id: 1, text: "Cosa da fare 1", completed: false },
+                { id: 2, text: "Cosa da fare 2", completed: false }
             ]);
 
             const addTask = (text) => {

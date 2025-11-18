@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 4 - SASS | Todo List</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- 
+    ========================================
+    STEP 4: SASS STYLING
+    ========================================
+    
+    In questo step aggiungiamo a Step 3d:
+    - File SASS con variabili e stili
+    - Effetti hover su buttons, cards, task items
+    - Gradienti personalizzati
+    - Transizioni smooth
+    - Header con navigazione
+    - Footer informativo
+    
+    COSA CAMBIA RISPETTO A STEP 3D:
+    - Aggiunto styles.scss compilato in styles.css
+    - Effetti hover su tutti gli elementi interattivi
+    - Animazioni e transizioni smooth
+    - Header e footer con stili SASS
+    - Card che si sollevano al passaggio del mouse
+    - Bottoni con effetti scale e shadow
+    
+    COMPILAZIONE:
+    - npx sass styles.scss styles.css
+    ========================================
+    -->
+    
+    <!-- Custom CSS compilato da SASS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-house-door me-2"></i>Home
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="#tasks">
+                    <i class="bi bi-check2-square me-1"></i>Task
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="root"></div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-3">
+        <div class="container text-center text-muted">
+            <p class="mb-0">Lezione Finale - Corso Frontend</p>
+        </div>
+    </footer>
+
+    <!-- React e ReactDOM da CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel per JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App JS -->
+    <script type="text/babel" src="app.js"></script>
+</body>
+</html>

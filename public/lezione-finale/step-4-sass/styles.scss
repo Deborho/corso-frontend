@@ -1,0 +1,148 @@
+// ==========================================
+// VARIABILI
+// ==========================================
+$primary-gradient-start: #667eea;
+$primary-gradient-end: #764ba2;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$light-bg: #f8f9fa;
+$white: #ffffff;
+$border-radius: 8px;
+$transition-speed: 0.3s;
+
+// ==========================================
+// BODY E LAYOUT
+// ==========================================
+body {
+    background: linear-gradient(135deg, $primary-gradient-start 0%, $primary-gradient-end 100%);
+    min-height: 100vh;
+}
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+.navbar {
+    background-color: $white;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    .navbar-brand {
+        font-weight: bold;
+        color: $primary-gradient-start;
+        transition: all $transition-speed ease;
+
+        &:hover {
+            color: $primary-gradient-end;
+            transform: translateY(-2px);
+        }
+    }
+
+    .nav-link {
+        color: #6c757d;
+        transition: all $transition-speed ease;
+
+        &:hover {
+            color: $primary-gradient-start;
+            transform: translateX(5px);
+        }
+    }
+}
+
+// ==========================================
+// FOOTER
+// ==========================================
+.footer {
+    background-color: $white;
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+
+    p {
+        margin: 0;
+        color: #6c757d;
+    }
+}
+
+// ==========================================
+// CARD EFFECTS
+// ==========================================
+.card {
+    border-radius: $border-radius;
+    transition: all $transition-speed ease;
+    border: 1px solid #e0e0e0;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+// ==========================================
+// LIST GROUP ITEMS
+// ==========================================
+.list-group-item {
+    transition: all $transition-speed ease;
+    border-left: 3px solid transparent;
+
+    &:hover {
+        transform: translateX(5px);
+        border-left-color: $primary-gradient-start;
+        background-color: rgba($primary-gradient-start, 0.05);
+    }
+}
+
+// ==========================================
+// BUTTONS
+// ==========================================
+.btn-primary {
+    background: linear-gradient(135deg, $primary-gradient-start 0%, $primary-gradient-end 100%);
+    border: none;
+    transition: all $transition-speed ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba($primary-gradient-start, 0.4);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.btn-outline-danger {
+    transition: all $transition-speed ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+// ==========================================
+// FORM CONTROLS
+// ==========================================
+.form-control {
+    border-radius: $border-radius;
+    transition: all $transition-speed ease;
+
+    &:focus {
+        border-color: $primary-gradient-start;
+        box-shadow: 0 0 0 0.2rem rgba($primary-gradient-start, 0.25);
+        transform: translateY(-2px);
+    }
+}
+
+// ==========================================
+// ALERTS
+// ==========================================
+.alert-info {
+    background-color: rgba($primary-gradient-start, 0.1);
+    border-color: rgba($primary-gradient-start, 0.3);
+    transition: all $transition-speed ease;
+
+    &:hover {
+        background-color: rgba($primary-gradient-start, 0.15);
+        transform: translateX(5px);
+    }
+}

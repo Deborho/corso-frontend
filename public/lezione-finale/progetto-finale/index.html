@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager - Progetto Finale</title>
+    <title>Todo List - Progetto Finale</title>
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -12,7 +12,28 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-house-door me-2"></i>Home
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link active" href="#tasks">
+                    <i class="bi bi-check2-square me-1"></i>Task
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <div id="root"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Lezione Finale - Corso Frontend</p>
+        </div>
+    </footer>
 
     <!-- React e ReactDOM da CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -209,7 +230,7 @@
             }
 
             return (
-                <div className="task-list-section">
+                <div className="task-list-section" id="tasks">
                     <h3 className="section-title">
                         I tuoi task 
                         <span className="task-count"> ({filteredTasks.length})</span>
@@ -275,9 +296,8 @@
                 }
                 // Task di esempio se non ci sono dati salvati
                 return [
-                    { id: 1, text: "Completare il corso di React", completed: false },
-                    { id: 2, text: "Studiare HTML e CSS", completed: true },
-                    { id: 3, text: "Implementare il design responsive", completed: false }
+                    { id: 1, text: "Cosa da fare 1", completed: false },
+                    { id: 2, text: "Cosa da fare 2", completed: false }
                 ];
             };
 
