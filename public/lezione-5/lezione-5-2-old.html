@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.2 - TypeScript Fondamenti</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>5.2 - TypeScript Fondamenti</h1>
+            <p>Aggiungere tipi a JavaScript per codice più sicuro</p>
+        </div>
+
+        <div class="teoria">
+            <h2>Obiettivi</h2>
+            <p>Comprendere come TypeScript migliora JavaScript aggiungendo controllo dei tipi, rendendo il codice più sicuro e manutenibile.</p>
+        </div>
+
+        <h2>1. Cos'è TypeScript?</h2>
+        
+        <div class="teoria">
+            <p><strong>TypeScript è JavaScript con un sistema di tipi statici</strong>, sviluppato da Microsoft per risolvere i problemi di JavaScript nei progetti di grandi dimensioni.</p>
+            
+            <h3>Perché TypeScript?</h3>
+            <p>JavaScript è un linguaggio dinamicamente tipizzato, il che significa che i tipi delle variabili vengono determinati solo durante l'esecuzione. Questo può portare a errori difficili da individuare:</p>
+            <ul>
+                <li><strong>Errori nascosti:</strong> Errori di tipo che emergono solo a runtime, magari in produzione</li>
+                <li><strong>Refactoring rischioso:</strong> Modificare il codice può introdurre bug silenziosi</li>
+                <li><strong>Documentazione implicita:</strong> Non è chiaro che tipo di dati accettano le funzioni</li>
+                <li><strong>Autocompletamento limitato:</strong> L'editor non può suggerire proprietà e metodi</li>
+            </ul>
+            
+            <p>TypeScript risolve questi problemi aggiungendo un <strong>type system</strong> che verifica il codice prima dell'esecuzione.</p>
+        </div>
+
+        <div class="codice">
+            <h3>JavaScript vs TypeScript</h3>
+            <pre><code>// JavaScript - errore scoperto solo a runtime
+function somma(a, b) {
+    return a + b;
+}
+
+console.log(somma(5, "10"));  // "510" 😱 
+// Concatenazione invece di somma! Bug in produzione!</code></pre>
+        </div>
+
+        <div class="codice">
+            <pre><code>// TypeScript - errore rilevato immediatamente nell'editor
+function somma(a: number, b: number): number {
+    return a + b;
+}
+
+somma(5, "10");  // ❌ Errore: Argument of type 'string' is not assignable to parameter of type 'number'
+// L'errore viene evidenziato PRIMA dell'esecuzione!</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Vantaggi di TypeScript</h3>
+            <ul>
+                <li>✅ <strong>Errori rilevati prima dell'esecuzione:</strong> Il compilatore trova errori di tipo durante lo sviluppo</li>
+                <li>✅ <strong>Autocompletamento intelligente:</strong> L'editor conosce le proprietà e i metodi disponibili</li>
+                <li>✅ <strong>Refactoring sicuro:</strong> Rinominare variabili/funzioni aggiorna automaticamente tutti gli usi</li>
+                <li>✅ <strong>Documentazione automatica:</strong> I tipi fungono da documentazione sempre aggiornata</li>
+                <li>✅ <strong>Scalabilità:</strong> Facilita la gestione di codebase grandi con molti sviluppatori</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio: Type Safety in Azione</h3>
+            <pre><code>// Definizione con tipi
+interface Prodotto {
+    id: number;
+    nome: string;
+    prezzo: number;
+}
+
+function calcolaTotale(prodotti: Prodotto[]): number {
+    return prodotti.reduce((totale, prodotto) => totale + prodotto.prezzo, 0);
+}
+
+// Uso corretto
+const carrello: Prodotto[] = [
+    { id: 1, nome: "Mouse", prezzo: 25.99 },
+    { id: 2, nome: "Tastiera", prezzo: 79.99 }
+];
+console.log(calcolaTotale(carrello));  // ✅ OK
+
+// Errori rilevati automaticamente
+const carrellobugato = [
+    { id: 1, nome: "Mouse", prezo: 25.99 }  // "prezo" invece di "prezzo"
+];
+calcolaTotale(carrellobugato);  // ❌ Errore: Property 'prezzo' is missing</code></pre>
+        </div>
+
+        <h2>2. Tipizzazione delle Variabili</h2>
+
+        <div class="teoria">
+            <p>TypeScript supporta tutti i tipi primitivi di JavaScript, aggiungendo annotazioni di tipo per garantire la correttezza del codice.</p>
+            
+            <h3>Tipi Base</h3>
+            <p>I tre tipi primitivi fondamentali sono <code>string</code> (testo), <code>number</code> (numeri) e <code>boolean</code> (vero/falso). TypeScript può anche inferire automaticamente il tipo basandosi sul valore assegnato.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Annotazioni di tipo esplicite
+let nome: string = "Mario";
+let eta: number = 25;
+let attivo: boolean = true;
+
+// Type inference - TypeScript deduce il tipo automaticamente
+let cognome = "Rossi";  // TypeScript sa che è string
+// cognome = 123;       // ❌ Errore: Type 'number' is not assignable to type 'string'</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Tipi Speciali</h3>
+            <p><strong>any:</strong> Disabilita completamente il type checking. Da usare solo in casi eccezionali (librerie esterne senza tipi, migration da JavaScript). Evitalo quando possibile perché annulla i benefici di TypeScript.</p>
+            <p><strong>unknown:</strong> Versione sicura di <code>any</code>. Richiede un controllo di tipo prima dell'uso (type guard). Preferisci <code>unknown</code> ad <code>any</code>.</p>
+            <p><strong>void:</strong> Indica che una funzione non ritorna alcun valore. Usato principalmente per funzioni che eseguono side effects.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// any: evita il type checking (usalo raramente!)
+let qualcosa: any = "testo";
+qualcosa = 123;        // ✅ OK ma perdiamo i benefici di TS
+qualcosa.metodoCheNonEsiste();  // ❌ Errore runtime, ma TypeScript non avvisa
+
+// unknown: versione sicura di any
+let incognito: unknown = "dati";
+// console.log(incognito.toUpperCase());  // ❌ Errore: Object is of type 'unknown'
+
+// Richiede type guard prima dell'uso
+if (typeof incognito === "string") {
+    console.log(incognito.toUpperCase());  // ✅ OK dopo il controllo
+}
+
+// void: per funzioni che non ritornano nulla
+function log(messaggio: string): void {
+    console.log(messaggio);
+    // Non c'è return
+}
+
+// null e undefined: valori assenti
+let nullo: null = null;
+let indefinito: undefined = undefined;</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: Validazione Input</h3>
+            <pre><code>// Funzione che gestisce input dell'utente (unknown)
+function processaInput(input: unknown): string {
+    // Type guard per verificare il tipo
+    if (typeof input === "string") {
+        return input.trim().toUpperCase();
+    } else if (typeof input === "number") {
+        return input.toFixed(2);
+    } else if (typeof input === "boolean") {
+        return input ? "Sì" : "No";
+    }
+    return "Tipo non gestito";
+}
+
+console.log(processaInput("  ciao  "));  // "CIAO"
+console.log(processaInput(42.5678));     // "42.57"
+console.log(processaInput(true));        // "Sì"</code></pre>
+        </div>
+
+        <h2>3. Array e Tuple</h2>
+
+        <div class="teoria">
+            <p><strong>Array</strong> sono collezioni omogenee di elementi dello stesso tipo. TypeScript offre due sintassi equivalenti: <code>type[]</code> e <code>Array&lt;type&gt;</code>.</p>
+            <p><strong>Tuple</strong> sono array con lunghezza e tipo fissi per ogni posizione. Utili per rappresentare coppie di valori o strutture dati con numero predefinito di elementi di tipo diverso.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Array Tipizzati</h3>
+            <pre><code>// Due sintassi equivalenti per array
+let numeri: number[] = [1, 2, 3];
+let nomi: Array&lt;string&gt; = ["Anna", "Luca"];
+
+// Array di oggetti
+let utenti: { nome: string; eta: number }[] = [
+    { nome: "Mario", eta: 25 },
+    { nome: "Laura", eta: 30 }
+];
+
+// TypeScript previene errori di tipo
+numeri.push(4);        // ✅ OK
+// numeri.push("5");   // ❌ Errore: Argument of type 'string' is not assignable</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Tuple</h3>
+            <pre><code>// Tuple: lunghezza e tipo fissi per ogni posizione
+let coordinate: [number, number] = [10, 20];  // Coppia di numeri
+let persona: [string, number] = ["Mario", 25];  // Nome + età
+
+// Accesso sicuro per indice
+console.log(persona[0].toUpperCase());  // "MARIO" - TypeScript sa che è string
+console.log(persona[1].toFixed(1));     // "25.0" - TypeScript sa che è number
+
+// Tuple con elementi opzionali e rest
+let dati: [string, number, ...boolean[]] = ["test", 1, true, false];
+
+// ❌ Errori rilevati a compile-time
+coordinate = [10, 20, 30];  // Errore: Source has 3 element(s) but target allows only 2
+coordinate = [10, "20"];    // Errore: Type 'string' is not assignable to type 'number'</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: Risposta HTTP</h3>
+            <pre><code>// Tuple per rappresentare stato + dati
+type Response&lt;T&gt; = [number, T | null, string | null];
+//                  [status, data,     error]
+
+function fetchUser(id: number): Response&lt;{nome: string; email: string}&gt; {
+    if (id === 1) {
+        return [200, { nome: "Mario", email: "mario@test.com" }, null];
+    }
+    return [404, null, "Utente non trovato"];
+}
+
+const [status, user, error] = fetchUser(1);
+if (status === 200 && user) {
+    console.log(`Nome: ${user.nome}`);  // TypeScript sa che user non è null
+} else {
+    console.error(error);
+}</code></pre>
+        </div>
+
+        <h2>4. Oggetti e Interfacce</h2>
+
+        <div class="teoria">
+            <p>Gli oggetti sono il cuore di JavaScript e TypeScript. Possiamo definire i tipi inline o creare <strong>interfacce</strong> riutilizzabili per strutture dati complesse.</p>
+            
+            <h3>Type Annotations Inline</h3>
+            <p>Per oggetti semplici, possiamo definire il tipo direttamente nella dichiarazione. TypeScript supporta proprietà opzionali (<code>?</code>) e readonly.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Oggetto con tipo inline
+let utente: { nome: string; eta: number } = {
+    nome: "Mario",
+    eta: 25
+};
+
+// Proprietà opzionali con ?
+let config: { host: string; port?: number } = {
+    host: "localhost"
+    // port è opzionale, può essere omesso
+};
+
+// Proprietà readonly (immutabili)
+let punto: { readonly x: number; readonly y: number } = {
+    x: 10,
+    y: 20
+};
+// punto.x = 30;  // ❌ Errore: Cannot assign to 'x' because it is a read-only property</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Interfacce</h3>
+            <p>Le <strong>interfacce</strong> definiscono contratti riutilizzabili per la forma di un oggetto. Sono ideali per modellare dati (utenti, prodotti, configurazioni) e possono essere estese per creare gerarchie.</p>
+            <p>Vantaggi: riutilizzabilità, composizione tramite estensione, documentazione automatica del codice.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Definire interfacce riutilizzabili
+interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+    eta?: number;  // proprietà opzionale
+}
+
+const utente1: Utente = {
+    id: 1,
+    nome: "Mario",
+    email: "mario@example.com"
+    // eta omessa perché opzionale
+};
+
+// Estendere interfacce (ereditarietà)
+interface Admin extends Utente {
+    ruolo: string;
+    permessi: string[];
+}
+
+const admin: Admin = {
+    id: 2,
+    nome: "Laura",
+    email: "laura@example.com",
+    ruolo: "superadmin",
+    permessi: ["read", "write", "delete"]
+};</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Index Signatures</h3>
+            <pre><code>// Index signatures: oggetti con chiavi dinamiche
+interface Dizionario {
+    [chiave: string]: number;
+}
+
+const punteggi: Dizionario = {
+    mario: 100,
+    laura: 95,
+    luca: 88
+};
+
+// Possiamo aggiungere chiavi a runtime
+punteggi["anna"] = 92;  // ✅ OK</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: API Response</h3>
+            <pre><code>// Modellare risposta API con interfacce
+interface Prodotto {
+    id: number;
+    nome: string;
+    prezzo: number;
+    disponibile: boolean;
+}
+
+interface ApiResponse&lt;T&gt; {
+    success: boolean;
+    data: T;
+    timestamp: number;
+}
+
+// Type-safe response handling
+const response: ApiResponse&lt;Prodotto[]&gt; = {
+    success: true,
+    data: [
+        { id: 1, nome: "Mouse", prezzo: 25.99, disponibile: true },
+        { id: 2, nome: "Tastiera", prezzo: 79.99, disponibile: false }
+    ],
+    timestamp: Date.now()
+};
+
+// TypeScript conosce la struttura completa
+response.data.forEach(prodotto => {
+    console.log(`${prodotto.nome}: €${prodotto.prezzo}`);
+});</code></pre>
+        </div>
+
+        <h2>5. Union e Intersection Types</h2>
+
+        <div class="teoria">
+            <p>TypeScript permette di combinare tipi in modi complessi per modellare situazioni reali dove un valore può essere di più tipi.</p>
+            
+            <h3>Union Types (OR - "|")</h3>
+            <p>Un <strong>union type</strong> indica che un valore può essere di uno tra diversi tipi. Utile per funzioni che accettano input flessibili o per modellare stati alternativi.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Union type base: può essere number O string
+let id: number | string;
+id = 123;      // ✅ OK
+id = "abc";    // ✅ OK
+// id = true;  // ❌ Errore: Type 'boolean' is not assignable
+
+// Funzione con union types (type narrowing con typeof)
+function stampa(valore: string | number) {
+    if (typeof valore === "string") {
+        console.log(valore.toUpperCase());  // TypeScript sa che qui è string
+    } else {
+        console.log(valore.toFixed(2));     // TypeScript sa che qui è number
+    }
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Literal Types</h3>
+            <pre><code>// Union di literal types: restringe a valori specifici
+type Direzione = "su" | "giu" | "sinistra" | "destra";
+let direzione: Direzione = "su";  // ✅ OK
+// direzione = "diagonale";       // ❌ Errore: Type '"diagonale"' is not assignable
+
+// Utile per stati, configurazioni, enumerazioni
+type StatoOrdine = "in_attesa" | "elaborazione" | "spedito" | "consegnato" | "annullato";
+
+function aggiornaOrdine(stato: StatoOrdine) {
+    // L'editor suggerisce automaticamente i 5 valori possibili
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Discriminated Unions</h3>
+            <pre><code>// Union di interfacce con proprietà discriminante
+interface Cane {
+    tipo: "cane";  // literal type come discriminante
+    abbaia: () => void;
+}
+
+interface Gatto {
+    tipo: "gatto";  // literal type come discriminante
+    miagola: () => void;
+}
+
+type Animale = Cane | Gatto;
+
+function faiVerso(animale: Animale) {
+    // Type narrowing basato sulla proprietà discriminante
+    if (animale.tipo === "cane") {
+        animale.abbaia();  // TypeScript sa che è un Cane
+    } else {
+        animale.miagola(); // TypeScript sa che è un Gatto
+    }
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Intersection Types (AND - "&")</h3>
+            <p>Un <strong>intersection type</strong> combina più tipi in uno solo che deve avere TUTTE le proprietà di tutti i tipi coinvolti. Utile per composizione di comportamenti.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Combina più tipi insieme
+interface HasName {
+    nome: string;
+}
+
+interface HasAge {
+    eta: number;
+}
+
+// Persona deve avere TUTTE le proprietà di HasName E HasAge
+type Persona = HasName & HasAge;
+
+const persona: Persona = {
+    nome: "Mario",
+    eta: 25
+    // Entrambe le proprietà sono obbligatorie
+};
+
+// Composizione per aggiungere funzionalità
+interface Loggable {
+    log: () => void;
+}
+
+type PersonaLoggable = Persona & Loggable;</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: Form Data</h3>
+            <pre><code>// Union per gestire stati di loading
+type LoadingState = 
+    | { status: "idle" }
+    | { status: "loading" }
+    | { status: "success"; data: string }
+    | { status: "error"; error: string };
+
+function renderForm(state: LoadingState) {
+    switch (state.status) {
+        case "idle":
+            return "Premi invio per caricare";
+        case "loading":
+            return "Caricamento...";
+        case "success":
+            return `Dati: ${state.data}`;  // TypeScript sa che qui c'è data
+        case "error":
+            return `Errore: ${state.error}`;  // TypeScript sa che qui c'è error
+    }
+}</code></pre>
+        </div>
+
+        <h2>6. Type Aliases</h2>
+
+        <div class="teoria">
+            <p><strong>Type aliases</strong> permettono di dare un nome a tipi complessi per riutilizzarli e migliorare la leggibilità del codice. A differenza delle interfacce, possono rappresentare union types, primitive e funzioni.</p>
+            
+            <h3>Type vs Interface</h3>
+            <p>Regola pratica: usa <code>interface</code> per oggetti (può essere estesa), <code>type</code> per tutto il resto (union, primitive, funzioni, tuple).</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Creare alias per tipi complessi
+type ID = number | string;  // Union type
+type Callback = (data: string) => void;  // Function type
+
+// Riutilizzare i tipi
+let userId: ID = 123;
+let productId: ID = "abc-456";
+
+function fetchData(id: ID, callback: Callback) {
+    // Codice più leggibile grazie agli alias
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Quando Usare Type vs Interface</h3>
+            <pre><code>// ✅ Interface per oggetti (supporta extends)
+interface Utente {
+    nome: string;
+    email: string;
+}
+
+interface Admin extends Utente {
+    permessi: string[];
+}
+
+// ✅ Type per union
+type Status = "loading" | "success" | "error";
+
+// ✅ Type per funzioni
+type Operation = (a: number, b: number) => number;
+
+// ✅ Type per primitive complesse
+type Coordinate = [number, number];
+
+// ✅ Type per mapped types avanzati
+type Readonly&lt;T&gt; = {
+    readonly [K in keyof T]: T[K];
+};</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: Event Handlers</h3>
+            <pre><code>// Type alias per event handlers React
+type ButtonClickHandler = (event: React.MouseEvent&lt;HTMLButtonElement&gt;) => void;
+type InputChangeHandler = (event: React.ChangeEvent&lt;HTMLInputElement&gt;) => void;
+
+// Riutilizzo nei componenti
+const handleClick: ButtonClickHandler = (event) => {
+    console.log("Clicked!", event.currentTarget);
+};
+
+const handleInput: InputChangeHandler = (event) => {
+    console.log("Value:", event.target.value);
+};</code></pre>
+        </div>
+
+        <h2>7. Funzioni in TypeScript</h2>
+
+        <div class="teoria">
+            <p>TypeScript aggiunge type safety alle funzioni specificando i tipi dei parametri e del valore di ritorno. Questo previene errori come passare argomenti del tipo sbagliato o usare valori di ritorno in modo errato.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Tipizzazione Base</h3>
+            <pre><code>// Tipizzare parametri e return
+function somma(a: number, b: number): number {
+    return a + b;
+}
+
+// TypeScript previene errori
+somma(5, 10);      // ✅ OK: 15
+// somma(5, "10"); // ❌ Errore: Argument of type 'string' is not assignable</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Parametri Opzionali e Default</h3>
+            <pre><code>// Parametri opzionali con ?
+function saluta(nome: string, titolo?: string): string {
+    return titolo ? `${titolo} ${nome}` : nome;
+}
+
+saluta("Mario");             // "Mario"
+saluta("Rossi", "Dr.");      // "Dr. Rossi"
+
+// Parametri con valore di default
+function creaUtente(nome: string, ruolo: string = "user") {
+    return { nome, ruolo };
+}
+
+creaUtente("Laura");                 // { nome: "Laura", ruolo: "user" }
+creaUtente("Anna", "admin");         // { nome: "Anna", ruolo: "admin" }</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Rest Parameters</h3>
+            <pre><code>// Rest parameters: numero variabile di argomenti
+function sommaMultipla(...numeri: number[]): number {
+    return numeri.reduce((tot, n) => tot + n, 0);
+}
+
+sommaMultipla(1, 2, 3);        // 6
+sommaMultipla(10, 20, 30, 40); // 100</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Function Types</h3>
+            <pre><code>// Definire tipi per funzioni
+type MathOperation = (a: number, b: number) => number;
+
+const moltiplica: MathOperation = (a, b) => a * b;
+const dividi: MathOperation = (a, b) => a / b;
+
+// Usare come parametro
+function applica(op: MathOperation, x: number, y: number): number {
+    return op(x, y);
+}
+
+applica(moltiplica, 5, 3);  // 15</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Function Overloading</h3>
+            <pre><code>// Overloading: firme multiple per comportamenti diversi
+function elabora(input: string): string;
+function elabora(input: number): number;
+function elabora(input: string | number): string | number {
+    if (typeof input === "string") {
+        return input.toUpperCase();
+    }
+    return input * 2;
+}
+
+const risultato1 = elabora("ciao");  // TypeScript sa che ritorna string
+const risultato2 = elabora(10);      // TypeScript sa che ritorna number</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: API Fetch</h3>
+            <pre><code>// Function type per fetch con error handling
+type FetchResult&lt;T&gt; = 
+    | { success: true; data: T }
+    | { success: false; error: string };
+
+async function fetchApi&lt;T&gt;(url: string): Promise&lt;FetchResult&lt;T&gt;&gt; {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return { success: true, data };
+    } catch (error) {
+        return { success: false, error: String(error) };
+    }
+}
+
+// Uso type-safe
+const result = await fetchApi&lt;{nome: string}&gt;("/api/user");
+if (result.success) {
+    console.log(result.data.nome);  // TypeScript sa che qui c'è data
+} else {
+    console.error(result.error);     // TypeScript sa che qui c'è error
+}</code></pre>
+        </div>
+
+        <h2>8. Generics</h2>
+
+        <div class="teoria">
+            <p><strong>Generics</strong> permettono di scrivere codice riutilizzabile che funziona con diversi tipi mantenendo la type safety. Invece di duplicare funzioni per ogni tipo, usiamo un <em>parametro di tipo</em> (convenzionalmente <code>&lt;T&gt;</code>).</p>
+            
+            <p>Sono essenziali per librerie come React (<code>useState&lt;T&gt;</code>, <code>useRef&lt;T&gt;</code>) e per funzioni utility che lavorano con collezioni di dati.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Problema: Duplicazione di Codice</h3>
+            <pre><code>// Senza generics: dobbiamo duplicare la funzione per ogni tipo
+function primoElementoString(arr: string[]): string {
+    return arr[0];
+}
+
+function primoElementoNumber(arr: number[]): number {
+    return arr[0];
+}
+
+// ...e così via per ogni tipo possibile 😰</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Soluzione: Generics</h3>
+            <pre><code>// ✅ Con generics: una sola funzione riutilizzabile
+function primoElemento&lt;T&gt;(arr: T[]): T {
+    return arr[0];
+}
+
+// TypeScript inferisce automaticamente il tipo
+const primo = primoElemento([1, 2, 3]);        // Type: number
+const secondo = primoElemento(["a", "b"]);     // Type: string
+const terzo = primoElemento([true, false]);    // Type: boolean</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Generics con Interfacce</h3>
+            <pre><code>// Interfaccia generica per risposte API
+interface Risposta&lt;T&gt; {
+    data: T;
+    status: number;
+    message: string;
+}
+
+// Riutilizzabile per qualsiasi tipo di dato
+const utenti: Risposta&lt;Utente[]&gt; = {
+    data: [{ id: 1, nome: "Mario", email: "mario@example.com" }],
+    status: 200,
+    message: "OK"
+};
+
+const prodotto: Risposta&lt;Prodotto&gt; = {
+    data: { id: 1, nome: "Mouse", prezzo: 25.99 },
+    status: 200,
+    message: "OK"
+};</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Constraints (Vincoli)</h3>
+            <p>Possiamo restringere i tipi generici con <code>extends</code> per garantire che abbiano determinate proprietà o metodi.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Vincolo: T deve avere proprietà length
+interface HasLength {
+    length: number;
+}
+
+function logLength&lt;T extends HasLength&gt;(item: T): void {
+    console.log(`Lunghezza: ${item.length}`);
+}
+
+logLength("hello");         // ✅ OK: string ha length
+logLength([1, 2, 3]);       // ✅ OK: array ha length
+logLength({ length: 10 });  // ✅ OK: oggetto ha length
+// logLength(123);          // ❌ Errore: number non ha length</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: Fetch Type-Safe</h3>
+            <pre><code>// Wrapper generico per fetch con type safety automatica
+async function fetchJSON&lt;T&gt;(url: string): Promise&lt;T&gt; {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+}
+
+// Definiamo la struttura dei dati
+interface User {
+    id: number;
+    name: string;
+    email: string;
+}
+
+// TypeScript conosce ESATTAMENTE la struttura del risultato!
+const utente = await fetchJSON&lt;User&gt;("/api/user/1");
+console.log(utente.name);   // ✅ Autocompletamento perfetto
+console.log(utente.email);  // ✅ Type-safe
+
+// Per array
+const utenti = await fetchJSON&lt;User[]&gt;("/api/users");
+utenti.forEach(u => console.log(u.name));  // ✅ Type-safe nel loop</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio React: Custom Hook Generico</h3>
+            <pre><code>// Hook generico per gestire stato di loading
+function useAsync&lt;T&gt;(asyncFunction: () => Promise&lt;T&gt;) {
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState&lt;T | null&gt;(null);
+    const [error, setError] = useState&lt;string | null&gt;(null);
+
+    useEffect(() => {
+        setLoading(true);
+        asyncFunction()
+            .then(setData)
+            .catch(err => setError(err.message))
+            .finally(() => setLoading(false));
+    }, []);
+
+    return { loading, data, error };
+}
+
+// Uso type-safe
+const { data: user, loading } = useAsync&lt;User&gt;(() => 
+    fetchJSON&lt;User&gt;("/api/user/1")
+);
+
+if (user) {
+    console.log(user.name);  // TypeScript conosce il tipo!</code></pre>
+        </div>
+
+        <h2>9. Type Guards</h2>
+
+        <div class="teoria">
+            <p><strong>Type guards</strong> sono espressioni che permettono a TypeScript di <em>restringere</em> (narrow) un tipo da un union type a un tipo specifico. Essenziali quando lavoriamo con union types per accedere a proprietà/metodi specifici.</p>
+        </div>
+
+        <div class="codice">
+            <h3>typeof Guard</h3>
+            <pre><code>// typeof restituisce il tipo primitivo a runtime
+function elabora(input: string | number) {
+    if (typeof input === "string") {
+        return input.toUpperCase();  // TypeScript sa che qui è string
+    }
+    return input * 2;  // TypeScript sa che qui è number
+}
+
+// Controlla valori unknown in modo sicuro
+function processValue(value: unknown) {
+    if (typeof value === "string") {
+        console.log(value.trim());
+    } else if (typeof value === "number") {
+        console.log(value.toFixed(2));
+    }
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>instanceof Guard</h3>
+            <pre><code>// instanceof verifica se un oggetto è istanza di una classe
+class Cane {
+    abbaia() { console.log("Bau!"); }
+}
+
+class Gatto {
+    miagola() { console.log("Miao!"); }
+}
+
+function faiVerso(animale: Cane | Gatto) {
+    if (animale instanceof Cane) {
+        animale.abbaia();   // TypeScript sa che è Cane
+    } else {
+        animale.miagola();  // TypeScript sa che è Gatto
+    }
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>in Operator Guard</h3>
+            <pre><code>// in operator verifica se una proprietà esiste
+type Pesce = { nuota: () => void };
+type Uccello = { vola: () => void };
+
+function muovi(animale: Pesce | Uccello) {
+    if ("nuota" in animale) {
+        animale.nuota();  // TypeScript sa che è Pesce
+    } else {
+        animale.vola();   // TypeScript sa che è Uccello
+    }
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Custom Type Guards</h3>
+            <p>Possiamo creare funzioni personalizzate con la sintassi <code>value is Type</code> per logic di validazione complessa.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Custom type guard con predicato di tipo
+function isString(value: unknown): value is string {
+    return typeof value === "string";
+}
+
+function stampa(input: unknown) {
+    if (isString(input)) {
+        console.log(input.toUpperCase());  // TypeScript sa che è string
+    }
+}
+
+// Custom guard per interfacce
+interface User {
+    name: string;
+    email: string;
+}
+
+function isUser(obj: any): obj is User {
+    return obj && typeof obj.name === "string" && typeof obj.email === "string";
+}
+
+function processData(data: unknown) {
+    if (isUser(data)) {
+        console.log(data.name, data.email);  // Type-safe!
+    }
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: API Response Validation</h3>
+            <pre><code>// Validazione risposta API con type guards
+interface SuccessResponse {
+    success: true;
+    data: any;
+}
+
+interface ErrorResponse {
+    success: false;
+    error: string;
+}
+
+type ApiResponse = SuccessResponse | ErrorResponse;
+
+function isSuccessResponse(response: ApiResponse): response is SuccessResponse {
+    return response.success === true;
+}
+
+async function handleApiCall(url: string) {
+    const response: ApiResponse = await fetch(url).then(r => r.json());
+    
+    if (isSuccessResponse(response)) {
+        // TypeScript sa che qui c'è 'data'
+        console.log("Success:", response.data);
+        return response.data;
+    } else {
+        // TypeScript sa che qui c'è 'error'
+        console.error("Error:", response.error);
+        throw new Error(response.error);
+    }
+}</code></pre>
+        </div>
+
+        <h2>10. Utility Types (React-Relevant)</h2>
+
+        <div class="teoria">
+            <p>TypeScript include <strong>utility types</strong> built-in per trasformare tipi esistenti. Sono fondamentali in React per gestire props, state e form senza duplicare definizioni.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Partial - Proprietà Opzionali</h3>
+            <pre><code>interface Utente {
+    id: number;
+    nome: string;
+    email: string;
+    password: string;
+}
+
+// Partial: rende TUTTE le proprietà opzionali
+type UpdateUtente = Partial&lt;Utente&gt;;
+
+// Utile per update parziali
+const aggiorna: UpdateUtente = {
+    nome: "Nuovo nome"  // Solo ciò che vogliamo aggiornare
+};
+
+function updateUser(id: number, updates: Partial&lt;Utente&gt;) {
+    // Possiamo passare solo i campi che cambiano
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Pick e Omit - Selezionare Proprietà</h3>
+            <pre><code>// Pick: seleziona SOLO alcune proprietà
+type UtentePublic = Pick&lt;Utente, "id" | "nome" | "email"&gt;;
+// Risultato: { id: number; nome: string; email: string; }
+
+// Omit: esclude alcune proprietà
+type UtenteSenzaPassword = Omit&lt;Utente, "password"&gt;;
+// Risultato: { id: number; nome: string; email: string; }
+
+// Utile per API responses
+function getPublicUser(): UtentePublic {
+    return { id: 1, nome: "Mario", email: "mario@test.com" };
+    // password non è inclusa!
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Readonly - Immutabilità</h3>
+            <pre><code>// Readonly: rende tutto immutabile
+type UtenteImmutabile = Readonly&lt;Utente&gt;;
+
+const utente: UtenteImmutabile = {
+    id: 1,
+    nome: "Mario",
+    email: "mario@example.com",
+    password: "secret"
+};
+
+// utente.nome = "Luigi";  // ❌ Errore: Cannot assign to 'nome' because it is a read-only property</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Record - Oggetti con Chiavi Specifiche</h3>
+            <pre><code>// Record: definisce un oggetto con chiavi e valori specifici
+type Ruoli = "admin" | "user" | "guest";
+type Permessi = Record&lt;Ruoli, string[]&gt;;
+
+const permessi: Permessi = {
+    admin: ["read", "write", "delete"],
+    user: ["read", "write"],
+    guest: ["read"]
+};
+
+// Garantisce che TUTTI i ruoli siano definiti
+// permessi.moderator = [...]; // ❌ Errore: 'moderator' non è in Ruoli</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>ReturnType - Estrarre Tipo di Ritorno</h3>
+            <pre><code>// ReturnType: estrae il tipo di ritorno di una funzione
+function creaUtente() {
+    return { 
+        id: 1, 
+        nome: "Mario",
+        ruolo: "admin" as const
+    };
+}
+
+// Non dobbiamo duplicare la definizione!
+type Utente = ReturnType&lt;typeof creaUtente&gt;;
+// Risultato: { id: number; nome: string; ruolo: "admin"; }</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: Props React</h3>
+            <pre><code>// Definizione base props
+interface UserCardProps {
+    user: Utente;
+    onEdit: (id: number) => void;
+    onDelete: (id: number) => void;
+    showActions: boolean;
+}
+
+// Componente semplificato (solo user e showActions)
+type SimpleUserCardProps = Pick&lt;UserCardProps, "user" | "showActions"&gt;;
+
+// Props per form di editing (solo campi editabili)
+type EditFormProps = {
+    initialData: Partial&lt;Utente&gt;;  // Alcuni campi possono mancare
+    onSubmit: (data: Partial&lt;Utente&gt;) => void;
+};
+
+// Props readonly per display
+type ReadonlyUserProps = {
+    user: Readonly&lt;Utente&gt;;  // Garantisce nessuna modifica
+};</code></pre>
+        </div>
+
+        <h2>11. Setup TypeScript</h2>
+
+        <div class="teoria">
+            <p>Per iniziare con TypeScript in un progetto, serve installare il compilatore e configurarlo. Per progetti React moderni, strumenti come Vite includono già TypeScript.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Installazione Base</h3>
+            <pre><code>// Installare TypeScript come dev dependency
+npm install -D typescript
+
+// Creare file di configurazione
+npx tsc --init
+
+// Questo genera tsconfig.json con configurazione di default</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>tsconfig.json Essenziale per React</h3>
+            <pre><code>{
+    "compilerOptions": {
+        // Output JavaScript
+        "target": "ES2020",           // Versione JavaScript generata
+        "module": "ESNext",           // Sistema moduli (import/export)
+        "lib": ["ES2020", "DOM"],     // API disponibili
+        
+        // React
+        "jsx": "react-jsx",           // Trasformazione JSX (React 17+)
+        
+        // Type Checking
+        "strict": true,               // Abilita TUTTI i controlli strict
+        "noUnusedLocals": true,       // Errore per variabili inutilizzate
+        "noUnusedParameters": true,   // Errore per parametri inutilizzati
+        
+        // Module Resolution
+        "esModuleInterop": true,      // Import CommonJS compatibili
+        "skipLibCheck": true,         // Skip type check node_modules
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,    // Permette import di file .json
+        
+        // Bundler (Vite/Webpack)
+        "isolatedModules": true,      // Ogni file deve essere compilabile isolatamente
+        "noEmit": true                // Non genera .js (lo fa il bundler)
+    },
+    "include": ["src"],               // Directory con codice TypeScript
+    "exclude": ["node_modules"]
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Opzioni Strict</h3>
+            <p><code>"strict": true</code> abilita tutte queste opzioni contemporaneamente:</p>
+            <ul>
+                <li><strong>noImplicitAny:</strong> Errore se TypeScript non riesce a inferire il tipo (diventa any)</li>
+                <li><strong>strictNullChecks:</strong> null e undefined devono essere gestiti esplicitamente</li>
+                <li><strong>strictFunctionTypes:</strong> Type checking rigoroso per parametri funzioni</li>
+                <li><strong>strictBindCallApply:</strong> Verifica corretta dei metodi bind/call/apply</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+            <h3>Compilazione</h3>
+            <pre><code>// Compilare tutto il progetto
+npx tsc
+
+// Watch mode (ricompila automaticamente)
+npx tsc --watch
+
+// Compilare file specifico
+npx tsc src/index.ts
+
+// Per React: il bundler (Vite/Webpack) compila automaticamente</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Setup Progetto React con TypeScript (Vite)</h3>
+            <pre><code>// Creare progetto React + TypeScript con Vite
+npm create vite@latest my-app -- --template react-ts
+
+cd my-app
+npm install
+npm run dev
+
+// Vite configura automaticamente:
+// - TypeScript compiler
+// - tsconfig.json ottimizzato
+// - Hot Module Replacement (HMR)
+// - Fast Refresh per React</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Installare Tipi per Librerie</h3>
+            <pre><code>// Molte librerie non hanno tipi integrati
+// Cercare su DefinitelyTyped (@types)
+
+// React (già incluso in react-ts template)
+npm install -D @types/react @types/react-dom
+
+// Node.js
+npm install -D @types/node
+
+// Altre librerie popolari
+npm install -D @types/lodash
+npm install -D @types/jest
+
+// Verificare disponibilità tipi
+npx typesync</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio: Struttura Progetto TypeScript + React</h3>
+            <pre><code>my-app/
+├── node_modules/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Button.tsx
+│   │   └── Card.tsx
+│   ├── types/              # Definizioni tipi condivise
+│   │   ├── user.ts
+│   │   └── api.ts
+│   ├── utils/
+│   │   └── helpers.ts
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── vite-env.d.ts       # Tipi ambiente Vite
+├── tsconfig.json            # Config TypeScript
+├── tsconfig.node.json       # Config per Vite (Node.js)
+├── vite.config.ts           # Config Vite
+└── package.json</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h2>Riepilogo TypeScript</h2>
+            <table>
+                <tr>
+                    <th>Concetto</th>
+                    <th>Uso in React</th>
+                </tr>
+                <tr>
+                    <td>Tipi primitivi</td>
+                    <td>Props e state base</td>
+                </tr>
+                <tr>
+                    <td>Interfacce</td>
+                    <td>Tipizzare props dei componenti</td>
+                </tr>
+                <tr>
+                    <td>Union types</td>
+                    <td>Props con valori multipli</td>
+                </tr>
+                <tr>
+                    <td>Generics</td>
+                    <td>Componenti riutilizzabili, hooks custom</td>
+                </tr>
+                <tr>
+                    <td>Utility types</td>
+                    <td>Manipolare tipi di props</td>
+                </tr>
+                <tr>
+                    <td>Type guards</td>
+                    <td>Gestire props opzionali</td>
+                </tr>
+            </table>
+
+            <h3>Regole d'Oro per TypeScript con React</h3>
+            <ul>
+                <li>Tipizza sempre le props dei componenti</li>
+                <li>Usa interfacce per props complesse</li>
+                <li>Sfrutta type inference dove possibile</li>
+                <li>Evita <code>any</code> (usa <code>unknown</code> se necessario)</li>
+                <li>Usa utility types per DRY (Don't Repeat Yourself)</li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-5/lezione-5-1.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-5/lezione-5-3.html" class="btn-next">Prossima Lezione →</a>
+        </div>
+    </div>
+</body>
+</html>

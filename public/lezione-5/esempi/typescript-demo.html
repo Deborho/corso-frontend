@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript Demo - Output</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #252526;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #4ec9b0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        #output {
+            background: #1e1e1e;
+            border: 1px solid #3c3c3c;
+            border-radius: 4px;
+            padding: 20px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .info {
+            background: #264f78;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #569cd6;
+        }
+
+        .success {
+            color: #4ec9b0;
+        }
+
+        .error {
+            color: #f48771;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🟦 TypeScript Demo - Console Output</h1>
+        
+        <div class="info">
+            <strong>📝 File compilato:</strong> typescript-demo.ts → typescript-demo.js<br>
+            <strong>⚙️ Configurazione:</strong> ES2020, ESNext modules, DOM library<br>
+            <strong>✅ Type checking:</strong> Abilitato durante la compilazione
+        </div>
+
+        <div id="output"></div>
+    </div>
+
+    <script type="module" src="./typescript-demo.js"></script>
+    <script>
+        // Intercetta console.log e mostralo nella pagina
+        const output = document.getElementById('output');
+        const originalLog = console.log;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.map(arg => {
+                if (typeof arg === 'object') {
+                    return JSON.stringify(arg, null, 2);
+                }
+                return String(arg);
+            }).join(' ');
+            
+            output.textContent += message + '\n';
+        };
+    </script>
+</body>
+</html>

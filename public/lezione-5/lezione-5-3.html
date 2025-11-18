@@ -3,780 +3,671 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5.3 - React</title>
+    <title>5.3 - React Fondamenti</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>5.3 - React</h1>
-            <p>Costruire interfacce utente con componenti riutilizzabili</p>
+            <h1>5.3 - React Fondamenti</h1>
+            <p>Imparare React costruendo un gioco interattivo</p>
         </div>
 
         <div class="teoria">
             <h2>Obiettivi</h2>
-            <p>Costruire interfacce utente interattive con React applicando JavaScript ES6+ e TypeScript.</p>
+            <p>Imparare i fondamenti di React costruendo step-by-step un gioco Tris (Tic-Tac-Toe) interattivo, seguendo il tutorial ufficiale di React.</p>
         </div>
 
         <h2>1. Cos'è React?</h2>
         
         <div class="teoria">
-            <p>React è una libreria JavaScript per costruire interfacce utente basata su <strong>componenti</strong>.</p>
-
+            <p><strong>React è una libreria JavaScript per costruire interfacce utente</strong> basate su componenti riutilizzabili. Sviluppata da Meta (Facebook), è la libreria UI più popolare al mondo.</p>
+            
             <h3>Concetti Chiave</h3>
             <ul>
-                <li>✅ <strong>Componenti</strong>: Blocchi riutilizzabili di UI</li>
-                <li>✅ <strong>JSX</strong>: Sintassi HTML-like in JavaScript</li>
-                <li>✅ <strong>State</strong>: Dati che cambiano nel tempo</li>
-                <li>✅ <strong>Props</strong>: Dati passati da genitore a figlio</li>
-                <li>✅ <strong>Virtual DOM</strong>: Aggiornamenti efficienti</li>
+                <li><strong>Componenti:</strong> Pezzi di UI riutilizzabili (come funzioni che ritornano HTML)</li>
+                <li><strong>Props:</strong> Dati passati ai componenti (come parametri di funzioni)</li>
+                <li><strong>State:</strong> Dati che cambiano nel tempo e causano aggiornamenti automatici della UI</li>
+                <li><strong>JSX:</strong> Sintassi che mescola HTML e JavaScript</li>
             </ul>
-
-            <pre><code>// Componente React semplice
-function Saluto() {
-    return &lt;h1&gt;Ciao, mondo!&lt;/h1&gt;;
-}
-
-// Rendering
-import ReactDOM from 'react-dom/client';
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(&lt;Saluto /&gt;);</code></pre>
         </div>
 
-        <h2>2. Setup Progetto React (4 min)</h2>
+        <h2>2. Creare un Componente</h2>
 
         <div class="teoria">
-            <pre><code>// Con Vite (raccomandato - veloce!)
-npm create vite@latest my-app -- --template react-ts
-cd my-app
-npm install
-npm run dev
-
-// Struttura progetto
-my-app/
-├── src/
-│   ├── App.tsx          # Componente principale
-│   ├── main.tsx         # Entry point
-│   └── App.css
-├── index.html
-├── package.json
-└── tsconfig.json</code></pre>
-
-            <h3>File main.tsx</h3>
-            <pre><code>import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-    &lt;React.StrictMode&gt;
-        &lt;App /&gt;
-    &lt;/React.StrictMode&gt;
-);</code></pre>
+            <p>Un <strong>componente</strong> è una funzione JavaScript che ritorna elementi da visualizzare. In React usiamo <strong>JSX</strong>, una sintassi che assomiglia a HTML ma è JavaScript.</p>
+            
+            <h3>Caratteristiche</h3>
+            <ul>
+                <li>I componenti devono iniziare con lettera maiuscola (<code>Square</code>, non <code>square</code>)</li>
+                <li>Possono ritornare solo un singolo elemento genitore</li>
+                <li>Usa <code>className</code> invece di <code>class</code> per le classi CSS</li>
+                <li>Le variabili JavaScript si inseriscono con <code>{}</code></li>
+            </ul>
         </div>
 
-        <h2>3. JSX (5 min)</h2>
-
-        <div class="teoria">
-            <p>JSX = JavaScript + XML. Permette di scrivere HTML dentro JavaScript.</p>
-
-            <pre><code>// JSX base
-const elemento = &lt;h1&gt;Ciao!&lt;/h1&gt;;
-
-// Espressioni JavaScript in JSX (dentro {})
-const nome = "Mario";
-const saluto = &lt;h1&gt;Ciao, {nome}!&lt;/h1&gt;;
-
-// Operazioni
-const eta = 25;
-const maggiorenne = &lt;p&gt;{eta &gt;= 18 ? "Maggiorenne" : "Minorenne"}&lt;/p&gt;;
-
-// Attributi (usare camelCase)
-const immagine = (
-    &lt;img 
-        src="foto.jpg" 
-        alt="Descrizione"
-        className="avatar"     // non "class"
-        onClick={handleClick}  // non "onclick"
-    /&gt;
-);
-
-// Style inline (oggetto JavaScript)
-const box = (
-    &lt;div style={{
-        backgroundColor: 'blue',  // camelCase
-        fontSize: '20px',
-        padding: '10px'
-    }}&gt;
-        Contenuto
-    &lt;/div&gt;
-);
-
-// Elementi multipli (wrapper necessario)
-// ❌ Errore: due elementi root
-function Componente() {
-    return (
-        &lt;h1&gt;Titolo&lt;/h1&gt;
-        &lt;p&gt;Paragrafo&lt;/p&gt;
-    );
-}
-
-// ✅ Con wrapper
-function Componente() {
-    return (
-        &lt;div&gt;
-            &lt;h1&gt;Titolo&lt;/h1&gt;
-            &lt;p&gt;Paragrafo&lt;/p&gt;
-        &lt;/div&gt;
-    );
-}
-
-// ✅ Con Fragment (no elemento DOM extra)
-function Componente() {
-    return (
-        &lt;&gt;
-            &lt;h1&gt;Titolo&lt;/h1&gt;
-            &lt;p&gt;Paragrafo&lt;/p&gt;
-        &lt;/&gt;
-    );
-}</code></pre>
-        </div>
-
-        <h2>4. Componenti (6 min)</h2>
-
-        <div class="teoria">
-            <h3>Componenti Funzionali</h3>
-            <pre><code>// Componente semplice
-function Benvenuto() {
-    return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
-}
-
-// Con TypeScript
-function Benvenuto(): JSX.Element {
-    return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
+        <div class="codice">
+            <h3>Componente Semplice</h3>
+            <pre><code>// Un componente base
+function Square() {
+    return <button className="square">X</button>;
 }
 
 // Usare il componente
-function App() {
-    return (
-        &lt;div&gt;
-            &lt;Benvenuto /&gt;
-            &lt;Benvenuto /&gt;
-        &lt;/div&gt;
-    );
-}</code></pre>
-
-            <h3>Props (Proprietà)</h3>
-            <pre><code>// Passare dati ai componenti
-interface SalutoProps {
-    nome: string;
-    eta?: number;  // opzionale
-}
-
-function Saluto({ nome, eta }: SalutoProps) {
-    return (
-        &lt;div&gt;
-            &lt;h1&gt;Ciao, {nome}!&lt;/h1&gt;
-            {eta && &lt;p&gt;Hai {eta} anni&lt;/p&gt;}
-        &lt;/div&gt;
-    );
-}
-
-// Uso
-function App() {
+function Board() {
     return (
         &lt;&gt;
-            &lt;Saluto nome="Mario" eta={25} /&gt;
-            &lt;Saluto nome="Laura" /&gt;
+            &lt;Square /&gt;
+            &lt;Square /&gt;
+            &lt;Square /&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Fragment (&lt;&gt;&lt;/&gt;)</h3>
+            <p>I componenti React devono ritornare un singolo elemento. Se hai più elementi da ritornare, avvolgili in un <strong>Fragment</strong> (<code>&lt;&gt;...&lt;/&gt;</code>) invece di un div inutile.</p>
+        </div>
+
+        <h2>3. Props - Passare Dati ai Componenti</h2>
+
+        <div class="teoria">
+            <p>Le <strong>props</strong> (properties) permettono di passare dati da un componente genitore a uno figlio. Funzionano come i parametri delle funzioni.</p>
+            
+            <h3>Come Funzionano</h3>
+            <ul>
+                <li>Il genitore passa dati con la sintassi <code>&lt;Component value="X" /&gt;</code></li>
+                <li>Il figlio riceve i dati come oggetto: <code>function Component({ value }) { }</code></li>
+                <li>Le props sono <strong>read-only</strong> - il componente figlio non può modificarle</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+            <h3>Passare e Ricevere Props</h3>
+            <pre><code>// Componente che riceve una prop
+function Square({ value }) {
+    return <button className="square">{value}</button>;
+}
+
+// Componente genitore che passa props
+function Board() {
+    return (
+        &lt;&gt;
+            &lt;Square value="1" /&gt;
+            &lt;Square value="2" /&gt;
+            &lt;Square value="3" /&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Interpolazione in JSX</h3>
+            <p>Per usare una variabile JavaScript dentro JSX, avvolgila in <code>{}</code>. Senza le graffe, JSX mostra la parola letterale "value" invece del valore della variabile.</p>
+        </div>
+
+        <h2>4. Gestire Eventi</h2>
+
+        <div class="teoria">
+            <p>React permette di rispondere agli eventi utente (click, input, ecc.) usando props speciali come <code>onClick</code>, <code>onChange</code>, ecc.</p>
+            
+            <h3>Regole degli Event Handler</h3>
+            <ul>
+                <li>Passa una <strong>funzione</strong>, non chiamarla: <code>onClick={handleClick}</code>, non <code>onClick={handleClick()}</code></li>
+                <li>Se chiami la funzione con <code>()</code>, verrà eseguita subito durante il render, causando loop infiniti</li>
+                <li>Per passare parametri, usa arrow function: <code>onClick={() => handleClick(0)}</code></li>
+            </ul>
+        </div>
+
+        <div class="codice">
+            <h3>Gestire Click</h3>
+            <pre><code>function Square({ value }) {
+    function handleClick() {
+        console.log('Cliccato!');
+    }
+    
+    return (
+        <button className="square" onClick={handleClick}>
+            {value}
+        </button>
+    );
+}</code></pre>
+        </div>
+
+        <h2>5. State - Memorizzare Dati</h2>
+
+        <div class="teoria">
+            <p>Lo <strong>state</strong> è la "memoria" del componente. Quando lo state cambia, React ri-renderizza automaticamente il componente per mostrare i nuovi dati.</p>
+            
+            <h3>useState Hook</h3>
+            <p>Per usare lo state, importa <code>useState</code> da React:</p>
+            <ul>
+                <li><code>const [value, setValue] = useState(null)</code></li>
+                <li><code>value</code> è il valore corrente</li>
+                <li><code>setValue</code> è la funzione per cambiarlo</li>
+                <li><code>null</code> è il valore iniziale</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+            <h3>Usare useState</h3>
+            <pre><code>import { useState } from 'react';
+
+function Square() {
+    const [value, setValue] = useState(null);
+    
+    function handleClick() {
+        setValue('X');  // Cambia il valore e ri-renderizza
+    }
+    
+    return (
+        <button className="square" onClick={handleClick}>
+            {value}
+        </button>
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Come Funziona</h3>
+            <ol>
+                <li>L'utente clicca il bottone</li>
+                <li>Viene chiamato <code>handleClick</code></li>
+                <li><code>setValue('X')</code> cambia lo state</li>
+                <li>React ri-renderizza automaticamente il componente</li>
+                <li>Il bottone ora mostra "X"</li>
+            </ol>
+        </div>
+
+        <h2>6. Lifting State Up - Condividere State</h2>
+
+        <div class="teoria">
+            <p>Quando più componenti devono accedere agli stessi dati, <strong>sposta lo state nel loro componente genitore comune</strong>. Il genitore passerà i dati ai figli tramite props.</p>
+            
+            <h3>Perché?</h3>
+            <p>Ogni componente <code>Square</code> ha il proprio state indipendente. Per controllare il gioco (determinare il vincitore, alternare i giocatori), abbiamo bisogno di uno state condiviso nel componente <code>Board</code>.</p>
+        </div>
+
+        <div class="codice">
+            <h3>State nel Genitore</h3>
+            <pre><code>function Board() {
+    const [squares, setSquares] = useState(Array(9).fill(null));
+    
+    function handleClick(i) {
+        const nextSquares = squares.slice();  // Copia l'array
+        nextSquares[i] = 'X';
+        setSquares(nextSquares);
+    }
+    
+    return (
+        &lt;&gt;
+            &lt;Square value={squares[0]} onSquareClick={() => handleClick(0)} /&gt;
+            &lt;Square value={squares[1]} onSquareClick={() => handleClick(1)} /&gt;
+            &lt;Square value={squares[2]} onSquareClick={() => handleClick(2)} /&gt;
         &lt;/&gt;
     );
 }
 
-// Props children
-interface CardProps {
-    titolo: string;
-    children: React.ReactNode;
-}
-
-function Card({ titolo, children }: CardProps) {
+function Square({ value, onSquareClick }) {
     return (
-        &lt;div className="card"&gt;
-            &lt;h2&gt;{titolo}&lt;/h2&gt;
-            {children}
-        &lt;/div&gt;
+        <button className="square" onClick={onSquareClick}>
+            {value}
+        </button>
     );
-}
-
-// Uso
-&lt;Card titolo="Il mio contenuto"&gt;
-    &lt;p&gt;Paragrafo dentro la card&lt;/p&gt;
-    &lt;button&gt;Clicca&lt;/button&gt;
-&lt;/Card&gt;</code></pre>
+}</code></pre>
         </div>
 
-        <h2>5. State con useState (8 min)</h2>
+        <div class="teoria">
+            <h3>Flusso dei Dati</h3>
+            <ol>
+                <li><code>Board</code> passa <code>value</code> e <code>onSquareClick</code> a <code>Square</code></li>
+                <li>L'utente clicca su <code>Square</code></li>
+                <li><code>Square</code> chiama <code>onSquareClick</code> (che è <code>handleClick</code> del <code>Board</code>)</li>
+                <li><code>handleClick</code> aggiorna <code>squares</code></li>
+                <li>React ri-renderizza <code>Board</code> e tutti i suoi <code>Square</code></li>
+            </ol>
+        </div>
+
+        <h2>7. Immutabilità</h2>
 
         <div class="teoria">
-            <p>State = dati che possono cambiare nel tempo. Quando lo state cambia, React ri-renderizza il componente.</p>
+            <p>In React, <strong>non modificare mai direttamente lo state</strong>. Crea sempre una copia, modificala, poi passa la copia a <code>setState</code>.</p>
+            
+            <h3>Perché Immutabilità?</h3>
+            <ul>
+                <li><strong>Time travel:</strong> Mantenendo copie dello state, possiamo tornare indietro nella storia</li>
+                <li><strong>Performance:</strong> React può confrontare rapidamente se qualcosa è cambiato</li>
+                <li><strong>Debugging:</strong> Più facile capire come è cambiato lo state</li>
+            </ul>
+        </div>
 
-            <pre><code>import { useState } from 'react';
-
-// Contatore base
-function Contatore() {
-    // [valore corrente, funzione per modificarlo]
-    const [count, setCount] = useState(0);
-    
-    return (
-        &lt;div&gt;
-            &lt;p&gt;Conteggio: {count}&lt;/p&gt;
-            &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
-                Incrementa
-            &lt;/button&gt;
-            &lt;button onClick={() =&gt; setCount(count - 1)}&gt;
-                Decrementa
-            &lt;/button&gt;
-            &lt;button onClick={() =&gt; setCount(0)}&gt;
-                Reset
-            &lt;/button&gt;
-        &lt;/div&gt;
-    );
+        <div class="codice">
+            <pre><code>// ❌ SBAGLIATO - Modifica diretta
+function handleClick(i) {
+    squares[i] = 'X';  // Mutazione diretta!
+    setSquares(squares);
 }
 
-// Con TypeScript
-function Contatore() {
-    const [count, setCount] = useState&lt;number&gt;(0);
+// ✅ CORRETTO - Crea una copia
+function handleClick(i) {
+    const nextSquares = squares.slice();  // Copia l'array
+    nextSquares[i] = 'X';
+    setSquares(nextSquares);  // Passa la nuova copia
+}</code></pre>
+        </div>
+
+        <h2>8. Turni Alternati</h2>
+
+        <div class="teoria">
+            <p>Per alternare tra X e O, aggiungiamo un altro pezzo di state che tiene traccia di quale giocatore è il prossimo.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>function Board() {
+    const [xIsNext, setXIsNext] = useState(true);
+    const [squares, setSquares] = useState(Array(9).fill(null));
+    
+    function handleClick(i) {
+        if (squares[i]) {
+            return;  // Casella già occupata
+        }
+        
+        const nextSquares = squares.slice();
+        if (xIsNext) {
+            nextSquares[i] = 'X';
+        } else {
+            nextSquares[i] = 'O';
+        }
+        setSquares(nextSquares);
+        setXIsNext(!xIsNext);  // Alterna il giocatore
+    }
+    
+    return (/* ... */);
+}</code></pre>
+        </div>
+
+        <h2>9. Determinare il Vincitore</h2>
+
+        <div class="teoria">
+            <p>Per controllare se qualcuno ha vinto, creiamo una funzione helper che verifica tutte le combinazioni vincenti possibili.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>function calculateWinner(squares) {
+    const lines = [
+        [0, 1, 2],  // Righe
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],  // Colonne
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],  // Diagonali
+        [2, 4, 6],
+    ];
+    
+    for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        if (squares[a] && 
+            squares[a] === squares[b] && 
+            squares[a] === squares[c]) {
+            return squares[a];  // Ritorna 'X' o 'O'
+        }
+    }
+    return null;  // Nessun vincitore
+}
+
+function Board() {
+    // ...
+    const winner = calculateWinner(squares);
+    let status;
+    if (winner) {
+        status = 'Vincitore: ' + winner;
+    } else {
+        status = 'Prossimo giocatore: ' + (xIsNext ? 'X' : 'O');
+    }
+    
+    return (
+        &lt;&gt;
+            &lt;div className="status"&gt;{status}&lt;/div&gt;
+            {/* ... squares ... */}
+        &lt;/&gt;
+    );
+}</code></pre>
+        </div>
+
+        <h2>10. Rendering di Liste</h2>
+
+        <div class="teoria">
+            <p>Per renderizzare liste di elementi in React, usiamo il metodo <code>map()</code> degli array. Ogni elemento della lista deve avere una <code>key</code> prop univoca.</p>
+            
+            <h3>Perché le Keys?</h3>
+            <ul>
+                <li>Aiutano React a identificare quali elementi sono cambiati, aggiunti o rimossi</li>
+                <li>Migliorano le performance degli aggiornamenti</li>
+                <li>Devono essere univoche tra elementi fratelli</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+            <pre><code>function Game() {
+    const [history, setHistory] = useState([Array(9).fill(null)]);
+    
+    // Trasforma history in una lista di bottoni
+    const moves = history.map((squares, move) => {
+        let description;
+        if (move > 0) {
+            description = 'Vai alla mossa #' + move;
+        } else {
+            description = 'Vai all\'inizio';
+        }
+        
+        return (
+            &lt;li key={move}&gt;
+                &lt;button onClick={() => jumpTo(move)}&gt;
+                    {description}
+                &lt;/button&gt;
+            &lt;/li&gt;
+        );
+    });
+    
+    return (
+        &lt;div className="game"&gt;
+            &lt;div className="game-board"&gt;
+                &lt;Board /&gt;
+            &lt;/div&gt;
+            &lt;div className="game-info"&gt;
+                &lt;ol&gt;{moves}&lt;/ol&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <h2>11. Time Travel - Storia delle Mosse</h2>
+
+        <div class="teoria">
+            <p>Grazie all'immutabilità, possiamo salvare ogni stato della board in un array <code>history</code> e permettere agli utenti di tornare indietro nel gioco.</p>
+            
+            <h3>Struttura History</h3>
+            <p>L'array <code>history</code> contiene tutti gli stati della board:</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// history = [
+//   [null, null, null, null, null, null, null, null, null],  // Inizio
+//   [null, null, null, null, 'X', null, null, null, null],   // Mossa 1
+//   [null, null, null, null, 'X', null, null, null, 'O'],    // Mossa 2
+//   // ...
+// ]
+
+function Game() {
+    const [history, setHistory] = useState([Array(9).fill(null)]);
+    const [currentMove, setCurrentMove] = useState(0);
+    const xIsNext = currentMove % 2 === 0;
+    const currentSquares = history[currentMove];
+    
+    function handlePlay(nextSquares) {
+        // Aggiungi la nuova mossa alla history
+        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+        setHistory(nextHistory);
+        setCurrentMove(nextHistory.length - 1);
+    }
+    
+    function jumpTo(nextMove) {
+        setCurrentMove(nextMove);
+    }
+    
+    return (/* ... */);
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Come Funziona</h3>
+            <ol>
+                <li><code>history</code> salva tutti gli stati della board</li>
+                <li><code>currentMove</code> indica quale stato stiamo visualizzando</li>
+                <li>Quando l'utente clicca "Vai alla mossa #3", impostiamo <code>currentMove = 3</code></li>
+                <li>React ri-renderizza mostrando lo stato al momento della mossa 3</li>
+                <li>Se fai una nuova mossa da lì, la history viene "potata" fino a quel punto</li>
+            </ol>
+        </div>
+
+        <h2>12. Ottimizzazione State</h2>
+
+        <div class="teoria">
+            <p>Una best practice importante: <strong>evita state ridondanti</strong>. Se puoi calcolare un valore dallo state esistente, non salvarlo in un nuovo state.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// ❌ RIDONDANTE - xIsNext può essere calcolato da currentMove
+function Game() {
+    const [xIsNext, setXIsNext] = useState(true);
+    const [currentMove, setCurrentMove] = useState(0);
     // ...
 }
 
-// State con oggetti
-interface Utente {
-    nome: string;
-    eta: number;
+// ✅ OTTIMIZZATO - calcoliamo xIsNext
+function Game() {
+    const [currentMove, setCurrentMove] = useState(0);
+    const xIsNext = currentMove % 2 === 0;  // Calcolato!
+    // ...
 }
 
-function ProfiloUtente() {
-    const [utente, setUtente] = useState&lt;Utente&gt;({
-        nome: "Mario",
-        eta: 25
-    });
-    
-    const aggiornaNome = (nuovoNome: string) =&gt; {
-        // ✅ Creare nuovo oggetto (immutabilità)
-        setUtente({
-            ...utente,
-            nome: nuovoNome
-        });
-        
-        // ❌ NON modificare direttamente
-        // utente.nome = nuovoNome;  // NON fare così!
-    };
-    
-    return (
-        &lt;div&gt;
-            &lt;p&gt;{utente.nome} - {utente.eta} anni&lt;/p&gt;
-            &lt;button onClick={() =&gt; aggiornaNome("Luigi")}&gt;
-                Cambia Nome
-            &lt;/button&gt;
-        &lt;/div&gt;
-    );
-}
+// Se currentMove è pari (0, 2, 4...) è il turno di X
+// Se currentMove è dispari (1, 3, 5...) è il turno di O</code></pre>
+        </div>
 
-// State con array
-function ListaTodo() {
-    const [todos, setTodos] = useState&lt;string[]&gt;([]);
-    const [input, setInput] = useState("");
-    
-    const aggiungiTodo = () =&gt; {
-        // ✅ Nuovo array con spread
-        setTodos([...todos, input]);
-        setInput("");
-    };
-    
-    const rimuoviTodo = (index: number) =&gt; {
-        // ✅ Filtrare per creare nuovo array
-        setTodos(todos.filter((_, i) =&gt; i !== index));
-    };
-    
-    return (
-        &lt;div&gt;
-            &lt;input
-                value={input}
-                onChange={(e) =&gt; setInput(e.target.value)}
-                placeholder="Nuovo todo"
-            /&gt;
-            &lt;button onClick={aggiungiTodo}&gt;Aggiungi&lt;/button&gt;
-            
-            &lt;ul&gt;
-                {todos.map((todo, index) =&gt; (
-                    &lt;li key={index}&gt;
-                        {todo}
-                        &lt;button onClick={() =&gt; rimuoviTodo(index)}&gt;
-                            Elimina
-                        &lt;/button&gt;
-                    &lt;/li&gt;
-                ))}
-            &lt;/ul&gt;
-        &lt;/div&gt;
-    );
-}</code></pre>
-
-            <h3>Regole dello State</h3>
+        <div class="teoria">
+            <h3>Vantaggi</h3>
             <ul>
-                <li>✅ Sempre immutabile (non modificare direttamente)</li>
-                <li>✅ Usa spread operator per oggetti/array</li>
-                <li>✅ setCount(prev => prev + 1) per aggiornamenti basati su valore precedente</li>
-                <li>❌ Non chiamare useState in condizioni o loop</li>
+                <li>Meno state = meno bug (i due valori non possono andare fuori sincronia)</li>
+                <li>Codice più semplice</li>
+                <li>Meno aggiornamenti di state da gestire</li>
             </ul>
         </div>
 
-        <h2>6. Event Handling (4 min)</h2>
-
         <div class="teoria">
-            <pre><code>function EventiEsempio() {
-    const [messaggio, setMessaggio] = useState("");
-    
-    // Click
-    const handleClick = () =&gt; {
-        alert("Bottone cliccato!");
-    };
-    
-    // Input change
-    const handleChange = (e: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
-        setMessaggio(e.target.value);
-    };
-    
-    // Form submit
-    const handleSubmit = (e: React.FormEvent) =&gt; {
-        e.preventDefault();  // Previeni reload della pagina
-        console.log("Form inviato:", messaggio);
-    };
-    
-    // Keyboard
-    const handleKeyDown = (e: React.KeyboardEvent) =&gt; {
-        if (e.key === 'Enter') {
-            console.log("Enter premuto!");
-        }
-    };
-    
-    return (
-        &lt;form onSubmit={handleSubmit}&gt;
-            &lt;input
-                type="text"
-                value={messaggio}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                placeholder="Scrivi qualcosa"
-            /&gt;
-            &lt;button type="submit"&gt;Invia&lt;/button&gt;
-            &lt;button type="button" onClick={handleClick}&gt;
-                Click Me
-            &lt;/button&gt;
-        &lt;/form&gt;
-    );
-}
-
-// Passare argomenti agli event handler
-function Lista() {
-    const handleClick = (id: number) =&gt; {
-        console.log("Cliccato item:", id);
-    };
-    
-    return (
-        &lt;div&gt;
-            {[1, 2, 3].map(id =&gt; (
-                &lt;button 
-                    key={id}
-                    onClick={() =&gt; handleClick(id)}  // Arrow function!
-                &gt;
-                    Item {id}
-                &lt;/button&gt;
-            ))}
-        &lt;/div&gt;
-    );
-}</code></pre>
+            <h2>Riepilogo Concetti React</h2>
+            <table>
+                <tr>
+                    <th>Concetto</th>
+                    <th>Cosa Fa</th>
+                </tr>
+                <tr>
+                    <td>Componenti</td>
+                    <td>Funzioni che ritornano UI (elementi JSX)</td>
+                </tr>
+                <tr>
+                    <td>JSX</td>
+                    <td>Sintassi HTML-like in JavaScript</td>
+                </tr>
+                <tr>
+                    <td>Props</td>
+                    <td>Dati passati dal genitore al figlio (read-only)</td>
+                </tr>
+                <tr>
+                    <td>State (useState)</td>
+                    <td>Memoria del componente, causa re-render quando cambia</td>
+                </tr>
+                <tr>
+                    <td>Event Handlers</td>
+                    <td>Funzioni che rispondono a eventi utente</td>
+                </tr>
+                <tr>
+                    <td>Lifting State Up</td>
+                    <td>Spostare state nel genitore per condividerlo</td>
+                </tr>
+                <tr>
+                    <td>Immutabilità</td>
+                    <td>Non modificare state direttamente, crea copie</td>
+                </tr>
+                <tr>
+                    <td>Keys</td>
+                    <td>Identificatori univoci per elementi di liste</td>
+                </tr>
+            </table>
         </div>
 
-        <h2>7. Rendering Liste (4 min)</h2>
-
         <div class="teoria">
-            <pre><code>interface Prodotto {
-    id: number;
-    nome: string;
-    prezzo: number;
-}
-
-function ListaProdotti() {
-    const prodotti: Prodotto[] = [
-        { id: 1, nome: "Laptop", prezzo: 1000 },
-        { id: 2, nome: "Mouse", prezzo: 25 },
-        { id: 3, nome: "Tastiera", prezzo: 75 }
-    ];
-    
-    return (
-        &lt;div&gt;
-            &lt;h2&gt;Prodotti&lt;/h2&gt;
-            &lt;ul&gt;
-                {prodotti.map(prodotto =&gt; (
-                    &lt;li key={prodotto.id}&gt;  {/* key obbligatoria! */}
-                        {prodotto.nome} - €{prodotto.prezzo}
-                    &lt;/li&gt;
-                ))}
-            &lt;/ul&gt;
-        &lt;/div&gt;
-    );
-}
-
-// Componente separato per item
-interface ProdottoItemProps {
-    prodotto: Prodotto;
-    onDelete: (id: number) =&gt; void;
-}
-
-function ProdottoItem({ prodotto, onDelete }: ProdottoItemProps) {
-    return (
-        &lt;div className="prodotto-item"&gt;
-            &lt;h3&gt;{prodotto.nome}&lt;/h3&gt;
-            &lt;p&gt;€{prodotto.prezzo}&lt;/p&gt;
-            &lt;button onClick={() =&gt; onDelete(prodotto.id)}&gt;
-                Elimina
-            &lt;/button&gt;
-        &lt;/div&gt;
-    );
-}
-
-// Uso
-function Catalogo() {
-    const [prodotti, setProdotti] = useState&lt;Prodotto[]&gt;([...]);
-    
-    const eliminaProdotto = (id: number) =&gt; {
-        setProdotti(prodotti.filter(p =&gt; p.id !== id));
-    };
-    
-    return (
-        &lt;div&gt;
-            {prodotti.map(prodotto =&gt; (
-                &lt;ProdottoItem
-                    key={prodotto.id}
-                    prodotto={prodotto}
-                    onDelete={eliminaProdotto}
-                /&gt;
-            ))}
-        &lt;/div&gt;
-    );
-}
-
-// Key: DEVE essere unica e stabile
-// Usa ID dal database
-// NON usare index (problemi con riordino/eliminazione)</code></pre>
+            <h2>Codice Completo: Gioco Tris</h2>
+            <p>Ecco il codice completo del gioco Tris con tutte le funzionalità:</p>
         </div>
 
-        <h2>8. Rendering Condizionale (3 min)</h2>
+        <div class="codice">
+            <pre><code>import { useState } from 'react';
 
-        <div class="teoria">
-            <pre><code>function Dashboard({ isLoggedIn }: { isLoggedIn: boolean }) {
-    // if/else
-    if (isLoggedIn) {
-        return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
-    }
-    return &lt;h1&gt;Per favore accedi&lt;/h1&gt;;
-}
-
-// Operatore ternario
-function Status({ isOnline }: { isOnline: boolean }) {
+function Square({ value, onSquareClick }) {
     return (
-        &lt;div&gt;
-            Stato: {isOnline ? "Online" : "Offline"}
-        &lt;/div&gt;
-    );
-}
-
-// && operator (render condizionale)
-function Notifiche({ count }: { count: number }) {
-    return (
-        &lt;div&gt;
-            &lt;h2&gt;Notifiche&lt;/h2&gt;
-            {count &gt; 0 && (
-                &lt;span className="badge"&gt;{count}&lt;/span&gt;
-            )}
-        &lt;/div&gt;
-    );
-}
-
-// Rendering di nulla
-function Avviso({ mostra }: { mostra: boolean }) {
-    if (!mostra) return null;
-    
-    return &lt;div className="alert"&gt;Attenzione!&lt;/div&gt;;
-}
-
-// Switch case con componenti
-type View = "home" | "profile" | "settings";
-
-function App({ currentView }: { currentView: View }) {
-    const renderView = () =&gt; {
-        switch (currentView) {
-            case "home":
-                return &lt;Home /&gt;;
-            case "profile":
-                return &lt;Profile /&gt;;
-            case "settings":
-                return &lt;Settings /&gt;;
-            default:
-                return &lt;NotFound /&gt;;
-        }
-    };
-    
-    return &lt;div&gt;{renderView()}&lt;/div&gt;;
-}</code></pre>
-        </div>
-
-        <h2>9. useEffect Hook (5 min)</h2>
-
-        <div class="teoria">
-            <p>useEffect esegue side effects (chiamate API, timer, subscriptions) dopo il render.</p>
-
-            <pre><code>import { useState, useEffect } from 'react';
-
-// Esegui dopo ogni render
-function Esempio1() {
-    const [count, setCount] = useState(0);
-    
-    useEffect(() =&gt; {
-        console.log("Componente renderizzato");
-        document.title = `Conteggio: ${count}`;
-    });
-    
-    return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
-}
-
-// Esegui solo al mount (una volta)
-function Esempio2() {
-    useEffect(() =&gt; {
-        console.log("Componente montato");
-        
-        // Cleanup al unmount
-        return () =&gt; {
-            console.log("Componente smontato");
-        };
-    }, []);  // Array vuoto = solo al mount
-    
-    return &lt;div&gt;Contenuto&lt;/div&gt;;
-}
-
-// Esegui quando dipendenze cambiano
-function Esempio3() {
-    const [userId, setUserId] = useState(1);
-    const [userData, setUserData] = useState(null);
-    
-    useEffect(() =&gt; {
-        // Fetch dati quando userId cambia
-        fetch(`/api/users/${userId}`)
-            .then(res =&gt; res.json())
-            .then(data =&gt; setUserData(data));
-    }, [userId]);  // Re-esegui quando userId cambia
-    
-    return &lt;div&gt;{/* ... */}&lt;/div&gt;;
-}
-
-// Esempio completo: fetch con loading e errori
-interface User {
-    id: number;
-    name: string;
-}
-
-function UserProfile({ userId }: { userId: number }) {
-    const [user, setUser] = useState&lt;User | null&gt;(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState&lt;string | null&gt;(null);
-    
-    useEffect(() =&gt; {
-        setLoading(true);
-        setError(null);
-        
-        fetch(`/api/users/${userId}`)
-            .then(res =&gt; {
-                if (!res.ok) throw new Error("Errore nel caricamento");
-                return res.json();
-            })
-            .then(data =&gt; {
-                setUser(data);
-                setLoading(false);
-            })
-            .catch(err =&gt; {
-                setError(err.message);
-                setLoading(false);
-            });
-    }, [userId]);
-    
-    if (loading) return &lt;p&gt;Caricamento...&lt;/p&gt;;
-    if (error) return &lt;p&gt;Errore: {error}&lt;/p&gt;;
-    if (!user) return null;
-    
-    return (
-        &lt;div&gt;
-            &lt;h1&gt;{user.name}&lt;/h1&gt;
-        &lt;/div&gt;
-    );
-}
-
-// Timer con cleanup
-function Timer() {
-    const [seconds, setSeconds] = useState(0);
-    
-    useEffect(() =&gt; {
-        const interval = setInterval(() =&gt; {
-            setSeconds(prev =&gt; prev + 1);
-        }, 1000);
-        
-        // Cleanup: pulisci timer quando componente si smonta
-        return () =&gt; clearInterval(interval);
-    }, []);
-    
-    return &lt;div&gt;Secondi: {seconds}&lt;/div&gt;;
-}</code></pre>
-
-            <h3>Regole useEffect</h3>
-            <ul>
-                <li>✅ Array dipendenze vuoto [] = esegui solo al mount</li>
-                <li>✅ Includi tutte le dipendenze usate dentro useEffect</li>
-                <li>✅ Return function per cleanup (timer, subscriptions)</li>
-                <li>❌ Non fare setState sincrono senza dipendenze (loop infinito)</li>
-            </ul>
-        </div>
-
-        <h2>10. Composizione Componenti (3 min)</h2>
-
-        <div class="teoria">
-            <pre><code>// Costruire UI complesse con componenti piccoli
-
-// Componenti atomici
-function Button({ children, onClick }: { 
-    children: React.ReactNode; 
-    onClick: () =&gt; void 
-}) {
-    return (
-        &lt;button className="btn" onClick={onClick}&gt;
-            {children}
+        &lt;button className="square" onClick={onSquareClick}&gt;
+            {value}
         &lt;/button&gt;
     );
 }
 
-function Input({ value, onChange, placeholder }: {
-    value: string;
-    onChange: (value: string) =&gt; void;
-    placeholder?: string;
-}) {
+function Board({ xIsNext, squares, onPlay }) {
+    function handleClick(i) {
+        if (calculateWinner(squares) || squares[i]) {
+            return;
+        }
+        const nextSquares = squares.slice();
+        if (xIsNext) {
+            nextSquares[i] = 'X';
+        } else {
+            nextSquares[i] = 'O';
+        }
+        onPlay(nextSquares);
+    }
+
+    const winner = calculateWinner(squares);
+    let status;
+    if (winner) {
+        status = 'Vincitore: ' + winner;
+    } else {
+        status = 'Prossimo giocatore: ' + (xIsNext ? 'X' : 'O');
+    }
+
     return (
-        &lt;input
-            className="input"
-            value={value}
-            onChange={(e) =&gt; onChange(e.target.value)}
-            placeholder={placeholder}
-        /&gt;
+        &lt;&gt;
+            &lt;div className="status"&gt;{status}&lt;/div&gt;
+            &lt;div className="board-row"&gt;
+                &lt;Square value={squares[0]} onSquareClick={() => handleClick(0)} /&gt;
+                &lt;Square value={squares[1]} onSquareClick={() => handleClick(1)} /&gt;
+                &lt;Square value={squares[2]} onSquareClick={() => handleClick(2)} /&gt;
+            &lt;/div&gt;
+            &lt;div className="board-row"&gt;
+                &lt;Square value={squares[3]} onSquareClick={() => handleClick(3)} /&gt;
+                &lt;Square value={squares[4]} onSquareClick={() => handleClick(4)} /&gt;
+                &lt;Square value={squares[5]} onSquareClick={() => handleClick(5)} /&gt;
+            &lt;/div&gt;
+            &lt;div className="board-row"&gt;
+                &lt;Square value={squares[6]} onSquareClick={() => handleClick(6)} /&gt;
+                &lt;Square value={squares[7]} onSquareClick={() => handleClick(7)} /&gt;
+                &lt;Square value={squares[8]} onSquareClick={() => handleClick(8)} /&gt;
+            &lt;/div&gt;
+        &lt;/&gt;
     );
 }
 
-// Comporre insieme
-function SearchBar({ onSearch }: { onSearch: (query: string) =&gt; void }) {
-    const [query, setQuery] = useState("");
-    
-    const handleSearch = () =&gt; {
-        onSearch(query);
-        setQuery("");
-    };
-    
+export default function Game() {
+    const [history, setHistory] = useState([Array(9).fill(null)]);
+    const [currentMove, setCurrentMove] = useState(0);
+    const xIsNext = currentMove % 2 === 0;
+    const currentSquares = history[currentMove];
+
+    function handlePlay(nextSquares) {
+        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+        setHistory(nextHistory);
+        setCurrentMove(nextHistory.length - 1);
+    }
+
+    function jumpTo(nextMove) {
+        setCurrentMove(nextMove);
+    }
+
+    const moves = history.map((squares, move) => {
+        let description;
+        if (move > 0) {
+            description = 'Vai alla mossa #' + move;
+        } else {
+            description = 'Vai all\'inizio del gioco';
+        }
+        return (
+            &lt;li key={move}&gt;
+                &lt;button onClick={() => jumpTo(move)}&gt;{description}&lt;/button&gt;
+            &lt;/li&gt;
+        );
+    });
+
     return (
-        &lt;div className="search-bar"&gt;
-            &lt;Input
-                value={query}
-                onChange={setQuery}
-                placeholder="Cerca..."
-            /&gt;
-            &lt;Button onClick={handleSearch}&gt;
-                Cerca
-            &lt;/Button&gt;
+        &lt;div className="game"&gt;
+            &lt;div className="game-board"&gt;
+                &lt;Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} /&gt;
+            &lt;/div&gt;
+            &lt;div className="game-info"&gt;
+                &lt;ol&gt;{moves}&lt;/ol&gt;
+            &lt;/div&gt;
         &lt;/div&gt;
     );
 }
 
-// Container component
-function App() {
-    const [risultati, setRisultati] = useState([]);
-    
-    const handleSearch = (query: string) =&gt; {
-        // Logica di ricerca
-        console.log("Cercando:", query);
-    };
-    
-    return (
-        &lt;div className="app"&gt;
-            &lt;SearchBar onSearch={handleSearch} /&gt;
-            {/* Altri componenti */}
-        &lt;/div&gt;
-    );
+function calculateWinner(squares) {
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            return squares[a];
+        }
+    }
+    return null;
 }</code></pre>
         </div>
 
         <div class="teoria">
-            <h2>Riepilogo React</h2>
-            <table>
-                <tr>
-                    <th>Concetto</th>
-                    <th>Key Point</th>
-                </tr>
-                <tr>
-                    <td>JSX</td>
-                    <td>HTML in JavaScript con {}</td>
-                </tr>
-                <tr>
-                    <td>Componenti</td>
-                    <td>Funzioni che ritornano JSX</td>
-                </tr>
-                <tr>
-                    <td>Props</td>
-                    <td>Dati da genitore a figlio (read-only)</td>
-                </tr>
-                <tr>
-                    <td>State</td>
-                    <td>Dati che cambiano (useState)</td>
-                </tr>
-                <tr>
-                    <td>Eventi</td>
-                    <td>onClick, onChange, onSubmit</td>
-                </tr>
-                <tr>
-                    <td>Liste</td>
-                    <td>map() con key unica</td>
-                </tr>
-                <tr>
-                    <td>Condizionale</td>
-                    <td>&&, ternario, if/return</td>
-                </tr>
-                <tr>
-                    <td>useEffect</td>
-                    <td>Side effects + cleanup</td>
-                </tr>
-            </table>
-
-            <h3>Best Practices React</h3>
+            <h2>Prossimi Passi</h2>
+            <p>Congratulazioni! Hai imparato i fondamenti di React. Questi concetti sono la base di qualsiasi applicazione React:</p>
             <ul>
-                <li>Un componente = una responsabilità</li>
-                <li>Props immutabili, state gestito con useState</li>
-                <li>Key uniche nelle liste (no index se riordini)</li>
-                <li>useEffect con array dipendenze corretto</li>
-                <li>TypeScript per props type-safe</li>
-                <li>Nomi componenti PascalCase</li>
-                <li>Decomposizione per riutilizzo</li>
+                <li>✅ Creare e comporre componenti</li>
+                <li>✅ Passare dati con props</li>
+                <li>✅ Gestire state con useState</li>
+                <li>✅ Rispondere a eventi</li>
+                <li>✅ Lifting state up per condividere dati</li>
+                <li>✅ Renderizzare liste con map e keys</li>
+                <li>✅ Mantenere immutabilità dello state</li>
             </ul>
         </div>
 
         <div class="teoria">
-            <h2>Navigazione</h2>
+            <h2>Tutorial Ufficiale React</h2>
+            <p>Questa lezione è basata sul tutorial ufficiale di React. Per approfondire e vedere il gioco in azione con un editor interattivo, visita:</p>
+            <p>
+                <a href="https://react.dev/learn/tutorial-tic-tac-toe" target="_blank" rel="noopener noreferrer" style="font-size: 1.1em; font-weight: bold;">
+                    🔗 Tutorial: Tic-Tac-Toe - React Official Docs
+                </a>
+            </p>
+            <p>Il tutorial ufficiale include:</p>
             <ul>
-                <li><a href="lezione-5-2.html">← 5.2 - TypeScript Essenziale</a></li>
-                <li><a href="index.html">Torna all'Indice Lezione 5</a></li>
-                <li><a href="lezione-5-99.html">5.99 - Progetto Finale →</a></li>
+                <li>Editor interattivo per provare il codice in tempo reale</li>
+                <li>Esercizi aggiuntivi per praticare</li>
+                <li>Spiegazioni più approfondite</li>
+                <li>Link a documentazione avanzata</li>
             </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-5/lezione-5-2.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-5/lezione-5-99.html" class="btn-next">Progetto Finale →</a>
         </div>
     </div>
 </body>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Demo - Todo App</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.delete {
+            background: #e74c3c;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        button.delete:hover {
+            background: #c0392b;
+        }
+
+        button.toggle {
+            background: #27ae60;
+            padding: 8px 16px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        button.toggle:hover {
+            background: #229954;
+        }
+
+        button.filter {
+            background: #95a5a6;
+            padding: 10px 20px;
+            font-size: 14px;
+            margin: 5px;
+        }
+
+        button.filter.active {
+            background: #667eea;
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .todo-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .filters {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #95a5a6;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .demo-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .demo-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .demo-section code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            display: block;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Componente principale App
+        function TodoApp() {
+            const [todos, setTodos] = useState([]);
+            const [inputValue, setInputValue] = useState('');
+            const [filter, setFilter] = useState('all'); // all, active, completed
+
+            // useEffect per caricare dati da localStorage
+            useEffect(() => {
+                const saved = localStorage.getItem('react-todos');
+                if (saved) {
+                    setTodos(JSON.parse(saved));
+                }
+            }, []);
+
+            // useEffect per salvare in localStorage quando cambiano i todos
+            useEffect(() => {
+                localStorage.setItem('react-todos', JSON.stringify(todos));
+            }, [todos]);
+
+            // Aggiungere todo
+            const addTodo = () => {
+                if (inputValue.trim() === '') return;
+
+                const newTodo = {
+                    id: Date.now(),
+                    text: inputValue,
+                    completed: false,
+                    createdAt: new Date().toISOString()
+                };
+
+                setTodos([...todos, newTodo]);
+                setInputValue('');
+            };
+
+            // Eliminare todo
+            const deleteTodo = (id) => {
+                setTodos(todos.filter(todo => todo.id !== id));
+            };
+
+            // Toggle completed
+            const toggleTodo = (id) => {
+                setTodos(todos.map(todo =>
+                    todo.id === id
+                        ? { ...todo, completed: !todo.completed }
+                        : todo
+                ));
+            };
+
+            // Filtrare todos
+            const getFilteredTodos = () => {
+                switch (filter) {
+                    case 'active':
+                        return todos.filter(todo => !todo.completed);
+                    case 'completed':
+                        return todos.filter(todo => todo.completed);
+                    default:
+                        return todos;
+                }
+            };
+
+            // Statistiche
+            const stats = {
+                total: todos.length,
+                active: todos.filter(t => !t.completed).length,
+                completed: todos.filter(t => t.completed).length
+            };
+
+            const filteredTodos = getFilteredTodos();
+
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <h1>⚛️ React Todo App</h1>
+                        <p>Gestisci i tuoi task con React Hooks</p>
+                    </div>
+
+                    <div className="card">
+                        <h2>➕ Aggiungi Task</h2>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                placeholder="Cosa devi fare oggi?"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && addTodo()}
+                            />
+                            <button onClick={addTodo}>Aggiungi</button>
+                        </div>
+
+                        <div className="filters">
+                            <button
+                                className={`filter ${filter === 'all' ? 'active' : ''}`}
+                                onClick={() => setFilter('all')}
+                            >
+                                Tutti ({stats.total})
+                            </button>
+                            <button
+                                className={`filter ${filter === 'active' ? 'active' : ''}`}
+                                onClick={() => setFilter('active')}
+                            >
+                                Attivi ({stats.active})
+                            </button>
+                            <button
+                                className={`filter ${filter === 'completed' ? 'active' : ''}`}
+                                onClick={() => setFilter('completed')}
+                            >
+                                Completati ({stats.completed})
+                            </button>
+                        </div>
+
+                        {filteredTodos.length === 0 ? (
+                            <div className="empty-state">
+                                <div className="empty-state-icon">
+                                    {filter === 'all' ? '📝' : filter === 'active' ? '✅' : '🎉'}
+                                </div>
+                                <p>
+                                    {filter === 'all' && 'Nessun task. Inizia ad aggiungerne uno!'}
+                                    {filter === 'active' && 'Nessun task attivo. Ottimo lavoro! 🎉'}
+                                    {filter === 'completed' && 'Nessun task completato ancora.'}
+                                </p>
+                            </div>
+                        ) : (
+                            <ul className="todo-list">
+                                {filteredTodos.map(todo => (
+                                    <TodoItem
+                                        key={todo.id}
+                                        todo={todo}
+                                        onToggle={toggleTodo}
+                                        onDelete={deleteTodo}
+                                    />
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    <div className="card">
+                        <h2>📊 Statistiche</h2>
+                        <div className="stats">
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.total}</div>
+                                <div className="stat-label">Totale</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.active}</div>
+                                <div className="stat-label">Attivi</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.completed}</div>
+                                <div className="stat-label">Completati</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-number">
+                                    {stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0}%
+                                </div>
+                                <div className="stat-label">Progresso</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="card demo-section">
+                        <h3>🔍 React Concepts Utilizzati</h3>
+                        <ul style={{ lineHeight: '2', marginLeft: '20px' }}>
+                            <li><strong>useState:</strong> Gestione stato (todos, inputValue, filter)</li>
+                            <li><strong>useEffect:</strong> Persistenza con localStorage</li>
+                            <li><strong>Props:</strong> Passaggio dati al componente TodoItem</li>
+                            <li><strong>Event Handlers:</strong> onClick, onChange, onKeyPress</li>
+                            <li><strong>Conditional Rendering:</strong> Empty state, filtri</li>
+                            <li><strong>Lists & Keys:</strong> Rendering lista con .map()</li>
+                            <li><strong>Immutability:</strong> Spread operator per aggiornare state</li>
+                            <li><strong>Component Composition:</strong> TodoApp → TodoItem</li>
+                        </ul>
+                    </div>
+                </div>
+            );
+        }
+
+        // Componente TodoItem (riutilizzabile)
+        function TodoItem({ todo, onToggle, onDelete }) {
+            return (
+                <li className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+                    <span className="todo-text">{todo.text}</span>
+                    <div className="todo-actions">
+                        <button
+                            className="toggle"
+                            onClick={() => onToggle(todo.id)}
+                        >
+                            {todo.completed ? '↩️ Riattiva' : '✅ Completa'}
+                        </button>
+                        <button
+                            className="delete"
+                            onClick={() => onDelete(todo.id)}
+                        >
+                            🗑️ Elimina
+                        </button>
+                    </div>
+                </li>
+            );
+        }
+
+        // Render app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<TodoApp />);
+    </script>
+</body>
+</html>

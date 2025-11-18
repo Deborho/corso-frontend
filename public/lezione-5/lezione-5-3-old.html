@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.3 - React</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>5.3 - React</h1>
+            <p>Costruire interfacce utente con componenti riutilizzabili</p>
+        </div>
+
+        <div class="teoria">
+            <h2>Obiettivi</h2>
+            <p>Costruire interfacce utente interattive con React applicando JavaScript ES6+ e TypeScript.</p>
+        </div>
+
+        <h2>1. Cos'è React?</h2>
+        
+        <div class="teoria">
+            <p><strong>React è una libreria JavaScript sviluppata da Facebook (Meta) per costruire interfacce utente</strong> basate su componenti riutilizzabili. È la libreria UI più popolare al mondo, usata da Facebook, Instagram, Netflix, Airbnb e migliaia di altre aziende.</p>
+
+            <h3>Filosofia: Componenti</h3>
+            <p>React adotta un approccio <strong>dichiarativo</strong>: descrivi COME dovrebbe apparire la UI in base allo stato, e React si occupa di aggiornare il DOM. Invece di manipolare manualmente elementi HTML, crei <em>componenti</em> indipendenti che gestiscono il loro stato e rendering.</p>
+            
+            <h3>Perché React?</h3>
+            <ul>
+                <li><strong>Componenti Riutilizzabili:</strong> Scrivi una volta, usa ovunque (Button, Card, Modal, ecc.)</li>
+                <li><strong>Virtual DOM:</strong> Aggiornamenti efficienti - React calcola la differenza minima necessaria</li>
+                <li><strong>Unidirezionalità:</strong> Il flusso dei dati è prevedibile (props verso il basso, events verso l'alto)</li>
+                <li><strong>Ecosistema Enorme:</strong> Librerie per routing, state management, UI components</li>
+                <li><strong>Developer Experience:</strong> Hot reloading, devtools, debugging eccellente</li>
+            </ul>
+        </div>
+
+        <div class="teoria">
+            <h3>Concetti Fondamentali</h3>
+            <ul>
+                <li>✅ <strong>Componenti:</strong> Blocchi UI indipendenti e riutilizzabili (come funzioni che ritornano HTML)</li>
+                <li>✅ <strong>JSX:</strong> Sintassi che mescola HTML e JavaScript (<code>&lt;div&gt;{variabile}&lt;/div&gt;</code>)</li>
+                <li>✅ <strong>Props:</strong> Parametri passati ai componenti (come argomenti di funzione)</li>
+                <li>✅ <strong>State:</strong> Dati locali che cambiano nel tempo e causano re-render</li>
+                <li>✅ <strong>Hooks:</strong> Funzioni speciali (useState, useEffect) per aggiungere funzionalità</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+            <h3>Primo Esempio: Componente React</h3>
+            <pre><code>// Componente React è una funzione che ritorna JSX
+function Saluto() {
+    return &lt;h1&gt;Ciao, mondo!&lt;/h1&gt;;
+}
+
+// Componente con logica
+function SalutoPersonalizzato() {
+    const nome = "Mario";
+    const ora = new Date().getHours();
+    const messaggio = ora < 12 ? "Buongiorno" : "Buonasera";
+    
+    return &lt;h1&gt;{messaggio}, {nome}!&lt;/h1&gt;;
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Rendering nel DOM</h3>
+            <pre><code>// main.tsx - Entry point dell'applicazione
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+// Crea root React e monta l'app
+const root = ReactDOM.createRoot(document.getElementById('root')!);
+root.render(&lt;App /&gt;);</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio: Confronto Vanilla JS vs React</h3>
+            <pre><code>// Vanilla JavaScript - imperativo (COME fare)
+const button = document.createElement('button');
+button.textContent = 'Click me';
+button.onclick = () => {
+    const count = parseInt(button.textContent.match(/\d+/)?.[0] || '0');
+    button.textContent = `Clicked ${count + 1} times`;
+};
+document.body.appendChild(button);
+
+// React - dichiarativo (COSA mostrare)
+function Counter() {
+    const [count, setCount] = useState(0);
+    
+    return (
+        &lt;button onClick={() => setCount(count + 1)}&gt;
+            Clicked {count} times
+        &lt;/button&gt;
+    );
+}
+
+// React si occupa automaticamente di aggiornare il DOM!</code></pre>
+        </div>
+
+        <h2>2. Setup Progetto React</h2>
+
+        <div class="teoria">
+            <p>Per creare un progetto React moderno, usiamo <strong>Vite</strong> - un build tool velocissimo che include TypeScript, Hot Module Replacement (HMR) e ottimizzazioni automatiche.</p>
+            
+            <p>Vite sostituisce Create React App (CRA) perché è 10-100x più veloce nel dev server e nel build.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Creare Progetto con Vite</h3>
+            <pre><code>// Creare nuovo progetto React + TypeScript
+npm create vite@latest my-app -- --template react-ts
+
+// Navigare nella cartella
+cd my-app
+
+// Installare dipendenze
+npm install
+
+// Avviare dev server (http://localhost:5173)
+npm run dev
+
+// Build per produzione
+npm run build</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Struttura Progetto</h3>
+            <pre><code>my-app/
+├── node_modules/          # Dipendenze
+├── public/                # File statici (favicon, immagini)
+├── src/
+│   ├── components/        # Componenti riutilizzabili (lo creiamo noi)
+│   ├── App.tsx           # Componente principale
+│   ├── App.css           # Stili App
+│   ├── main.tsx          # Entry point (monta React nel DOM)
+│   ├── index.css         # Stili globali
+│   └── vite-env.d.ts     # Type definitions Vite
+├── index.html             # HTML template
+├── package.json           # Dipendenze e scripts
+├── tsconfig.json          # Configurazione TypeScript
+├── tsconfig.node.json     # Config TS per Vite (Node.js)
+└── vite.config.ts         # Configurazione Vite</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>File Importanti</h3>
+            <p><strong>index.html:</strong> HTML base con un <code>&lt;div id="root"&gt;&lt;/div&gt;</code> dove React viene montato.</p>
+            <p><strong>main.tsx:</strong> Entry point che crea il root React e renderizza il componente App.</p>
+            <p><strong>App.tsx:</strong> Componente principale dell'applicazione dove inizia la struttura dei componenti.</p>
+        </div>
+
+        <div class="codice">
+            <h3>main.tsx - Entry Point</h3>
+            <pre><code>import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+
+// Crea il root React sul div#root
+ReactDOM.createRoot(document.getElementById('root')!).render(
+    &lt;React.StrictMode&gt;
+        &lt;App /&gt;
+    &lt;/React.StrictMode&gt;
+);
+
+// StrictMode: attiva controlli aggiuntivi in sviluppo
+// - Avvisa per lifecycle deprecati
+// - Avvisa per API non sicure
+// - Rileva side effects accidentali</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>App.tsx - Componente Iniziale</h3>
+            <pre><code>import { useState } from 'react';
+import './App.css';
+
+function App() {
+    const [count, setCount] = useState(0);
+
+    return (
+        &lt;div className="App"&gt;
+            &lt;h1&gt;Benvenuto in React + Vite&lt;/h1&gt;
+            &lt;button onClick={() => setCount(count + 1)}&gt;
+                Clic: {count}
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+export default App;</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio: Primo Componente Custom</h3>
+            <pre><code>// src/components/Button.tsx
+interface ButtonProps {
+    label: string;
+    onClick: () => void;
+}
+
+function Button({ label, onClick }: ButtonProps) {
+    return (
+        &lt;button 
+            onClick={onClick}
+            style={{ padding: '10px 20px', fontSize: '16px' }}
+        &gt;
+            {label}
+        &lt;/button&gt;
+    );
+}
+
+export default Button;
+
+// src/App.tsx - Usare il componente
+import Button from './components/Button';
+
+function App() {
+    const handleClick = () => alert('Cliccato!');
+    
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;My App&lt;/h1&gt;
+            &lt;Button label="Click Me" onClick={handleClick} /&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <h2>3. JSX</h2>
+
+        <div class="teoria">
+            <p><strong>JSX (JavaScript XML)</strong> è un'estensione di sintassi che permette di scrivere markup simile a HTML direttamente nel codice JavaScript. Viene poi trasformato in chiamate <code>React.createElement()</code> durante il build.</p>
+            
+            <p>JSX rende il codice più leggibile e intuitivo rispetto alle chiamate imperative di creazione elementi.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Sintassi Base</h3>
+            <pre><code>// JSX semplice
+const elemento = &lt;h1&gt;Ciao!&lt;/h1&gt;;
+
+// Espressioni JavaScript dentro {} (graffe)
+const nome = "Mario";
+const saluto = &lt;h1&gt;Ciao, {nome}!&lt;/h1&gt;;
+
+// Operazioni ed espressioni
+const eta = 25;
+const maggiorenne = &lt;p&gt;{eta &gt;= 18 ? "Maggiorenne" : "Minorenne"}&lt;/p&gt;;
+
+// Chiamate a funzioni
+const prezzoFormattato = &lt;span&gt;€{calcolaPrezzo().toFixed(2)}&lt;/span&gt;;</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Differenze da HTML</h3>
+            <p>JSX assomiglia a HTML ma ci sono differenze importanti:</p>
+            <ul>
+                <li><strong>className</strong> invece di <code>class</code> (class è keyword JavaScript)</li>
+                <li><strong>htmlFor</strong> invece di <code>for</code> (for è keyword JavaScript)</li>
+                <li><strong>camelCase</strong> per attributi HTML: onClick, onChange, tabIndex</li>
+                <li><strong>style</strong> accetta oggetto JavaScript, non stringa</li>
+                <li>Tag devono essere <strong>chiusi</strong>: <code>&lt;input /&gt;</code>, <code>&lt;br /&gt;</code></li>
+            </ul>
+        </div>
+
+        <div class="codice">
+            <h3>Attributi e Stili</h3>
+            <pre><code>// Attributi (usare camelCase)
+const immagine = (
+    &lt;img 
+        src="foto.jpg" 
+        alt="Descrizione"
+        className="avatar"     // non "class"
+        onClick={handleClick}  // non "onclick"
+    /&gt;
+);
+
+// Style inline (oggetto JavaScript con camelCase)
+const box = (
+    &lt;div style={{
+        backgroundColor: 'blue',  // background-color diventa backgroundColor
+        fontSize: '20px',          // font-size diventa fontSize
+        padding: '10px',
+        marginTop: '5px'           // margin-top diventa marginTop
+    }}&gt;
+        Contenuto stilizzato
+    &lt;/div&gt;
+);</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Single Root Element</h3>
+            <p>Ogni componente JSX deve ritornare UN SOLO elemento radice. Se hai più elementi, usa un wrapper <code>&lt;div&gt;</code> o <code>&lt;Fragment&gt;</code>.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// ❌ Errore: due elementi root
+function Componente() {
+    return (
+        &lt;h1&gt;Titolo&lt;/h1&gt;
+        &lt;p&gt;Paragrafo&lt;/p&gt;
+    );
+}
+
+// ✅ OK: Wrappato in div
+function Componente() {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;Titolo&lt;/h1&gt;
+            &lt;p&gt;Paragrafo&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}
+
+// ✅ OK: Fragment (non aggiunge elemento DOM)
+function Componente() {
+    return (
+        &lt;&gt;
+            &lt;h1&gt;Titolo&lt;/h1&gt;
+            &lt;p&gt;Paragrafo&lt;/p&gt;
+        &lt;/&gt;
+    );
+}
+
+// Fragment esplicito (quando servono attributi come key)
+import { Fragment } from 'react';
+
+function Lista() {
+    return (
+        &lt;Fragment key="item-1"&gt;
+            &lt;h1&gt;Titolo&lt;/h1&gt;
+            &lt;p&gt;Paragrafo&lt;/p&gt;
+        &lt;/Fragment&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: Card Componente</h3>
+            <pre><code>interface CardData {
+    titolo: string;
+    descrizione: string;
+    immagine: string;
+    prezzo: number;
+}
+
+function ProductCard({ titolo, descrizione, immagine, prezzo }: CardData) {
+    const inSconto = prezzo < 50;
+    
+    return (
+        &lt;div className="product-card"&gt;
+            &lt;img src={immagine} alt={titolo} className="product-image" /&gt;
+            &lt;h3&gt;{titolo}&lt;/h3&gt;
+            &lt;p&gt;{descrizione}&lt;/p&gt;
+            &lt;div className="price"&gt;
+                &lt;span style={{ 
+                    color: inSconto ? 'red' : 'black',
+                    fontWeight: 'bold' 
+                }}&gt;
+                    €{prezzo.toFixed(2)}
+                &lt;/span&gt;
+                {inSconto && &lt;span className="badge"&gt;SCONTO!&lt;/span&gt;}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <h2>4. Componenti</h2>
+
+        <div class="teoria">
+            <p><strong>Componenti</strong> sono i mattoni di React. Ogni componente è una funzione che ritorna JSX e può avere la propria logica e stato. I componenti possono essere riutilizzati infinite volte e composti insieme per creare UI complesse.</p>
+            
+            <h3>Filosofia Componenti</h3>
+            <p>Pensa ai componenti come funzioni riutilizzabili per la UI: ricevono input (props), hanno logica interna (state, effects) e ritornano output (JSX).</p>
+        </div>
+
+        <div class="codice">
+            <h3>Componenti Funzionali Base</h3>
+            <pre><code>// Componente semplice
+function Benvenuto() {
+    return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
+}
+
+// Con TypeScript (tipo di ritorno esplicito)
+function Benvenuto(): JSX.Element {
+    return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
+}
+
+// Usare il componente (può essere riutilizzato)
+function App() {
+    return (
+        &lt;div&gt;
+            &lt;Benvenuto /&gt;
+            &lt;Benvenuto /&gt;
+            &lt;Benvenuto /&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Props - Passare Dati ai Componenti</h3>
+            <p><strong>Props</strong> (properties) sono parametri passati dall'esterno per personalizzare il componente. Sono <em>read-only</em> (immutabili) e fluiscono dall'alto verso il basso (unidirezionalità).</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Definire interfaccia per type safety
+interface SalutoProps {
+    nome: string;
+    eta?: number;  // ? = opzionale
+}
+
+// Destructuring delle props
+function Saluto({ nome, eta }: SalutoProps) {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;Ciao, {nome}!&lt;/h1&gt;
+            {eta && &lt;p&gt;Hai {eta} anni&lt;/p&gt;}
+        &lt;/div&gt;
+    );
+}
+
+// Passare props
+function App() {
+    return (
+        &lt;&gt;
+            &lt;Saluto nome="Mario" eta={25} /&gt;
+            &lt;Saluto nome="Laura" /&gt;  {/* eta opzionale */}
+        &lt;/&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Props Children</h3>
+            <p><code>children</code> è una prop speciale che rappresenta il contenuto tra i tag di apertura e chiusura del componente. Usala per componenti wrapper/container.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>// Componente con children
+interface CardProps {
+    titolo: string;
+    children: React.ReactNode;  // Qualsiasi contenuto JSX
+}
+
+function Card({ titolo, children }: CardProps) {
+    return (
+        &lt;div className="card"&gt;
+            &lt;h2&gt;{titolo}&lt;/h2&gt;
+            &lt;div className="card-content"&gt;
+                {children}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Uso: contenuto tra i tag diventa children
+&lt;Card titolo="Profilo Utente"&gt;
+    &lt;img src="avatar.jpg" alt="Avatar" /&gt;
+    &lt;p&gt;Nome: Mario Rossi&lt;/p&gt;
+    &lt;button&gt;Modifica&lt;/button&gt;
+&lt;/Card&gt;</code></pre>
+        </div>
+
+        <div class="codice">
+            <h3>Esempio Pratico: Button Riutilizzabile</h3>
+            <pre><code>interface ButtonProps {
+    label: string;
+    onClick: () => void;
+    variant?: 'primary' | 'secondary' | 'danger';
+    disabled?: boolean;
+}
+
+function Button({ label, onClick, variant = 'primary', disabled = false }: ButtonProps) {
+    const colors = {
+        primary: '#007bff',
+        secondary: '#6c757d',
+        danger: '#dc3545'
+    };
+    
+    return (
+        &lt;button
+            onClick={onClick}
+            disabled={disabled}
+            style={{
+                backgroundColor: colors[variant],
+                color: 'white',
+                padding: '10px 20px',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: disabled ? 'not-allowed' : 'pointer',
+                opacity: disabled ? 0.5 : 1
+            }}
+        &gt;
+            {label}
+        &lt;/button&gt;
+    );
+}
+
+// Uso in App
+function App() {
+    const handleSave = () => console.log('Salvato!');
+    const handleDelete = () => console.log('Eliminato!');
+    
+    return (
+        &lt;div&gt;
+            &lt;Button label="Salva" onClick={handleSave} variant="primary" /&gt;
+            &lt;Button label="Annulla" onClick={() => {}} variant="secondary" /&gt;
+            &lt;Button label="Elimina" onClick={handleDelete} variant="danger" /&gt;
+            &lt;Button label="Disabilitato" onClick={() => {}} disabled /&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <h2>5. State con useState</h2>
+
+        <div class="teoria">
+            <p><strong>State</strong> rappresenta i dati che possono cambiare nel tempo all'interno di un componente. Quando lo state cambia, React <em>ri-renderizza</em> automaticamente il componente per riflettere i nuovi dati.</p>
+            
+            <p>Lo state è locale al componente (privato) e gestito con l'hook <code>useState</code>. È il meccanismo fondamentale per creare interfacce interattive.</p>
+            
+            <h3>Perché useState?</h3>
+            <p>A differenza delle variabili normali, modificare lo state tramite la funzione setter (es. <code>setCount</code>) notifica React che deve aggiornare la UI. Una variabile normale non causerebbe re-render.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Sintassi Base</h3>
+            <pre><code>import { useState } from 'react';
+
+// Contatore base
+function Contatore() {
+    // [valore corrente, funzione per modificarlo]
+    const [count, setCount] = useState(0);
+    
+    return (
+        &lt;div&gt;
+            &lt;p&gt;Conteggio: {count}&lt;/p&gt;
+            &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+                Incrementa
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; setCount(count - 1)}&gt;
+                Decrementa
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; setCount(0)}&gt;
+                Reset
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Con TypeScript: specificare tipo esplicitamente
+const [count, setCount] = useState&lt;number&gt;(0);</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>State con Oggetti</h3>
+            <p>Quando lo state è un oggetto, devi <strong>creare un nuovo oggetto</strong> ad ogni aggiornamento (immutabilità). Usa lo spread operator <code>...</code> per copiare le proprietà esistenti.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>interface Utente {
+    nome: string;
+    eta: number;
+}
+
+function ProfiloUtente() {
+    const [utente, setUtente] = useState&lt;Utente&gt;({
+        nome: "Mario",
+        eta: 25
+    });
+    
+    const aggiornaNome = (nuovoNome: string) =&gt; {
+        // ✅ Creare NUOVO oggetto (immutabilità)
+        setUtente({
+            ...utente,           // Copia tutte le proprietà esistenti
+            nome: nuovoNome      // Sovrascrivi solo nome
+        });
+        
+        // ❌ NON modificare direttamente - React non rileva il cambiamento!
+        // utente.nome = nuovoNome;  // NON fare così!
+    };
+    
+    return (
+        &lt;div&gt;
+            &lt;p&gt;{utente.nome} - {utente.eta} anni&lt;/p&gt;
+            &lt;button onClick={() =&gt; aggiornaNome("Luigi")}&gt;
+                Cambia Nome
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>State con Array</h3>
+            <p>Per array, usa metodi immutabili: spread <code>[...array]</code>, <code>filter</code>, <code>map</code>. Evita metodi mutanti come <code>push</code>, <code>splice</code>.</p>
+        </div>
+
+        <div class="codice">
+            <pre><code>function ListaTodo() {
+    const [todos, setTodos] = useState&lt;string[]&gt;([]);
+    const [input, setInput] = useState("");
+    
+    const aggiungiTodo = () =&gt; {
+        // ✅ Nuovo array con spread
+        setTodos([...todos, input]);
+        setInput("");
+        
+        // ❌ NON usare push (mutante)
+        // todos.push(input);  // NON fare così!
+    };
+    
+    const rimuoviTodo = (index: number) =&gt; {
+        // ✅ Filtrare crea nuovo array
+        setTodos(todos.filter((_, i) =&gt; i !== index));
+    };
+    
+    return (
+        &lt;div&gt;
+            &lt;input
+                value={input}
+                onChange={(e) =&gt; setInput(e.target.value)}
+                placeholder="Nuovo todo"
+            /&gt;
+            &lt;button onClick={aggiungiTodo}&gt;Aggiungi&lt;/button&gt;
+            
+            &lt;ul&gt;
+                {todos.map((todo, index) =&gt; (
+                    &lt;li key={index}&gt;
+                        {todo}
+                        &lt;button onClick={() =&gt; rimuoviTodo(index)}&gt;
+                            Elimina
+                        &lt;/button&gt;
+                    &lt;/li&gt;
+                ))}
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h3>Regole dello State</h3>
+            <ul>
+                <li>✅ <strong>Sempre immutabile:</strong> Non modificare state direttamente, crea nuovi oggetti/array</li>
+                <li>✅ <strong>Spread operator:</strong> Usa <code>...obj</code> e <code>...array</code> per copie</li>
+                <li>✅ <strong>Functional updates:</strong> <code>setCount(prev => prev + 1)</code> quando il nuovo valore dipende dal precedente</li>
+                <li>✅ <strong>Chiamate al top level:</strong> useState deve essere chiamato sempre nello stesso ordine (no condizioni/loop)</li>
+                <li>❌ <strong>No mutazioni:</strong> <code>push</code>, <code>splice</code>, <code>sort</code> (in-place) non funzionano</li>
+            </ul>
+        </div>
+
+        <h2>6. Event Handling</h2>
+
+        <div class="teoria">
+            <p>Gli <strong>eventi</strong> in React funzionano come in HTML, ma con sintassi camelCase (<code>onClick</code>) e passando funzioni invece di stringhe. React usa un sistema di <em>synthetic events</em> cross-browser.</p>
+        </div>
+
+        <div class="codice">
+            <h3>Tipi di Eventi Comuni</h3>
+            <pre><code>function EventiEsempio() {
+    const [messaggio, setMessaggio] = useState("");
+    
+    // Click
+    const handleClick = () =&gt; {
+        alert("Bottone cliccato!");
+    };
+    
+    // Input change
+    const handleChange = (e: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+        setMessaggio(e.target.value);
+    };
+    
+    // Form submit
+    const handleSubmit = (e: React.FormEvent) =&gt; {
+        e.preventDefault();  // Previeni reload della pagina
+        console.log("Form inviato:", messaggio);
+    };
+    
+    // Keyboard
+    const handleKeyDown = (e: React.KeyboardEvent) =&gt; {
+        if (e.key === 'Enter') {
+            console.log("Enter premuto!");
+        }
+    };
+    
+    return (
+        &lt;form onSubmit={handleSubmit}&gt;
+            &lt;input
+                type="text"
+                value={messaggio}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Scrivi qualcosa"
+            /&gt;
+            &lt;button type="submit"&gt;Invia&lt;/button&gt;
+            &lt;button type="button" onClick={handleClick}&gt;
+                Click Me
+            &lt;/button&gt;
+        &lt;/form&gt;
+    );
+}
+
+// Passare argomenti agli event handler
+function Lista() {
+    const handleClick = (id: number) =&gt; {
+        console.log("Cliccato item:", id);
+    };
+    
+    return (
+        &lt;div&gt;
+            {[1, 2, 3].map(id =&gt; (
+                &lt;button 
+                    key={id}
+                    onClick={() =&gt; handleClick(id)}  // Arrow function!
+                &gt;
+                    Item {id}
+                &lt;/button&gt;
+            ))}
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <h2>7. Rendering Liste</h2>
+
+        <div class="teoria">
+            <pre><code>interface Prodotto {
+    id: number;
+    nome: string;
+    prezzo: number;
+}
+
+function ListaProdotti() {
+    const prodotti: Prodotto[] = [
+        { id: 1, nome: "Laptop", prezzo: 1000 },
+        { id: 2, nome: "Mouse", prezzo: 25 },
+        { id: 3, nome: "Tastiera", prezzo: 75 }
+    ];
+    
+    return (
+        &lt;div&gt;
+            &lt;h2&gt;Prodotti&lt;/h2&gt;
+            &lt;ul&gt;
+                {prodotti.map(prodotto =&gt; (
+                    &lt;li key={prodotto.id}&gt;  {/* key obbligatoria! */}
+                        {prodotto.nome} - €{prodotto.prezzo}
+                    &lt;/li&gt;
+                ))}
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Componente separato per item
+interface ProdottoItemProps {
+    prodotto: Prodotto;
+    onDelete: (id: number) =&gt; void;
+}
+
+function ProdottoItem({ prodotto, onDelete }: ProdottoItemProps) {
+    return (
+        &lt;div className="prodotto-item"&gt;
+            &lt;h3&gt;{prodotto.nome}&lt;/h3&gt;
+            &lt;p&gt;€{prodotto.prezzo}&lt;/p&gt;
+            &lt;button onClick={() =&gt; onDelete(prodotto.id)}&gt;
+                Elimina
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Uso
+function Catalogo() {
+    const [prodotti, setProdotti] = useState&lt;Prodotto[]&gt;([...]);
+    
+    const eliminaProdotto = (id: number) =&gt; {
+        setProdotti(prodotti.filter(p =&gt; p.id !== id));
+    };
+    
+    return (
+        &lt;div&gt;
+            {prodotti.map(prodotto =&gt; (
+                &lt;ProdottoItem
+                    key={prodotto.id}
+                    prodotto={prodotto}
+                    onDelete={eliminaProdotto}
+                /&gt;
+            ))}
+        &lt;/div&gt;
+    );
+}
+
+// Key: DEVE essere unica e stabile
+// Usa ID dal database
+// NON usare index (problemi con riordino/eliminazione)</code></pre>
+        </div>
+
+        <h2>8. Rendering Condizionale</h2>
+
+        <div class="teoria">
+            <pre><code>function Dashboard({ isLoggedIn }: { isLoggedIn: boolean }) {
+    // if/else
+    if (isLoggedIn) {
+        return &lt;h1&gt;Benvenuto!&lt;/h1&gt;;
+    }
+    return &lt;h1&gt;Per favore accedi&lt;/h1&gt;;
+}
+
+// Operatore ternario
+function Status({ isOnline }: { isOnline: boolean }) {
+    return (
+        &lt;div&gt;
+            Stato: {isOnline ? "Online" : "Offline"}
+        &lt;/div&gt;
+    );
+}
+
+// && operator (render condizionale)
+function Notifiche({ count }: { count: number }) {
+    return (
+        &lt;div&gt;
+            &lt;h2&gt;Notifiche&lt;/h2&gt;
+            {count &gt; 0 && (
+                &lt;span className="badge"&gt;{count}&lt;/span&gt;
+            )}
+        &lt;/div&gt;
+    );
+}
+
+// Rendering di nulla
+function Avviso({ mostra }: { mostra: boolean }) {
+    if (!mostra) return null;
+    
+    return &lt;div className="alert"&gt;Attenzione!&lt;/div&gt;;
+}
+
+// Switch case con componenti
+type View = "home" | "profile" | "settings";
+
+function App({ currentView }: { currentView: View }) {
+    const renderView = () =&gt; {
+        switch (currentView) {
+            case "home":
+                return &lt;Home /&gt;;
+            case "profile":
+                return &lt;Profile /&gt;;
+            case "settings":
+                return &lt;Settings /&gt;;
+            default:
+                return &lt;NotFound /&gt;;
+        }
+    };
+    
+    return &lt;div&gt;{renderView()}&lt;/div&gt;;
+}</code></pre>
+        </div>
+
+        <h2>9. useEffect Hook</h2>
+
+        <div class="teoria">
+            <p>useEffect esegue side effects (chiamate API, timer, subscriptions) dopo il render.</p>
+
+            <pre><code>import { useState, useEffect } from 'react';
+
+// Esegui dopo ogni render
+function Esempio1() {
+    const [count, setCount] = useState(0);
+    
+    useEffect(() =&gt; {
+        console.log("Componente renderizzato");
+        document.title = `Conteggio: ${count}`;
+    });
+    
+    return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}
+
+// Esegui solo al mount (una volta)
+function Esempio2() {
+    useEffect(() =&gt; {
+        console.log("Componente montato");
+        
+        // Cleanup al unmount
+        return () =&gt; {
+            console.log("Componente smontato");
+        };
+    }, []);  // Array vuoto = solo al mount
+    
+    return &lt;div&gt;Contenuto&lt;/div&gt;;
+}
+
+// Esegui quando dipendenze cambiano
+function Esempio3() {
+    const [userId, setUserId] = useState(1);
+    const [userData, setUserData] = useState(null);
+    
+    useEffect(() =&gt; {
+        // Fetch dati quando userId cambia
+        fetch(`/api/users/${userId}`)
+            .then(res =&gt; res.json())
+            .then(data =&gt; setUserData(data));
+    }, [userId]);  // Re-esegui quando userId cambia
+    
+    return &lt;div&gt;{/* ... */}&lt;/div&gt;;
+}
+
+// Esempio completo: fetch con loading e errori
+interface User {
+    id: number;
+    name: string;
+}
+
+function UserProfile({ userId }: { userId: number }) {
+    const [user, setUser] = useState&lt;User | null&gt;(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState&lt;string | null&gt;(null);
+    
+    useEffect(() =&gt; {
+        setLoading(true);
+        setError(null);
+        
+        fetch(`/api/users/${userId}`)
+            .then(res =&gt; {
+                if (!res.ok) throw new Error("Errore nel caricamento");
+                return res.json();
+            })
+            .then(data =&gt; {
+                setUser(data);
+                setLoading(false);
+            })
+            .catch(err =&gt; {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, [userId]);
+    
+    if (loading) return &lt;p&gt;Caricamento...&lt;/p&gt;;
+    if (error) return &lt;p&gt;Errore: {error}&lt;/p&gt;;
+    if (!user) return null;
+    
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;{user.name}&lt;/h1&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Timer con cleanup
+function Timer() {
+    const [seconds, setSeconds] = useState(0);
+    
+    useEffect(() =&gt; {
+        const interval = setInterval(() =&gt; {
+            setSeconds(prev =&gt; prev + 1);
+        }, 1000);
+        
+        // Cleanup: pulisci timer quando componente si smonta
+        return () =&gt; clearInterval(interval);
+    }, []);
+    
+    return &lt;div&gt;Secondi: {seconds}&lt;/div&gt;;
+}</code></pre>
+
+            <h3>Regole useEffect</h3>
+            <ul>
+                <li>✅ Array dipendenze vuoto [] = esegui solo al mount</li>
+                <li>✅ Includi tutte le dipendenze usate dentro useEffect</li>
+                <li>✅ Return function per cleanup (timer, subscriptions)</li>
+                <li>❌ Non fare setState sincrono senza dipendenze (loop infinito)</li>
+            </ul>
+        </div>
+
+        <h2>10. Composizione Componenti</h2>
+
+        <div class="teoria">
+            <pre><code>// Costruire UI complesse con componenti piccoli
+
+// Componenti atomici
+function Button({ children, onClick }: { 
+    children: React.ReactNode; 
+    onClick: () =&gt; void 
+}) {
+    return (
+        &lt;button className="btn" onClick={onClick}&gt;
+            {children}
+        &lt;/button&gt;
+    );
+}
+
+function Input({ value, onChange, placeholder }: {
+    value: string;
+    onChange: (value: string) =&gt; void;
+    placeholder?: string;
+}) {
+    return (
+        &lt;input
+            className="input"
+            value={value}
+            onChange={(e) =&gt; onChange(e.target.value)}
+            placeholder={placeholder}
+        /&gt;
+    );
+}
+
+// Comporre insieme
+function SearchBar({ onSearch }: { onSearch: (query: string) =&gt; void }) {
+    const [query, setQuery] = useState("");
+    
+    const handleSearch = () =&gt; {
+        onSearch(query);
+        setQuery("");
+    };
+    
+    return (
+        &lt;div className="search-bar"&gt;
+            &lt;Input
+                value={query}
+                onChange={setQuery}
+                placeholder="Cerca..."
+            /&gt;
+            &lt;Button onClick={handleSearch}&gt;
+                Cerca
+            &lt;/Button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Container component
+function App() {
+    const [risultati, setRisultati] = useState([]);
+    
+    const handleSearch = (query: string) =&gt; {
+        // Logica di ricerca
+        console.log("Cercando:", query);
+    };
+    
+    return (
+        &lt;div className="app"&gt;
+            &lt;SearchBar onSearch={handleSearch} /&gt;
+            {/* Altri componenti */}
+        &lt;/div&gt;
+    );
+}</code></pre>
+        </div>
+
+        <div class="teoria">
+            <h2>Riepilogo React</h2>
+            <table>
+                <tr>
+                    <th>Concetto</th>
+                    <th>Key Point</th>
+                </tr>
+                <tr>
+                    <td>JSX</td>
+                    <td>HTML in JavaScript con {}</td>
+                </tr>
+                <tr>
+                    <td>Componenti</td>
+                    <td>Funzioni che ritornano JSX</td>
+                </tr>
+                <tr>
+                    <td>Props</td>
+                    <td>Dati da genitore a figlio (read-only)</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>Dati che cambiano (useState)</td>
+                </tr>
+                <tr>
+                    <td>Eventi</td>
+                    <td>onClick, onChange, onSubmit</td>
+                </tr>
+                <tr>
+                    <td>Liste</td>
+                    <td>map() con key unica</td>
+                </tr>
+                <tr>
+                    <td>Condizionale</td>
+                    <td>&&, ternario, if/return</td>
+                </tr>
+                <tr>
+                    <td>useEffect</td>
+                    <td>Side effects + cleanup</td>
+                </tr>
+            </table>
+
+            <h3>Best Practices React</h3>
+            <ul>
+                <li>Un componente = una responsabilità</li>
+                <li>Props immutabili, state gestito con useState</li>
+                <li>Key uniche nelle liste (no index se riordini)</li>
+                <li>useEffect con array dipendenze corretto</li>
+                <li>TypeScript per props type-safe</li>
+                <li>Nomi componenti PascalCase</li>
+                <li>Decomposizione per riutilizzo</li>
+            </ul>
+        </div>
+
+        <div class="navigazione">
+            <a href="/lezione-5/lezione-5-2.html" class="btn-prev">← Lezione Precedente</a>
+            <a href="/index.html" class="btn-home">Home</a>
+            <a href="/link-utili.html" class="btn-link-utili">Link Utili</a>
+            <a href="/lezione-5/lezione-5-99.html" class="btn-next">Progetto Finale →</a>
+        </div>
+    </div>
+</body>
+</html>
