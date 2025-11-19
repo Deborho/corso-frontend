@@ -1,6 +1,12 @@
 // ==========================================
 // IMPORT REACT HOOKS
 // ==========================================
+// TEORIA: useEffect è l'Hook per gli "effetti collaterali" (side effects).
+// Permette di eseguire codice dopo il rendering, ad esempio:
+// - Chiamate API
+// - Interazioni con il DOM
+// - Salvataggio/caricamento da localStorage
+// - Timer e intervalli
 const { useState, useEffect } = React;
 
 // NOVITÀ: Chiave per localStorage
@@ -179,17 +185,27 @@ function App() {
         ];
     };
 
-    // NOVITÀ: State inizializzato con dati da localStorage
+    // TEORIA: "Lazy initialization" - passando una funzione a useState invece di un valore,
+    // la funzione viene eseguita solo al primo render.
+    // Questo è utile per operazioni costose come leggere da localStorage.
+    // Senza lazy initialization, loadTasksFromStorage verrebbe chiamata ad ogni render.
     const [tasks, setTasks] = useState(loadTasksFromStorage);
 
-    // NOVITÀ: useEffect per salvare automaticamente
+    // TEORIA: useEffect accetta due parametri:
+    // 1. Una funzione che contiene l'effetto da eseguire
+    // 2. Un array di dipendenze [tasks] - l'effetto si riesegue solo quando 'tasks' cambia
+    // 
+    // Esempi di dependency array:
+    // - [] (vuoto) = esegui solo al mount del componente
+    // - [tasks] = esegui quando 'tasks' cambia
+    // - nessun array = esegui ad ogni render (attenzione: può causare loop infiniti!)
     useEffect(() => {
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
         } catch (error) {
             console.error('Errore salvataggio task:', error);
         }
-    }, [tasks]); // Si attiva quando 'tasks' cambia
+    }, [tasks]);
 
     const addTask = (text) => {
         const newTask = {

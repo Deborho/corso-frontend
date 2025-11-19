@@ -1,6 +1,9 @@
 // ==========================================
 // IMPORT REACT HOOKS
 // ==========================================
+// TEORIA: Gli Hooks sono funzioni speciali che permettono di usare le funzionalità di React
+// (come lo state e il lifecycle) nei componenti funzione.
+// useState è l'Hook più basilare per gestire lo stato locale di un componente.
 const { useState } = React;
 
 // ==========================================
@@ -19,7 +22,10 @@ function Header() {
 // COMPONENTE FORM - NOVITÀ: INPUT CONTROLLATO
 // ==========================================
 function TaskForm({ onAddTask }) {
-    // State locale per l'input
+    // TEORIA: useState restituisce un array con 2 elementi:
+    // 1. inputValue: il valore corrente dello state
+    // 2. setInputValue: funzione per aggiornare lo state
+    // Quando lo state cambia, React ri-renderizza automaticamente il componente.
     const [inputValue, setInputValue] = useState('');
 
     const handleSubmit = (e) => {
@@ -30,7 +36,8 @@ function TaskForm({ onAddTask }) {
             return;
         }
 
-        // Chiama la funzione passata dal parent
+        // TEORIA: onAddTask è una "callback prop" - una funzione passata dal componente padre.
+        // Questo permette ai componenti figli di comunicare con i genitori ("lifting state up").
         onAddTask(inputValue);
         
         // Resetta l'input
@@ -42,6 +49,10 @@ function TaskForm({ onAddTask }) {
             <h2 className="h4 mb-3">Aggiungi nuovo task</h2>
             <form className="row g-2" onSubmit={handleSubmit}>
                 <div className="col-md-9">
+                    {/* TEORIA: Questo è un "controlled input" - il suo valore è controllato da React.
+                        value={inputValue} lega l'input allo state.
+                        onChange aggiorna lo state quando l'utente digita.
+                        Questo pattern garantisce che React sia sempre la "single source of truth". */}
                     <input 
                         type="text" 
                         name="taskInput"
@@ -131,23 +142,30 @@ function TaskList({ tasks, onDelete }) {
 // COMPONENTE PRINCIPALE APP
 // ==========================================
 function App() {
-    // NOVITÀ: useState per gestire l'array di task
+    // TEORIA: Lo state viene "sollevato" (lifted up) al componente più alto che ne ha bisogno.
+    // App gestisce l'array tasks perché più componenti figli devono accedervi o modificarlo.
+    // Questo è il pattern "lifting state up" per condividere state tra componenti.
     const [tasks, setTasks] = useState([
         { id: 1, text: "Cosa da fare 1", completed: false },
         { id: 2, text: "Cosa da fare 2", completed: false }
     ]);
 
-    // NOVITÀ: funzione per aggiungere task
+    // TEORIA: In React, lo state deve essere trattato come immutabile.
+    // Non si modifica direttamente l'array tasks, ma se ne crea uno nuovo.
+    // Lo spread operator [...tasks, newTask] crea un nuovo array con tutti i task esistenti + quello nuovo.
+    // React rileva il cambiamento confrontando i riferimenti e ri-renderizza il componente.
     const addTask = (text) => {
         const newTask = {
             id: Date.now(), // Timestamp come ID univoco
             text: text,
             completed: false
         };
-        setTasks([...tasks, newTask]); // Spread operator
+        setTasks([...tasks, newTask]);
     };
 
-    // NOVITÀ: funzione per eliminare task
+    // TEORIA: .filter() crea un nuovo array contenente solo gli elementi che soddisfano la condizione.
+    // Anche qui manteniamo l'immutabilità: non rimuoviamo dal vecchio array, ma creiamo un nuovo array.
+    // React confronta il nuovo array con quello precedente e aggiorna solo ciò che è necessario.
     const deleteTask = (id) => {
         setTasks(tasks.filter(task => task.id !== id));
     };

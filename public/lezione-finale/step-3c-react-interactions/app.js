@@ -61,7 +61,10 @@ function TaskForm({ onAddTask }) {
                         value={inputValue}
                         onChange={handleInputChange}
                     />
-                    {/* NOVITÀ: Messaggio di errore */}
+                    {/* TEORIA: Rendering condizionale con operatore && logico.
+                        Se error è truthy (non vuoto), viene renderizzato il div.
+                        Se error è falsy (stringa vuota, null, undefined), React non renderizza nulla.
+                        Questo è uno dei pattern più comuni per il rendering condizionale. */}
                     {error && (
                         <div className="text-danger small mt-1">{error}</div>
                     )}
@@ -81,7 +84,9 @@ function TaskForm({ onAddTask }) {
 // COMPONENTE STATISTICHE - NOVITÀ: CONTATORI DINAMICI
 // ==========================================
 function Stats({ tasks }) {
-    // NOVITÀ: Calcolo dinamico dei contatori
+    // TEORIA: I valori calcolati (computed values) vengono ricalcolati ad ogni render.
+    // Quando le props 'tasks' cambiano, React ri-renderizza Stats e ricalcola i contatori.
+    // Per operazioni pesanti, si potrebbe usare useMemo per ottimizzare (vedremo dopo).
     const activeCount = tasks.filter(t => !t.completed).length;
     const completedCount = tasks.filter(t => t.completed).length;
 
@@ -122,7 +127,10 @@ function TaskItem({ task, onToggle, onDelete }) {
                     checked={task.completed}
                     onChange={() => onToggle(task.id)}
                 />
-                {/* NOVITÀ: Stile condizionale (barrato se completato) */}
+                {/* TEORIA: Style condizionale con operatore ternario (? :).
+                    In React, l'attributo style accetta un oggetto JavaScript con proprietà camelCase.
+                    L'operatore ternario permette di applicare stili diversi in base a una condizione.
+                    Questo crea interfacce reattive senza bisogno di classi CSS dinamiche. */}
                 <label 
                     htmlFor={`task-${task.id}`}
                     className="flex-grow-1"
@@ -195,7 +203,10 @@ function App() {
         setTasks([...tasks, newTask]);
     };
 
-    // NOVITÀ: Funzione per toggle completamento
+    // TEORIA: .map() crea un nuovo array trasformando ogni elemento.
+    // Per l'elemento con l'id corrispondente, creiamo un nuovo oggetto con lo spread operator
+    // e sovrascriviamo la proprietà 'completed'.
+    // Gli altri elementi rimangono invariati. Anche questo rispetta l'immutabilità.
     const toggleTask = (id) => {
         setTasks(tasks.map(task => 
             task.id === id 

@@ -1,6 +1,9 @@
 // ==========================================
 // COMPONENTE HEADER
 // ==========================================
+// TEORIA: Un componente React è una funzione JavaScript che restituisce JSX.
+// JSX è una sintassi simile a HTML che viene trasformata in chiamate React.createElement().
+// I componenti permettono di suddividere l'interfaccia in pezzi riutilizzabili e indipendenti.
 function Header() {
     return (
         <header className="bg-white p-4 rounded-top shadow-sm">
@@ -40,6 +43,9 @@ function TaskForm() {
 // ==========================================
 // COMPONENTE SINGOLO TASK
 // ==========================================
+// TEORIA: Le props (properties) sono argomenti passati ai componenti.
+// Usando la destructuring { task }, estraiamo direttamente la proprietà task dall'oggetto props.
+// Le props sono read-only: i componenti non possono modificare le proprie props.
 function TaskItem({ task }) {
     return (
         <li className="list-group-item">
@@ -75,6 +81,9 @@ function TaskList() {
         { id: 2, text: "Cosa da fare 2", completed: false }
     ];
 
+    // TEORIA: .map() trasforma ogni elemento dell'array in un componente React.
+    // L'attributo 'key' è obbligatorio per liste: aiuta React a identificare quali elementi
+    // sono cambiati, aggiunti o rimossi, ottimizzando il rendering.
     return (
         <section id="tasks">
             <h2 className="h4 mb-3">I tuoi task</h2>
@@ -90,6 +99,9 @@ function TaskList() {
 // ==========================================
 // COMPONENTE PRINCIPALE APP
 // ==========================================
+// TEORIA: App è il componente root che contiene tutta la struttura dell'applicazione.
+// Compone (composition) altri componenti più piccoli per costruire l'interfaccia completa.
+// Questo pattern permette di mantenere il codice organizzato e manutenibile.
 function App() {
     return (
         <div className="container py-5">
@@ -105,5 +117,8 @@ function App() {
 // ==========================================
 // RENDER DELL'APPLICAZIONE
 // ==========================================
+// TEORIA: ReactDOM.createRoot() crea un "root" React nel DOM.
+// root.render() renderizza il componente App nell'elemento HTML con id="root".
+// Questo è il punto di ingresso dell'applicazione React.
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);

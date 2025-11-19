@@ -1,6 +1,10 @@
 // ==========================================
 // IMPORT REACT HOOKS
 // ==========================================
+// TEORIA: Questo file contiene la stessa logica React dello step 3d.
+// L'unica differenza è il CSS: qui usiamo SASS invece di Bootstrap puro.
+// Questo dimostra che React gestisce la logica, mentre CSS/SASS gestisce lo stile.
+// La separazione delle responsabilità rende il codice più manutenibile.
 const { useState, useEffect } = React;
 
 const STORAGE_KEY = 'taskManagerTasks';
