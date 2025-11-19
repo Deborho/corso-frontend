@@ -1,15 +1,15 @@
 # Quiz - Corso Frontend
 
-20 domande a scelta multipla sugli argomenti del corso (lezioni base)
+20 domande a scelta multipla sugli argomenti del corso
 
 ---
 
-## 1. Qual è il significato dell'acronimo HTML?
+## 1. Quale meta tag è obbligatorio per rendere una pagina responsive su dispositivi mobili?
 
-a) Hyper Text Markup Language ✓  
-b) High Tech Modern Language  
-c) Hyper Transfer Markup Layout  
-d) Home Tool Markup Language
+a) `<meta charset="UTF-8">`  
+b) `<meta name="viewport" content="width=device-width, initial-scale=1.0">` ✓  
+c) `<meta name="description">`  
+d) `<meta http-equiv="refresh">`
 
 ---
 
@@ -17,14 +17,14 @@ d) Home Tool Markup Language
 
 a) `<content>`  
 b) `<main>` ✓  
-c) `<body>`  
+c) `<div>`  
 d) `<primary>`
 
 ---
 
 ## 3. Quale attributo HTML è obbligatorio per rendere le immagini accessibili?
 
-a) `title`  
+a) `class`  
 b) `src`  
 c) `alt` ✓  
 d) `description`
@@ -53,7 +53,7 @@ d) Selettore universale (`*`)
 
 a) `display: grid`  
 b) `display: block`  
-c) `display: flexbox`  
+c) `display: none`  
 d) `display: flex` ✓
 
 ---
@@ -81,7 +81,7 @@ d) 24 colonne
 a) `btn-primary` ✓  
 b) `button-primary`  
 c) `btn-main`  
-d) `primary-btn`
+d) `my-btn`
 
 ---
 
@@ -103,16 +103,16 @@ d) `mobile-hide`
 
 ---
 
-## 12. Cosa significa SASS?
+## 12. Quale estensione di file è raccomandata per scrivere codice SASS con sintassi simile al CSS?
 
-a) Simple And Structured Styles  
-b) Syntactically Awesome Style Sheets ✓  
-c) Super Advanced Style System  
-d) Structured Adaptive Style Syntax
+a) `.sasso`  
+b) `.css`  
+c) `.scss` ✓  
+d) `.style`
 
 ---
 
-## 13. In SASS, quale simbolo si usa per fare riferimento al selettore padre nel nesting?
+## 13. In SASS, quale simbolo si usa per fare riferimento al selettore padre nel nesting (ad esempio .navigation .nav-item)?
 
 a) `$`  
 b) `@`  
@@ -139,9 +139,9 @@ d) `final`
 
 ---
 
-## 16. Come si crea un oggetto in JavaScript con proprietà `nome` e `età`?
+## 16. Come si crea un OGGETTO in JavaScript con proprietà `nome` e `eta`?
 
-a) `let persona = { nome: "Mario", età: 30 }` ✓  
+a) `let persona = { nome: "Mario", eta: 30 }` ✓  
 b) `let persona = [ nome: "Mario", età: 30 ]`  
 c) `let persona = (nome: "Mario", età: 30)`  
 d) `let persona = new Object("nome", "Mario", "età", 30)`
@@ -170,14 +170,14 @@ d) `useReducer`
 
 a) Un linguaggio di programmazione separato da JavaScript  
 b) Una libreria per la gestione dello stato  
-c) Una sintassi che permette di scrivere HTML-like code in JavaScript ✓  
+c) Una sintassi che permette di scrivere codice HTML con una sintassti XML in JavaScript ✓  
 d) Un framework CSS per React
 
 ---
 
 ## 20. Quale metodo JavaScript si usa per iterare su tutti gli elementi di un array eseguendo una funzione per ciascuno?
 
-a) `map()`  
+a) `maps()`  
 b) `filter()`  
 c) `forEach()` ✓  
 d) `reduce()`
@@ -186,7 +186,7 @@ d) `reduce()`
 
 ## Riepilogo Risposte Corrette
 
-1. a) Hyper Text Markup Language
+1. b) `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
 2. b) `<main>`
 3. c) `alt`
 4. c) `padding`
@@ -197,12 +197,12 @@ d) `reduce()`
 9. a) `btn-primary`
 10. b) `lg`
 11. b) `d-sm-none`
-12. b) Syntactically Awesome Style Sheets
+12. c) `.scss`
 13. c) `&`
 14. b) `$colore: blue;`
 15. c) `const`
 16. a) `let persona = { nome: "Mario", età: 30 }`
 17. b) Per aggiungere controllo dei tipi e type safety al codice JavaScript
 18. c) `useState`
-19. c) Una sintassi che permette di scrivere HTML-like code in JavaScript
+19. c) Una sintassi che permette di scrivere codice HTML con una sintassti XML in JavaScript
 20. c) `forEach()`
