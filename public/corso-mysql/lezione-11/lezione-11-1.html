@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 11.1 - ORDER BY</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 11.1 - ORDER BY</h1>
+            <p>Ordinare i risultati delle query</p>
+        </div>
+
+        <h2>1. ORDER BY</h2>
+        
+        <div class="teoria">
+            <p>La clausola <code>ORDER BY</code> ordina i risultati di una query in base a una o più colonne. Di default l'ordine è ascendente (ASC).</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella
+ORDER BY colonna1 [ASC|DESC], colonna2 [ASC|DESC], ...;</pre>
+        </div>
+
+        <h2>2. Ordine Ascendente (ASC)</h2>
+
+        <div class="codice">
+<pre>-- Ordina per nome (A-Z)
+SELECT nome, cognome FROM clienti ORDER BY nome;
+
+-- Equivalente (ASC è il default)
+SELECT nome, cognome FROM clienti ORDER BY nome ASC;
+
+-- Ordina per prezzo (dal più basso)
+SELECT nome, prezzo FROM prodotti ORDER BY prezzo;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato (prezzo ASC):</strong></p>
+            <pre>+----------------+--------+
+| nome           | prezzo |
++----------------+--------+
+| Mouse Wireless |  29.99 |
+| Webcam HD      |  49.99 |
+| Tastiera       |  89.99 |
+| Monitor 27"    | 249.99 |
+| Laptop HP      | 699.99 |
++----------------+--------+</pre>
+        </div>
+
+        <h2>3. Ordine Discendente (DESC)</h2>
+
+        <div class="codice">
+<pre>-- Ordina per prezzo (dal più alto)
+SELECT nome, prezzo FROM prodotti ORDER BY prezzo DESC;
+
+-- Ordina per data (più recenti prima)
+SELECT * FROM ordini ORDER BY data_ordine DESC;
+
+-- Ordina per quantità (scorte più alte prima)
+SELECT nome, quantita FROM prodotti ORDER BY quantita DESC;</pre>
+        </div>
+
+        <h2>4. Ordinamento su Multiple Colonne</h2>
+
+        <div class="teoria">
+            <p>Puoi ordinare per più colonne. MySQL ordina prima per la prima colonna, poi usa le successive per i "pareggi".</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Ordina per categoria, poi per prezzo
+SELECT nome, categoria, prezzo 
+FROM prodotti 
+ORDER BY categoria ASC, prezzo DESC;
+
+-- Ordina per cognome, poi per nome
+SELECT cognome, nome FROM clienti 
+ORDER BY cognome ASC, nome ASC;
+
+-- Ordina ordini per stato, poi per data
+SELECT * FROM ordini 
+ORDER BY stato ASC, data_ordine DESC;</pre>
+        </div>
+
+        <h2>5. Ordinamento con Espressioni</h2>
+
+        <div class="codice">
+<pre>-- Ordina per valore totale stock (prezzo * quantità)
+SELECT nome, prezzo, quantita, (prezzo * quantita) AS valore_stock
+FROM prodotti 
+ORDER BY valore_stock DESC;
+
+-- Ordina per lunghezza del nome
+SELECT nome FROM prodotti 
+ORDER BY LENGTH(nome);
+
+-- Ordina per mese di registrazione
+SELECT nome, data_registrazione 
+FROM clienti 
+ORDER BY MONTH(data_registrazione);</pre>
+        </div>
+
+        <h2>6. Ordinamento con NULL</h2>
+
+        <div class="teoria">
+            <p>I valori NULL vengono considerati i più bassi in ordine ASC (appaiono per primi) e i più alti in DESC (appaiono per ultimi).</p>
+        </div>
+
+        <div class="codice">
+<pre>-- NULL per primi
+SELECT nome, telefono FROM clienti ORDER BY telefono ASC;
+
+-- NULL per ultimi
+SELECT nome, telefono FROM clienti ORDER BY telefono DESC;
+
+-- Forza NULL alla fine anche in ASC
+SELECT nome, telefono FROM clienti 
+ORDER BY telefono IS NULL, telefono ASC;</pre>
+        </div>
+
+        <h2>7. ORDER BY con LIMIT</h2>
+
+        <div class="codice">
+<pre>-- Top 5 prodotti più costosi
+SELECT nome, prezzo FROM prodotti 
+ORDER BY prezzo DESC 
+LIMIT 5;
+
+-- 3 ordini più recenti
+SELECT * FROM ordini 
+ORDER BY data_ordine DESC 
+LIMIT 3;
+
+-- Paginazione: prodotti 11-20 ordinati per nome
+SELECT nome, prezzo FROM prodotti 
+ORDER BY nome 
+LIMIT 10 OFFSET 10;</pre>
+        </div>
+
+        <h2>8. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Report ordinati</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Report e-commerce
+
+-- 1. Catalogo prodotti ordinato
+SELECT nome, categoria, prezzo, quantita
+FROM prodotti
+ORDER BY categoria ASC, prezzo DESC;
+
+-- 2. Clienti ordinati per registrazione (più recenti)
+SELECT nome, cognome, email, data_registrazione
+FROM clienti
+ORDER BY data_registrazione DESC;
+
+-- 3. Ordini urgenti (più vecchi non completati)
+SELECT id, cliente_id, data_ordine, stato, totale
+FROM ordini
+WHERE stato NOT IN ('completato', 'annullato')
+ORDER BY data_ordine ASC;
+
+-- 4. Top 10 prodotti per valore di magazzino
+SELECT 
+    nome,
+    prezzo,
+    quantita,
+    ROUND(prezzo * quantita, 2) AS valore_magazzino
+FROM prodotti
+WHERE quantita > 0
+ORDER BY valore_magazzino DESC
+LIMIT 10;
+
+-- 5. Clienti alfabeticamente (cognome, nome)
+SELECT cognome, nome, citta
+FROM clienti
+ORDER BY cognome, nome;</pre>
+            </div>
+
+            <p><strong>Tips:</strong></p>
+            <ul>
+                <li>ORDER BY viene eseguito dopo WHERE e prima di LIMIT</li>
+                <li>Puoi usare numeri per rifeririti alle colonne: ORDER BY 1, 2</li>
+                <li>Gli indici migliorano le performance dell'ordinamento</li>
+                <li>Evita ORDER BY su colonne non indicizzate con grandi dataset</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-11-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

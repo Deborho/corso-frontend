@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.1 - INSERT INTO</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.1 - INSERT INTO</h1>
+            <p>Inserimento di dati nelle tabelle</p>
+        </div>
+
+        <h2>1. INSERT INTO</h2>
+        
+        <div class="teoria">
+            <p>Il comando <code>INSERT INTO</code> viene utilizzato per inserire nuove righe (record) in una tabella. È possibile inserire una singola riga o multiple righe contemporaneamente.</p>
+        </div>
+
+        <h3>1.1 Sintassi con tutte le colonne</h3>
+
+        <div class="codice">
+<pre>INSERT INTO nome_tabella
+VALUES (valore1, valore2, valore3, ...);</pre>
+        </div>
+
+        <h3>1.2 Sintassi con colonne specifiche</h3>
+
+        <div class="codice">
+<pre>INSERT INTO nome_tabella (colonna1, colonna2, colonna3)
+VALUES (valore1, valore2, valore3);</pre>
+        </div>
+
+        <h2>2. Esempi di INSERT</h2>
+
+        <h3>2.1 Inserimento Singolo</h3>
+
+        <div class="codice">
+<pre>-- Inserisci un nuovo cliente
+INSERT INTO clienti (nome, cognome, email)
+VALUES ('Mario', 'Rossi', 'mario.rossi@email.com');</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>Query OK, 1 row affected (0.01 sec)</pre>
+        </div>
+
+        <h3>2.2 Inserimento con AUTO_INCREMENT</h3>
+
+        <p>Se la colonna ID ha AUTO_INCREMENT, non è necessario specificarla:</p>
+
+        <div class="codice">
+<pre>-- L'ID viene generato automaticamente
+INSERT INTO clienti (nome, cognome, email, telefono)
+VALUES ('Giulia', 'Bianchi', 'giulia.bianchi@email.com', '333-1234567');</pre>
+        </div>
+
+        <h3>2.3 Inserimento Multiple Righe</h3>
+
+        <div class="codice">
+<pre>-- Inserisci più clienti in una sola query
+INSERT INTO clienti (nome, cognome, email) VALUES
+    ('Luca', 'Verdi', 'luca.verdi@email.com'),
+    ('Anna', 'Neri', 'anna.neri@email.com'),
+    ('Paolo', 'Gialli', 'paolo.gialli@email.com');</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0</pre>
+        </div>
+
+        <h2>3. Inserimento con Valori Default</h2>
+
+        <div class="teoria">
+            <p>Se una colonna ha un valore DEFAULT, puoi ometterla nell'INSERT oppure usare la keyword DEFAULT.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- La colonna "stato" userà il valore default
+INSERT INTO clienti (nome, cognome, email)
+VALUES ('Sara', 'Blu', 'sara.blu@email.com');
+
+-- Oppure esplicitamente
+INSERT INTO clienti (nome, cognome, email, stato)
+VALUES ('Marco', 'Rosa', 'marco.rosa@email.com', DEFAULT);</pre>
+        </div>
+
+        <h2>4. Inserimento Prodotti</h2>
+
+        <div class="codice">
+<pre>-- Inserisci prodotti nella tabella prodotti
+INSERT INTO prodotti (nome, descrizione, prezzo, quantita, categoria) VALUES
+    ('Laptop HP', 'Laptop HP 15 pollici, 8GB RAM', 699.99, 50, 'Elettronica'),
+    ('Mouse Wireless', 'Mouse wireless ergonomico', 29.99, 200, 'Accessori'),
+    ('Tastiera Meccanica', 'Tastiera gaming RGB', 89.99, 100, 'Accessori'),
+    ('Monitor 27"', 'Monitor LED Full HD', 249.99, 30, 'Elettronica'),
+    ('Webcam HD', 'Webcam 1080p con microfono', 49.99, 75, 'Accessori');</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Popolare il database e-commerce</h4>
+
+            <div class="codice">
+<pre>-- Assicurati di essere nel database corretto
+USE ecommerce;
+
+-- Inserisci i clienti
+INSERT INTO clienti (nome, cognome, email, telefono) VALUES
+    ('Mario', 'Rossi', 'mario.rossi@email.com', '333-1111111'),
+    ('Giulia', 'Bianchi', 'giulia.bianchi@email.com', '333-2222222'),
+    ('Luca', 'Verdi', 'luca.verdi@email.com', '333-3333333'),
+    ('Anna', 'Neri', 'anna.neri@email.com', '333-4444444'),
+    ('Paolo', 'Gialli', 'paolo.gialli@email.com', '333-5555555');
+
+-- Inserisci i prodotti
+INSERT INTO prodotti (nome, descrizione, prezzo, quantita, categoria) VALUES
+    ('iPhone 15', 'Smartphone Apple ultima generazione', 1199.00, 25, 'Smartphone'),
+    ('Samsung Galaxy S24', 'Smartphone Samsung top di gamma', 999.00, 40, 'Smartphone'),
+    ('MacBook Air', 'Laptop Apple M2', 1299.00, 15, 'Computer'),
+    ('iPad Pro', 'Tablet Apple 12.9 pollici', 1099.00, 20, 'Tablet'),
+    ('AirPods Pro', 'Auricolari wireless Apple', 279.00, 100, 'Accessori');
+
+-- Inserisci alcuni ordini
+INSERT INTO ordini (cliente_id, totale, stato) VALUES
+    (1, 1199.00, 'completato'),
+    (2, 1578.00, 'in spedizione'),
+    (3, 279.00, 'in elaborazione'),
+    (1, 999.00, 'completato'),
+    (4, 2398.00, 'in spedizione');
+
+-- Verifica gli inserimenti
+SELECT * FROM clienti;
+SELECT * FROM prodotti;
+SELECT * FROM ordini;</pre>
+            </div>
+
+            <p><strong>Note importanti:</strong></p>
+            <ul>
+                <li>I valori stringa devono essere racchiusi tra apici singoli ' '</li>
+                <li>I numeri non richiedono apici</li>
+                <li>NULL può essere inserito per valori mancanti (se la colonna lo permette)</li>
+                <li>Le date devono essere nel formato 'YYYY-MM-DD'</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-4-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

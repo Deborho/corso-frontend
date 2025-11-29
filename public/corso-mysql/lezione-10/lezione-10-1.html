@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 10.1 - Funzioni aggregate</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 10.1 - Funzioni aggregate</h1>
+            <p>SUM, COUNT, AVG, MAX, MIN</p>
+        </div>
+
+        <h2>1. Introduzione alle Funzioni Aggregate</h2>
+        
+        <div class="teoria">
+            <p>Le funzioni aggregate eseguono calcoli su un insieme di righe e restituiscono un singolo valore. Sono fondamentali per reportistica e analisi dei dati.</p>
+        </div>
+
+        <h3>1.1 Panoramica delle Funzioni</h3>
+
+        <table>
+            <tr>
+                <th>Funzione</th>
+                <th>Descrizione</th>
+                <th>Esempio</th>
+            </tr>
+            <tr>
+                <td><code>COUNT()</code></td>
+                <td>Conta il numero di righe</td>
+                <td>COUNT(*), COUNT(colonna)</td>
+            </tr>
+            <tr>
+                <td><code>SUM()</code></td>
+                <td>Somma i valori</td>
+                <td>SUM(prezzo)</td>
+            </tr>
+            <tr>
+                <td><code>AVG()</code></td>
+                <td>Calcola la media</td>
+                <td>AVG(prezzo)</td>
+            </tr>
+            <tr>
+                <td><code>MAX()</code></td>
+                <td>Trova il valore massimo</td>
+                <td>MAX(prezzo)</td>
+            </tr>
+            <tr>
+                <td><code>MIN()</code></td>
+                <td>Trova il valore minimo</td>
+                <td>MIN(prezzo)</td>
+            </tr>
+        </table>
+
+        <h2>2. COUNT</h2>
+
+        <div class="teoria">
+            <p><code>COUNT()</code> conta il numero di righe. Usa COUNT(*) per contare tutte le righe, COUNT(colonna) per contare valori non-NULL.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Conta tutti i prodotti
+SELECT COUNT(*) AS 'Totale Prodotti' FROM prodotti;
+
+-- Conta prodotti con descrizione (non NULL)
+SELECT COUNT(descrizione) AS 'Con Descrizione' FROM prodotti;
+
+-- Conta clienti per città
+SELECT COUNT(*) AS 'Clienti Milano' FROM clienti WHERE citta = 'Milano';
+
+-- Conta valori unici
+SELECT COUNT(DISTINCT categoria) AS 'Numero Categorie' FROM prodotti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+-----------------+
+| Totale Prodotti |
++-----------------+
+|              25 |
++-----------------+</pre>
+        </div>
+
+        <h2>3. SUM</h2>
+
+        <div class="teoria">
+            <p><code>SUM()</code> calcola la somma di una colonna numerica. Ignora i valori NULL.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Somma totale dei prezzi
+SELECT SUM(prezzo) AS 'Valore Totale Catalogo' FROM prodotti;
+
+-- Somma delle quantità in stock
+SELECT SUM(quantita) AS 'Totale Pezzi in Magazzino' FROM prodotti;
+
+-- Somma ordini di un cliente
+SELECT SUM(totale) AS 'Totale Speso' FROM ordini WHERE cliente_id = 1;
+
+-- Somma ordini completati
+SELECT SUM(totale) AS 'Fatturato' FROM ordini WHERE stato = 'completato';</pre>
+        </div>
+
+        <h2>4. AVG</h2>
+
+        <div class="teoria">
+            <p><code>AVG()</code> calcola la media aritmetica di una colonna numerica. Ignora i valori NULL.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prezzo medio dei prodotti
+SELECT AVG(prezzo) AS 'Prezzo Medio' FROM prodotti;
+
+-- Prezzo medio per categoria
+SELECT AVG(prezzo) AS 'Media Smartphone' FROM prodotti WHERE categoria = 'Smartphone';
+
+-- Media ordini
+SELECT AVG(totale) AS 'Valore Medio Ordine' FROM ordini;
+
+-- Media arrotondata
+SELECT ROUND(AVG(prezzo), 2) AS 'Prezzo Medio' FROM prodotti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+--------------+
+| Prezzo Medio |
++--------------+
+|       456.78 |
++--------------+</pre>
+        </div>
+
+        <h2>5. MAX e MIN</h2>
+
+        <div class="teoria">
+            <p><code>MAX()</code> e <code>MIN()</code> trovano rispettivamente il valore massimo e minimo. Funzionano anche con stringhe e date.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prodotto più costoso
+SELECT MAX(prezzo) AS 'Prezzo Massimo' FROM prodotti;
+
+-- Prodotto più economico
+SELECT MIN(prezzo) AS 'Prezzo Minimo' FROM prodotti;
+
+-- Range di prezzi
+SELECT 
+    MIN(prezzo) AS 'Minimo',
+    MAX(prezzo) AS 'Massimo',
+    MAX(prezzo) - MIN(prezzo) AS 'Range'
+FROM prodotti;
+
+-- Data primo e ultimo ordine
+SELECT 
+    MIN(data_ordine) AS 'Primo Ordine',
+    MAX(data_ordine) AS 'Ultimo Ordine'
+FROM ordini;
+
+-- Nome alfabeticamente primo e ultimo
+SELECT MIN(nome) AS 'Primo', MAX(nome) AS 'Ultimo' FROM clienti;</pre>
+        </div>
+
+        <h2>6. Combinare Funzioni Aggregate</h2>
+
+        <div class="codice">
+<pre>-- Statistiche complete sui prodotti
+SELECT 
+    COUNT(*) AS 'Totale Prodotti',
+    SUM(quantita) AS 'Totale Stock',
+    ROUND(AVG(prezzo), 2) AS 'Prezzo Medio',
+    MIN(prezzo) AS 'Prezzo Min',
+    MAX(prezzo) AS 'Prezzo Max'
+FROM prodotti;
+
+-- Statistiche ordini
+SELECT 
+    COUNT(*) AS 'Numero Ordini',
+    SUM(totale) AS 'Fatturato Totale',
+    ROUND(AVG(totale), 2) AS 'Ordine Medio',
+    MIN(totale) AS 'Ordine Minimo',
+    MAX(totale) AS 'Ordine Massimo'
+FROM ordini
+WHERE stato = 'completato';</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+-----------------+--------------+--------------+------------+------------+
+| Totale Prodotti | Totale Stock | Prezzo Medio | Prezzo Min | Prezzo Max |
++-----------------+--------------+--------------+------------+------------+
+|              25 |         1250 |       456.78 |      19.99 |    1299.00 |
++-----------------+--------------+--------------+------------+------------+</pre>
+        </div>
+
+        <h2>7. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Dashboard di reportistica</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Creare un dashboard per l'e-commerce
+
+-- 1. KPI Prodotti
+SELECT 
+    'Prodotti' AS 'Sezione',
+    COUNT(*) AS 'Totale',
+    COUNT(DISTINCT categoria) AS 'Categorie',
+    SUM(quantita) AS 'Pezzi in Stock',
+    CONCAT('€ ', FORMAT(SUM(prezzo * quantita), 2)) AS 'Valore Magazzino'
+FROM prodotti;
+
+-- 2. KPI Ordini del mese
+SELECT 
+    COUNT(*) AS 'Ordini Mese',
+    COUNT(DISTINCT cliente_id) AS 'Clienti Attivi',
+    CONCAT('€ ', FORMAT(SUM(totale), 2)) AS 'Fatturato',
+    CONCAT('€ ', FORMAT(AVG(totale), 2)) AS 'Scontrino Medio'
+FROM ordini
+WHERE MONTH(data_ordine) = MONTH(CURDATE())
+  AND YEAR(data_ordine) = YEAR(CURDATE());
+
+-- 3. Prodotti per fascia di prezzo
+SELECT 
+    CASE 
+        WHEN prezzo < 50 THEN 'Economico (< €50)'
+        WHEN prezzo < 200 THEN 'Medio (€50-200)'
+        WHEN prezzo < 500 THEN 'Premium (€200-500)'
+        ELSE 'Lusso (> €500)'
+    END AS 'Fascia Prezzo',
+    COUNT(*) AS 'Numero Prodotti',
+    ROUND(AVG(prezzo), 2) AS 'Prezzo Medio'
+FROM prodotti
+GROUP BY 
+    CASE 
+        WHEN prezzo < 50 THEN 'Economico (< €50)'
+        WHEN prezzo < 200 THEN 'Medio (€50-200)'
+        WHEN prezzo < 500 THEN 'Premium (€200-500)'
+        ELSE 'Lusso (> €500)'
+    END;
+
+-- 4. Top 5 prodotti più costosi
+SELECT nome, prezzo
+FROM prodotti
+ORDER BY prezzo DESC
+LIMIT 5;</pre>
+            </div>
+
+            <p><strong>Note importanti:</strong></p>
+            <ul>
+                <li>Le funzioni aggregate ignorano i valori NULL (tranne COUNT(*))</li>
+                <li>Non puoi usare funzioni aggregate nella clausola WHERE</li>
+                <li>Per filtrare su risultati aggregati, usa HAVING (prossima lezione)</li>
+                <li>Usa alias descrittivi per rendere i report leggibili</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-11/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

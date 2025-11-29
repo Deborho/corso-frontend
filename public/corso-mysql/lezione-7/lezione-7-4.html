@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 7.4 - ALTER TABLE - Cancellazione e modifica</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 7.4 - ALTER TABLE - Cancellazione e modifica</h1>
+            <p>Eliminare e modificare colonne esistenti</p>
+        </div>
+
+        <h2>1. DROP COLUMN</h2>
+        
+        <div class="teoria">
+            <p>Il comando <code>DROP COLUMN</code> elimina permanentemente una colonna e tutti i suoi dati dalla tabella.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>ALTER TABLE nome_tabella
+DROP COLUMN nome_colonna;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>⚠️ ATTENZIONE:</strong> L'eliminazione di una colonna è irreversibile e tutti i dati in quella colonna saranno persi!</p>
+        </div>
+
+        <h3>1.2 Esempio</h3>
+
+        <div class="codice">
+<pre>-- Elimina la colonna "fax" dalla tabella clienti
+ALTER TABLE clienti
+DROP COLUMN fax;
+
+-- Elimina multiple colonne
+ALTER TABLE clienti
+DROP COLUMN campo_obsoleto1,
+DROP COLUMN campo_obsoleto2;</pre>
+        </div>
+
+        <h2>2. MODIFY COLUMN</h2>
+
+        <div class="teoria">
+            <p>Il comando <code>MODIFY</code> permette di cambiare il tipo di dato, i vincoli o la posizione di una colonna.</p>
+        </div>
+
+        <h3>2.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>ALTER TABLE nome_tabella
+MODIFY nome_colonna nuovo_tipo vincoli;</pre>
+        </div>
+
+        <h3>2.2 Cambiare il Tipo di Dato</h3>
+
+        <div class="codice">
+<pre>-- Cambia VARCHAR(50) in VARCHAR(100)
+ALTER TABLE clienti
+MODIFY nome VARCHAR(100);
+
+-- Cambia INT in BIGINT
+ALTER TABLE ordini
+MODIFY totale_centesimi BIGINT;</pre>
+        </div>
+
+        <h3>2.3 Aggiungere/Rimuovere NOT NULL</h3>
+
+        <div class="codice">
+<pre>-- Aggiungi NOT NULL
+ALTER TABLE clienti
+MODIFY telefono VARCHAR(20) NOT NULL;
+
+-- Rimuovi NOT NULL (permetti NULL)
+ALTER TABLE clienti
+MODIFY telefono VARCHAR(20) NULL;</pre>
+        </div>
+
+        <h3>2.4 Cambiare il Valore DEFAULT</h3>
+
+        <div class="codice">
+<pre>-- Imposta un nuovo default
+ALTER TABLE prodotti
+MODIFY quantita INT DEFAULT 0;
+
+-- Rimuovi il default
+ALTER TABLE prodotti
+ALTER COLUMN quantita DROP DEFAULT;</pre>
+        </div>
+
+        <h2>3. CHANGE COLUMN</h2>
+
+        <div class="teoria">
+            <p><code>CHANGE</code> permette di rinominare una colonna E modificarne il tipo contemporaneamente.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Rinomina e cambia tipo
+ALTER TABLE clienti
+CHANGE telefono numero_telefono VARCHAR(15);</pre>
+        </div>
+
+        <h2>4. Modifiche Sicure</h2>
+
+        <div class="teoria">
+            <p>Alcune modifiche possono causare perdita di dati. Ecco come procedere in sicurezza:</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prima: verifica i dati esistenti
+SELECT MAX(LENGTH(nome)) FROM clienti;
+
+-- Se il risultato è 45, puoi ridurre a VARCHAR(50)
+-- ma non a VARCHAR(40) senza perdere dati
+
+-- Verifica valori prima di NOT NULL
+SELECT COUNT(*) FROM clienti WHERE telefono IS NULL;
+
+-- Se ci sono NULL, devi prima aggiornarli
+UPDATE clienti SET telefono = 'Non specificato' WHERE telefono IS NULL;
+
+-- Poi puoi aggiungere NOT NULL
+ALTER TABLE clienti MODIFY telefono VARCHAR(20) NOT NULL;</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Ristrutturazione completa di una tabella</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Modernizzare la tabella clienti
+
+-- 1. Visualizza struttura attuale
+DESCRIBE clienti;
+
+-- 2. Backup dei dati importanti (in produzione)
+-- CREATE TABLE clienti_backup AS SELECT * FROM clienti;
+
+-- 3. Elimina colonne obsolete
+ALTER TABLE clienti
+DROP COLUMN IF EXISTS fax,
+DROP COLUMN IF EXISTS pager;
+
+-- 4. Espandi colonne che potrebbero essere troppo corte
+ALTER TABLE clienti
+MODIFY nome VARCHAR(100) NOT NULL,
+MODIFY cognome VARCHAR(100) NOT NULL,
+MODIFY email VARCHAR(150) NOT NULL;
+
+-- 5. Aggiungi nuove colonne necessarie
+ALTER TABLE clienti
+ADD codice_fiscale CHAR(16) AFTER cognome,
+ADD partita_iva VARCHAR(11) AFTER codice_fiscale;
+
+-- 6. Imposta default appropriati
+ALTER TABLE clienti
+MODIFY data_registrazione DATETIME DEFAULT CURRENT_TIMESTAMP;
+
+-- 7. Verifica la nuova struttura
+DESCRIBE clienti;
+
+-- 8. Verifica che i dati siano intatti
+SELECT COUNT(*) FROM clienti;</pre>
+            </div>
+
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Fai sempre backup prima di modifiche strutturali</li>
+                <li>Verifica i dati prima di restringere colonne</li>
+                <li>Aggiorna i valori NULL prima di aggiungere NOT NULL</li>
+                <li>Testa le modifiche in ambiente di sviluppo</li>
+                <li>Documenta tutte le modifiche alla struttura</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-7-3.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-8/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

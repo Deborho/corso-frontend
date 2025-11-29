@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 7.1 - ALTER TABLE - Aggiunta colonne</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 7.1 - ALTER TABLE - Aggiunta colonne</h1>
+            <p>Aggiungere nuove colonne alle tabelle</p>
+        </div>
+
+        <h2>1. ALTER TABLE ADD</h2>
+        
+        <div class="teoria">
+            <p>Il comando <code>ALTER TABLE</code> con la clausola <code>ADD</code> permette di aggiungere nuove colonne a una tabella esistente.</p>
+        </div>
+
+        <h3>1.1 Sintassi Base</h3>
+
+        <div class="codice">
+<pre>ALTER TABLE nome_tabella
+ADD nome_colonna tipo_dato;</pre>
+        </div>
+
+        <h3>1.2 Esempio Semplice</h3>
+
+        <div class="codice">
+<pre>-- Aggiungi una colonna "indirizzo" alla tabella clienti
+ALTER TABLE clienti
+ADD indirizzo VARCHAR(200);</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0</pre>
+        </div>
+
+        <h3>1.3 Aggiunta con Vincoli</h3>
+
+        <div class="codice">
+<pre>-- Aggiungi colonna con valore default
+ALTER TABLE clienti
+ADD data_nascita DATE DEFAULT NULL;
+
+-- Aggiungi colonna NOT NULL con default
+ALTER TABLE prodotti
+ADD disponibile BOOLEAN NOT NULL DEFAULT TRUE;
+
+-- Aggiungi colonna UNIQUE
+ALTER TABLE clienti
+ADD codice_fiscale VARCHAR(16) UNIQUE;</pre>
+        </div>
+
+        <h2>2. Aggiungere Multiple Colonne</h2>
+
+        <div class="codice">
+<pre>-- Aggiungi più colonne contemporaneamente
+ALTER TABLE clienti
+ADD citta VARCHAR(100),
+ADD cap VARCHAR(5),
+ADD provincia VARCHAR(2);</pre>
+        </div>
+
+        <h2>3. Verificare le Modifiche</h2>
+
+        <div class="codice">
+<pre>-- Visualizza la nuova struttura della tabella
+DESCRIBE clienti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+----------------+--------------+------+-----+---------+----------------+
+| Field          | Type         | Null | Key | Default | Extra          |
++----------------+--------------+------+-----+---------+----------------+
+| id             | int          | NO   | PRI | NULL    | auto_increment |
+| nome           | varchar(50)  | NO   |     | NULL    |                |
+| cognome        | varchar(50)  | NO   |     | NULL    |                |
+| email          | varchar(100) | NO   | UNI | NULL    |                |
+| telefono       | varchar(20)  | YES  |     | NULL    |                |
+| indirizzo      | varchar(200) | YES  |     | NULL    |                |
+| citta          | varchar(100) | YES  |     | NULL    |                |
+| cap            | varchar(5)   | YES  |     | NULL    |                |
+| provincia      | varchar(2)   | YES  |     | NULL    |                |
++----------------+--------------+------+-----+---------+----------------+</pre>
+        </div>
+
+        <h2>4. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Espandere la tabella prodotti</h4>
+
+            <div class="codice">
+<pre>-- Vediamo la struttura attuale
+DESCRIBE prodotti;
+
+-- Aggiungiamo nuove colonne utili
+ALTER TABLE prodotti
+ADD codice_prodotto VARCHAR(20) UNIQUE,
+ADD peso DECIMAL(10,2),
+ADD dimensioni VARCHAR(50),
+ADD data_scadenza DATE,
+ADD fornitore VARCHAR(100);
+
+-- Verifichiamo
+DESCRIBE prodotti;
+
+-- Aggiorniamo i dati esistenti
+UPDATE prodotti
+SET codice_prodotto = CONCAT('PRD-', id),
+    fornitore = 'Fornitore Default'
+WHERE codice_prodotto IS NULL;</pre>
+            </div>
+
+            <p><strong>Note:</strong></p>
+            <ul>
+                <li>Le nuove colonne vengono aggiunte alla fine della tabella per default</li>
+                <li>I record esistenti avranno NULL nelle nuove colonne (o il valore DEFAULT)</li>
+                <li>Puoi aggiungere vincoli come NOT NULL solo se hai un DEFAULT o se la tabella è vuota</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-7-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 1.1 - Cos'è SQL e MySQL</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 1.1 - Cos'è SQL e MySQL</h1>
+            <p>Fondamenti del linguaggio SQL</p>
+        </div>
+
+        <h2>1. Introduzione a SQL</h2>
+        
+        <div class="teoria">
+            <p>SQL (Structured Query Language) è un linguaggio di programmazione standardizzato utilizzato per gestire e manipolare database relazionali. È stato sviluppato negli anni '70 da IBM e oggi è lo standard per la gestione dei database.</p>
+        </div>
+
+        <h3>1.1 Caratteristiche di SQL</h3>
+        
+        <p>SQL permette di:</p>
+        
+        <ul>
+            <li><strong>Creare</strong> database e tabelle</li>
+            <li><strong>Inserire</strong> nuovi dati</li>
+            <li><strong>Leggere</strong> e interrogare i dati esistenti</li>
+            <li><strong>Aggiornare</strong> dati esistenti</li>
+            <li><strong>Eliminare</strong> dati</li>
+            <li><strong>Gestire</strong> permessi e accessi</li>
+        </ul>
+
+        <h3>1.2 Tipi di Comandi SQL</h3>
+
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Descrizione</th>
+                <th>Comandi</th>
+            </tr>
+            <tr>
+                <td><strong>DDL</strong> (Data Definition Language)</td>
+                <td>Definisce la struttura del database</td>
+                <td>CREATE, ALTER, DROP, TRUNCATE</td>
+            </tr>
+            <tr>
+                <td><strong>DML</strong> (Data Manipulation Language)</td>
+                <td>Manipola i dati</td>
+                <td>SELECT, INSERT, UPDATE, DELETE</td>
+            </tr>
+            <tr>
+                <td><strong>DCL</strong> (Data Control Language)</td>
+                <td>Gestisce i permessi</td>
+                <td>GRANT, REVOKE</td>
+            </tr>
+            <tr>
+                <td><strong>TCL</strong> (Transaction Control Language)</td>
+                <td>Gestisce le transazioni</td>
+                <td>COMMIT, ROLLBACK, SAVEPOINT</td>
+            </tr>
+        </table>
+
+        <h2>2. MySQL</h2>
+
+        <div class="teoria">
+            <p>MySQL è un sistema di gestione di database relazionali (RDBMS) open source. È uno dei database più utilizzati al mondo, noto per la sua velocità, affidabilità e facilità d'uso.</p>
+        </div>
+
+        <h3>2.1 Perché MySQL?</h3>
+
+        <ul>
+            <li><strong>Open Source:</strong> Gratuito e con una grande community</li>
+            <li><strong>Prestazioni:</strong> Veloce e ottimizzato per applicazioni web</li>
+            <li><strong>Scalabilità:</strong> Gestisce grandi quantità di dati</li>
+            <li><strong>Compatibilità:</strong> Funziona su molti sistemi operativi</li>
+            <li><strong>Sicurezza:</strong> Robusto sistema di permessi e crittografia</li>
+        </ul>
+
+        <h2>3. Installazione di MySQL</h2>
+
+        <h3>3.1 Windows</h3>
+
+        <p>Scarica MySQL Installer da <a href="https://dev.mysql.com/downloads/installer/" target="_blank">dev.mysql.com</a> e segui la procedura guidata.</p>
+
+        <h3>3.2 macOS</h3>
+
+        <div class="codice">
+<pre># Usando Homebrew
+brew install mysql
+
+# Avvia il servizio
+brew services start mysql</pre>
+        </div>
+
+        <h3>3.3 Linux (Ubuntu/Debian)</h3>
+
+        <div class="codice">
+<pre># Installazione
+sudo apt update
+sudo apt install mysql-server
+
+# Avvia il servizio
+sudo systemctl start mysql</pre>
+        </div>
+
+        <h2>4. Connessione a MySQL</h2>
+
+        <div class="teoria">
+            <p>Per connettersi a MySQL si può usare il terminale o un client grafico come MySQL Workbench.</p>
+        </div>
+
+        <h3>4.1 Connessione da Terminale</h3>
+
+        <div class="codice">
+<pre># Connessione come utente root
+mysql -u root -p
+
+# Ti verrà chiesta la password</pre>
+        </div>
+
+        <h3>4.2 Primi Comandi</h3>
+
+        <p>Una volta connessi, possiamo eseguire i primi comandi:</p>
+
+        <div class="codice">
+<pre>-- Mostra tutti i database
+SHOW DATABASES;
+
+-- Mostra la versione di MySQL
+SELECT VERSION();
+
+-- Mostra l'utente corrente
+SELECT USER();
+
+-- Uscire da MySQL
+EXIT;</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Prima sessione MySQL</h4>
+            <p>Ecco un esempio completo di una prima sessione MySQL:</p>
+
+            <div class="codice">
+<pre>-- Connessione (da terminale: mysql -u root -p)
+
+-- Mostra i database esistenti
+SHOW DATABASES;
+
+-- Risultato:
+-- +--------------------+
+-- | Database           |
+-- +--------------------+
+-- | information_schema |
+-- | mysql              |
+-- | performance_schema |
+-- | sys                |
+-- +--------------------+
+
+-- Mostra la versione
+SELECT VERSION();
+
+-- Risultato:
+-- +-----------+
+-- | VERSION() |
+-- +-----------+
+-- | 8.0.35    |
+-- +-----------+
+
+-- Esci
+EXIT;</pre>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-2/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

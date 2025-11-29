@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 11.2 - GROUP BY e HAVING</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 11.2 - GROUP BY e HAVING</h1>
+            <p>Raggruppare dati per analisi aggregate</p>
+        </div>
+
+        <h2>1. GROUP BY</h2>
+        
+        <div class="teoria">
+            <p>La clausola <code>GROUP BY</code> raggruppa le righe che hanno lo stesso valore in una o più colonne. È fondamentale per usare funzioni aggregate su sottoinsiemi di dati.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonna, funzione_aggregata(colonna)
+FROM tabella
+GROUP BY colonna;</pre>
+        </div>
+
+        <h2>2. Esempi Base</h2>
+
+        <h3>2.1 Conteggio per Gruppo</h3>
+
+        <div class="codice">
+<pre>-- Conta prodotti per categoria
+SELECT categoria, COUNT(*) AS 'Numero Prodotti'
+FROM prodotti
+GROUP BY categoria;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+-------------+-----------------+
+| categoria   | Numero Prodotti |
++-------------+-----------------+
+| Accessori   |               5 |
+| Computer    |               3 |
+| Smartphone  |               8 |
+| Tablet      |               4 |
++-------------+-----------------+</pre>
+        </div>
+
+        <h3>2.2 Somma per Gruppo</h3>
+
+        <div class="codice">
+<pre>-- Totale vendite per cliente
+SELECT cliente_id, SUM(totale) AS 'Totale Speso'
+FROM ordini
+GROUP BY cliente_id;
+
+-- Valore stock per categoria
+SELECT categoria, SUM(prezzo * quantita) AS 'Valore Stock'
+FROM prodotti
+GROUP BY categoria;</pre>
+        </div>
+
+        <h3>2.3 Media per Gruppo</h3>
+
+        <div class="codice">
+<pre>-- Prezzo medio per categoria
+SELECT categoria, ROUND(AVG(prezzo), 2) AS 'Prezzo Medio'
+FROM prodotti
+GROUP BY categoria;
+
+-- Valore medio ordine per stato
+SELECT stato, ROUND(AVG(totale), 2) AS 'Media Ordine'
+FROM ordini
+GROUP BY stato;</pre>
+        </div>
+
+        <h2>3. GROUP BY con Multiple Colonne</h2>
+
+        <div class="codice">
+<pre>-- Vendite per cliente e mese
+SELECT 
+    cliente_id,
+    YEAR(data_ordine) AS anno,
+    MONTH(data_ordine) AS mese,
+    COUNT(*) AS ordini,
+    SUM(totale) AS totale
+FROM ordini
+GROUP BY cliente_id, YEAR(data_ordine), MONTH(data_ordine);
+
+-- Prodotti per categoria e fascia di prezzo
+SELECT 
+    categoria,
+    CASE 
+        WHEN prezzo < 100 THEN 'Economico'
+        WHEN prezzo < 500 THEN 'Medio'
+        ELSE 'Premium'
+    END AS fascia,
+    COUNT(*) AS prodotti
+FROM prodotti
+GROUP BY categoria, 
+    CASE 
+        WHEN prezzo < 100 THEN 'Economico'
+        WHEN prezzo < 500 THEN 'Medio'
+        ELSE 'Premium'
+    END;</pre>
+        </div>
+
+        <h2>4. HAVING - Filtrare i Gruppi</h2>
+
+        <div class="teoria">
+            <p><code>HAVING</code> filtra i gruppi DOPO che GROUP BY ha creato i raggruppamenti. È come WHERE, ma per i risultati aggregati.</p>
+        </div>
+
+        <h3>4.1 Differenza tra WHERE e HAVING</h3>
+
+        <table>
+            <tr>
+                <th>WHERE</th>
+                <th>HAVING</th>
+            </tr>
+            <tr>
+                <td>Filtra PRIMA del raggruppamento</td>
+                <td>Filtra DOPO il raggruppamento</td>
+            </tr>
+            <tr>
+                <td>Non può usare funzioni aggregate</td>
+                <td>Può usare funzioni aggregate</td>
+            </tr>
+            <tr>
+                <td>Filtra righe individuali</td>
+                <td>Filtra gruppi</td>
+            </tr>
+        </table>
+
+        <h3>4.2 Esempi HAVING</h3>
+
+        <div class="codice">
+<pre>-- Categorie con più di 5 prodotti
+SELECT categoria, COUNT(*) AS num_prodotti
+FROM prodotti
+GROUP BY categoria
+HAVING COUNT(*) > 5;
+
+-- Clienti che hanno speso più di 1000€
+SELECT cliente_id, SUM(totale) AS totale_speso
+FROM ordini
+GROUP BY cliente_id
+HAVING SUM(totale) > 1000;
+
+-- Categorie con prezzo medio > 200
+SELECT categoria, ROUND(AVG(prezzo), 2) AS prezzo_medio
+FROM prodotti
+GROUP BY categoria
+HAVING AVG(prezzo) > 200;</pre>
+        </div>
+
+        <h2>5. WHERE + GROUP BY + HAVING</h2>
+
+        <div class="codice">
+<pre>-- Clienti VIP del 2024: hanno speso > 500€ in ordini completati
+SELECT 
+    cliente_id,
+    COUNT(*) AS num_ordini,
+    SUM(totale) AS totale_speso
+FROM ordini
+WHERE stato = 'completato'                    -- Filtra prima
+  AND YEAR(data_ordine) = 2024
+GROUP BY cliente_id                            -- Raggruppa
+HAVING SUM(totale) > 500                       -- Filtra dopo
+ORDER BY totale_speso DESC;</pre>
+        </div>
+
+        <h2>6. Ordine di Esecuzione delle Clausole</h2>
+
+        <div class="teoria">
+            <p>MySQL esegue le clausole in questo ordine:</p>
+            <ol>
+                <li><strong>FROM</strong> - Seleziona la tabella</li>
+                <li><strong>WHERE</strong> - Filtra le righe</li>
+                <li><strong>GROUP BY</strong> - Raggruppa le righe</li>
+                <li><strong>HAVING</strong> - Filtra i gruppi</li>
+                <li><strong>SELECT</strong> - Seleziona le colonne</li>
+                <li><strong>ORDER BY</strong> - Ordina i risultati</li>
+                <li><strong>LIMIT</strong> - Limita i risultati</li>
+            </ol>
+        </div>
+
+        <h2>7. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Report di business intelligence</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Dashboard analisi vendite
+
+-- 1. Vendite per categoria
+SELECT 
+    categoria,
+    COUNT(*) AS prodotti,
+    ROUND(AVG(prezzo), 2) AS prezzo_medio,
+    SUM(quantita) AS stock_totale
+FROM prodotti
+GROUP BY categoria
+ORDER BY stock_totale DESC;
+
+-- 2. Top 5 clienti per fatturato
+SELECT 
+    c.nome,
+    c.cognome,
+    COUNT(o.id) AS num_ordini,
+    SUM(o.totale) AS fatturato
+FROM clienti c
+JOIN ordini o ON c.id = o.cliente_id
+WHERE o.stato = 'completato'
+GROUP BY c.id, c.nome, c.cognome
+HAVING SUM(o.totale) > 100
+ORDER BY fatturato DESC
+LIMIT 5;
+
+-- 3. Vendite mensili dell'anno corrente
+SELECT 
+    MONTH(data_ordine) AS mese,
+    COUNT(*) AS ordini,
+    SUM(totale) AS fatturato,
+    ROUND(AVG(totale), 2) AS scontrino_medio
+FROM ordini
+WHERE YEAR(data_ordine) = YEAR(CURDATE())
+  AND stato = 'completato'
+GROUP BY MONTH(data_ordine)
+ORDER BY mese;
+
+-- 4. Categorie sottoperformanti (pochi prodotti, basso stock)
+SELECT 
+    categoria,
+    COUNT(*) AS num_prodotti,
+    SUM(quantita) AS stock
+FROM prodotti
+GROUP BY categoria
+HAVING COUNT(*) < 5 OR SUM(quantita) < 50
+ORDER BY stock;
+
+-- 5. Report completo per management
+SELECT 
+    'Prodotti' AS metrica,
+    COUNT(*) AS valore
+FROM prodotti
+UNION ALL
+SELECT 'Clienti', COUNT(*) FROM clienti
+UNION ALL
+SELECT 'Ordini Totali', COUNT(*) FROM ordini
+UNION ALL
+SELECT 'Ordini Completati', COUNT(*) FROM ordini WHERE stato = 'completato'
+UNION ALL
+SELECT 'Fatturato Totale', SUM(totale) FROM ordini WHERE stato = 'completato';</pre>
+            </div>
+
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Ogni colonna non aggregata nel SELECT deve essere nel GROUP BY</li>
+                <li>Usa WHERE per filtrare prima del raggruppamento (più efficiente)</li>
+                <li>Usa HAVING solo quando devi filtrare su valori aggregati</li>
+                <li>Combina con ORDER BY e LIMIT per report utili</li>
+            </ul>
+        </div>
+
+        <div class="teoria">
+            <h3>🎉 Congratulazioni!</h3>
+            <p>Hai completato il corso di MySQL! Ora conosci le basi per lavorare con database relazionali, creare query complesse e produrre reportistica.</p>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-11-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/index.html" class="btn-next">Tutti i Corsi</a>
+        </div>
+
+    </div>
+</body>
+</html>

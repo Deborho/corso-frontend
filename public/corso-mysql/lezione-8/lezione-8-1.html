@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 8.1 - WHERE e operatori di confronto</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 8.1 - WHERE e operatori di confronto</h1>
+            <p>Filtrare i dati con precisione</p>
+        </div>
+
+        <h2>1. Operatori di Confronto</h2>
+        
+        <div class="teoria">
+            <p>Gli operatori di confronto vengono utilizzati nella clausola <code>WHERE</code> per filtrare le righe in base a condizioni specifiche.</p>
+        </div>
+
+        <h3>1.1 Tabella degli Operatori</h3>
+
+        <table>
+            <tr>
+                <th>Operatore</th>
+                <th>Descrizione</th>
+                <th>Esempio</th>
+            </tr>
+            <tr>
+                <td><code>=</code></td>
+                <td>Uguale a</td>
+                <td>WHERE prezzo = 100</td>
+            </tr>
+            <tr>
+                <td><code>!= o <></code></td>
+                <td>Diverso da</td>
+                <td>WHERE stato != 'annullato'</td>
+            </tr>
+            <tr>
+                <td><code>></code></td>
+                <td>Maggiore di</td>
+                <td>WHERE prezzo > 50</td>
+            </tr>
+            <tr>
+                <td><code><</code></td>
+                <td>Minore di</td>
+                <td>WHERE quantita < 10</td>
+            </tr>
+            <tr>
+                <td><code>>=</code></td>
+                <td>Maggiore o uguale</td>
+                <td>WHERE prezzo >= 100</td>
+            </tr>
+            <tr>
+                <td><code><=</code></td>
+                <td>Minore o uguale</td>
+                <td>WHERE quantita <= 5</td>
+            </tr>
+        </table>
+
+        <h2>2. Esempi Pratici</h2>
+
+        <h3>2.1 Confronto con Uguaglianza</h3>
+
+        <div class="codice">
+<pre>-- Trova prodotti con prezzo esatto
+SELECT * FROM prodotti WHERE prezzo = 299.99;
+
+-- Trova clienti con nome specifico
+SELECT * FROM clienti WHERE nome = 'Mario';
+
+-- Trova ordini di un cliente specifico
+SELECT * FROM ordini WHERE cliente_id = 1;</pre>
+        </div>
+
+        <h3>2.2 Confronto con Disuguaglianza</h3>
+
+        <div class="codice">
+<pre>-- Prodotti che NON sono nella categoria Accessori
+SELECT * FROM prodotti WHERE categoria != 'Accessori';
+
+-- Ordini non completati
+SELECT * FROM ordini WHERE stato <> 'completato';</pre>
+        </div>
+
+        <h3>2.3 Confronti Numerici</h3>
+
+        <div class="codice">
+<pre>-- Prodotti costosi (prezzo > 500)
+SELECT nome, prezzo FROM prodotti WHERE prezzo > 500;
+
+-- Prodotti economici (prezzo <= 50)
+SELECT nome, prezzo FROM prodotti WHERE prezzo <= 50;
+
+-- Stock basso (quantità < 10)
+SELECT nome, quantita FROM prodotti WHERE quantita < 10;
+
+-- Stock sufficiente (quantità >= 50)
+SELECT nome, quantita FROM prodotti WHERE quantita >= 50;</pre>
+        </div>
+
+        <h3>2.4 Confronti con Date</h3>
+
+        <div class="codice">
+<pre>-- Ordini dopo una certa data
+SELECT * FROM ordini WHERE data_ordine > '2024-01-01';
+
+-- Ordini del 2024
+SELECT * FROM ordini 
+WHERE data_ordine >= '2024-01-01' 
+AND data_ordine < '2025-01-01';
+
+-- Clienti registrati negli ultimi 30 giorni
+SELECT * FROM clienti 
+WHERE data_registrazione >= DATE_SUB(CURDATE(), INTERVAL 30 DAY);</pre>
+        </div>
+
+        <h2>3. IS NULL e IS NOT NULL</h2>
+
+        <div class="teoria">
+            <p>Per verificare se un valore è NULL, devi usare <code>IS NULL</code> o <code>IS NOT NULL</code>. L'operatore = non funziona con NULL.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- SBAGLIATO: non funziona!
+SELECT * FROM clienti WHERE telefono = NULL;
+
+-- CORRETTO: usa IS NULL
+SELECT * FROM clienti WHERE telefono IS NULL;
+
+-- Trova clienti con telefono specificato
+SELECT * FROM clienti WHERE telefono IS NOT NULL;</pre>
+        </div>
+
+        <h2>4. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Query di reportistica con operatori</h4>
+
+            <div class="codice">
+<pre>-- 1. Prodotti con prezzo tra 100 e 500
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE prezzo >= 100 AND prezzo <= 500;
+
+-- 2. Ordini di oggi
+SELECT * FROM ordini 
+WHERE DATE(data_ordine) = CURDATE();
+
+-- 3. Clienti senza telefono
+SELECT nome, cognome, email 
+FROM clienti 
+WHERE telefono IS NULL;
+
+-- 4. Prodotti disponibili (stock > 0)
+SELECT nome, quantita 
+FROM prodotti 
+WHERE quantita > 0;
+
+-- 5. Ordini non ancora processati
+SELECT * FROM ordini 
+WHERE stato != 'completato' AND stato != 'annullato';
+
+-- 6. Prodotti con descrizione mancante
+SELECT id, nome FROM prodotti 
+WHERE descrizione IS NULL OR descrizione = '';</pre>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-8-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

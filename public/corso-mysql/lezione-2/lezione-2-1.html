@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 2.1 - CREATE DATABASE e USE</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 2.1 - CREATE DATABASE e USE</h1>
+            <p>Creazione e selezione di database</p>
+        </div>
+
+        <h2>1. CREATE DATABASE</h2>
+        
+        <div class="teoria">
+            <p>Il comando <code>CREATE DATABASE</code> viene utilizzato per creare un nuovo database in MySQL. Un database è un contenitore che organizza le tabelle e i dati correlati.</p>
+        </div>
+
+        <h3>1.1 Sintassi Base</h3>
+
+        <div class="codice">
+<pre>CREATE DATABASE nome_database;</pre>
+        </div>
+
+        <h3>1.2 Esempio</h3>
+
+        <div class="codice">
+<pre>-- Crea un nuovo database chiamato "negozio"
+CREATE DATABASE negozio;
+
+-- Verifica che il database sia stato creato
+SHOW DATABASES;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>Query OK, 1 row affected (0.01 sec)</pre>
+        </div>
+
+        <h3>1.3 IF NOT EXISTS</h3>
+
+        <div class="teoria">
+            <p>L'opzione <code>IF NOT EXISTS</code> previene errori se il database esiste già.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Crea il database solo se non esiste già
+CREATE DATABASE IF NOT EXISTS negozio;</pre>
+        </div>
+
+        <h3>1.4 Specificare il Character Set</h3>
+
+        <p>È buona pratica specificare il character set (codifica dei caratteri) per supportare caratteri speciali:</p>
+
+        <div class="codice">
+<pre>-- Crea database con supporto per caratteri italiani e emoji
+CREATE DATABASE negozio
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;</pre>
+        </div>
+
+        <h2>2. SHOW DATABASES</h2>
+
+        <div class="teoria">
+            <p>Il comando <code>SHOW DATABASES</code> elenca tutti i database presenti nel server MySQL.</p>
+        </div>
+
+        <div class="codice">
+<pre>SHOW DATABASES;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| negozio            |
+| performance_schema |
+| sys                |
++--------------------+</pre>
+        </div>
+
+        <h2>3. USE</h2>
+
+        <div class="teoria">
+            <p>Il comando <code>USE</code> seleziona un database come database attivo. Tutte le operazioni successive verranno eseguite su questo database.</p>
+        </div>
+
+        <h3>3.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>USE nome_database;</pre>
+        </div>
+
+        <h3>3.2 Esempio</h3>
+
+        <div class="codice">
+<pre>-- Seleziona il database "negozio"
+USE negozio;
+
+-- Verifica quale database è selezionato
+SELECT DATABASE();</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+------------+
+| DATABASE() |
++------------+
+| negozio    |
++------------+</pre>
+        </div>
+
+        <h2>4. DROP DATABASE</h2>
+
+        <div class="teoria">
+            <p>Il comando <code>DROP DATABASE</code> elimina un database e tutti i suoi contenuti. <strong>Attenzione:</strong> questa operazione è irreversibile!</p>
+        </div>
+
+        <h3>4.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>DROP DATABASE nome_database;</pre>
+        </div>
+
+        <h3>4.2 IF EXISTS</h3>
+
+        <p>L'opzione <code>IF EXISTS</code> previene errori se il database non esiste:</p>
+
+        <div class="codice">
+<pre>-- Elimina il database solo se esiste
+DROP DATABASE IF EXISTS negozio_test;</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Gestione completa di un database</h4>
+            <p>Creiamo e gestiamo un database per un negozio online:</p>
+
+            <div class="codice">
+<pre>-- 1. Mostra i database esistenti
+SHOW DATABASES;
+
+-- 2. Crea un nuovo database
+CREATE DATABASE IF NOT EXISTS ecommerce
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+-- 3. Verifica la creazione
+SHOW DATABASES;
+
+-- 4. Seleziona il database
+USE ecommerce;
+
+-- 5. Verifica la selezione
+SELECT DATABASE();
+
+-- Risultato: ecommerce
+
+-- 6. (Opzionale) Elimina il database
+-- DROP DATABASE IF EXISTS ecommerce;</pre>
+            </div>
+
+            <p><strong>Note importanti:</strong></p>
+            <ul>
+                <li>I nomi dei database sono case-sensitive su Linux, ma non su Windows</li>
+                <li>Evita spazi e caratteri speciali nei nomi dei database</li>
+                <li>Usa underscore (_) per separare le parole</li>
+                <li>Sempre eseguire backup prima di DROP DATABASE</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-3/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

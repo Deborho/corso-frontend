@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 9.2 - BETWEEN e IN</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 9.2 - BETWEEN e IN</h1>
+            <p>Selezionare range e liste di valori</p>
+        </div>
+
+        <h2>1. Operatore BETWEEN</h2>
+        
+        <div class="teoria">
+            <p>L'operatore <code>BETWEEN</code> seleziona valori all'interno di un range (estremi inclusi). È equivalente a usare >= e <= con AND.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella
+WHERE colonna BETWEEN valore1 AND valore2;</pre>
+        </div>
+
+        <h3>1.2 Esempi con Numeri</h3>
+
+        <div class="codice">
+<pre>-- Prodotti con prezzo tra 50 e 200 (inclusi)
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE prezzo BETWEEN 50 AND 200;
+
+-- Equivalente a:
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE prezzo >= 50 AND prezzo <= 200;</pre>
+        </div>
+
+        <h3>1.3 Esempi con Date</h3>
+
+        <div class="codice">
+<pre>-- Ordini del primo trimestre 2024
+SELECT * FROM ordini 
+WHERE data_ordine BETWEEN '2024-01-01' AND '2024-03-31';
+
+-- Ordini dell'ultima settimana
+SELECT * FROM ordini 
+WHERE data_ordine BETWEEN DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND CURDATE();</pre>
+        </div>
+
+        <h3>1.4 NOT BETWEEN</h3>
+
+        <div class="codice">
+<pre>-- Prodotti con prezzo FUORI dal range 50-200
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE prezzo NOT BETWEEN 50 AND 200;</pre>
+        </div>
+
+        <h2>2. Operatore IN</h2>
+
+        <div class="teoria">
+            <p>L'operatore <code>IN</code> permette di specificare una lista di valori possibili. È più leggibile di multiple condizioni OR.</p>
+        </div>
+
+        <h3>2.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella
+WHERE colonna IN (valore1, valore2, valore3, ...);</pre>
+        </div>
+
+        <h3>2.2 Esempi</h3>
+
+        <div class="codice">
+<pre>-- Prodotti di categorie specifiche
+SELECT nome, categoria 
+FROM prodotti 
+WHERE categoria IN ('Smartphone', 'Tablet', 'Computer');
+
+-- Equivalente (più lungo) con OR:
+SELECT nome, categoria 
+FROM prodotti 
+WHERE categoria = 'Smartphone' 
+   OR categoria = 'Tablet' 
+   OR categoria = 'Computer';
+
+-- Clienti di città specifiche
+SELECT * FROM clienti 
+WHERE citta IN ('Milano', 'Roma', 'Napoli', 'Torino');
+
+-- Ordini con stati specifici
+SELECT * FROM ordini 
+WHERE stato IN ('in elaborazione', 'in spedizione');</pre>
+        </div>
+
+        <h3>2.3 NOT IN</h3>
+
+        <div class="codice">
+<pre>-- Prodotti NON in queste categorie
+SELECT nome, categoria 
+FROM prodotti 
+WHERE categoria NOT IN ('Obsoleto', 'Fuori catalogo');
+
+-- Clienti NON di queste città
+SELECT * FROM clienti 
+WHERE citta NOT IN ('Milano', 'Roma');</pre>
+        </div>
+
+        <h3>2.4 IN con Subquery</h3>
+
+        <div class="teoria">
+            <p>IN può essere utilizzato con una subquery per valori dinamici.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Clienti che hanno fatto ordini
+SELECT * FROM clienti 
+WHERE id IN (SELECT DISTINCT cliente_id FROM ordini);
+
+-- Prodotti mai ordinati
+SELECT * FROM prodotti 
+WHERE id NOT IN (SELECT DISTINCT prodotto_id FROM ordine_dettagli);</pre>
+        </div>
+
+        <h2>3. Confronto BETWEEN vs >= AND <=</h2>
+
+        <table>
+            <tr>
+                <th>Aspetto</th>
+                <th>BETWEEN</th>
+                <th>>= AND <=</th>
+            </tr>
+            <tr>
+                <td>Leggibilità</td>
+                <td>Più leggibile</td>
+                <td>Più esplicito</td>
+            </tr>
+            <tr>
+                <td>Estremi</td>
+                <td>Sempre inclusi</td>
+                <td>Personalizzabile</td>
+            </tr>
+            <tr>
+                <td>Performance</td>
+                <td>Equivalente</td>
+                <td>Equivalente</td>
+            </tr>
+        </table>
+
+        <h2>4. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Report con BETWEEN e IN</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Analisi vendite e-commerce
+
+-- 1. Prodotti nella fascia di prezzo media
+SELECT nome, prezzo, categoria 
+FROM prodotti 
+WHERE prezzo BETWEEN 100 AND 500
+ORDER BY prezzo;
+
+-- 2. Ordini del mese corrente
+SELECT * FROM ordini 
+WHERE data_ordine BETWEEN 
+    DATE_FORMAT(CURDATE(), '%Y-%m-01') 
+    AND LAST_DAY(CURDATE());
+
+-- 3. Prodotti delle categorie più vendute
+SELECT nome, prezzo, quantita 
+FROM prodotti 
+WHERE categoria IN ('Smartphone', 'Accessori', 'Computer')
+  AND quantita > 0;
+
+-- 4. Clienti delle principali città italiane
+SELECT nome, cognome, citta, email 
+FROM clienti 
+WHERE citta IN ('Milano', 'Roma', 'Napoli', 'Torino', 'Firenze');
+
+-- 5. Combinazione: prodotti disponibili, 
+--    categorie principali, prezzo 100-1000
+SELECT nome, categoria, prezzo, quantita 
+FROM prodotti 
+WHERE categoria IN ('Smartphone', 'Tablet', 'Computer')
+  AND prezzo BETWEEN 100 AND 1000
+  AND quantita > 0
+ORDER BY categoria, prezzo;
+
+-- 6. Ordini critici: ultimi 3 giorni, non completati
+SELECT * FROM ordini 
+WHERE data_ordine BETWEEN DATE_SUB(CURDATE(), INTERVAL 3 DAY) AND CURDATE()
+  AND stato NOT IN ('completato', 'annullato');</pre>
+            </div>
+
+            <p><strong>Quando usare cosa:</strong></p>
+            <ul>
+                <li><strong>BETWEEN:</strong> Per range continui (prezzi, date, numeri)</li>
+                <li><strong>IN:</strong> Per liste discrete di valori (categorie, stati, città)</li>
+                <li><strong>AND/OR:</strong> Per condizioni complesse su colonne diverse</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-9-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-10/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>
