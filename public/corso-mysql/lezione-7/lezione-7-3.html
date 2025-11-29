@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 7.3 - ALTER TABLE - AFTER e RENAME</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 7.3 - ALTER TABLE - AFTER e RENAME</h1>
+            <p>Posizionare e rinominare colonne</p>
+        </div>
+
+        <h2>1. Posizionare le Colonne con AFTER</h2>
+        
+        <div class="teoria">
+            <p>Quando aggiungi una nuova colonna, puoi specificare la posizione usando <code>AFTER</code> o <code>FIRST</code>.</p>
+        </div>
+
+        <h3>1.1 AFTER - Dopo una Colonna Specifica</h3>
+
+        <div class="codice">
+<pre>-- Aggiungi "secondo_nome" dopo "nome"
+ALTER TABLE clienti
+ADD secondo_nome VARCHAR(50) AFTER nome;</pre>
+        </div>
+
+        <h3>1.2 FIRST - Come Prima Colonna</h3>
+
+        <div class="codice">
+<pre>-- Aggiungi "codice_cliente" come prima colonna
+ALTER TABLE clienti
+ADD codice_cliente VARCHAR(20) FIRST;</pre>
+        </div>
+
+        <h3>1.3 Esempio Pratico</h3>
+
+        <div class="codice">
+<pre>-- Struttura originale: id, nome, email
+-- Vogliamo: id, codice, nome, cognome, email
+
+ALTER TABLE clienti
+ADD codice VARCHAR(10) AFTER id;
+
+ALTER TABLE clienti
+ADD cognome VARCHAR(50) AFTER nome;</pre>
+        </div>
+
+        <h2>2. RENAME COLUMN</h2>
+
+        <div class="teoria">
+            <p>Il comando <code>RENAME COLUMN</code> permette di cambiare il nome di una colonna esistente.</p>
+        </div>
+
+        <h3>2.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>ALTER TABLE nome_tabella
+RENAME COLUMN vecchio_nome TO nuovo_nome;</pre>
+        </div>
+
+        <h3>2.2 Esempio</h3>
+
+        <div class="codice">
+<pre>-- Rinomina "telefono" in "cellulare"
+ALTER TABLE clienti
+RENAME COLUMN telefono TO cellulare;
+
+-- Rinomina "prezzo" in "prezzo_vendita"
+ALTER TABLE prodotti
+RENAME COLUMN prezzo TO prezzo_vendita;</pre>
+        </div>
+
+        <h2>3. RENAME TABLE</h2>
+
+        <div class="teoria">
+            <p>Puoi anche rinominare l'intera tabella.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Rinomina la tabella
+ALTER TABLE clienti
+RENAME TO customers;
+
+-- Oppure usa RENAME TABLE
+RENAME TABLE customers TO clienti;</pre>
+        </div>
+
+        <h2>4. Riordinare Colonne Esistenti</h2>
+
+        <div class="teoria">
+            <p>Per spostare una colonna esistente in una nuova posizione, usa MODIFY con AFTER o FIRST.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Sposta "email" dopo "cognome"
+ALTER TABLE clienti
+MODIFY email VARCHAR(100) AFTER cognome;
+
+-- Sposta "id" come prima colonna
+ALTER TABLE clienti
+MODIFY id INT NOT NULL AUTO_INCREMENT FIRST;</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Riorganizzare una tabella</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Riorganizzare la tabella prodotti
+
+-- Struttura attuale
+DESCRIBE prodotti;
+
+-- 1. Rinomina colonne per chiarezza
+ALTER TABLE prodotti
+RENAME COLUMN nome TO nome_prodotto;
+
+ALTER TABLE prodotti
+RENAME COLUMN descrizione TO descrizione_prodotto;
+
+-- 2. Aggiungi nuova colonna in posizione specifica
+ALTER TABLE prodotti
+ADD sku VARCHAR(20) AFTER id;
+
+-- 3. Sposta la categoria dopo il nome
+ALTER TABLE prodotti
+MODIFY categoria VARCHAR(50) AFTER nome_prodotto;
+
+-- 4. Verifica la nuova struttura
+DESCRIBE prodotti;
+
+-- 5. Rinomina la tabella (se necessario)
+-- ALTER TABLE prodotti RENAME TO catalogo_prodotti;</pre>
+            </div>
+
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Pianifica la struttura della tabella prima di crearla</li>
+                <li>Usa nomi di colonna descrittivi e consistenti</li>
+                <li>Evita di rinominare colonne in produzione senza aggiornare il codice</li>
+                <li>Documenta le modifiche alla struttura</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-7-2.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-7-4.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

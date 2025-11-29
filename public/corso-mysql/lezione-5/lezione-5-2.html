@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.2 - DELETE</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.2 - DELETE</h1>
+            <p>Cancellazione dei dati dalle tabelle</p>
+        </div>
+
+        <h2>1. DELETE</h2>
+        
+        <div class="teoria">
+            <p>Il comando <code>DELETE</code> elimina righe da una tabella. Come per UPDATE, è fondamentale usare WHERE per evitare di eliminare tutti i dati.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>DELETE FROM nome_tabella
+WHERE condizione;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>⚠️ ATTENZIONE:</strong> Senza la clausola WHERE, TUTTE le righe della tabella verranno eliminate!</p>
+        </div>
+
+        <h2>2. Esempi di DELETE</h2>
+
+        <h3>2.1 Eliminare una Singola Riga</h3>
+
+        <div class="codice">
+<pre>-- Elimina il cliente con ID = 5
+DELETE FROM clienti
+WHERE id = 5;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>Query OK, 1 row affected (0.01 sec)</pre>
+        </div>
+
+        <h3>2.2 Eliminare Multiple Righe</h3>
+
+        <div class="codice">
+<pre>-- Elimina tutti i prodotti con quantità = 0
+DELETE FROM prodotti
+WHERE quantita = 0;
+
+-- Elimina ordini completati prima di una certa data
+DELETE FROM ordini
+WHERE stato = 'completato' AND data_ordine < '2024-01-01';</pre>
+        </div>
+
+        <h3>2.3 DELETE con IN</h3>
+
+        <div class="codice">
+<pre>-- Elimina clienti specifici
+DELETE FROM clienti
+WHERE id IN (3, 4, 5);
+
+-- Elimina prodotti di certe categorie
+DELETE FROM prodotti
+WHERE categoria IN ('Obsoleto', 'Fuori produzione');</pre>
+        </div>
+
+        <h2>3. TRUNCATE vs DELETE</h2>
+
+        <div class="teoria">
+            <p><code>TRUNCATE</code> è un comando più veloce per eliminare TUTTI i dati di una tabella, ma ha alcune differenze importanti rispetto a DELETE.</p>
+        </div>
+
+        <table>
+            <tr>
+                <th>Caratteristica</th>
+                <th>DELETE</th>
+                <th>TRUNCATE</th>
+            </tr>
+            <tr>
+                <td>Clausola WHERE</td>
+                <td>Supportata</td>
+                <td>Non supportata</td>
+            </tr>
+            <tr>
+                <td>Velocità</td>
+                <td>Più lento</td>
+                <td>Più veloce</td>
+            </tr>
+            <tr>
+                <td>AUTO_INCREMENT</td>
+                <td>Mantiene il valore</td>
+                <td>Resetta a 1</td>
+            </tr>
+            <tr>
+                <td>Rollback</td>
+                <td>Possibile</td>
+                <td>Non possibile</td>
+            </tr>
+            <tr>
+                <td>Trigger</td>
+                <td>Attiva i trigger</td>
+                <td>Non attiva i trigger</td>
+            </tr>
+        </table>
+
+        <h3>3.1 Sintassi TRUNCATE</h3>
+
+        <div class="codice">
+<pre>-- Elimina tutti i dati e resetta AUTO_INCREMENT
+TRUNCATE TABLE nome_tabella;</pre>
+        </div>
+
+        <h2>4. Safe Mode</h2>
+
+        <div class="teoria">
+            <p>MySQL ha una modalità "safe update" che previene DELETE e UPDATE senza WHERE o con WHERE che non usa una chiave.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Disabilita safe mode (usa con cautela!)
+SET SQL_SAFE_UPDATES = 0;
+
+-- Riabilita safe mode
+SET SQL_SAFE_UPDATES = 1;</pre>
+        </div>
+
+        <h2>5. Verificare Prima di Eliminare</h2>
+
+        <div class="teoria">
+            <p>Prima di eseguire un DELETE, è buona pratica verificare quali righe verranno eliminate usando SELECT con le stesse condizioni.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prima: verifica cosa verrà eliminato
+SELECT * FROM ordini
+WHERE stato = 'annullato';
+
+-- Poi: esegui la cancellazione
+DELETE FROM ordini
+WHERE stato = 'annullato';</pre>
+        </div>
+
+        <h2>6. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Pulizia dati del database</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Manutenzione database e-commerce
+
+-- 1. Verifica ordini da eliminare
+SELECT * FROM ordini
+WHERE stato = 'annullato';
+
+-- 2. Elimina ordini annullati
+DELETE FROM ordini
+WHERE stato = 'annullato';
+
+-- 3. Verifica prodotti obsoleti
+SELECT * FROM prodotti
+WHERE quantita = 0 AND data_inserimento < '2023-01-01';
+
+-- 4. Elimina prodotti vecchi non disponibili
+DELETE FROM prodotti
+WHERE quantita = 0 AND data_inserimento < '2023-01-01';
+
+-- 5. Elimina cliente specifico (dopo verifica)
+SELECT * FROM clienti WHERE id = 10;
+DELETE FROM clienti WHERE id = 10;
+
+-- 6. Per svuotare completamente una tabella di log
+TRUNCATE TABLE log_sistema;
+
+-- 7. Verifica le eliminazioni
+SELECT COUNT(*) AS 'Ordini rimasti' FROM ordini;
+SELECT COUNT(*) AS 'Prodotti rimasti' FROM prodotti;</pre>
+            </div>
+
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Usa SEMPRE WHERE per limitare il delete</li>
+                <li>Esegui SELECT con le stesse condizioni prima di DELETE</li>
+                <li>Fai backup dei dati prima di cancellazioni massive</li>
+                <li>Usa TRUNCATE solo quando vuoi svuotare completamente una tabella</li>
+                <li>Considera le foreign key constraints prima di eliminare</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-5-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-6/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

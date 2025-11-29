@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 5.1 - UPDATE</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 5.1 - UPDATE</h1>
+            <p>Aggiornamento dei dati nelle tabelle</p>
+        </div>
+
+        <h2>1. UPDATE</h2>
+        
+        <div class="teoria">
+            <p>Il comando <code>UPDATE</code> modifica i dati esistenti in una tabella. È fondamentale usare sempre la clausola WHERE per evitare di modificare tutte le righe.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>UPDATE nome_tabella
+SET colonna1 = valore1, colonna2 = valore2, ...
+WHERE condizione;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>⚠️ ATTENZIONE:</strong> Senza la clausola WHERE, TUTTE le righe della tabella verranno modificate!</p>
+        </div>
+
+        <h2>2. Esempi di UPDATE</h2>
+
+        <h3>2.1 Aggiornare una Singola Riga</h3>
+
+        <div class="codice">
+<pre>-- Aggiorna l'email del cliente con ID = 1
+UPDATE clienti
+SET email = 'mario.rossi.nuovo@email.com'
+WHERE id = 1;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0</pre>
+        </div>
+
+        <h3>2.2 Aggiornare Multiple Colonne</h3>
+
+        <div class="codice">
+<pre>-- Aggiorna email e telefono del cliente
+UPDATE clienti
+SET email = 'giulia.nuova@email.com',
+    telefono = '333-9999999'
+WHERE id = 2;</pre>
+        </div>
+
+        <h3>2.3 Aggiornare Multiple Righe</h3>
+
+        <div class="codice">
+<pre>-- Aumenta il prezzo del 10% per tutti i prodotti della categoria 'Smartphone'
+UPDATE prodotti
+SET prezzo = prezzo * 1.10
+WHERE categoria = 'Smartphone';
+
+-- Riduci la quantità di 1 per un prodotto specifico
+UPDATE prodotti
+SET quantita = quantita - 1
+WHERE id = 3;</pre>
+        </div>
+
+        <h3>2.4 UPDATE con Espressioni</h3>
+
+        <div class="codice">
+<pre>-- Applica uno sconto del 15% sui prodotti con prezzo > 1000
+UPDATE prodotti
+SET prezzo = prezzo * 0.85
+WHERE prezzo > 1000;
+
+-- Aggiungi 50 unità allo stock di tutti i prodotti
+UPDATE prodotti
+SET quantita = quantita + 50;</pre>
+        </div>
+
+        <h2>3. UPDATE Condizionale</h2>
+
+        <div class="codice">
+<pre>-- Aggiorna lo stato degli ordini vecchi
+UPDATE ordini
+SET stato = 'archiviato'
+WHERE stato = 'completato' AND data_ordine < '2024-01-01';
+
+-- Aggiorna più condizioni
+UPDATE clienti
+SET stato = 'VIP'
+WHERE id IN (1, 2, 3);</pre>
+        </div>
+
+        <h2>4. CASE in UPDATE</h2>
+
+        <div class="teoria">
+            <p>Puoi usare CASE per aggiornamenti condizionali più complessi.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Applica sconti diversi per categoria
+UPDATE prodotti
+SET prezzo = CASE 
+    WHEN categoria = 'Smartphone' THEN prezzo * 0.90
+    WHEN categoria = 'Accessori' THEN prezzo * 0.80
+    ELSE prezzo * 0.95
+END;</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Operazioni di aggiornamento tipiche</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Gestione di un e-commerce
+
+-- 1. Cliente ha cambiato email
+UPDATE clienti
+SET email = 'mario.rossi2024@gmail.com'
+WHERE id = 1;
+
+-- 2. Verifica l'aggiornamento
+SELECT * FROM clienti WHERE id = 1;
+
+-- 3. Prodotto esaurito - azzera la quantità
+UPDATE prodotti
+SET quantita = 0
+WHERE nome = 'iPhone 15';
+
+-- 4. Nuovo arrivo - incrementa stock
+UPDATE prodotti
+SET quantita = quantita + 100
+WHERE categoria = 'Accessori';
+
+-- 5. Black Friday - sconto 20% su tutti i prodotti
+UPDATE prodotti
+SET prezzo = prezzo * 0.80;
+
+-- 6. Aggiorna stato ordine
+UPDATE ordini
+SET stato = 'completato'
+WHERE id = 3;
+
+-- 7. Verifica le modifiche
+SELECT id, nome, prezzo, quantita FROM prodotti;</pre>
+            </div>
+
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Usa SEMPRE WHERE per limitare l'update</li>
+                <li>Fai un SELECT prima per verificare quali righe saranno modificate</li>
+                <li>Usa transazioni per operazioni critiche (BEGIN, COMMIT, ROLLBACK)</li>
+                <li>Testa le query in ambiente di sviluppo prima della produzione</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-5-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

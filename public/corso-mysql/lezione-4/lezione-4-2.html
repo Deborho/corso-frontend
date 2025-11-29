@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 4.2 - SELECT</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 4.2 - SELECT</h1>
+            <p>Estrazione di dati dalle tabelle</p>
+        </div>
+
+        <h2>1. SELECT</h2>
+        
+        <div class="teoria">
+            <p>Il comando <code>SELECT</code> è il più utilizzato in SQL. Permette di estrarre dati da una o più tabelle. I dati restituiti vengono chiamati "result set".</p>
+        </div>
+
+        <h3>1.1 Sintassi Base</h3>
+
+        <div class="codice">
+<pre>SELECT colonna1, colonna2, ...
+FROM nome_tabella;</pre>
+        </div>
+
+        <h3>1.2 Selezionare Tutte le Colonne</h3>
+
+        <div class="codice">
+<pre>-- Seleziona tutte le colonne e tutte le righe
+SELECT * FROM clienti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+----+--------+---------+---------------------------+-------------+
+| id | nome   | cognome | email                     | telefono    |
++----+--------+---------+---------------------------+-------------+
+|  1 | Mario  | Rossi   | mario.rossi@email.com     | 333-1111111 |
+|  2 | Giulia | Bianchi | giulia.bianchi@email.com  | 333-2222222 |
+|  3 | Luca   | Verdi   | luca.verdi@email.com      | 333-3333333 |
+|  4 | Anna   | Neri    | anna.neri@email.com       | 333-4444444 |
+|  5 | Paolo  | Gialli  | paolo.gialli@email.com    | 333-5555555 |
++----+--------+---------+---------------------------+-------------+</pre>
+        </div>
+
+        <h3>1.3 Selezionare Colonne Specifiche</h3>
+
+        <div class="codice">
+<pre>-- Seleziona solo nome e email
+SELECT nome, email FROM clienti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+--------+---------------------------+
+| nome   | email                     |
++--------+---------------------------+
+| Mario  | mario.rossi@email.com     |
+| Giulia | giulia.bianchi@email.com  |
+| Luca   | luca.verdi@email.com      |
+| Anna   | anna.neri@email.com       |
+| Paolo  | paolo.gialli@email.com    |
++--------+---------------------------+</pre>
+        </div>
+
+        <h2>2. WHERE - Filtrare i Risultati</h2>
+
+        <div class="teoria">
+            <p>La clausola <code>WHERE</code> permette di filtrare le righe basandosi su una condizione.</p>
+        </div>
+
+        <h3>2.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonna1, colonna2
+FROM nome_tabella
+WHERE condizione;</pre>
+        </div>
+
+        <h3>2.2 Esempi con WHERE</h3>
+
+        <div class="codice">
+<pre>-- Trova il cliente con ID = 1
+SELECT * FROM clienti WHERE id = 1;
+
+-- Trova clienti con nome 'Mario'
+SELECT * FROM clienti WHERE nome = 'Mario';
+
+-- Trova prodotti con prezzo maggiore di 500
+SELECT * FROM prodotti WHERE prezzo > 500;
+
+-- Trova prodotti della categoria 'Smartphone'
+SELECT nome, prezzo FROM prodotti WHERE categoria = 'Smartphone';</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato (prodotti > 500€):</strong></p>
+            <pre>+----+-------------------+-----------------------------+---------+
+| id | nome              | descrizione                 | prezzo  |
++----+-------------------+-----------------------------+---------+
+|  1 | iPhone 15         | Smartphone Apple ultima...  | 1199.00 |
+|  2 | Samsung Galaxy S24| Smartphone Samsung top...   |  999.00 |
+|  3 | MacBook Air       | Laptop Apple M2             | 1299.00 |
+|  4 | iPad Pro          | Tablet Apple 12.9 pollici   | 1099.00 |
++----+-------------------+-----------------------------+---------+</pre>
+        </div>
+
+        <h2>3. Alias con AS</h2>
+
+        <div class="teoria">
+            <p>Gli alias permettono di rinominare temporaneamente colonne o tabelle nei risultati.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Rinomina le colonne nei risultati
+SELECT nome AS 'Nome Prodotto', prezzo AS 'Prezzo €'
+FROM prodotti;
+
+-- Concatenare nome e cognome
+SELECT CONCAT(nome, ' ', cognome) AS 'Nome Completo', email
+FROM clienti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+----------------+---------------------------+
+| Nome Completo  | email                     |
++----------------+---------------------------+
+| Mario Rossi    | mario.rossi@email.com     |
+| Giulia Bianchi | giulia.bianchi@email.com  |
+| Luca Verdi     | luca.verdi@email.com      |
++----------------+---------------------------+</pre>
+        </div>
+
+        <h2>4. LIMIT</h2>
+
+        <div class="teoria">
+            <p>La clausola <code>LIMIT</code> limita il numero di righe restituite.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Restituisci solo i primi 3 record
+SELECT * FROM prodotti LIMIT 3;
+
+-- Restituisci 3 record partendo dal secondo (offset = 1)
+SELECT * FROM prodotti LIMIT 1, 3;
+-- oppure
+SELECT * FROM prodotti LIMIT 3 OFFSET 1;</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Query di reportistica</h4>
+
+            <div class="codice">
+<pre>-- 1. Tutti i prodotti
+SELECT * FROM prodotti;
+
+-- 2. Solo nome e prezzo dei prodotti
+SELECT nome, prezzo FROM prodotti;
+
+-- 3. Prodotti costosi (prezzo > 1000)
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE prezzo > 1000;
+
+-- 4. Prodotti economici con stock alto
+SELECT nome, prezzo, quantita 
+FROM prodotti 
+WHERE prezzo < 100 AND quantita > 50;
+
+-- 5. Informazioni clienti formattate
+SELECT 
+    CONCAT(nome, ' ', cognome) AS 'Cliente',
+    email AS 'Email',
+    telefono AS 'Telefono'
+FROM clienti;
+
+-- 6. Primi 3 ordini completati
+SELECT * 
+FROM ordini 
+WHERE stato = 'completato'
+LIMIT 3;
+
+-- 7. Prodotti per categoria specifica
+SELECT nome, prezzo, quantita
+FROM prodotti
+WHERE categoria = 'Accessori';</pre>
+            </div>
+
+            <p><strong>Suggerimenti:</strong></p>
+            <ul>
+                <li>Evita SELECT * in produzione, specifica le colonne necessarie</li>
+                <li>Usa LIMIT per evitare risultati troppo grandi</li>
+                <li>Usa alias per rendere i risultati più leggibili</li>
+                <li>Le stringhe nelle condizioni WHERE sono case-insensitive di default</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-4-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-5/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

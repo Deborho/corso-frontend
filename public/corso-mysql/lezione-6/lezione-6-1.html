@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 6.1 - DISTINCT</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 6.1 - DISTINCT</h1>
+            <p>Estrarre valori unici dalle tabelle</p>
+        </div>
+
+        <h2>1. DISTINCT</h2>
+        
+        <div class="teoria">
+            <p>La clausola <code>DISTINCT</code> viene utilizzata insieme a SELECT per restituire solo valori diversi (unici), eliminando i duplicati dai risultati.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT DISTINCT colonna1, colonna2, ...
+FROM nome_tabella;</pre>
+        </div>
+
+        <h2>2. Esempi di DISTINCT</h2>
+
+        <h3>2.1 DISTINCT su Singola Colonna</h3>
+
+        <div class="codice">
+<pre>-- Senza DISTINCT - mostra tutte le categorie (con duplicati)
+SELECT categoria FROM prodotti;
+
+-- Con DISTINCT - mostra solo le categorie uniche
+SELECT DISTINCT categoria FROM prodotti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Senza DISTINCT:</strong></p>
+            <pre>+-------------+
+| categoria   |
++-------------+
+| Smartphone  |
+| Smartphone  |
+| Computer    |
+| Tablet      |
+| Accessori   |
+| Accessori   |
+| Accessori   |
++-------------+</pre>
+            <p><strong>Con DISTINCT:</strong></p>
+            <pre>+-------------+
+| categoria   |
++-------------+
+| Smartphone  |
+| Computer    |
+| Tablet      |
+| Accessori   |
++-------------+</pre>
+        </div>
+
+        <h3>2.2 DISTINCT su Multiple Colonne</h3>
+
+        <div class="teoria">
+            <p>Quando usi DISTINCT su più colonne, la combinazione di tutte le colonne deve essere unica.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Combinazioni uniche di categoria e fornitore
+SELECT DISTINCT categoria, fornitore
+FROM prodotti;</pre>
+        </div>
+
+        <h3>2.3 DISTINCT con WHERE</h3>
+
+        <div class="codice">
+<pre>-- Categorie uniche per prodotti con prezzo > 500
+SELECT DISTINCT categoria
+FROM prodotti
+WHERE prezzo > 500;</pre>
+        </div>
+
+        <h2>3. Contare Valori Unici</h2>
+
+        <div class="teoria">
+            <p>Puoi combinare DISTINCT con COUNT per contare quanti valori unici esistono.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Conta quante categorie diverse ci sono
+SELECT COUNT(DISTINCT categoria) AS 'Numero Categorie'
+FROM prodotti;
+
+-- Conta quanti clienti hanno fatto ordini
+SELECT COUNT(DISTINCT cliente_id) AS 'Clienti con Ordini'
+FROM ordini;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+------------------+
+| Numero Categorie |
++------------------+
+|                4 |
++------------------+</pre>
+        </div>
+
+        <h2>4. DISTINCT vs GROUP BY</h2>
+
+        <div class="teoria">
+            <p>DISTINCT e GROUP BY possono sembrare simili, ma hanno scopi diversi:</p>
+            <ul>
+                <li><strong>DISTINCT:</strong> Elimina duplicati dal risultato</li>
+                <li><strong>GROUP BY:</strong> Raggruppa righe per calcoli aggregati</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+<pre>-- Questi due producono lo stesso risultato
+SELECT DISTINCT categoria FROM prodotti;
+SELECT categoria FROM prodotti GROUP BY categoria;
+
+-- Ma GROUP BY permette aggregazioni
+SELECT categoria, COUNT(*) AS 'Numero Prodotti'
+FROM prodotti
+GROUP BY categoria;</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Analisi dati con DISTINCT</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Analisi database e-commerce
+
+-- 1. Lista delle categorie disponibili
+SELECT DISTINCT categoria
+FROM prodotti
+ORDER BY categoria;
+
+-- 2. Città dei clienti (se presente)
+SELECT DISTINCT citta
+FROM clienti
+WHERE citta IS NOT NULL;
+
+-- 3. Combinazioni uniche stato ordine e anno
+SELECT DISTINCT stato, YEAR(data_ordine) AS anno
+FROM ordini
+ORDER BY anno, stato;
+
+-- 4. Quante categorie abbiamo?
+SELECT COUNT(DISTINCT categoria) AS 'Totale Categorie'
+FROM prodotti;
+
+-- 5. Quanti clienti hanno fatto ordini?
+SELECT COUNT(DISTINCT cliente_id) AS 'Clienti Attivi'
+FROM ordini;
+
+-- 6. Range di prezzi per categoria
+SELECT DISTINCT categoria,
+    MIN(prezzo) AS 'Prezzo Min',
+    MAX(prezzo) AS 'Prezzo Max'
+FROM prodotti
+GROUP BY categoria;
+
+-- 7. Stati ordine utilizzati
+SELECT DISTINCT stato AS 'Stati Ordine'
+FROM ordini;</pre>
+            </div>
+
+            <p><strong>Quando usare DISTINCT:</strong></p>
+            <ul>
+                <li>Per ottenere una lista di valori unici</li>
+                <li>Per eliminare duplicati indesiderati</li>
+                <li>Per contare elementi unici con COUNT(DISTINCT)</li>
+                <li>Per analisi esplorative sui dati</li>
+            </ul>
+
+            <p><strong>Note:</strong></p>
+            <ul>
+                <li>DISTINCT considera NULL come un valore</li>
+                <li>Su grandi dataset, DISTINCT può essere lento</li>
+                <li>Considera l'uso di indici per ottimizzare le performance</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-7/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

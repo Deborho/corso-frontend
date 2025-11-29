@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 9.1 - AND, OR e NOT</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 9.1 - AND, OR e NOT</h1>
+            <p>Combinare condizioni multiple</p>
+        </div>
+
+        <h2>1. Operatore AND</h2>
+        
+        <div class="teoria">
+            <p>L'operatore <code>AND</code> restituisce TRUE solo se TUTTE le condizioni sono vere.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella
+WHERE condizione1 AND condizione2;</pre>
+        </div>
+
+        <h3>1.2 Esempi</h3>
+
+        <div class="codice">
+<pre>-- Prodotti economici E disponibili
+SELECT nome, prezzo, quantita 
+FROM prodotti 
+WHERE prezzo < 100 AND quantita > 0;
+
+-- Clienti di Milano con email gmail
+SELECT * FROM clienti 
+WHERE citta = 'Milano' AND email LIKE '%gmail%';
+
+-- Ordini completati del cliente 1
+SELECT * FROM ordini 
+WHERE cliente_id = 1 AND stato = 'completato';</pre>
+        </div>
+
+        <h2>2. Operatore OR</h2>
+
+        <div class="teoria">
+            <p>L'operatore <code>OR</code> restituisce TRUE se ALMENO UNA delle condizioni è vera.</p>
+        </div>
+
+        <h3>2.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella
+WHERE condizione1 OR condizione2;</pre>
+        </div>
+
+        <h3>2.2 Esempi</h3>
+
+        <div class="codice">
+<pre>-- Prodotti Smartphone O Tablet
+SELECT nome, categoria 
+FROM prodotti 
+WHERE categoria = 'Smartphone' OR categoria = 'Tablet';
+
+-- Ordini in elaborazione O in spedizione
+SELECT * FROM ordini 
+WHERE stato = 'in elaborazione' OR stato = 'in spedizione';
+
+-- Clienti di Milano O Roma
+SELECT * FROM clienti 
+WHERE citta = 'Milano' OR citta = 'Roma';</pre>
+        </div>
+
+        <h2>3. Operatore NOT</h2>
+
+        <div class="teoria">
+            <p>L'operatore <code>NOT</code> inverte il risultato di una condizione.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prodotti NON della categoria Accessori
+SELECT * FROM prodotti 
+WHERE NOT categoria = 'Accessori';
+
+-- Equivalente a:
+SELECT * FROM prodotti 
+WHERE categoria != 'Accessori';
+
+-- Ordini NON completati
+SELECT * FROM ordini 
+WHERE NOT stato = 'completato';</pre>
+        </div>
+
+        <h2>4. Combinare AND, OR e NOT</h2>
+
+        <div class="teoria">
+            <p>Puoi combinare più operatori, ma attenzione alla precedenza: AND viene valutato prima di OR. Usa le parentesi per chiarire.</p>
+        </div>
+
+        <h3>4.1 Esempio di Precedenza</h3>
+
+        <div class="codice">
+<pre>-- ATTENZIONE: AND ha precedenza su OR
+
+-- Questa query:
+SELECT * FROM prodotti 
+WHERE categoria = 'Smartphone' OR categoria = 'Tablet' AND prezzo > 500;
+
+-- Viene interpretata come:
+SELECT * FROM prodotti 
+WHERE categoria = 'Smartphone' OR (categoria = 'Tablet' AND prezzo > 500);
+
+-- Per ottenere "smartphone o tablet" con prezzo > 500:
+SELECT * FROM prodotti 
+WHERE (categoria = 'Smartphone' OR categoria = 'Tablet') AND prezzo > 500;</pre>
+        </div>
+
+        <h3>4.2 Esempi Combinati</h3>
+
+        <div class="codice">
+<pre>-- Prodotti disponibili (quantità > 0) 
+-- che sono Smartphone costosi (> 800) o Accessori economici (< 50)
+SELECT nome, categoria, prezzo, quantita 
+FROM prodotti 
+WHERE quantita > 0 
+  AND ((categoria = 'Smartphone' AND prezzo > 800) 
+    OR (categoria = 'Accessori' AND prezzo < 50));
+
+-- Clienti che NON sono di Milano e hanno email
+SELECT * FROM clienti 
+WHERE NOT citta = 'Milano' 
+  AND email IS NOT NULL;</pre>
+        </div>
+
+        <h2>5. Tabella di Verità</h2>
+
+        <table>
+            <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>A AND B</th>
+                <th>A OR B</th>
+                <th>NOT A</th>
+            </tr>
+            <tr>
+                <td>TRUE</td>
+                <td>TRUE</td>
+                <td>TRUE</td>
+                <td>TRUE</td>
+                <td>FALSE</td>
+            </tr>
+            <tr>
+                <td>TRUE</td>
+                <td>FALSE</td>
+                <td>FALSE</td>
+                <td>TRUE</td>
+                <td>FALSE</td>
+            </tr>
+            <tr>
+                <td>FALSE</td>
+                <td>TRUE</td>
+                <td>FALSE</td>
+                <td>TRUE</td>
+                <td>TRUE</td>
+            </tr>
+            <tr>
+                <td>FALSE</td>
+                <td>FALSE</td>
+                <td>FALSE</td>
+                <td>FALSE</td>
+                <td>TRUE</td>
+            </tr>
+        </table>
+
+        <h2>6. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Query complesse con operatori logici</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Report e-commerce
+
+-- 1. Prodotti disponibili a prezzo medio
+SELECT nome, prezzo, quantita 
+FROM prodotti 
+WHERE quantita > 0 AND prezzo >= 50 AND prezzo <= 200;
+
+-- 2. Ordini urgenti da processare
+SELECT * FROM ordini 
+WHERE (stato = 'in elaborazione' OR stato = 'in attesa') 
+  AND data_ordine < DATE_SUB(CURDATE(), INTERVAL 2 DAY);
+
+-- 3. Clienti VIP (Milano/Roma con molti ordini)
+SELECT c.nome, c.cognome, c.citta 
+FROM clienti c 
+WHERE (c.citta = 'Milano' OR c.citta = 'Roma') 
+  AND c.id IN (SELECT cliente_id FROM ordini GROUP BY cliente_id HAVING COUNT(*) > 5);
+
+-- 4. Prodotti da riordinare
+SELECT nome, quantita, categoria 
+FROM prodotti 
+WHERE quantita < 10 
+  AND categoria NOT IN ('Fuori produzione', 'Obsoleto');
+
+-- 5. Ricerca prodotti multi-criterio
+SELECT * FROM prodotti 
+WHERE (nome LIKE '%wireless%' OR descrizione LIKE '%bluetooth%')
+  AND prezzo < 100 
+  AND quantita > 0;</pre>
+            </div>
+
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Usa sempre le parentesi per chiarire la logica</li>
+                <li>Testa query complesse passo per passo</li>
+                <li>Considera l'uso di IN invece di multiple OR (prossima lezione)</li>
+                <li>Verifica i risultati con query di test</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-9-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

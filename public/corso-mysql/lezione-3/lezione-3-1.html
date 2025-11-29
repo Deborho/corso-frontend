@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 3.1 - CREATE TABLE e tipi di dati</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 3.1 - CREATE TABLE e tipi di dati</h1>
+            <p>Creazione di tabelle in MySQL</p>
+        </div>
+
+        <h2>1. CREATE TABLE</h2>
+        
+        <div class="teoria">
+            <p>Il comando <code>CREATE TABLE</code> viene utilizzato per creare una nuova tabella nel database. Ogni tabella è composta da colonne, ognuna con un nome e un tipo di dato specifico.</p>
+        </div>
+
+        <h3>1.1 Sintassi Base</h3>
+
+        <div class="codice">
+<pre>CREATE TABLE nome_tabella (
+    colonna1 tipo_dato vincoli,
+    colonna2 tipo_dato vincoli,
+    ...
+);</pre>
+        </div>
+
+        <h3>1.2 Esempio Semplice</h3>
+
+        <div class="codice">
+<pre>-- Crea una tabella per i clienti
+CREATE TABLE clienti (
+    id INT,
+    nome VARCHAR(50),
+    email VARCHAR(100)
+);</pre>
+        </div>
+
+        <h2>2. Tipi di Dati</h2>
+
+        <div class="teoria">
+            <p>MySQL supporta diversi tipi di dati per memorizzare informazioni di vario genere.</p>
+        </div>
+
+        <h3>2.1 Tipi Numerici</h3>
+
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Descrizione</th>
+                <th>Range</th>
+            </tr>
+            <tr>
+                <td><code>INT</code></td>
+                <td>Numero intero</td>
+                <td>-2,147,483,648 a 2,147,483,647</td>
+            </tr>
+            <tr>
+                <td><code>BIGINT</code></td>
+                <td>Numero intero grande</td>
+                <td>-9,223,372,036,854,775,808 a 9,223,372,036,854,775,807</td>
+            </tr>
+            <tr>
+                <td><code>DECIMAL(p,s)</code></td>
+                <td>Numero decimale preciso</td>
+                <td>p = precisione totale, s = decimali</td>
+            </tr>
+            <tr>
+                <td><code>FLOAT</code></td>
+                <td>Numero decimale approssimato</td>
+                <td>Virgola mobile singola precisione</td>
+            </tr>
+        </table>
+
+        <h3>2.2 Tipi Stringa</h3>
+
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Descrizione</th>
+                <th>Lunghezza Max</th>
+            </tr>
+            <tr>
+                <td><code>VARCHAR(n)</code></td>
+                <td>Stringa a lunghezza variabile</td>
+                <td>n caratteri (max 65,535)</td>
+            </tr>
+            <tr>
+                <td><code>CHAR(n)</code></td>
+                <td>Stringa a lunghezza fissa</td>
+                <td>n caratteri (max 255)</td>
+            </tr>
+            <tr>
+                <td><code>TEXT</code></td>
+                <td>Testo lungo</td>
+                <td>65,535 caratteri</td>
+            </tr>
+            <tr>
+                <td><code>LONGTEXT</code></td>
+                <td>Testo molto lungo</td>
+                <td>4,294,967,295 caratteri</td>
+            </tr>
+        </table>
+
+        <h3>2.3 Tipi Data e Ora</h3>
+
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Formato</th>
+                <th>Esempio</th>
+            </tr>
+            <tr>
+                <td><code>DATE</code></td>
+                <td>YYYY-MM-DD</td>
+                <td>2024-01-15</td>
+            </tr>
+            <tr>
+                <td><code>TIME</code></td>
+                <td>HH:MM:SS</td>
+                <td>14:30:00</td>
+            </tr>
+            <tr>
+                <td><code>DATETIME</code></td>
+                <td>YYYY-MM-DD HH:MM:SS</td>
+                <td>2024-01-15 14:30:00</td>
+            </tr>
+            <tr>
+                <td><code>TIMESTAMP</code></td>
+                <td>YYYY-MM-DD HH:MM:SS</td>
+                <td>Aggiornamento automatico</td>
+            </tr>
+        </table>
+
+        <h2>3. Vincoli (Constraints)</h2>
+
+        <div class="teoria">
+            <p>I vincoli definiscono regole per i dati nelle colonne.</p>
+        </div>
+
+        <h3>3.1 PRIMARY KEY</h3>
+
+        <p>La chiave primaria identifica univocamente ogni riga:</p>
+
+        <div class="codice">
+<pre>CREATE TABLE clienti (
+    id INT PRIMARY KEY,
+    nome VARCHAR(50)
+);</pre>
+        </div>
+
+        <h3>3.2 AUTO_INCREMENT</h3>
+
+        <p>Genera automaticamente valori incrementali:</p>
+
+        <div class="codice">
+<pre>CREATE TABLE clienti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50)
+);</pre>
+        </div>
+
+        <h3>3.3 NOT NULL</h3>
+
+        <p>La colonna non può contenere valori NULL:</p>
+
+        <div class="codice">
+<pre>CREATE TABLE clienti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL
+);</pre>
+        </div>
+
+        <h3>3.4 DEFAULT</h3>
+
+        <p>Definisce un valore predefinito:</p>
+
+        <div class="codice">
+<pre>CREATE TABLE clienti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    stato VARCHAR(20) DEFAULT 'attivo'
+);</pre>
+        </div>
+
+        <h3>3.5 UNIQUE</h3>
+
+        <p>I valori devono essere unici:</p>
+
+        <div class="codice">
+<pre>CREATE TABLE clienti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(100) UNIQUE
+);</pre>
+        </div>
+
+        <h2>4. Visualizzare le Tabelle</h2>
+
+        <h3>4.1 SHOW TABLES</h3>
+
+        <div class="codice">
+<pre>-- Mostra tutte le tabelle nel database corrente
+SHOW TABLES;</pre>
+        </div>
+
+        <h3>4.2 DESCRIBE</h3>
+
+        <div class="codice">
+<pre>-- Mostra la struttura di una tabella
+DESCRIBE clienti;
+
+-- Oppure
+DESC clienti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| id    | int          | NO   | PRI | NULL    | auto_increment |
+| nome  | varchar(50)  | NO   |     | NULL    |                |
+| email | varchar(100) | YES  | UNI | NULL    |                |
++-------+--------------+------+-----+---------+----------------+</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Creare tabelle per un e-commerce</h4>
+
+            <div class="codice">
+<pre>-- Seleziona il database
+USE ecommerce;
+
+-- Crea la tabella prodotti
+CREATE TABLE prodotti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    descrizione TEXT,
+    prezzo DECIMAL(10, 2) NOT NULL,
+    quantita INT DEFAULT 0,
+    categoria VARCHAR(50),
+    data_inserimento DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Crea la tabella clienti
+CREATE TABLE clienti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    cognome VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefono VARCHAR(20),
+    data_registrazione DATE DEFAULT (CURRENT_DATE)
+);
+
+-- Crea la tabella ordini
+CREATE TABLE ordini (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT NOT NULL,
+    data_ordine DATETIME DEFAULT CURRENT_TIMESTAMP,
+    totale DECIMAL(10, 2),
+    stato VARCHAR(20) DEFAULT 'in elaborazione'
+);
+
+-- Verifica le tabelle create
+SHOW TABLES;
+
+-- Visualizza la struttura della tabella prodotti
+DESCRIBE prodotti;</pre>
+            </div>
+
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Usa sempre una PRIMARY KEY</li>
+                <li>Usa AUTO_INCREMENT per gli ID</li>
+                <li>Definisci NOT NULL per i campi obbligatori</li>
+                <li>Usa DECIMAL per i valori monetari (mai FLOAT)</li>
+                <li>Scegli la lunghezza appropriata per VARCHAR</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-4/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

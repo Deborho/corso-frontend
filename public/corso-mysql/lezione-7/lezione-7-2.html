@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 7.2 - ALTER TABLE - Chiave primaria</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 7.2 - ALTER TABLE - Chiave primaria</h1>
+            <p>Aggiungere chiavi primarie su tabelle esistenti</p>
+        </div>
+
+        <h2>1. ADD PRIMARY KEY</h2>
+        
+        <div class="teoria">
+            <p>Puoi aggiungere una chiave primaria a una tabella esistente usando <code>ALTER TABLE</code>. La colonna deve contenere valori unici e non NULL.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>ALTER TABLE nome_tabella
+ADD PRIMARY KEY (nome_colonna);</pre>
+        </div>
+
+        <h3>1.2 Esempio</h3>
+
+        <div class="codice">
+<pre>-- Crea una tabella senza chiave primaria
+CREATE TABLE log_eventi (
+    evento_id INT NOT NULL,
+    descrizione VARCHAR(200),
+    data_evento DATETIME
+);
+
+-- Aggiungi la chiave primaria
+ALTER TABLE log_eventi
+ADD PRIMARY KEY (evento_id);</pre>
+        </div>
+
+        <h2>2. Chiave Primaria Composta</h2>
+
+        <div class="teoria">
+            <p>Una chiave primaria può essere composta da più colonne.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Crea tabella ordine_dettagli
+CREATE TABLE ordine_dettagli (
+    ordine_id INT NOT NULL,
+    prodotto_id INT NOT NULL,
+    quantita INT,
+    prezzo_unitario DECIMAL(10,2)
+);
+
+-- Aggiungi chiave primaria composta
+ALTER TABLE ordine_dettagli
+ADD PRIMARY KEY (ordine_id, prodotto_id);</pre>
+        </div>
+
+        <h2>3. AUTO_INCREMENT su Chiave Primaria Esistente</h2>
+
+        <div class="codice">
+<pre>-- Modifica la colonna per aggiungere AUTO_INCREMENT
+ALTER TABLE log_eventi
+MODIFY evento_id INT NOT NULL AUTO_INCREMENT;</pre>
+        </div>
+
+        <h2>4. Rimuovere una Chiave Primaria</h2>
+
+        <div class="codice">
+<pre>-- Rimuovi la chiave primaria
+ALTER TABLE nome_tabella
+DROP PRIMARY KEY;
+
+-- Nota: Se la colonna ha AUTO_INCREMENT, 
+-- devi prima rimuoverlo</pre>
+        </div>
+
+        <h2>5. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Gestione chiavi primarie</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Correggere una tabella mal progettata
+
+-- 1. Crea tabella senza PK (errore comune)
+CREATE TABLE IF NOT EXISTS storico_prezzi (
+    prodotto_id INT,
+    prezzo DECIMAL(10,2),
+    data_modifica DATE
+);
+
+-- 2. Verifica la struttura
+DESCRIBE storico_prezzi;
+
+-- 3. Prima assicurati che i dati siano unici
+-- (In questo caso usiamo combinazione prodotto + data)
+SELECT prodotto_id, data_modifica, COUNT(*)
+FROM storico_prezzi
+GROUP BY prodotto_id, data_modifica
+HAVING COUNT(*) > 1;
+
+-- 4. Se non ci sono duplicati, aggiungi PK composta
+ALTER TABLE storico_prezzi
+MODIFY prodotto_id INT NOT NULL,
+MODIFY data_modifica DATE NOT NULL;
+
+ALTER TABLE storico_prezzi
+ADD PRIMARY KEY (prodotto_id, data_modifica);
+
+-- 5. Oppure aggiungi una colonna ID come PK
+ALTER TABLE storico_prezzi
+ADD id INT NOT NULL AUTO_INCREMENT FIRST,
+ADD PRIMARY KEY (id);
+
+-- 6. Verifica
+DESCRIBE storico_prezzi;</pre>
+            </div>
+
+            <p><strong>Note importanti:</strong></p>
+            <ul>
+                <li>Prima di aggiungere una PK, assicurati che non ci siano duplicati</li>
+                <li>La colonna deve essere NOT NULL</li>
+                <li>Una tabella può avere solo una PRIMARY KEY</li>
+                <li>L'AUTO_INCREMENT può essere aggiunto solo a colonne chiave</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-7-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-7-3.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

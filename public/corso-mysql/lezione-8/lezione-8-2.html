@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 8.2 - LIKE e pattern matching</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 8.2 - LIKE e pattern matching</h1>
+            <p>Ricerca di pattern nelle stringhe</p>
+        </div>
+
+        <h2>1. Operatore LIKE</h2>
+        
+        <div class="teoria">
+            <p>L'operatore <code>LIKE</code> viene utilizzato per cercare pattern specifici nelle colonne di testo. Usa due caratteri speciali chiamati "wildcards".</p>
+        </div>
+
+        <h3>1.1 Wildcards</h3>
+
+        <table>
+            <tr>
+                <th>Wildcard</th>
+                <th>Descrizione</th>
+                <th>Esempio</th>
+            </tr>
+            <tr>
+                <td><code>%</code></td>
+                <td>Zero o più caratteri qualsiasi</td>
+                <td>'Ma%' → Mario, Marco, Maria</td>
+            </tr>
+            <tr>
+                <td><code>_</code></td>
+                <td>Esattamente un carattere</td>
+                <td>'M_rio' → Mario, Mério</td>
+            </tr>
+        </table>
+
+        <h2>2. Esempi con %</h2>
+
+        <h3>2.1 Inizia con...</h3>
+
+        <div class="codice">
+<pre>-- Nomi che iniziano con "Ma"
+SELECT * FROM clienti WHERE nome LIKE 'Ma%';
+
+-- Risultato: Mario, Marco, Maria, Matteo...</pre>
+        </div>
+
+        <h3>2.2 Finisce con...</h3>
+
+        <div class="codice">
+<pre>-- Nomi che finiscono con "i"
+SELECT * FROM clienti WHERE nome LIKE '%i';
+
+-- Risultato: Luca(no), Luigi, Avi...</pre>
+        </div>
+
+        <h3>2.3 Contiene...</h3>
+
+        <div class="codice">
+<pre>-- Prodotti che contengono "Phone"
+SELECT * FROM prodotti WHERE nome LIKE '%Phone%';
+
+-- Email che contengono "gmail"
+SELECT * FROM clienti WHERE email LIKE '%gmail%';</pre>
+        </div>
+
+        <h2>3. Esempi con _</h2>
+
+        <div class="codice">
+<pre>-- Nomi di esattamente 5 caratteri che iniziano con M
+SELECT * FROM clienti WHERE nome LIKE 'M____';
+-- Risultato: Mario, Marco, Maria
+
+-- Prodotti con codice formato "AB-XXX"
+SELECT * FROM prodotti WHERE codice LIKE '__-___';
+
+-- Combinazione di % e _
+-- Nomi che hanno 'a' come seconda lettera
+SELECT * FROM clienti WHERE nome LIKE '_a%';</pre>
+        </div>
+
+        <h2>4. NOT LIKE</h2>
+
+        <div class="teoria">
+            <p>Usa <code>NOT LIKE</code> per escludere i pattern.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Clienti con email NON gmail
+SELECT * FROM clienti WHERE email NOT LIKE '%gmail%';
+
+-- Prodotti che NON sono della linea "Pro"
+SELECT * FROM prodotti WHERE nome NOT LIKE '%Pro%';</pre>
+        </div>
+
+        <h2>5. Case Sensitivity</h2>
+
+        <div class="teoria">
+            <p>Di default, LIKE in MySQL è case-insensitive per le colonne con collation <code>_ci</code> (case insensitive).</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Questi due producono lo stesso risultato
+SELECT * FROM clienti WHERE nome LIKE 'mario%';
+SELECT * FROM clienti WHERE nome LIKE 'MARIO%';
+
+-- Per ricerca case-sensitive, usa BINARY
+SELECT * FROM clienti WHERE nome LIKE BINARY 'Mario%';</pre>
+        </div>
+
+        <h2>6. Escape dei Caratteri Speciali</h2>
+
+        <div class="teoria">
+            <p>Se devi cercare letteralmente % o _, usa il carattere di escape.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Cerca prodotti con "50%" nel nome
+SELECT * FROM prodotti WHERE nome LIKE '%50\%%';
+
+-- Oppure definisci un escape custom
+SELECT * FROM prodotti WHERE nome LIKE '%50!%%' ESCAPE '!';</pre>
+        </div>
+
+        <h2>7. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Ricerche con LIKE</h4>
+
+            <div class="codice">
+<pre>-- Scenario: Sistema di ricerca e-commerce
+
+-- 1. Cerca prodotti per nome (ricerca utente)
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE nome LIKE '%laptop%';
+
+-- 2. Trova tutte le email aziendali
+SELECT nome, cognome, email 
+FROM clienti 
+WHERE email LIKE '%@azienda.com';
+
+-- 3. Clienti con cognome italiano (termina in 'i')
+SELECT * FROM clienti 
+WHERE cognome LIKE '%i';
+
+-- 4. Prodotti Apple
+SELECT * FROM prodotti 
+WHERE nome LIKE 'iPhone%' 
+   OR nome LIKE 'iPad%' 
+   OR nome LIKE 'Mac%';
+
+-- 5. Codici prodotto formato "ELE-XXXX"
+SELECT * FROM prodotti 
+WHERE codice_prodotto LIKE 'ELE-____';
+
+-- 6. Ricerca avanzata: nome O descrizione contiene termine
+SELECT nome, descrizione, prezzo 
+FROM prodotti 
+WHERE nome LIKE '%wireless%' 
+   OR descrizione LIKE '%wireless%';
+
+-- 7. Escludi prodotti promo
+SELECT * FROM prodotti 
+WHERE nome NOT LIKE '%PROMO%' 
+  AND nome NOT LIKE '%OFFERTA%';</pre>
+            </div>
+
+            <p><strong>Tips per le Performance:</strong></p>
+            <ul>
+                <li>LIKE 'abc%' può usare indici (efficiente)</li>
+                <li>LIKE '%abc' NON può usare indici (lento su grandi tabelle)</li>
+                <li>Per ricerche full-text, considera FULLTEXT indexes</li>
+                <li>Evita pattern che iniziano con % su tabelle grandi</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-8-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="/corso-mysql/lezione-9/index.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>
