@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 12.2 - LEFT JOIN e RIGHT JOIN</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 12.2 - LEFT JOIN e RIGHT JOIN</h1>
+            <p>Includere tutti i dati da una tabella</p>
+        </div>
+
+        <h2>1. LEFT JOIN</h2>
+        
+        <div class="teoria">
+            <p><strong>LEFT JOIN</strong> (o LEFT OUTER JOIN) restituisce <strong>tutte</strong> le righe dalla tabella di sinistra (prima tabella) e le righe corrispondenti dalla tabella di destra. Se non c'è corrispondenza, i valori della tabella destra saranno NULL.</p>
+        </div>
+
+        <h3>1.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella1
+LEFT JOIN tabella2
+ON tabella1.colonna = tabella2.colonna;</pre>
+        </div>
+
+        <h3>1.2 Esempio LEFT JOIN</h3>
+
+        <div class="codice">
+<pre>-- Tutti i clienti con i loro ordini (anche chi non ha ordinato)
+SELECT c.nome, c.email, o.prodotto, o.importo
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+----------------+-------------------+--------------------+---------+
+| nome           | email             | prodotto           | importo |
++----------------+-------------------+--------------------+---------+
+| Mario Rossi    | mario@email.it    | Laptop HP          |  899.99 |
+| Mario Rossi    | mario@email.it    | Mouse Wireless     |   29.99 |
+| Laura Bianchi  | laura@email.it    | Monitor 27"        |  349.99 |
+| Giuseppe Verdi | giuseppe@email.it | Tastiera Meccanica |  129.99 |
+| Anna Neri      | anna@email.it     | NULL               |    NULL |
++----------------+-------------------+--------------------+---------+</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Nota:</strong> Anna Neri appare nel risultato anche se non ha ordini. I campi relativi agli ordini mostrano NULL.</p>
+        </div>
+
+        <h3>1.3 Trovare Record Senza Corrispondenza</h3>
+
+        <div class="codice">
+<pre>-- Clienti che NON hanno mai effettuato ordini
+SELECT c.nome, c.email, c.citta
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id
+WHERE o.id IS NULL;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+-----------+---------------+--------+
+| nome      | email         | citta  |
++-----------+---------------+--------+
+| Anna Neri | anna@email.it | Milano |
++-----------+---------------+--------+</pre>
+        </div>
+
+        <h2>2. RIGHT JOIN</h2>
+        
+        <div class="teoria">
+            <p><strong>RIGHT JOIN</strong> (o RIGHT OUTER JOIN) è l'opposto di LEFT JOIN. Restituisce <strong>tutte</strong> le righe dalla tabella di destra (seconda tabella) e le righe corrispondenti dalla tabella di sinistra. Se non c'è corrispondenza, i valori della tabella sinistra saranno NULL.</p>
+        </div>
+
+        <h3>2.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella1
+RIGHT JOIN tabella2
+ON tabella1.colonna = tabella2.colonna;</pre>
+        </div>
+
+        <h3>2.2 Esempio RIGHT JOIN</h3>
+
+        <div class="codice">
+<pre>-- Tutti gli ordini con i dati del cliente
+SELECT o.id, o.prodotto, o.importo, c.nome AS cliente
+FROM clienti c
+RIGHT JOIN ordini o ON c.id = o.cliente_id;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Nota:</strong> In pratica, RIGHT JOIN è meno utilizzato di LEFT JOIN. Puoi sempre riscrivere un RIGHT JOIN come LEFT JOIN invertendo l'ordine delle tabelle.</p>
+        </div>
+
+        <h2>3. Confronto tra JOIN</h2>
+
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Tabella Sinistra</th>
+                <th>Tabella Destra</th>
+                <th>Caso d'uso</th>
+            </tr>
+            <tr>
+                <td>INNER JOIN</td>
+                <td>Solo corrispondenze</td>
+                <td>Solo corrispondenze</td>
+                <td>Dati che esistono in entrambe</td>
+            </tr>
+            <tr>
+                <td>LEFT JOIN</td>
+                <td>Tutte le righe</td>
+                <td>Solo corrispondenze (o NULL)</td>
+                <td>Tutti da sinistra + eventuali dati correlati</td>
+            </tr>
+            <tr>
+                <td>RIGHT JOIN</td>
+                <td>Solo corrispondenze (o NULL)</td>
+                <td>Tutte le righe</td>
+                <td>Tutti da destra + eventuali dati correlati</td>
+            </tr>
+        </table>
+
+        <h2>4. LEFT JOIN con Aggregazioni</h2>
+
+        <div class="codice">
+<pre>-- Conteggio ordini per ogni cliente (inclusi quelli con 0 ordini)
+SELECT 
+    c.nome,
+    c.citta,
+    COUNT(o.id) AS numero_ordini,
+    COALESCE(SUM(o.importo), 0) AS totale_speso
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.id, c.nome, c.citta
+ORDER BY totale_speso DESC;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+----------------+--------+---------------+--------------+
+| nome           | citta  | numero_ordini | totale_speso |
++----------------+--------+---------------+--------------+
+| Mario Rossi    | Milano |             2 |       929.98 |
+| Laura Bianchi  | Roma   |             1 |       349.99 |
+| Giuseppe Verdi | Napoli |             1 |       129.99 |
+| Anna Neri      | Milano |             0 |         0.00 |
++----------------+--------+---------------+--------------+</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>COALESCE:</strong> La funzione COALESCE restituisce il primo valore non NULL. Qui la usiamo per mostrare 0 invece di NULL quando un cliente non ha ordini.</p>
+        </div>
+
+        <h2>5. LEFT JOIN su Più Tabelle</h2>
+
+        <div class="codice">
+<pre>-- Esempio con tre tabelle
+-- Clienti, ordini e pagamenti
+SELECT 
+    c.nome AS cliente,
+    o.prodotto,
+    o.importo AS importo_ordine,
+    p.importo AS importo_pagato,
+    CASE 
+        WHEN p.id IS NULL THEN 'Non pagato'
+        ELSE 'Pagato'
+    END AS stato_pagamento
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id
+LEFT JOIN pagamenti p ON o.id = p.ordine_id;</pre>
+        </div>
+
+        <h2>6. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Report clienti con stato attività</h4>
+
+            <div class="codice">
+<pre>-- Report: Tutti i clienti con il loro stato di attività
+SELECT 
+    c.nome,
+    c.email,
+    c.citta,
+    CASE 
+        WHEN COUNT(o.id) = 0 THEN 'Inattivo'
+        WHEN MAX(o.data_ordine) < DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 'Dormiente'
+        ELSE 'Attivo'
+    END AS stato_cliente,
+    COUNT(o.id) AS ordini_totali,
+    COALESCE(SUM(o.importo), 0) AS spesa_totale,
+    MAX(o.data_ordine) AS ultimo_ordine
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.id, c.nome, c.email, c.citta
+ORDER BY spesa_totale DESC;</pre>
+            </div>
+
+            <p><strong>Risultato:</strong></p>
+            <pre>+----------------+-------------------+--------+---------------+---------------+--------------+---------------+
+| nome           | email             | citta  | stato_cliente | ordini_totali | spesa_totale | ultimo_ordine |
++----------------+-------------------+--------+---------------+---------------+--------------+---------------+
+| Mario Rossi    | mario@email.it    | Milano | Attivo        |             2 |       929.98 | 2024-01-20    |
+| Laura Bianchi  | laura@email.it    | Roma   | Attivo        |             1 |       349.99 | 2024-02-10    |
+| Giuseppe Verdi | giuseppe@email.it | Napoli | Attivo        |             1 |       129.99 | 2024-02-15    |
+| Anna Neri      | anna@email.it     | Milano | Inattivo      |             0 |         0.00 | NULL          |
++----------------+-------------------+--------+---------------+---------------+--------------+---------------+</pre>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-12-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-12-3.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 14.2 - Casi d'Uso Avanzati e CTE</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 14.2 - Casi d'Uso Avanzati e CTE</h1>
+            <p>Scenari pratici e Common Table Expressions</p>
+        </div>
+
+        <h2>1. Casi d'Uso delle Tabelle Temporanee</h2>
+        
+        <div class="teoria">
+            <p>Le tabelle temporanee sono particolarmente utili in questi scenari:</p>
+            <ul>
+                <li><strong>Query complesse multi-step:</strong> Suddividere elaborazioni complesse</li>
+                <li><strong>Report con calcoli intermedi:</strong> Memorizzare risultati parziali</li>
+                <li><strong>Ottimizzazione prestazioni:</strong> Evitare di ricalcolare subquery</li>
+                <li><strong>Stored procedures:</strong> Passare dati tra procedure</li>
+            </ul>
+        </div>
+
+        <h2>2. Scenario: Analisi Comparativa</h2>
+
+        <div class="codice">
+<pre>-- Confronto performance mese corrente vs precedente
+
+-- Step 1: Dati mese corrente
+CREATE TEMPORARY TABLE temp_mese_corrente AS
+SELECT 
+    c.id AS cliente_id,
+    c.nome,
+    COUNT(o.id) AS ordini,
+    SUM(o.importo) AS totale
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id 
+    AND MONTH(o.data_ordine) = MONTH(CURDATE())
+    AND YEAR(o.data_ordine) = YEAR(CURDATE())
+GROUP BY c.id, c.nome;
+
+-- Step 2: Dati mese precedente
+CREATE TEMPORARY TABLE temp_mese_precedente AS
+SELECT 
+    c.id AS cliente_id,
+    COUNT(o.id) AS ordini,
+    SUM(o.importo) AS totale
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id 
+    AND MONTH(o.data_ordine) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+    AND YEAR(o.data_ordine) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+GROUP BY c.id;
+
+-- Step 3: Report comparativo
+SELECT 
+    mc.nome,
+    mc.ordini AS ordini_corrente,
+    COALESCE(mp.ordini, 0) AS ordini_precedente,
+    mc.ordini - COALESCE(mp.ordini, 0) AS diff_ordini,
+    COALESCE(mc.totale, 0) AS totale_corrente,
+    COALESCE(mp.totale, 0) AS totale_precedente,
+    ROUND(
+        ((COALESCE(mc.totale, 0) - COALESCE(mp.totale, 0)) / NULLIF(mp.totale, 0)) * 100, 
+        2
+    ) AS variazione_percentuale
+FROM temp_mese_corrente mc
+LEFT JOIN temp_mese_precedente mp ON mc.cliente_id = mp.cliente_id
+ORDER BY mc.totale DESC;
+
+-- Cleanup
+DROP TEMPORARY TABLE IF EXISTS temp_mese_corrente, temp_mese_precedente;</pre>
+        </div>
+
+        <h2>3. Common Table Expressions (CTE)</h2>
+
+        <div class="teoria">
+            <p>Le <strong>CTE</strong> (Common Table Expressions) sono un'alternativa alle tabelle temporanee per query complesse. Definite con la clausola <code>WITH</code>, esistono solo per la durata di una singola query.</p>
+        </div>
+
+        <h3>3.1 Sintassi CTE</h3>
+
+        <div class="codice">
+<pre>WITH nome_cte AS (
+    SELECT colonne FROM tabella WHERE condizione
+)
+SELECT * FROM nome_cte;</pre>
+        </div>
+
+        <h3>3.2 Esempio CTE vs Tabella Temporanea</h3>
+
+        <div class="codice">
+<pre>-- Con CTE (tutto in una query)
+WITH clienti_vip AS (
+    SELECT cliente_id, SUM(importo) AS totale
+    FROM ordini
+    GROUP BY cliente_id
+    HAVING SUM(importo) > 500
+)
+SELECT c.nome, c.email, cv.totale
+FROM clienti c
+JOIN clienti_vip cv ON c.id = cv.cliente_id
+ORDER BY cv.totale DESC;
+
+-- CTE multiple
+WITH 
+vendite_per_categoria AS (
+    SELECT p.categoria, SUM(d.quantita * p.prezzo) AS totale
+    FROM prodotti p
+    JOIN dettagli_ordine d ON p.id = d.prodotto_id
+    GROUP BY p.categoria
+),
+media_vendite AS (
+    SELECT AVG(totale) AS media FROM vendite_per_categoria
+)
+SELECT 
+    v.categoria,
+    v.totale,
+    m.media,
+    CASE WHEN v.totale > m.media THEN 'Sopra media' ELSE 'Sotto media' END AS performance
+FROM vendite_per_categoria v
+CROSS JOIN media_vendite m
+ORDER BY v.totale DESC;</pre>
+        </div>
+
+        <h2>4. Confronto: Tabelle Temp vs CTE vs Subquery</h2>
+
+        <table>
+            <tr>
+                <th>Caratteristica</th>
+                <th>Tabella Temporanea</th>
+                <th>CTE</th>
+                <th>Subquery</th>
+            </tr>
+            <tr>
+                <td>Durata</td>
+                <td>Sessione</td>
+                <td>Query singola</td>
+                <td>Query singola</td>
+            </tr>
+            <tr>
+                <td>Riutilizzabile</td>
+                <td>Sì, più query</td>
+                <td>Sì, nella stessa query</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>Indicizzabile</td>
+                <td>Sì</td>
+                <td>No</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>Modificabile</td>
+                <td>Sì (UPDATE/DELETE)</td>
+                <td>No</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>Leggibilità</td>
+                <td>Richiede più codice</td>
+                <td>Molto leggibile</td>
+                <td>Può essere confusa</td>
+            </tr>
+        </table>
+
+        <h2>5. CTE Ricorsive</h2>
+
+        <div class="teoria">
+            <p>Le CTE possono essere <strong>ricorsive</strong>, utili per gerarchie come organigrammi o categorie annidate.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Organigramma ricorsivo
+WITH RECURSIVE gerarchia AS (
+    -- Caso base: dipendenti senza manager (top level)
+    SELECT id, nome, ruolo, manager_id, 1 AS livello
+    FROM dipendenti
+    WHERE manager_id IS NULL
+    
+    UNION ALL
+    
+    -- Caso ricorsivo: dipendenti con manager
+    SELECT d.id, d.nome, d.ruolo, d.manager_id, g.livello + 1
+    FROM dipendenti d
+    JOIN gerarchia g ON d.manager_id = g.id
+)
+SELECT 
+    CONCAT(REPEAT('  ', livello - 1), nome) AS organigramma,
+    ruolo,
+    livello
+FROM gerarchia
+ORDER BY livello, nome;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+------------------+--------------+--------+
+| organigramma     | ruolo        | livello|
++------------------+--------------+--------+
+| Marco CEO        | CEO          |      1 |
+|   Luigi Dir      | Direttore    |      2 |
+|   Paolo Dir      | Direttore    |      2 |
+|     Anna Resp    | Responsabile |      3 |
+|     Maria Resp   | Responsabile |      3 |
+|       Luca Dev   | Developer    |      4 |
++------------------+--------------+--------+</pre>
+        </div>
+
+        <h2>6. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Pipeline ETL con tabelle temporanee</h4>
+
+            <div class="codice">
+<pre>-- EXTRACT: Estrarre dati grezzi in tabella temporanea
+CREATE TEMPORARY TABLE temp_raw_data AS
+SELECT 
+    o.id AS ordine_id,
+    o.data_ordine,
+    c.id AS cliente_id,
+    c.nome AS cliente_nome,
+    c.citta AS cliente_citta,
+    p.id AS prodotto_id,
+    p.nome AS prodotto_nome,
+    p.categoria,
+    d.quantita,
+    d.prezzo_unitario,
+    d.quantita * d.prezzo_unitario AS importo_riga
+FROM ordini o
+JOIN clienti c ON o.cliente_id = c.id
+JOIN dettagli_ordine d ON o.id = d.ordine_id
+JOIN prodotti p ON d.prodotto_id = p.id
+WHERE o.data_ordine >= DATE_SUB(CURDATE(), INTERVAL 90 DAY);
+
+-- TRANSFORM: Aggregare per analisi
+CREATE TEMPORARY TABLE temp_analisi AS
+SELECT 
+    cliente_id,
+    cliente_nome,
+    cliente_citta,
+    COUNT(DISTINCT ordine_id) AS num_ordini,
+    SUM(quantita) AS prodotti_acquistati,
+    SUM(importo_riga) AS spesa_totale,
+    AVG(importo_riga) AS media_per_prodotto,
+    MIN(data_ordine) AS primo_ordine,
+    MAX(data_ordine) AS ultimo_ordine
+FROM temp_raw_data
+GROUP BY cliente_id, cliente_nome, cliente_citta;
+
+-- Aggiungere classificazione
+ALTER TABLE temp_analisi ADD COLUMN segmento VARCHAR(20);
+
+UPDATE temp_analisi
+SET segmento = CASE
+    WHEN spesa_totale >= 1000 THEN 'Premium'
+    WHEN spesa_totale >= 500 THEN 'Standard'
+    WHEN spesa_totale >= 100 THEN 'Base'
+    ELSE 'Occasionale'
+END;
+
+-- LOAD: Report finale
+SELECT 
+    segmento,
+    COUNT(*) AS clienti,
+    SUM(num_ordini) AS ordini_totali,
+    SUM(spesa_totale) AS fatturato,
+    AVG(spesa_totale) AS spesa_media_cliente
+FROM temp_analisi
+GROUP BY segmento
+ORDER BY fatturato DESC;
+
+-- Cleanup
+DROP TEMPORARY TABLE IF EXISTS temp_raw_data, temp_analisi;</pre>
+            </div>
+
+            <p><strong>Risultato:</strong></p>
+            <pre>+-------------+---------+---------------+-----------+---------------------+
+| segmento    | clienti | ordini_totali | fatturato | spesa_media_cliente |
++-------------+---------+---------------+-----------+---------------------+
+| Premium     |       2 |             8 |   2500.00 |             1250.00 |
+| Standard    |       5 |            12 |   3200.00 |              640.00 |
+| Base        |      10 |            15 |   1800.00 |              180.00 |
+| Occasionale |       8 |             8 |    450.00 |               56.25 |
++-------------+---------+---------------+-----------+---------------------+</pre>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-14-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+        </div>
+
+    </div>
+</body>
+</html>

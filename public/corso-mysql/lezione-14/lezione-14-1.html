@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 14.1 - Creazione e Uso di Tabelle Temporanee</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 14.1 - Creazione e Uso di Tabelle Temporanee</h1>
+            <p>CREATE TEMPORARY TABLE e casi d'uso pratici</p>
+        </div>
+
+        <h2>1. Cos'è una Tabella Temporanea?</h2>
+        
+        <div class="teoria">
+            <p>Una <strong>tabella temporanea</strong> è una tabella speciale che:</p>
+            <ul>
+                <li>Esiste solo per la durata della sessione di connessione</li>
+                <li>È visibile solo alla connessione che l'ha creata</li>
+                <li>Viene automaticamente eliminata quando la connessione si chiude</li>
+                <li>Può avere lo stesso nome di una tabella permanente (la temporanea ha precedenza)</li>
+            </ul>
+        </div>
+
+        <h2>2. Creazione di Tabelle Temporanee</h2>
+
+        <h3>2.1 Sintassi Base</h3>
+
+        <div class="codice">
+<pre>-- Creare una tabella temporanea vuota
+CREATE TEMPORARY TABLE nome_tabella (
+    colonna1 tipo1,
+    colonna2 tipo2,
+    ...
+);
+
+-- Esempio
+CREATE TEMPORARY TABLE temp_vendite (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    prodotto VARCHAR(100),
+    quantita INT,
+    importo DECIMAL(10,2),
+    data_vendita DATE
+);</pre>
+        </div>
+
+        <h3>2.2 Creare da una Query (CREATE ... SELECT)</h3>
+
+        <div class="codice">
+<pre>-- Creare tabella temporanea con dati da una query
+CREATE TEMPORARY TABLE temp_clienti_attivi AS
+SELECT c.id, c.nome, c.email, COUNT(o.id) AS ordini
+FROM clienti c
+JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.id, c.nome, c.email
+HAVING COUNT(o.id) >= 1;
+
+-- Creare copia temporanea di una tabella
+CREATE TEMPORARY TABLE temp_prodotti AS
+SELECT * FROM prodotti WHERE prezzo > 100;
+
+-- Con struttura specifica
+CREATE TEMPORARY TABLE temp_report AS
+SELECT 
+    c.nome AS cliente,
+    SUM(o.importo) AS totale,
+    AVG(o.importo) AS media
+FROM clienti c
+JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.id, c.nome;</pre>
+        </div>
+
+        <h3>2.3 Creare da Struttura Esistente</h3>
+
+        <div class="codice">
+<pre>-- Creare tabella temporanea con stessa struttura (senza dati)
+CREATE TEMPORARY TABLE temp_ordini LIKE ordini;
+
+-- Poi inserire dati
+INSERT INTO temp_ordini
+SELECT * FROM ordini WHERE data_ordine >= '2024-01-01';</pre>
+        </div>
+
+        <h2>3. Inserimento Dati</h2>
+
+        <div class="codice">
+<pre>-- INSERT classico
+INSERT INTO temp_vendite (prodotto, quantita, importo, data_vendita)
+VALUES ('Laptop', 5, 4499.95, '2024-01-15');
+
+-- INSERT ... SELECT
+INSERT INTO temp_vendite (prodotto, quantita, importo, data_vendita)
+SELECT p.nome, SUM(d.quantita), SUM(d.quantita * p.prezzo), o.data_ordine
+FROM prodotti p
+JOIN dettagli_ordine d ON p.id = d.prodotto_id
+JOIN ordini o ON d.ordine_id = o.id
+WHERE o.data_ordine BETWEEN '2024-01-01' AND '2024-01-31'
+GROUP BY p.id, p.nome, o.data_ordine;</pre>
+        </div>
+
+        <h2>4. Query su Tabelle Temporanee</h2>
+
+        <div class="codice">
+<pre>-- Usare la tabella temporanea come qualsiasi altra tabella
+SELECT * FROM temp_clienti_attivi WHERE ordini > 2;
+
+-- JOIN tra tabella temporanea e tabella normale
+SELECT t.nome, t.ordini, c.citta
+FROM temp_clienti_attivi t
+JOIN clienti c ON t.id = c.id
+ORDER BY t.ordini DESC;
+
+-- Aggregazioni
+SELECT 
+    COUNT(*) AS totale_clienti_attivi,
+    SUM(ordini) AS totale_ordini,
+    AVG(ordini) AS media_ordini
+FROM temp_clienti_attivi;</pre>
+        </div>
+
+        <h2>5. Aggiornamento e Cancellazione</h2>
+
+        <div class="codice">
+<pre>-- UPDATE
+UPDATE temp_vendite
+SET importo = importo * 1.1  -- Aumento 10%
+WHERE data_vendita < '2024-01-01';
+
+-- DELETE
+DELETE FROM temp_vendite WHERE quantita = 0;
+
+-- Svuotare la tabella
+TRUNCATE TABLE temp_vendite;</pre>
+        </div>
+
+        <h2>6. Eliminazione Tabelle Temporanee</h2>
+
+        <div class="codice">
+<pre>-- Eliminazione manuale
+DROP TEMPORARY TABLE temp_vendite;
+
+-- Eliminazione sicura (se esiste)
+DROP TEMPORARY TABLE IF EXISTS temp_vendite;
+
+-- Eliminare più tabelle
+DROP TEMPORARY TABLE IF EXISTS temp_vendite, temp_clienti_attivi, temp_report;</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Nota:</strong> Le tabelle temporanee vengono eliminate automaticamente alla chiusura della connessione. DROP TEMPORARY TABLE è necessario solo se vuoi liberare memoria durante la sessione.</p>
+        </div>
+
+        <h2>7. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Report vendite mensili in più passaggi</h4>
+
+            <div class="codice">
+<pre>-- PASSO 1: Creare tabella temporanea con vendite giornaliere
+CREATE TEMPORARY TABLE temp_vendite_giornaliere AS
+SELECT 
+    DATE(o.data_ordine) AS data,
+    COUNT(o.id) AS num_ordini,
+    SUM(o.importo) AS totale_giornaliero
+FROM ordini o
+WHERE o.data_ordine >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+GROUP BY DATE(o.data_ordine);
+
+-- PASSO 2: Aggiungere statistiche
+ALTER TABLE temp_vendite_giornaliere
+ADD COLUMN media_mobile DECIMAL(10,2);
+
+-- PASSO 3: Calcolare media mobile 7 giorni
+UPDATE temp_vendite_giornaliere t1
+SET media_mobile = (
+    SELECT AVG(t2.totale_giornaliero)
+    FROM temp_vendite_giornaliere t2
+    WHERE t2.data BETWEEN DATE_SUB(t1.data, INTERVAL 6 DAY) AND t1.data
+);
+
+-- PASSO 4: Report finale
+SELECT 
+    data,
+    num_ordini,
+    totale_giornaliero,
+    media_mobile,
+    CASE 
+        WHEN totale_giornaliero > media_mobile * 1.2 THEN 'Sopra media'
+        WHEN totale_giornaliero < media_mobile * 0.8 THEN 'Sotto media'
+        ELSE 'Nella norma'
+    END AS performance
+FROM temp_vendite_giornaliere
+ORDER BY data;
+
+-- Cleanup
+DROP TEMPORARY TABLE IF EXISTS temp_vendite_giornaliere;</pre>
+            </div>
+
+            <p><strong>Risultato:</strong></p>
+            <pre>+------------+------------+--------------------+--------------+-------------+
+| data       | num_ordini | totale_giornaliero | media_mobile | performance |
++------------+------------+--------------------+--------------+-------------+
+| 2024-01-15 |          3 |             929.97 |       750.00 | Sopra media |
+| 2024-01-16 |          2 |             500.00 |       715.00 | Nella norma |
+| 2024-01-17 |          5 |            1250.50 |       893.50 | Sopra media |
+| 2024-01-18 |          1 |             150.00 |       707.50 | Sotto media |
++------------+------------+--------------------+--------------+-------------+</pre>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-14-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

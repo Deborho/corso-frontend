@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 14 - Tabelle Temporanee</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 14 - Tabelle Temporanee</h1>
+            <p>Creare e utilizzare tabelle temporanee in MySQL</p>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Argomento:</strong> Le tabelle temporanee sono tabelle che esistono solo per la durata della sessione di connessione al database. Sono utili per memorizzare risultati intermedi di query complesse.</p>
+        </div>
+
+        <h2>Descrizione</h2>
+        
+        <p>In questa lezione impareremo a creare e utilizzare le tabelle temporanee in MySQL. Queste tabelle sono particolarmente utili quando dobbiamo elaborare dati in più passaggi o quando vogliamo migliorare le prestazioni di query complesse.</p>
+
+        <h2>Obiettivi di Apprendimento</h2>
+        
+        <ul>
+            <li>Comprendere cosa sono le tabelle temporanee e quando usarle</li>
+            <li>Creare tabelle temporanee con CREATE TEMPORARY TABLE</li>
+            <li>Popolare tabelle temporanee con INSERT ... SELECT</li>
+            <li>Utilizzare tabelle temporanee per query complesse</li>
+            <li>Gestire il ciclo di vita delle tabelle temporanee</li>
+            <li>Confrontare tabelle temporanee con altre soluzioni (CTE, subquery)</li>
+        </ul>
+
+        <h2>Vantaggi delle Tabelle Temporanee</h2>
+
+        <table>
+            <tr>
+                <th>Vantaggio</th>
+                <th>Descrizione</th>
+            </tr>
+            <tr>
+                <td>Prestazioni</td>
+                <td>Permettono di scomporre query complesse in passaggi più semplici</td>
+            </tr>
+            <tr>
+                <td>Leggibilità</td>
+                <td>Rendono il codice SQL più facile da capire e mantenere</td>
+            </tr>
+            <tr>
+                <td>Isolamento</td>
+                <td>Visibili solo nella sessione corrente, nessun conflitto con altri utenti</td>
+            </tr>
+            <tr>
+                <td>Automatico cleanup</td>
+                <td>Vengono eliminate automaticamente alla chiusura della connessione</td>
+            </tr>
+        </table>
+
+        <div class="nav">
+            <a href="/corso-mysql/lezione-13/lezione-13-2.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-14-1.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

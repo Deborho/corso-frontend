@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 13.1 - Subquery nel WHERE</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 13.1 - Subquery nel WHERE</h1>
+            <p>Filtrare dati con query nidificate</p>
+        </div>
+
+        <h2>1. Cos'è una Subquery?</h2>
+        
+        <div class="teoria">
+            <p>Una <strong>subquery</strong> è una query SQL inserita all'interno di un'altra query. La query esterna è chiamata <strong>query principale</strong>, mentre quella interna è la <strong>subquery</strong>. La subquery viene eseguita per prima e il suo risultato viene utilizzato dalla query principale.</p>
+        </div>
+
+        <h3>1.1 Sintassi Base</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella
+WHERE colonna operatore (SELECT colonna FROM tabella WHERE condizione);</pre>
+        </div>
+
+        <h2>2. Subquery con Operatori di Confronto</h2>
+
+        <h3>2.1 Confronto con un Singolo Valore</h3>
+
+        <div class="codice">
+<pre>-- Prodotti con prezzo superiore alla media
+SELECT nome, prezzo
+FROM prodotti
+WHERE prezzo > (SELECT AVG(prezzo) FROM prodotti);
+
+-- Ordini del cliente con il totale più alto
+SELECT *
+FROM ordini
+WHERE cliente_id = (
+    SELECT cliente_id 
+    FROM ordini 
+    GROUP BY cliente_id 
+    ORDER BY SUM(importo) DESC 
+    LIMIT 1
+);</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Esempio - Prodotti sopra la media:</strong></p>
+            <pre>+--------------------+--------+
+| nome               | prezzo |
++--------------------+--------+
+| Laptop HP          | 899.99 |
+| Monitor 27"        | 349.99 |
++--------------------+--------+
+(Media prezzo: 352.49)</pre>
+        </div>
+
+        <h3>2.2 Confronto con MAX e MIN</h3>
+
+        <div class="codice">
+<pre>-- Prodotto più costoso
+SELECT nome, prezzo
+FROM prodotti
+WHERE prezzo = (SELECT MAX(prezzo) FROM prodotti);
+
+-- Ordine più recente per ogni cliente
+SELECT *
+FROM ordini o1
+WHERE data_ordine = (
+    SELECT MAX(data_ordine) 
+    FROM ordini o2 
+    WHERE o2.cliente_id = o1.cliente_id
+);</pre>
+        </div>
+
+        <h2>3. Subquery con IN</h2>
+
+        <div class="teoria">
+            <p>L'operatore <strong>IN</strong> verifica se un valore è presente in un set di risultati restituiti dalla subquery.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Clienti che hanno effettuato almeno un ordine
+SELECT nome, email
+FROM clienti
+WHERE id IN (SELECT DISTINCT cliente_id FROM ordini);
+
+-- Prodotti mai ordinati
+SELECT nome, prezzo
+FROM prodotti
+WHERE id NOT IN (SELECT DISTINCT prodotto_id FROM dettagli_ordine);
+
+-- Clienti di città con più di 2 clienti
+SELECT nome, citta
+FROM clienti
+WHERE citta IN (
+    SELECT citta 
+    FROM clienti 
+    GROUP BY citta 
+    HAVING COUNT(*) > 2
+);</pre>
+        </div>
+
+        <h2>4. Subquery con ANY e ALL</h2>
+
+        <div class="teoria">
+            <p><strong>ANY</strong> restituisce TRUE se il confronto è vero per <strong>almeno uno</strong> dei valori della subquery.</p>
+            <p><strong>ALL</strong> restituisce TRUE se il confronto è vero per <strong>tutti</strong> i valori della subquery.</p>
+        </div>
+
+        <h3>4.1 Operatore ANY</h3>
+
+        <div class="codice">
+<pre>-- Prodotti con prezzo maggiore di ALMENO UN prodotto della categoria 'Elettronica'
+SELECT nome, prezzo
+FROM prodotti
+WHERE prezzo > ANY (
+    SELECT prezzo 
+    FROM prodotti 
+    WHERE categoria = 'Elettronica'
+);
+
+-- Equivalente a: prezzo > MIN(prezzo di Elettronica)</pre>
+        </div>
+
+        <h3>4.2 Operatore ALL</h3>
+
+        <div class="codice">
+<pre>-- Prodotti con prezzo maggiore di TUTTI i prodotti della categoria 'Accessori'
+SELECT nome, prezzo
+FROM prodotti
+WHERE prezzo > ALL (
+    SELECT prezzo 
+    FROM prodotti 
+    WHERE categoria = 'Accessori'
+);
+
+-- Equivalente a: prezzo > MAX(prezzo di Accessori)
+
+-- Clienti con ordini tutti sopra i 100€
+SELECT nome
+FROM clienti c
+WHERE 100 < ALL (
+    SELECT importo 
+    FROM ordini 
+    WHERE cliente_id = c.id
+);</pre>
+        </div>
+
+        <h2>5. Subquery Correlate</h2>
+
+        <div class="teoria">
+            <p>Una <strong>subquery correlata</strong> è una subquery che fa riferimento a colonne della query esterna. Viene eseguita una volta per ogni riga della query principale.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prodotti con prezzo sopra la media della loro categoria
+SELECT p1.nome, p1.categoria, p1.prezzo
+FROM prodotti p1
+WHERE p1.prezzo > (
+    SELECT AVG(p2.prezzo) 
+    FROM prodotti p2 
+    WHERE p2.categoria = p1.categoria
+);
+
+-- Clienti con più ordini della media
+SELECT c.nome, 
+    (SELECT COUNT(*) FROM ordini o WHERE o.cliente_id = c.id) AS num_ordini
+FROM clienti c
+WHERE (SELECT COUNT(*) FROM ordini o WHERE o.cliente_id = c.id) > (
+    SELECT AVG(ordini_per_cliente) FROM (
+        SELECT COUNT(*) AS ordini_per_cliente
+        FROM ordini
+        GROUP BY cliente_id
+    ) AS media_ordini
+);</pre>
+        </div>
+
+        <h2>6. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Analisi prodotti per categoria</h4>
+
+            <div class="codice">
+<pre>-- Report: Prodotti con prezzo sopra media categoria, 
+-- ordinati per differenza dalla media
+SELECT 
+    p.nome,
+    p.categoria,
+    p.prezzo,
+    (SELECT AVG(prezzo) FROM prodotti WHERE categoria = p.categoria) AS media_categoria,
+    p.prezzo - (SELECT AVG(prezzo) FROM prodotti WHERE categoria = p.categoria) AS differenza
+FROM prodotti p
+WHERE p.prezzo > (
+    SELECT AVG(prezzo) 
+    FROM prodotti 
+    WHERE categoria = p.categoria
+)
+ORDER BY differenza DESC;</pre>
+            </div>
+
+            <p><strong>Risultato:</strong></p>
+            <pre>+--------------------+-------------+--------+-----------------+------------+
+| nome               | categoria   | prezzo | media_categoria | differenza |
++--------------------+-------------+--------+-----------------+------------+
+| Laptop HP          | Elettronica | 899.99 |          524.99 |     375.00 |
+| Monitor 27"        | Elettronica | 349.99 |          524.99 |    -175.00 |
+| Tastiera Meccanica | Accessori   | 129.99 |           79.99 |      50.00 |
++--------------------+-------------+--------+-----------------+------------+</pre>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-13-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 13 - Subquery (Query Nidificate)</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 13 - Subquery (Query Nidificate)</h1>
+            <p>Query all'interno di altre query</p>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Argomento:</strong> Le subquery (o query nidificate) sono query SQL inserite all'interno di altre query. Permettono di eseguire operazioni complesse suddividendole in passaggi logici.</p>
+        </div>
+
+        <h2>Descrizione</h2>
+        
+        <p>In questa lezione impareremo a utilizzare le subquery per creare query complesse e potenti. Le subquery possono essere usate in diverse parti di una query SQL: nel SELECT, nel FROM, nel WHERE e nell'HAVING.</p>
+
+        <h2>Obiettivi di Apprendimento</h2>
+        
+        <ul>
+            <li>Comprendere il concetto di subquery e quando utilizzarle</li>
+            <li>Utilizzare subquery nella clausola WHERE</li>
+            <li>Utilizzare subquery con operatori IN, ANY, ALL</li>
+            <li>Utilizzare subquery con EXISTS e NOT EXISTS</li>
+            <li>Utilizzare subquery nella clausola SELECT (scalar subquery)</li>
+            <li>Utilizzare subquery nella clausola FROM (derived tables)</li>
+            <li>Confrontare subquery correlate e non correlate</li>
+        </ul>
+
+        <h2>Tipi di Subquery</h2>
+
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Descrizione</th>
+                <th>Posizione</th>
+            </tr>
+            <tr>
+                <td>Scalar Subquery</td>
+                <td>Restituisce un singolo valore</td>
+                <td>SELECT, WHERE</td>
+            </tr>
+            <tr>
+                <td>Row Subquery</td>
+                <td>Restituisce una singola riga</td>
+                <td>WHERE</td>
+            </tr>
+            <tr>
+                <td>Table Subquery</td>
+                <td>Restituisce una tabella di risultati</td>
+                <td>FROM, IN, EXISTS</td>
+            </tr>
+            <tr>
+                <td>Correlated Subquery</td>
+                <td>Dipende dalla query esterna</td>
+                <td>WHERE, SELECT</td>
+            </tr>
+        </table>
+
+        <div class="nav">
+            <a href="/corso-mysql/lezione-12/lezione-12-3.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-13-1.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 12.1 - INNER JOIN</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 12.1 - INNER JOIN</h1>
+            <p>Estrarre dati corrispondenti da più tabelle</p>
+        </div>
+
+        <h2>1. Cos'è una JOIN?</h2>
+        
+        <div class="teoria">
+            <p>Una <strong>JOIN</strong> è una clausola SQL utilizzata per combinare righe da due o più tabelle, basandosi su una colonna correlata tra di esse. Nei database relazionali, i dati sono spesso distribuiti su più tabelle per evitare ridondanza.</p>
+        </div>
+
+        <h3>1.1 Database di Esempio</h3>
+
+        <p>Per questa lezione utilizzeremo due tabelle correlate:</p>
+
+        <div class="codice">
+<pre>-- Tabella Clienti
+CREATE TABLE clienti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    citta VARCHAR(50)
+);
+
+-- Tabella Ordini
+CREATE TABLE ordini (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT,
+    prodotto VARCHAR(100),
+    importo DECIMAL(10,2),
+    data_ordine DATE,
+    FOREIGN KEY (cliente_id) REFERENCES clienti(id)
+);
+
+-- Dati di esempio
+INSERT INTO clienti (nome, email, citta) VALUES
+('Mario Rossi', 'mario@email.it', 'Milano'),
+('Laura Bianchi', 'laura@email.it', 'Roma'),
+('Giuseppe Verdi', 'giuseppe@email.it', 'Napoli'),
+('Anna Neri', 'anna@email.it', 'Milano');
+
+INSERT INTO ordini (cliente_id, prodotto, importo, data_ordine) VALUES
+(1, 'Laptop HP', 899.99, '2024-01-15'),
+(1, 'Mouse Wireless', 29.99, '2024-01-20'),
+(2, 'Monitor 27"', 349.99, '2024-02-10'),
+(3, 'Tastiera Meccanica', 129.99, '2024-02-15');</pre>
+        </div>
+
+        <h2>2. INNER JOIN</h2>
+
+        <div class="teoria">
+            <p><strong>INNER JOIN</strong> restituisce solo le righe che hanno corrispondenze in <strong>entrambe</strong> le tabelle. È il tipo di JOIN più comune e viene usato quando vogliamo solo i dati che esistono in tutte le tabelle coinvolte.</p>
+        </div>
+
+        <h3>2.1 Sintassi</h3>
+
+        <div class="codice">
+<pre>SELECT colonne
+FROM tabella1
+INNER JOIN tabella2
+ON tabella1.colonna = tabella2.colonna;</pre>
+        </div>
+
+        <h3>2.2 Esempio Base</h3>
+
+        <div class="codice">
+<pre>-- Estrarre tutti gli ordini con i nomi dei clienti
+SELECT ordini.id, clienti.nome, ordini.prodotto, ordini.importo
+FROM ordini
+INNER JOIN clienti ON ordini.cliente_id = clienti.id;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+----+----------------+--------------------+---------+
+| id | nome           | prodotto           | importo |
++----+----------------+--------------------+---------+
+|  1 | Mario Rossi    | Laptop HP          |  899.99 |
+|  2 | Mario Rossi    | Mouse Wireless     |   29.99 |
+|  3 | Laura Bianchi  | Monitor 27"        |  349.99 |
+|  4 | Giuseppe Verdi | Tastiera Meccanica |  129.99 |
++----+----------------+--------------------+---------+</pre>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Nota:</strong> Anna Neri non appare nel risultato perché non ha effettuato ordini. INNER JOIN restituisce solo le righe con corrispondenze in entrambe le tabelle.</p>
+        </div>
+
+        <h2>3. Alias per le Tabelle</h2>
+
+        <div class="teoria">
+            <p>Per rendere le query più leggibili, è comune usare <strong>alias</strong> per i nomi delle tabelle.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Usando alias (c per clienti, o per ordini)
+SELECT o.id, c.nome, c.citta, o.prodotto, o.importo
+FROM ordini o
+INNER JOIN clienti c ON o.cliente_id = c.id;</pre>
+        </div>
+
+        <h2>4. JOIN con Condizioni WHERE</h2>
+
+        <div class="codice">
+<pre>-- Ordini di clienti di Milano
+SELECT c.nome, o.prodotto, o.importo
+FROM ordini o
+INNER JOIN clienti c ON o.cliente_id = c.id
+WHERE c.citta = 'Milano';
+
+-- Ordini superiori a 100€
+SELECT c.nome, o.prodotto, o.importo
+FROM ordini o
+INNER JOIN clienti c ON o.cliente_id = c.id
+WHERE o.importo > 100
+ORDER BY o.importo DESC;</pre>
+        </div>
+
+        <h2>5. JOIN con Funzioni Aggregate</h2>
+
+        <div class="codice">
+<pre>-- Totale speso per ogni cliente
+SELECT c.nome, COUNT(o.id) AS numero_ordini, SUM(o.importo) AS totale_speso
+FROM clienti c
+INNER JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.id, c.nome
+ORDER BY totale_speso DESC;
+
+-- Media ordini per città
+SELECT c.citta, AVG(o.importo) AS media_ordine
+FROM clienti c
+INNER JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.citta;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato (totale per cliente):</strong></p>
+            <pre>+----------------+---------------+--------------+
+| nome           | numero_ordini | totale_speso |
++----------------+---------------+--------------+
+| Mario Rossi    |             2 |       929.98 |
+| Laura Bianchi  |             1 |       349.99 |
+| Giuseppe Verdi |             1 |       129.99 |
++----------------+---------------+--------------+</pre>
+        </div>
+
+        <h2>6. JOIN su Tre o Più Tabelle</h2>
+
+        <div class="codice">
+<pre>-- Aggiungiamo una tabella categorie
+CREATE TABLE categorie (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50)
+);
+
+CREATE TABLE prodotti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    categoria_id INT,
+    prezzo DECIMAL(10,2),
+    FOREIGN KEY (categoria_id) REFERENCES categorie(id)
+);
+
+-- JOIN su tre tabelle
+SELECT o.id AS ordine, c.nome AS cliente, p.nome AS prodotto, cat.nome AS categoria
+FROM ordini o
+INNER JOIN clienti c ON o.cliente_id = c.id
+INNER JOIN prodotti p ON o.prodotto_id = p.id
+INNER JOIN categorie cat ON p.categoria_id = cat.id;</pre>
+        </div>
+
+        <h2>7. Esempio Finale</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Report vendite completo</h4>
+
+            <div class="codice">
+<pre>-- Report: Top 3 clienti per spesa con dettagli
+SELECT 
+    c.nome AS cliente,
+    c.email,
+    c.citta,
+    COUNT(o.id) AS ordini_effettuati,
+    SUM(o.importo) AS totale_speso,
+    AVG(o.importo) AS media_ordine,
+    MAX(o.data_ordine) AS ultimo_ordine
+FROM clienti c
+INNER JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.id, c.nome, c.email, c.citta
+ORDER BY totale_speso DESC
+LIMIT 3;</pre>
+            </div>
+
+            <p><strong>Risultato:</strong></p>
+            <pre>+----------------+-------------------+--------+-------------------+--------------+--------------+---------------+
+| cliente        | email             | citta  | ordini_effettuati | totale_speso | media_ordine | ultimo_ordine |
++----------------+-------------------+--------+-------------------+--------------+--------------+---------------+
+| Mario Rossi    | mario@email.it    | Milano |                 2 |       929.98 |       464.99 | 2024-01-20    |
+| Laura Bianchi  | laura@email.it    | Roma   |                 1 |       349.99 |       349.99 | 2024-02-10    |
+| Giuseppe Verdi | giuseppe@email.it | Napoli |                 1 |       129.99 |       129.99 | 2024-02-15    |
++----------------+-------------------+--------+-------------------+--------------+--------------+---------------+</pre>
+        </div>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-12-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>
