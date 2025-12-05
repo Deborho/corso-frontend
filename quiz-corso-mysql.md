@@ -85,12 +85,12 @@ d) XOR
 
 ---
 
-## 10. Quale operatore si usa per verificare se un valore è compreso in un intervallo?
+## 10. Per selezionare tutti gli ordini con data_ordine nell'anno 2024, quale condizione è corretta?
 
-a) IN  
-b) BETWEEN ✓  
-c) RANGE  
-d) WITHIN
+a) WHERE data_ordine = 2024
+b) WHERE data_ordine >= '2024-01-01' AND data_ordine <= '2024-12-31' ✓  
+c) WHERE data_ordine IN (2024)`
+d) WHERE YEAR = 2024
 
 ---
 
@@ -166,12 +166,12 @@ d) ORDER BY colonna DESCENDING
 
 ---
 
-## 19. Quale operatore si usa per verificare se un valore è presente in una lista di valori?
+## 19. Quale funzione restituisce il valore massimo di una colonna?
 
-a) BETWEEN  
-b) LIKE  
-c) IN ✓  
-d) EXISTS
+a) TOP()  
+b) HIGHEST()  
+c) MAX() ✓  
+d) GREATEST()
 
 ---
 
@@ -195,7 +195,7 @@ d) CHECK
 7. b) ALTER TABLE tabella ADD colonna tipo
 8. b) LIKE 'Mar%'
 9. c) AND
-10. b) BETWEEN
+10. b) WHERE data_ordine >= '2024-01-01' AND data_ordine <= '2024-12-31'
 11. c) SUM()
 12. c) HAVING
 13. c) INNER JOIN
@@ -204,5 +204,5 @@ d) CHECK
 16. b) DELETE FROM tabella
 17. c) COUNT()
 18. c) ORDER BY colonna DESC
-19. c) IN
+19. c) MAX()
 20. c) UNIQUE
