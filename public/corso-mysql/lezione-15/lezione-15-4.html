@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 15.4 - Aggregazione e Ordinamento</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 15.4 - Aggregazione e Ordinamento</h1>
+            <p>Funzioni aggregate, GROUP BY, HAVING, ORDER BY e DISTINCT</p>
+        </div>
+
+        <h2>1. Funzioni Aggregate</h2>
+
+        <div class="teoria">
+            <p>Le funzioni aggregate eseguono calcoli su un insieme di valori e restituiscono un singolo risultato:</p>
+            <ul>
+                <li><code>COUNT()</code> - conta il numero di righe</li>
+                <li><code>SUM()</code> - calcola la somma</li>
+                <li><code>AVG()</code> - calcola la media</li>
+                <li><code>MAX()</code> - trova il valore massimo</li>
+                <li><code>MIN()</code> - trova il valore minimo</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+<pre>-- Contare il numero totale di prodotti
+SELECT COUNT(*) AS totale_prodotti FROM prodotti;
+
+-- Contare i prodotti per categoria
+SELECT categoria_id, COUNT(*) AS numero_prodotti 
+FROM prodotti 
+GROUP BY categoria_id;
+
+-- Somma totale del valore dell'inventario
+SELECT SUM(prezzo * quantita_disponibile) AS valore_inventario 
+FROM prodotti;
+
+-- Prezzo medio dei prodotti
+SELECT AVG(prezzo) AS prezzo_medio FROM prodotti;
+
+-- Prodotto più costoso e meno costoso
+SELECT MAX(prezzo) AS prezzo_massimo, MIN(prezzo) AS prezzo_minimo 
+FROM prodotti;
+
+-- Totale vendite (somma di tutti gli ordini)
+SELECT SUM(totale) AS totale_vendite FROM ordini;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato valore inventario:</strong></p>
+            <pre>+-------------------+
+| valore_inventario |
++-------------------+
+|         380897.05 |
++-------------------+</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato prezzo massimo e minimo:</strong></p>
+            <pre>+----------------+---------------+
+| prezzo_massimo | prezzo_minimo |
++----------------+---------------+
+|        2499.99 |        199.99 |
++----------------+---------------+</pre>
+        </div>
+
+        <h2>2. GROUP BY e HAVING</h2>
+
+        <div class="teoria">
+            <p><code>GROUP BY</code> raggruppa le righe con valori uguali in righe di riepilogo. <code>HAVING</code> filtra i gruppi dopo l'aggregazione (mentre <code>WHERE</code> filtra prima).</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Numero di clienti per città
+SELECT citta, COUNT(*) AS numero_clienti 
+FROM clienti 
+GROUP BY citta;
+
+-- Totale ordini per cliente
+SELECT cliente_id, COUNT(*) AS numero_ordini, SUM(totale) AS totale_speso 
+FROM ordini 
+GROUP BY cliente_id;
+
+-- Solo clienti con più di 1 ordine (HAVING)
+SELECT cliente_id, COUNT(*) AS numero_ordini 
+FROM ordini 
+GROUP BY cliente_id 
+HAVING COUNT(*) > 1;
+
+-- Categorie con valore inventario superiore a 50000€
+SELECT categoria_id, SUM(prezzo * quantita_disponibile) AS valore 
+FROM prodotti 
+GROUP BY categoria_id 
+HAVING SUM(prezzo * quantita_disponibile) > 50000;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato clienti per città:</strong></p>
+            <pre>+---------+----------------+
+| citta   | numero_clienti |
++---------+----------------+
+| Firenze |              1 |
+| Milano  |              3 |
+| Napoli  |              1 |
+| Roma    |              2 |
+| Torino  |              1 |
++---------+----------------+</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato clienti con più di 1 ordine:</strong></p>
+            <pre>+------------+---------------+
+| cliente_id | numero_ordini |
++------------+---------------+
+|          1 |             2 |
+|          2 |             2 |
++------------+---------------+</pre>
+        </div>
+
+        <h2>3. ORDER BY</h2>
+
+        <div class="teoria">
+            <p><code>ORDER BY</code> ordina i risultati. Si usa <code>ASC</code> per ordine crescente (default) e <code>DESC</code> per ordine decrescente.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prodotti ordinati per prezzo (crescente - default)
+SELECT nome, prezzo 
+FROM prodotti 
+ORDER BY prezzo;
+
+-- Prodotti ordinati per prezzo (decrescente)
+SELECT nome, prezzo 
+FROM prodotti 
+ORDER BY prezzo DESC;
+
+-- Ordini ordinati per data (più recenti prima)
+SELECT * FROM ordini 
+ORDER BY data_ordine DESC;
+
+-- Ordinamento multiplo: per città e poi per cognome
+SELECT nome, cognome, citta 
+FROM clienti 
+ORDER BY citta ASC, cognome ASC;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato prodotti ordinati per prezzo DESC:</strong></p>
+            <pre>+---------------------+---------+
+| nome                | prezzo  |
++---------------------+---------+
+| MacBook Pro 14"     | 2499.99 |
+| Dell XPS 15         | 1899.99 |
+| iPhone 15 Pro       | 1299.99 |
+| Samsung Galaxy S24  |  999.99 |
+| Xiaomi 14           |  799.99 |
+| PlayStation 5       |  549.99 |
+| Sony WH-1000XM5     |  349.99 |
+| Nintendo Switch OLED|  349.99 |
+| AirPods Pro         |  279.99 |
+| Marshall Speaker    |  199.99 |
++---------------------+---------+</pre>
+        </div>
+
+        <h2>4. DISTINCT</h2>
+
+        <div class="teoria">
+            <p><code>DISTINCT</code> elimina i valori duplicati dal risultato, restituendo solo valori univoci.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Lista città univoche dei clienti
+SELECT DISTINCT citta FROM clienti;
+
+-- Stati ordini univoci
+SELECT DISTINCT stato FROM ordini;
+
+-- Combinazione DISTINCT e ORDER BY
+SELECT DISTINCT citta 
+FROM clienti 
+ORDER BY citta;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato città univoche:</strong></p>
+            <pre>+---------+
+| citta   |
++---------+
+| Milano  |
+| Roma    |
+| Napoli  |
+| Torino  |
+| Firenze |
++---------+</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato stati ordini univoci:</strong></p>
+            <pre>+------------+
+| stato      |
++------------+
+| Completato |
+| Spedito    |
+| In attesa  |
++------------+</pre>
+        </div>
+
+        <h2>5. Query Combinata</h2>
+
+        <div class="esempio">
+            <h4>Esempio: Report vendite per categoria con filtro</h4>
+            <div class="codice">
+<pre>-- Vendite per categoria con totale > 500€, ordinate per fatturato
+SELECT 
+    categoria_id,
+    COUNT(*) AS prodotti_venduti,
+    SUM(quantita_disponibile) AS unita_disponibili,
+    AVG(prezzo) AS prezzo_medio,
+    SUM(prezzo * quantita_disponibile) AS valore_totale
+FROM prodotti
+GROUP BY categoria_id
+HAVING SUM(prezzo * quantita_disponibile) > 20000
+ORDER BY valore_totale DESC;</pre>
+            </div>
+        </div>
+
+        <h2>6. Riepilogo</h2>
+
+        <table>
+            <tr>
+                <th>Funzione/Clausola</th>
+                <th>Descrizione</th>
+            </tr>
+            <tr>
+                <td>COUNT()</td>
+                <td>Conta il numero di righe</td>
+            </tr>
+            <tr>
+                <td>SUM()</td>
+                <td>Somma dei valori</td>
+            </tr>
+            <tr>
+                <td>AVG()</td>
+                <td>Media dei valori</td>
+            </tr>
+            <tr>
+                <td>MAX() / MIN()</td>
+                <td>Valore massimo/minimo</td>
+            </tr>
+            <tr>
+                <td>GROUP BY</td>
+                <td>Raggruppa righe per valori comuni</td>
+            </tr>
+            <tr>
+                <td>HAVING</td>
+                <td>Filtra i gruppi (dopo GROUP BY)</td>
+            </tr>
+            <tr>
+                <td>ORDER BY ASC/DESC</td>
+                <td>Ordina risultati crescente/decrescente</td>
+            </tr>
+            <tr>
+                <td>DISTINCT</td>
+                <td>Elimina valori duplicati</td>
+            </tr>
+        </table>
+
+        <div class="nav">
+            <a href="lezione-15-3.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-15-5.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

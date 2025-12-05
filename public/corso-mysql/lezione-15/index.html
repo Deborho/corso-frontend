@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 15 - Progetto Finale: TechStore</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 15 - Progetto Finale: TechStore</h1>
+            <p>Applicazione pratica di tutte le competenze SQL acquisite</p>
+        </div>
+
+        <div class="teoria">
+            <p><strong>Argomento:</strong> Progetto pratico completo che riassume tutti i concetti del corso MySQL attraverso la creazione e gestione di un database e-commerce.</p>
+        </div>
+
+        <h2>Scenario: Sistema di Gestione E-Commerce</h2>
+        
+        <p>Sei stato assunto come Database Administrator junior presso <strong>TechStore</strong>, un'azienda di e-commerce che vende prodotti tecnologici. L'azienda sta lanciando una nuova piattaforma e-commerce e ti è stato chiesto di progettare e implementare il database che gestirà clienti, prodotti, ordini e recensioni.</p>
+
+        <p>Il tuo manager ti ha fornito i requisiti e ti chiede di:</p>
+        <ol>
+            <li>Creare la struttura del database</li>
+            <li>Popolare le tabelle con dati di test</li>
+            <li>Eseguire query per generare report di business</li>
+        </ol>
+
+        <h2>Obiettivi di Apprendimento</h2>
+        
+        <p>Al termine di questa lezione saremo in grado di:</p>
+        
+        <ul>
+            <li>Progettare uno schema relazionale completo</li>
+            <li>Creare tabelle con vincoli appropriati (PRIMARY KEY, FOREIGN KEY, UNIQUE)</li>
+            <li>Inserire, modificare e cancellare dati</li>
+            <li>Scrivere query complesse con filtri, aggregazioni e JOIN</li>
+            <li>Generare report di business intelligence</li>
+        </ul>
+
+        <h2>Struttura del Database</h2>
+
+        <p>Il database TechStore sarà composto dalle seguenti tabelle:</p>
+
+        <table>
+            <tr>
+                <th>Tabella</th>
+                <th>Descrizione</th>
+                <th>Relazioni</th>
+            </tr>
+            <tr>
+                <td>categorie</td>
+                <td>Categorie dei prodotti (Smartphone, Computer, Audio, Gaming)</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>prodotti</td>
+                <td>Catalogo prodotti con prezzi e disponibilità</td>
+                <td>→ categorie</td>
+            </tr>
+            <tr>
+                <td>clienti</td>
+                <td>Anagrafica clienti registrati</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>ordini</td>
+                <td>Ordini effettuati dai clienti</td>
+                <td>→ clienti</td>
+            </tr>
+            <tr>
+                <td>dettagli_ordine</td>
+                <td>Prodotti inclusi in ogni ordine</td>
+                <td>→ ordini, → prodotti</td>
+            </tr>
+            <tr>
+                <td>dipendenti</td>
+                <td>Personale aziendale (per SELF JOIN)</td>
+                <td>→ dipendenti (manager)</td>
+            </tr>
+        </table>
+
+        <h2>Argomenti Trattati</h2>
+
+        <p>Questa lezione copre tutti i concetti del corso:</p>
+
+        <table>
+            <tr>
+                <th>Argomento</th>
+                <th>Lezione Originale</th>
+            </tr>
+            <tr>
+                <td>CREATE DATABASE, USE</td>
+                <td>Lezione 2</td>
+            </tr>
+            <tr>
+                <td>CREATE TABLE, tipi di dati</td>
+                <td>Lezione 3</td>
+            </tr>
+            <tr>
+                <td>INSERT INTO, SELECT</td>
+                <td>Lezione 4</td>
+            </tr>
+            <tr>
+                <td>UPDATE, DELETE</td>
+                <td>Lezione 5</td>
+            </tr>
+            <tr>
+                <td>DISTINCT</td>
+                <td>Lezione 6</td>
+            </tr>
+            <tr>
+                <td>ALTER TABLE</td>
+                <td>Lezione 7</td>
+            </tr>
+            <tr>
+                <td>WHERE, LIKE</td>
+                <td>Lezione 8</td>
+            </tr>
+            <tr>
+                <td>AND, OR, NOT, BETWEEN, IN</td>
+                <td>Lezione 9</td>
+            </tr>
+            <tr>
+                <td>SUM, COUNT, AVG, MAX, MIN</td>
+                <td>Lezione 10</td>
+            </tr>
+            <tr>
+                <td>ORDER BY, GROUP BY, HAVING</td>
+                <td>Lezione 11</td>
+            </tr>
+            <tr>
+                <td>INNER, LEFT, RIGHT, SELF JOIN</td>
+                <td>Lezione 12</td>
+            </tr>
+        </table>
+
+        <h2>Scaletta della Lezione</h2>
+
+        <ul>
+            <li><strong>Parte 1 (20 min):</strong> Setup del database e creazione tabelle</li>
+            <li><strong>Parte 2 (15 min):</strong> Popolamento dati</li>
+            <li><strong>Parte 3 (20 min):</strong> Query di base (SELECT, WHERE, LIKE, operatori logici)</li>
+            <li><strong>Parte 4 (20 min):</strong> Aggregazione e ordinamento (funzioni aggregate, GROUP BY)</li>
+            <li><strong>Parte 5 (25 min):</strong> JOIN e relazioni</li>
+            <li><strong>Parte 6 (10 min):</strong> Modifiche struttura e dati (ALTER, UPDATE, DELETE)</li>
+            <li><strong>Parte 7 (10 min):</strong> Report finali di business intelligence</li>
+        </ul>
+
+        <div class="nav">
+            <a href="/corso-mysql/lezione-14/lezione-14-2.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-15-1.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

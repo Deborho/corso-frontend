@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 15.2 - Popolamento Dati</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 15.2 - Popolamento Dati</h1>
+            <p>Inserimento dei dati di test nel database TechStore</p>
+        </div>
+
+        <h2>1. Inserimento Categorie</h2>
+
+        <div class="teoria">
+            <p>Iniziamo inserendo le categorie dei prodotti. Utilizziamo la sintassi <code>INSERT INTO</code> con valori multipli.</p>
+        </div>
+
+        <div class="codice">
+<pre>INSERT INTO categorie (nome, descrizione) VALUES
+('Smartphone', 'Telefoni cellulari e accessori'),
+('Computer', 'Laptop, desktop e componenti'),
+('Audio', 'Cuffie, speaker e sistemi audio'),
+('Gaming', 'Console, giochi e accessori gaming');</pre>
+        </div>
+
+        <h2>2. Inserimento Prodotti</h2>
+
+        <div class="codice">
+<pre>INSERT INTO prodotti (nome, categoria_id, prezzo, quantita_disponibile, data_inserimento) VALUES
+('iPhone 15 Pro', 1, 1299.99, 50, '2024-01-15'),
+('Samsung Galaxy S24', 1, 999.99, 75, '2024-01-20'),
+('MacBook Pro 14"', 2, 2499.99, 30, '2024-02-01'),
+('Dell XPS 15', 2, 1899.99, 25, '2024-02-10'),
+('AirPods Pro', 3, 279.99, 100, '2024-01-05'),
+('Sony WH-1000XM5', 3, 349.99, 60, '2024-01-10'),
+('PlayStation 5', 4, 549.99, 40, '2024-02-15'),
+('Nintendo Switch OLED', 4, 349.99, 80, '2024-02-20'),
+('Xiaomi 14', 1, 799.99, 45, '2024-03-01'),
+('Marshall Speaker', 3, 199.99, 35, '2024-03-05');</pre>
+        </div>
+
+        <h2>3. Inserimento Clienti</h2>
+
+        <div class="codice">
+<pre>INSERT INTO clienti (nome, cognome, email, citta, data_registrazione) VALUES
+('Mario', 'Rossi', 'mario.rossi@email.it', 'Milano', '2024-01-01'),
+('Laura', 'Bianchi', 'laura.bianchi@email.it', 'Roma', '2024-01-15'),
+('Giuseppe', 'Verdi', 'giuseppe.verdi@email.it', 'Napoli', '2024-02-01'),
+('Anna', 'Neri', 'anna.neri@email.it', 'Milano', '2024-02-10'),
+('Marco', 'Ferrari', 'marco.ferrari@email.it', 'Torino', '2024-02-20'),
+('Giulia', 'Marchetti', 'giulia.marchetti@email.it', 'Firenze', '2024-03-01'),
+('Luca', 'Romano', 'luca.romano@email.it', 'Roma', '2024-03-10'),
+('Francesca', 'Martini', 'francesca.martini@email.it', 'Milano', '2024-03-15');</pre>
+        </div>
+
+        <h2>4. Inserimento Ordini</h2>
+
+        <div class="codice">
+<pre>INSERT INTO ordini (cliente_id, data_ordine, totale, stato) VALUES
+(1, '2024-03-01', 1579.98, 'Completato'),
+(2, '2024-03-05', 2499.99, 'Completato'),
+(3, '2024-03-10', 899.98, 'Spedito'),
+(1, '2024-03-15', 349.99, 'In attesa'),
+(4, '2024-03-18', 549.99, 'Completato'),
+(5, '2024-03-20', 1349.98, 'Spedito'),
+(2, '2024-03-22', 279.99, 'In attesa'),
+(6, '2024-03-25', 999.99, 'Completato');</pre>
+        </div>
+
+        <h2>5. Inserimento Dettagli Ordine</h2>
+
+        <div class="codice">
+<pre>INSERT INTO dettagli_ordine (ordine_id, prodotto_id, quantita, prezzo_unitario) VALUES
+(1, 1, 1, 1299.99),
+(1, 5, 1, 279.99),
+(2, 3, 1, 2499.99),
+(3, 7, 1, 549.99),
+(3, 8, 1, 349.99),
+(4, 6, 1, 349.99),
+(5, 7, 1, 549.99),
+(6, 2, 1, 999.99),
+(6, 6, 1, 349.99),
+(7, 5, 1, 279.99),
+(8, 2, 1, 999.99);</pre>
+        </div>
+
+        <h2>6. Inserimento Dipendenti</h2>
+
+        <div class="teoria">
+            <p>I dipendenti vengono inseriti in ordine gerarchico: prima il CEO (che non ha manager), poi i direttori, e infine gli impiegati. Nota che <code>manager_id</code> del CEO è <code>NULL</code>.</p>
+        </div>
+
+        <div class="codice">
+<pre>INSERT INTO dipendenti (nome, ruolo, manager_id, stipendio) VALUES
+('Roberto Conti', 'CEO', NULL, 8000.00),
+('Elena Russo', 'Direttore Vendite', 1, 5000.00),
+('Paolo Greco', 'Direttore IT', 1, 5000.00),
+('Sara Lombardi', 'Venditore Senior', 2, 3000.00),
+('Marco Rizzo', 'Venditore', 2, 2500.00),
+('Chiara Moretti', 'Sviluppatore', 3, 3500.00),
+('Andrea Colombo', 'Sviluppatore Junior', 3, 2200.00);</pre>
+        </div>
+
+        <h2>7. Verifica dei Dati Inseriti</h2>
+
+        <div class="codice">
+<pre>-- Verifichiamo i dati inseriti
+SELECT * FROM categorie;
+SELECT * FROM prodotti;
+SELECT * FROM clienti;
+SELECT * FROM ordini;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato SELECT * FROM categorie:</strong></p>
+            <pre>+----+------------+----------------------------------+
+| id | nome       | descrizione                      |
++----+------------+----------------------------------+
+|  1 | Smartphone | Telefoni cellulari e accessori   |
+|  2 | Computer   | Laptop, desktop e componenti     |
+|  3 | Audio      | Cuffie, speaker e sistemi audio  |
+|  4 | Gaming     | Console, giochi e accessori      |
++----+------------+----------------------------------+</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato SELECT * FROM prodotti:</strong></p>
+            <pre>+----+---------------------+--------------+---------+----------------------+------------------+
+| id | nome                | categoria_id | prezzo  | quantita_disponibile | data_inserimento |
++----+---------------------+--------------+---------+----------------------+------------------+
+|  1 | iPhone 15 Pro       |            1 | 1299.99 |                   50 | 2024-01-15       |
+|  2 | Samsung Galaxy S24  |            1 |  999.99 |                   75 | 2024-01-20       |
+|  3 | MacBook Pro 14"     |            2 | 2499.99 |                   30 | 2024-02-01       |
+|  4 | Dell XPS 15         |            2 | 1899.99 |                   25 | 2024-02-10       |
+|  5 | AirPods Pro         |            3 |  279.99 |                  100 | 2024-01-05       |
+| ...| ...                 |          ... |     ... |                  ... | ...              |
++----+---------------------+--------------+---------+----------------------+------------------+</pre>
+        </div>
+
+        <h2>8. Riepilogo Sintassi INSERT</h2>
+
+        <div class="teoria">
+            <p>La sintassi corretta per INSERT è:</p>
+            <ul>
+                <li><code>INSERT INTO tabella (colonne) VALUES (valori)</code></li>
+                <li>È possibile inserire più righe in una singola istruzione separando i valori con virgole</li>
+                <li>Le colonne con DEFAULT o AUTO_INCREMENT possono essere omesse</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-15-1.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-15-3.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

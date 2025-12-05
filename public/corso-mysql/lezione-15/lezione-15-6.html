@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 15.6 - Modifiche e Report Finali</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 15.6 - Modifiche e Report Finali</h1>
+            <p>ALTER TABLE, UPDATE, DELETE e Query di Business Intelligence</p>
+        </div>
+
+        <h2>1. ALTER TABLE</h2>
+
+        <div class="teoria">
+            <p><code>ALTER TABLE</code> permette di modificare la struttura di una tabella esistente: aggiungere, modificare o eliminare colonne.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Aggiungere una colonna telefono ai clienti
+ALTER TABLE clienti ADD telefono VARCHAR(20);
+
+-- Aggiungere una colonna sconto ai prodotti
+ALTER TABLE prodotti ADD sconto DECIMAL(5,2) DEFAULT 0.00;
+
+-- Verificare la nuova struttura
+DESCRIBE clienti;
+DESCRIBE prodotti;
+
+-- Modificare il tipo di una colonna
+ALTER TABLE prodotti MODIFY sconto DECIMAL(5,2) DEFAULT 0.00;
+
+-- Rinominare una colonna
+ALTER TABLE prodotti CHANGE sconto percentuale_sconto DECIMAL(5,2);</pre>
+        </div>
+
+        <h2>2. UPDATE</h2>
+
+        <div class="teoria">
+            <p><code>UPDATE</code> modifica i dati esistenti in una tabella. <strong>Attenzione:</strong> usare sempre <code>WHERE</code> per limitare le righe modificate!</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Aggiornare il telefono di un cliente
+UPDATE clienti 
+SET telefono = '02-1234567' 
+WHERE id = 1;
+
+-- Applicare uno sconto del 10% ai prodotti Gaming
+UPDATE prodotti 
+SET percentuale_sconto = 10.00 
+WHERE categoria_id = 4;
+
+-- Aumentare il prezzo del 5% per tutti i prodotti Apple
+UPDATE prodotti 
+SET prezzo = prezzo * 1.05 
+WHERE nome LIKE '%iPhone%' OR nome LIKE '%Mac%' OR nome LIKE '%AirPods%';
+
+-- Verificare le modifiche
+SELECT nome, prezzo, percentuale_sconto FROM prodotti;</pre>
+        </div>
+
+        <h2>3. DELETE</h2>
+
+        <div class="teoria">
+            <p><code>DELETE FROM tabella</code> elimina righe dalla tabella. La struttura della tabella rimane intatta. <strong>Importante:</strong> verificare sempre cosa verrà eliminato con un SELECT prima di eseguire DELETE!</p>
+        </div>
+
+        <div class="codice">
+<pre>-- PRIMA: Verificare cosa verrà eliminato
+SELECT * FROM ordini 
+WHERE stato = 'In attesa' 
+AND data_ordine < DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY);
+
+-- POI: Eliminare ordini in attesa più vecchi di 30 giorni
+DELETE FROM ordini 
+WHERE stato = 'In attesa' 
+AND data_ordine < DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY);
+
+-- Eliminare un cliente specifico (attenzione ai vincoli FK!)
+-- DELETE FROM clienti WHERE id = 8;</pre>
+        </div>
+
+        <h2>4. Report di Business Intelligence</h2>
+
+        <div class="teoria">
+            <p>Ora mettiamo insieme tutte le competenze acquisite per creare report utili per il business.</p>
+        </div>
+
+        <h3>4.1 Report Vendite per Categoria</h3>
+
+        <div class="codice">
+<pre>SELECT 
+    cat.nome AS categoria,
+    COUNT(DISTINCT do.ordine_id) AS numero_ordini,
+    SUM(do.quantita) AS unita_vendute,
+    SUM(do.quantita * do.prezzo_unitario) AS fatturato
+FROM categorie cat
+INNER JOIN prodotti p ON cat.id = p.categoria_id
+INNER JOIN dettagli_ordine do ON p.id = do.prodotto_id
+GROUP BY cat.id, cat.nome
+ORDER BY fatturato DESC;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+------------+---------------+---------------+-----------+
+| categoria  | numero_ordini | unita_vendute | fatturato |
++------------+---------------+---------------+-----------+
+| Computer   |             1 |             1 |   2499.99 |
+| Smartphone |             3 |             3 |   3299.97 |
+| Gaming     |             3 |             3 |   1449.97 |
+| Audio      |             4 |             4 |   1259.96 |
++------------+---------------+---------------+-----------+</pre>
+        </div>
+
+        <h3>4.2 Top 5 Clienti per Spesa</h3>
+
+        <div class="codice">
+<pre>SELECT 
+    c.nome,
+    c.cognome,
+    c.citta,
+    COUNT(o.id) AS numero_ordini,
+    SUM(o.totale) AS totale_speso
+FROM clienti c
+INNER JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.id, c.nome, c.cognome, c.citta
+ORDER BY totale_speso DESC
+LIMIT 5;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+----------+----------+---------+---------------+--------------+
+| nome     | cognome  | citta   | numero_ordini | totale_speso |
++----------+----------+---------+---------------+--------------+
+| Laura    | Bianchi  | Roma    |             2 |      2779.98 |
+| Mario    | Rossi    | Milano  |             2 |      1929.97 |
+| Marco    | Ferrari  | Torino  |             1 |      1349.98 |
+| Giulia   | Marchetti| Firenze |             1 |       999.99 |
+| Giuseppe | Verdi    | Napoli  |             1 |       899.98 |
++----------+----------+---------+---------------+--------------+</pre>
+        </div>
+
+        <h3>4.3 Prodotti Mai Venduti</h3>
+
+        <div class="codice">
+<pre>SELECT p.nome, p.prezzo, p.quantita_disponibile
+FROM prodotti p
+LEFT JOIN dettagli_ordine do ON p.id = do.prodotto_id
+WHERE do.id IS NULL;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+------------------+---------+----------------------+
+| nome             | prezzo  | quantita_disponibile |
++------------------+---------+----------------------+
+| Dell XPS 15      | 1899.99 |                   25 |
+| Xiaomi 14        |  799.99 |                   45 |
+| Marshall Speaker |  199.99 |                   35 |
++------------------+---------+----------------------+</pre>
+        </div>
+
+        <h3>4.4 Performance Vendite Mensile</h3>
+
+        <div class="codice">
+<pre>SELECT 
+    DATE_FORMAT(data_ordine, '%Y-%m') AS mese,
+    COUNT(*) AS numero_ordini,
+    SUM(totale) AS fatturato_totale,
+    AVG(totale) AS valore_medio_ordine
+FROM ordini
+GROUP BY DATE_FORMAT(data_ordine, '%Y-%m')
+ORDER BY mese;</pre>
+        </div>
+
+        <h3>4.5 Struttura Organizzativa con Stipendi</h3>
+
+        <div class="codice">
+<pre>SELECT 
+    d.nome AS dipendente,
+    d.ruolo,
+    d.stipendio,
+    m.nome AS manager,
+    ROUND((d.stipendio / m.stipendio * 100), 1) AS percentuale_stipendio_manager
+FROM dipendenti d
+LEFT JOIN dipendenti m ON d.manager_id = m.id
+ORDER BY d.stipendio DESC;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato:</strong></p>
+            <pre>+---------------------+---------------------+----------+---------------+-------------------------------+
+| dipendente          | ruolo               | stipendio| manager       | percentuale_stipendio_manager |
++---------------------+---------------------+----------+---------------+-------------------------------+
+| Roberto Conti       | CEO                 |  8000.00 | NULL          |                          NULL |
+| Elena Russo         | Direttore Vendite   |  5000.00 | Roberto Conti |                          62.5 |
+| Paolo Greco         | Direttore IT        |  5000.00 | Roberto Conti |                          62.5 |
+| Chiara Moretti      | Sviluppatore        |  3500.00 | Paolo Greco   |                          70.0 |
+| Sara Lombardi       | Venditore Senior    |  3000.00 | Elena Russo   |                          60.0 |
+| Marco Rizzo         | Venditore           |  2500.00 | Elena Russo   |                          50.0 |
+| Andrea Colombo      | Sviluppatore Junior |  2200.00 | Paolo Greco   |                          44.0 |
++---------------------+---------------------+----------+---------------+-------------------------------+</pre>
+        </div>
+
+        <h2>5. Pulizia (Opzionale)</h2>
+
+        <div class="codice">
+<pre>-- Eliminare tutte le tabelle (in ordine inverso per i vincoli FK)
+DROP TABLE IF EXISTS dettagli_ordine;
+DROP TABLE IF EXISTS ordini;
+DROP TABLE IF EXISTS prodotti;
+DROP TABLE IF EXISTS dipendenti;
+DROP TABLE IF EXISTS clienti;
+DROP TABLE IF EXISTS categorie;
+
+-- Eliminare il database
+DROP DATABASE IF EXISTS techstore;</pre>
+        </div>
+
+        <h2>6. Riepilogo Finale</h2>
+
+        <p>In questa lezione abbiamo applicato tutti i concetti del corso MySQL:</p>
+
+        <table>
+            <tr>
+                <th>Categoria</th>
+                <th>Concetti</th>
+            </tr>
+            <tr>
+                <td>DDL (Data Definition)</td>
+                <td>CREATE DATABASE, CREATE TABLE, ALTER TABLE, DROP</td>
+            </tr>
+            <tr>
+                <td>DML (Data Manipulation)</td>
+                <td>INSERT, SELECT, UPDATE, DELETE</td>
+            </tr>
+            <tr>
+                <td>Filtri</td>
+                <td>WHERE, LIKE, AND, OR, NOT, BETWEEN, IN</td>
+            </tr>
+            <tr>
+                <td>Aggregazione</td>
+                <td>COUNT, SUM, AVG, MAX, MIN, GROUP BY, HAVING</td>
+            </tr>
+            <tr>
+                <td>Ordinamento</td>
+                <td>ORDER BY ASC/DESC, DISTINCT</td>
+            </tr>
+            <tr>
+                <td>Relazioni</td>
+                <td>INNER JOIN, LEFT JOIN, RIGHT JOIN, SELF JOIN</td>
+            </tr>
+            <tr>
+                <td>Vincoli</td>
+                <td>PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, DEFAULT</td>
+            </tr>
+        </table>
+
+        <div class="teoria">
+            <p><strong>Complimenti!</strong> Hai completato il progetto finale del corso MySQL. Ora sei in grado di progettare, implementare e interrogare database relazionali per applicazioni reali.</p>
+        </div>
+
+        <div class="nav">
+            <a href="lezione-15-5.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+        </div>
+
+    </div>
+</body>
+</html>
