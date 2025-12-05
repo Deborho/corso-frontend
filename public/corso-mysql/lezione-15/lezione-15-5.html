@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 15.5 - JOIN e Relazioni</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 15.5 - JOIN e Relazioni</h1>
+            <p>INNER JOIN, LEFT JOIN, RIGHT JOIN e SELF JOIN</p>
+        </div>
+
+        <h2>1. INNER JOIN</h2>
+
+        <div class="teoria">
+            <p><code>INNER JOIN</code> restituisce solo le righe che hanno corrispondenze in <strong>entrambe</strong> le tabelle. È il tipo di JOIN più comune.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Ordini con nome del cliente
+SELECT o.id, c.nome, c.cognome, o.data_ordine, o.totale, o.stato
+FROM ordini o
+INNER JOIN clienti c ON o.cliente_id = c.id;
+
+-- Prodotti con nome della categoria
+SELECT p.nome AS prodotto, p.prezzo, cat.nome AS categoria
+FROM prodotti p
+INNER JOIN categorie cat ON p.categoria_id = cat.id;
+
+-- Dettagli ordine con nome prodotto
+SELECT do.ordine_id, p.nome, do.quantita, do.prezzo_unitario
+FROM dettagli_ordine do
+INNER JOIN prodotti p ON do.prodotto_id = p.id;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato ordini con clienti:</strong></p>
+            <pre>+----+----------+----------+-------------+---------+------------+
+| id | nome     | cognome  | data_ordine | totale  | stato      |
++----+----------+----------+-------------+---------+------------+
+|  1 | Mario    | Rossi    | 2024-03-01  | 1579.98 | Completato |
+|  2 | Laura    | Bianchi  | 2024-03-05  | 2499.99 | Completato |
+|  3 | Giuseppe | Verdi    | 2024-03-10  |  899.98 | Spedito    |
+|  4 | Mario    | Rossi    | 2024-03-15  |  349.99 | In attesa  |
+|  5 | Anna     | Neri     | 2024-03-18  |  549.99 | Completato |
+| ...| ...      | ...      | ...         |     ... | ...        |
++----+----------+----------+-------------+---------+------------+</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato prodotti con categoria:</strong></p>
+            <pre>+---------------------+---------+------------+
+| prodotto            | prezzo  | categoria  |
++---------------------+---------+------------+
+| iPhone 15 Pro       | 1299.99 | Smartphone |
+| Samsung Galaxy S24  |  999.99 | Smartphone |
+| MacBook Pro 14"     | 2499.99 | Computer   |
+| Dell XPS 15         | 1899.99 | Computer   |
+| AirPods Pro         |  279.99 | Audio      |
+| Sony WH-1000XM5     |  349.99 | Audio      |
+| PlayStation 5       |  549.99 | Gaming     |
+| Nintendo Switch OLED|  349.99 | Gaming     |
++---------------------+---------+------------+</pre>
+        </div>
+
+        <h2>2. LEFT JOIN</h2>
+
+        <div class="teoria">
+            <p><code>LEFT JOIN</code> restituisce tutte le righe dalla tabella sinistra, e le righe corrispondenti dalla tabella destra. Se non c'è corrispondenza, restituisce <code>NULL</code> per le colonne della tabella destra.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Tutti i clienti e i loro ordini (anche clienti senza ordini)
+SELECT c.nome, c.cognome, c.citta, o.id AS ordine_id, o.totale
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id;
+
+-- Clienti che non hanno mai effettuato ordini
+SELECT c.nome, c.cognome, c.email
+FROM clienti c
+LEFT JOIN ordini o ON c.id = o.cliente_id
+WHERE o.id IS NULL;
+
+-- Tutti i prodotti e le categorie (anche prodotti senza categoria)
+SELECT p.nome, p.prezzo, cat.nome AS categoria
+FROM prodotti p
+LEFT JOIN categorie cat ON p.categoria_id = cat.id;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato tutti i clienti con ordini (anche senza):</strong></p>
+            <pre>+-----------+----------+---------+-----------+---------+
+| nome      | cognome  | citta   | ordine_id | totale  |
++-----------+----------+---------+-----------+---------+
+| Mario     | Rossi    | Milano  |         1 | 1579.98 |
+| Mario     | Rossi    | Milano  |         4 |  349.99 |
+| Laura     | Bianchi  | Roma    |         2 | 2499.99 |
+| Laura     | Bianchi  | Roma    |         7 |  279.99 |
+| Giuseppe  | Verdi    | Napoli  |         3 |  899.98 |
+| Anna      | Neri     | Milano  |         5 |  549.99 |
+| Marco     | Ferrari  | Torino  |         6 | 1349.98 |
+| Giulia    | Marchetti| Firenze |         8 |  999.99 |
+| Luca      | Romano   | Roma    |      NULL |    NULL |
+| Francesca | Martini  | Milano  |      NULL |    NULL |
++-----------+----------+---------+-----------+---------+</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato clienti senza ordini:</strong></p>
+            <pre>+-----------+----------+-----------------------------+
+| nome      | cognome  | email                       |
++-----------+----------+-----------------------------+
+| Luca      | Romano   | luca.romano@email.it        |
+| Francesca | Martini  | francesca.martini@email.it  |
++-----------+----------+-----------------------------+</pre>
+        </div>
+
+        <h2>3. SELF JOIN</h2>
+
+        <div class="teoria">
+            <p>Una <code>SELF JOIN</code> è una tabella che si unisce a se stessa. È utile per gestire strutture gerarchiche come la relazione dipendente-manager.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Dipendenti con il nome del loro manager
+SELECT 
+    d.nome AS dipendente, 
+    d.ruolo, 
+    m.nome AS manager
+FROM dipendenti d
+LEFT JOIN dipendenti m ON d.manager_id = m.id;
+
+-- Solo dipendenti che hanno un manager
+SELECT 
+    d.nome AS dipendente, 
+    d.ruolo,
+    d.stipendio,
+    m.nome AS manager
+FROM dipendenti d
+INNER JOIN dipendenti m ON d.manager_id = m.id;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato SELF JOIN con LEFT (tutti i dipendenti):</strong></p>
+            <pre>+---------------------+---------------------+------------------+
+| dipendente          | ruolo               | manager          |
++---------------------+---------------------+------------------+
+| Roberto Conti       | CEO                 | NULL             |
+| Elena Russo         | Direttore Vendite   | Roberto Conti    |
+| Paolo Greco         | Direttore IT        | Roberto Conti    |
+| Sara Lombardi       | Venditore Senior    | Elena Russo      |
+| Marco Rizzo         | Venditore           | Elena Russo      |
+| Chiara Moretti      | Sviluppatore        | Paolo Greco      |
+| Andrea Colombo      | Sviluppatore Junior | Paolo Greco      |
++---------------------+---------------------+------------------+</pre>
+        </div>
+
+        <h2>4. JOIN con Funzioni Aggregate</h2>
+
+        <div class="codice">
+<pre>-- Totale speso per ogni cliente
+SELECT c.nome, c.cognome, COUNT(o.id) AS numero_ordini, SUM(o.totale) AS totale_speso
+FROM clienti c
+INNER JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.id, c.nome, c.cognome
+ORDER BY totale_speso DESC;
+
+-- Media ordini per città
+SELECT c.citta, AVG(o.totale) AS media_ordine
+FROM clienti c
+INNER JOIN ordini o ON c.id = o.cliente_id
+GROUP BY c.citta
+ORDER BY media_ordine DESC;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato totale speso per cliente:</strong></p>
+            <pre>+----------+----------+---------------+--------------+
+| nome     | cognome  | numero_ordini | totale_speso |
++----------+----------+---------------+--------------+
+| Laura    | Bianchi  |             2 |      2779.98 |
+| Mario    | Rossi    |             2 |      1929.97 |
+| Marco    | Ferrari  |             1 |      1349.98 |
+| Giulia   | Marchetti|             1 |       999.99 |
+| Giuseppe | Verdi    |             1 |       899.98 |
+| Anna     | Neri     |             1 |       549.99 |
++----------+----------+---------------+--------------+</pre>
+        </div>
+
+        <h2>5. Riepilogo Tipi di JOIN</h2>
+
+        <table>
+            <tr>
+                <th>Tipo JOIN</th>
+                <th>Comportamento</th>
+                <th>Quando usarla</th>
+            </tr>
+            <tr>
+                <td>INNER JOIN</td>
+                <td>Solo righe con corrispondenza in entrambe le tabelle</td>
+                <td>Quando servono solo dati correlati</td>
+            </tr>
+            <tr>
+                <td>LEFT JOIN</td>
+                <td>Tutte le righe dalla sinistra + corrispondenze dalla destra (NULL se assenti)</td>
+                <td>Quando si vuole preservare tutti i record della prima tabella</td>
+            </tr>
+            <tr>
+                <td>RIGHT JOIN</td>
+                <td>Tutte le righe dalla destra + corrispondenze dalla sinistra</td>
+                <td>Meno comune, simile a LEFT ma invertito</td>
+            </tr>
+            <tr>
+                <td>SELF JOIN</td>
+                <td>Una tabella unita a se stessa</td>
+                <td>Strutture gerarchiche (dipendenti-manager)</td>
+            </tr>
+        </table>
+
+        <div class="nav">
+            <a href="lezione-15-4.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-15-6.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

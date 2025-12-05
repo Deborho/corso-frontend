@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 15.1 - Setup Database e Tabelle</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 15.1 - Setup Database e Tabelle</h1>
+            <p>Creazione del database TechStore e della struttura relazionale</p>
+        </div>
+
+        <h2>1. Creazione del Database</h2>
+
+        <div class="teoria">
+            <p>Il primo passo è creare il database che conterrà tutte le tabelle del nostro e-commerce. Utilizziamo <code>CREATE DATABASE</code> per creare il database e <code>USE</code> per selezionarlo.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Creiamo il database per TechStore
+CREATE DATABASE techstore;
+
+-- Selezioniamo il database
+USE techstore;</pre>
+        </div>
+
+        <h2>2. Creazione delle Tabelle</h2>
+
+        <div class="teoria">
+            <p>Creeremo le tabelle seguendo un ordine logico: prima le tabelle senza dipendenze, poi quelle che hanno chiavi esterne.</p>
+        </div>
+
+        <h3>2.1 Tabella Categorie</h3>
+
+        <div class="codice">
+<pre>CREATE TABLE categorie (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    descrizione TEXT
+);</pre>
+        </div>
+
+        <h3>2.2 Tabella Prodotti</h3>
+
+        <div class="teoria">
+            <p>La tabella prodotti include un vincolo <code>UNIQUE</code> sul nome per evitare duplicati, e una chiave esterna verso la tabella categorie. Notiamo l'uso di <code>DECIMAL(10,2)</code> per memorizzare i prezzi con precisione.</p>
+        </div>
+
+        <div class="codice">
+<pre>CREATE TABLE prodotti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    categoria_id INT,
+    prezzo DECIMAL(10,2) NOT NULL,
+    quantita_disponibile INT DEFAULT 0,
+    data_inserimento DATE,
+    UNIQUE (nome),
+    FOREIGN KEY (categoria_id) REFERENCES categorie(id)
+);</pre>
+        </div>
+
+        <h3>2.3 Tabella Clienti</h3>
+
+        <div class="codice">
+<pre>CREATE TABLE clienti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    cognome VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE,
+    citta VARCHAR(50),
+    data_registrazione DATE DEFAULT (CURRENT_DATE)
+);</pre>
+        </div>
+
+        <h3>2.4 Tabella Ordini</h3>
+
+        <div class="codice">
+<pre>CREATE TABLE ordini (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT,
+    data_ordine DATE,
+    totale DECIMAL(10,2),
+    stato VARCHAR(20) DEFAULT 'In attesa',
+    FOREIGN KEY (cliente_id) REFERENCES clienti(id)
+);</pre>
+        </div>
+
+        <h3>2.5 Tabella Dettagli Ordine</h3>
+
+        <div class="teoria">
+            <p>Questa tabella implementa una relazione molti-a-molti tra ordini e prodotti. Ogni ordine può contenere più prodotti, e ogni prodotto può apparire in più ordini.</p>
+        </div>
+
+        <div class="codice">
+<pre>CREATE TABLE dettagli_ordine (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    ordine_id INT,
+    prodotto_id INT,
+    quantita INT NOT NULL,
+    prezzo_unitario DECIMAL(10,2),
+    FOREIGN KEY (ordine_id) REFERENCES ordini(id),
+    FOREIGN KEY (prodotto_id) REFERENCES prodotti(id)
+);</pre>
+        </div>
+
+        <h3>2.6 Tabella Dipendenti (per SELF JOIN)</h3>
+
+        <div class="teoria">
+            <p>Questa tabella ha una caratteristica particolare: la colonna <code>manager_id</code> è una chiave esterna che punta alla stessa tabella, permettendo di rappresentare la gerarchia aziendale.</p>
+        </div>
+
+        <div class="codice">
+<pre>CREATE TABLE dipendenti (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    ruolo VARCHAR(50),
+    manager_id INT,
+    stipendio DECIMAL(10,2),
+    FOREIGN KEY (manager_id) REFERENCES dipendenti(id)
+);</pre>
+        </div>
+
+        <h2>3. Verifica della Struttura</h2>
+
+        <div class="codice">
+<pre>-- Verificare le tabelle create
+SHOW TABLES;
+
+-- Verificare la struttura di una tabella
+DESCRIBE prodotti;
+DESCRIBE clienti;</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato SHOW TABLES:</strong></p>
+            <pre>+---------------------+
+| Tables_in_techstore |
++---------------------+
+| categorie           |
+| clienti             |
+| dettagli_ordine     |
+| dipendenti          |
+| ordini              |
+| prodotti            |
++---------------------+</pre>
+        </div>
+
+        <h2>4. Riepilogo Concetti Utilizzati</h2>
+
+        <table>
+            <tr>
+                <th>Concetto</th>
+                <th>Esempio nel Progetto</th>
+            </tr>
+            <tr>
+                <td>CREATE DATABASE</td>
+                <td><code>CREATE DATABASE techstore;</code></td>
+            </tr>
+            <tr>
+                <td>CREATE TABLE</td>
+                <td>Tutte le 6 tabelle</td>
+            </tr>
+            <tr>
+                <td>DECIMAL per prezzi</td>
+                <td><code>prezzo DECIMAL(10,2)</code></td>
+            </tr>
+            <tr>
+                <td>UNIQUE constraint</td>
+                <td><code>UNIQUE (nome)</code> in prodotti</td>
+            </tr>
+            <tr>
+                <td>FOREIGN KEY</td>
+                <td>Relazioni tra tabelle</td>
+            </tr>
+            <tr>
+                <td>DEFAULT</td>
+                <td><code>DEFAULT 'In attesa'</code> in ordini</td>
+            </tr>
+        </table>
+
+        <div class="nav">
+            <a href="index.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-15-2.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>

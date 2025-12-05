@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezione 15.3 - Query di Base</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lezione 15.3 - Query di Base</h1>
+            <p>SELECT, WHERE, LIKE e operatori logici</p>
+        </div>
+
+        <h2>1. SELECT e Filtri WHERE</h2>
+
+        <div class="teoria">
+            <p>La clausola <code>WHERE</code> permette di filtrare i risultati in base a condizioni specifiche.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Tutti i prodotti
+SELECT * FROM prodotti;
+
+-- Solo nome e prezzo dei prodotti
+SELECT nome, prezzo FROM prodotti;
+
+-- Prodotti con prezzo maggiore di 500€
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE prezzo > 500;
+
+-- Prodotti della categoria Smartphone (categoria_id = 1)
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE categoria_id = 1;
+
+-- Ordini completati
+SELECT * FROM ordini 
+WHERE stato = 'Completato';</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato prodotti con prezzo > 500:</strong></p>
+            <pre>+---------------------+---------+
+| nome                | prezzo  |
++---------------------+---------+
+| iPhone 15 Pro       | 1299.99 |
+| Samsung Galaxy S24  |  999.99 |
+| MacBook Pro 14"     | 2499.99 |
+| Dell XPS 15         | 1899.99 |
+| PlayStation 5       |  549.99 |
+| Xiaomi 14           |  799.99 |
++---------------------+---------+</pre>
+        </div>
+
+        <h2>2. LIKE e Pattern Matching</h2>
+
+        <div class="teoria">
+            <p>L'operatore <code>LIKE</code> permette di cercare pattern nei dati testuali:</p>
+            <ul>
+                <li><code>%</code> - corrisponde a zero o più caratteri</li>
+                <li><code>_</code> - corrisponde a un singolo carattere</li>
+            </ul>
+        </div>
+
+        <div class="codice">
+<pre>-- Clienti il cui nome inizia con 'Mar'
+SELECT nome, cognome, email 
+FROM clienti 
+WHERE nome LIKE 'Mar%';
+
+-- Prodotti che contengono 'Pro' nel nome
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE nome LIKE '%Pro%';
+
+-- Email che terminano con '.it'
+SELECT nome, cognome, email 
+FROM clienti 
+WHERE email LIKE '%.it';</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato clienti con nome che inizia con 'Mar':</strong></p>
+            <pre>+-------+----------+------------------------+
+| nome  | cognome  | email                  |
++-------+----------+------------------------+
+| Mario | Rossi    | mario.rossi@email.it   |
+| Marco | Ferrari  | marco.ferrari@email.it |
++-------+----------+------------------------+</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato prodotti con 'Pro' nel nome:</strong></p>
+            <pre>+---------------+---------+
+| nome          | prezzo  |
++---------------+---------+
+| iPhone 15 Pro | 1299.99 |
+| MacBook Pro   | 2499.99 |
+| AirPods Pro   |  279.99 |
++---------------+---------+</pre>
+        </div>
+
+        <h2>3. Operatori Logici (AND, OR, NOT)</h2>
+
+        <div class="teoria">
+            <p><code>AND</code> restituisce TRUE solo se ENTRAMBE le condizioni sono vere. <code>OR</code> restituisce TRUE se almeno una condizione è vera. <code>NOT</code> inverte il risultato.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prodotti con prezzo tra 200€ e 500€ E disponibili (quantità > 0)
+SELECT nome, prezzo, quantita_disponibile 
+FROM prodotti 
+WHERE prezzo > 200 AND prezzo < 500 AND quantita_disponibile > 0;
+
+-- Prodotti della categoria Smartphone O Gaming
+SELECT nome, prezzo, categoria_id 
+FROM prodotti 
+WHERE categoria_id = 1 OR categoria_id = 4;
+
+-- Clienti che NON sono di Milano
+SELECT nome, cognome, citta 
+FROM clienti 
+WHERE NOT citta = 'Milano';
+
+-- Combinazione: Clienti di Milano o Roma registrati dopo febbraio 2024
+SELECT nome, cognome, citta, data_registrazione
+FROM clienti 
+WHERE (citta = 'Milano' OR citta = 'Roma') 
+AND data_registrazione > '2024-02-01';</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato clienti NON di Milano:</strong></p>
+            <pre>+----------+----------+---------+
+| nome     | cognome  | citta   |
++----------+----------+---------+
+| Laura    | Bianchi  | Roma    |
+| Giuseppe | Verdi    | Napoli  |
+| Marco    | Ferrari  | Torino  |
+| Giulia   | Marchetti| Firenze |
+| Luca     | Romano   | Roma    |
++----------+----------+---------+</pre>
+        </div>
+
+        <h2>4. BETWEEN e IN</h2>
+
+        <div class="teoria">
+            <p><code>BETWEEN</code> verifica se un valore è compreso in un intervallo (estremi inclusi). <code>IN</code> verifica se un valore è presente in una lista.</p>
+        </div>
+
+        <div class="codice">
+<pre>-- Prodotti con prezzo tra 300€ e 1000€
+SELECT nome, prezzo 
+FROM prodotti 
+WHERE prezzo BETWEEN 300 AND 1000;
+
+-- Ordini effettuati a marzo 2024
+SELECT * FROM ordini 
+WHERE data_ordine BETWEEN '2024-03-01' AND '2024-03-31';
+
+-- Clienti di Milano, Roma o Napoli
+SELECT nome, cognome, citta 
+FROM clienti 
+WHERE citta IN ('Milano', 'Roma', 'Napoli');
+
+-- Prodotti delle categorie Smartphone e Audio
+SELECT nome, prezzo, categoria_id 
+FROM prodotti 
+WHERE categoria_id IN (1, 3);</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato prodotti con prezzo BETWEEN 300 e 1000:</strong></p>
+            <pre>+---------------------+---------+
+| nome                | prezzo  |
++---------------------+---------+
+| Samsung Galaxy S24  |  999.99 |
+| Sony WH-1000XM5     |  349.99 |
+| PlayStation 5       |  549.99 |
+| Nintendo Switch OLED|  349.99 |
+| Xiaomi 14           |  799.99 |
++---------------------+---------+</pre>
+        </div>
+
+        <div class="anteprima">
+            <p><strong>Risultato clienti IN ('Milano', 'Roma', 'Napoli'):</strong></p>
+            <pre>+----------+----------+--------+
+| nome     | cognome  | citta  |
++----------+----------+--------+
+| Mario    | Rossi    | Milano |
+| Laura    | Bianchi  | Roma   |
+| Giuseppe | Verdi    | Napoli |
+| Anna     | Neri     | Milano |
+| Luca     | Romano   | Roma   |
+| Francesca| Martini  | Milano |
++----------+----------+--------+</pre>
+        </div>
+
+        <h2>5. Riepilogo Operatori</h2>
+
+        <table>
+            <tr>
+                <th>Operatore</th>
+                <th>Uso</th>
+                <th>Esempio</th>
+            </tr>
+            <tr>
+                <td>WHERE</td>
+                <td>Filtrare risultati</td>
+                <td><code>WHERE prezzo > 500</code></td>
+            </tr>
+            <tr>
+                <td>LIKE '%pattern%'</td>
+                <td>Pattern matching</td>
+                <td><code>WHERE nome LIKE 'Mar%'</code></td>
+            </tr>
+            <tr>
+                <td>AND</td>
+                <td>Entrambe le condizioni vere</td>
+                <td><code>WHERE a > 10 AND b < 20</code></td>
+            </tr>
+            <tr>
+                <td>OR</td>
+                <td>Almeno una condizione vera</td>
+                <td><code>WHERE a = 1 OR a = 2</code></td>
+            </tr>
+            <tr>
+                <td>NOT</td>
+                <td>Inverte la condizione</td>
+                <td><code>WHERE NOT citta = 'Roma'</code></td>
+            </tr>
+            <tr>
+                <td>BETWEEN</td>
+                <td>Valore in un intervallo</td>
+                <td><code>WHERE prezzo BETWEEN 100 AND 500</code></td>
+            </tr>
+            <tr>
+                <td>IN</td>
+                <td>Valore in una lista</td>
+                <td><code>WHERE citta IN ('Milano', 'Roma')</code></td>
+            </tr>
+        </table>
+
+        <div class="nav">
+            <a href="lezione-15-2.html" class="btn-prev">Indietro</a>
+            <a href="/corso-mysql/index.html" class="btn-home">Indice Corso</a>
+            <a href="lezione-15-4.html" class="btn-next">Avanti</a>
+        </div>
+
+    </div>
+</body>
+</html>
