@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corso Frontend - Versione Stampabile Completa</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .page-break { page-break-before: always; }
+            body { background: white; }
+            .container { width: 100%; max-width: none; box-shadow: none; margin: 0; padding: 0; }
+            a { text-decoration: underline; color: #0056b3; }
+            /* Hide interactive elements if necessary */
+            .navigazione, .btn { display: none; }
+        }
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+        .lesson-wrapper { margin-bottom: 3rem; border-bottom: 1px dashed #ccc; padding-bottom: 2rem; }
+        @media print {
+            .lesson-wrapper { border-bottom: none; margin-bottom: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="controls" class="no-print" style="padding: 20px; text-align: center; background: #f8f9fa; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100;">
+        <h1>Versione Stampabile</h1>
+        <p>Questa pagina raccoglie tutti i contenuti del corso in un unico documento.</p>
+        <div id="status">Inizializzazione...</div>
+        <button id="printBtn" onclick="window.print()" disabled style="padding: 10px 20px; font-size: 1.2em; margin-top: 10px; cursor: pointer;">🖨️ Stampa / Salva come PDF</button>
+    </div>
+
+    <div id="full-content" class="container">
+        <!-- Content will be loaded here -->
+    </div>
+
+    <script>
+        async function loadContent() {
+            const status = document.getElementById('status');
+            const container = document.getElementById('full-content');
+            const printBtn = document.getElementById('printBtn');
+            
+            try {
+                // 1. Load the Table of Contents (current index page)
+                status.textContent = "Lettura indice del corso...";
+                const indexResp = await fetch('index.html');
+                const indexHtml = await indexResp.text();
+                const parser = new DOMParser();
+                const indexDoc = parser.parseFromString(indexHtml, 'text/html');
+                
+                // Extract links from the theory sections
+                // Selector based on the structure: .teoria ul li a
+                const links = Array.from(indexDoc.querySelectorAll('.teoria ul li a'));
+                const uniqueUrls = [...new Set(links.map(a => a.getAttribute('href')))]; // Deduplicate just in case
+                
+                status.textContent = `Trovate ${uniqueUrls.length} pagine. Inizio caricamento...`;
+
+                // Add Title Page (Index content)
+                const indexContent = indexDoc.querySelector('.container');
+                if (indexContent) {
+                    // Remove the links list from the print view of the index? 
+                    // Maybe keep them as a TOC.
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'lesson-wrapper';
+                    wrapper.innerHTML = indexContent.innerHTML;
+                    container.appendChild(wrapper);
+                }
+
+                // 2. Load each page
+                for (let i = 0; i < uniqueUrls.length; i++) {
+                    const url = uniqueUrls[i];
+                    status.textContent = `Caricamento (${i + 1}/${uniqueUrls.length}): ${url}`;
+                    
+                    try {
+                        const resp = await fetch(url);
+                        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                        const html = await resp.text();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        const pageContent = doc.querySelector('.container');
+                        if (pageContent) {
+                            // Preserve example links from navigation before removing it
+                            const navs = pageContent.querySelectorAll('.navigazione, .nav');
+                            navs.forEach(nav => {
+                                const exampleLinks = nav.querySelectorAll('a[href*="esempi/"], a[href*="-99"]');
+                                if (exampleLinks.length > 0) {
+                                    const linksContainer = document.createElement('div');
+                                    linksContainer.className = 'preserved-links';
+                                    linksContainer.style.marginTop = '20px';
+                                    linksContainer.style.marginBottom = '20px';
+                                    
+                                    exampleLinks.forEach(link => {
+                                        const clonedLink = link.cloneNode(true);
+                                        // Ensure it looks like a link, not a button if it was styled as such
+                                        clonedLink.style.display = 'inline-block';
+                                        clonedLink.style.marginRight = '15px';
+                                        clonedLink.style.textDecoration = 'underline';
+                                        clonedLink.style.color = '#0056b3';
+                                        clonedLink.style.fontWeight = 'bold';
+                                        
+                                        // Add an icon if missing to make it clear it's an external/interactive thing
+                                        if (!clonedLink.textContent.includes('📝') && !clonedLink.textContent.includes('💡')) {
+                                            clonedLink.textContent = '📝 ' + clonedLink.textContent;
+                                        }
+
+                                        linksContainer.appendChild(clonedLink);
+                                    });
+                                    
+                                    // Insert before the nav
+                                    nav.parentNode.insertBefore(linksContainer, nav);
+                                }
+                            });
+
+                            // Cleanup
+                            pageContent.querySelectorAll('.navigazione, .nav, .header a, script').forEach(el => el.remove());
+                            
+                            // Fix relative paths
+                            // Assuming url starts with / like /lezione-1/page.html
+                            const basePath = url.substring(0, url.lastIndexOf('/') + 1);
+                            
+                            pageContent.querySelectorAll('img, source, iframe').forEach(el => {
+                                const src = el.getAttribute('src');
+                                if (src && !src.startsWith('/') && !src.startsWith('http')) {
+                                    el.setAttribute('src', basePath + src);
+                                }
+                            });
+
+                            pageContent.querySelectorAll('a').forEach(a => {
+                                const href = a.getAttribute('href');
+                                if (href && !href.startsWith('/') && !href.startsWith('http') && !href.startsWith('#')) {
+                                    a.setAttribute('href', basePath + href);
+                                }
+                            });
+
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'lesson-wrapper page-break';
+
+                            const contentDiv = document.createElement('div');
+                            contentDiv.innerHTML = pageContent.innerHTML;
+                            wrapper.appendChild(contentDiv);
+
+                            container.appendChild(wrapper);
+                        }
+                    } catch (err) {
+                        console.error(`Failed to load ${url}`, err);
+                        const errDiv = document.createElement('div');
+                        errDiv.className = 'lesson-wrapper';
+                        errDiv.innerHTML = `<p style="color:red; border:1px solid red; padding:10px;">Errore caricamento: ${url}</p>`;
+                        container.appendChild(errDiv);
+                    }
+                }
+
+                status.textContent = "Caricamento completato!";
+                status.style.color = "green";
+                printBtn.disabled = false;
+
+            } catch (e) {
+                status.textContent = "Errore fatale: " + e.message;
+                status.style.color = "red";
+                console.error(e);
+            }
+        }
+
+        // Start loading when page is ready
+        window.addEventListener('DOMContentLoaded', loadContent);
+    </script>
+</body>
+</html>
